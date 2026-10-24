@@ -9,6 +9,7 @@ import { withDemoHistory } from '@/data/demoSeed';
 import { getLanguage } from '@/i18n/languages';
 import { useLanguage } from '@/i18n/useLanguage';
 import { deleteAllProgressPhotos } from '@/services/photos';
+import { REMINDER_TIMES, remindersSupported, scheduleDailyReminder } from '@/services/reminders';
 import { useAppState } from '@/state/AppStateProvider';
 import { spacing, useColors } from '@/theme';
 import { confirm } from '@/utils/confirm';
@@ -21,6 +22,13 @@ export default function SettingsScreen() {
   const [note, setNote] = useState<string | null>(null);
   const prefs = data.preferences;
   const setPref = (patch: Partial<typeof prefs>) => void dispatch({ type: 'updatePreferences', patch }).catch(() => setNote(t('states.saveError')));
+
+  const setReminders = async (on: boolean) => {
+    if (!on) return setPref({ reminders: false });
+    const result = await scheduleDailyReminder(prefs.reminderTime, { title: t('reminder.title'), body: t('reminder.body') }).catch(() => 'denied' as const);
+    if (result === 'denied') setNote(t('settings.remindersDenied'));
+    else setPref({ reminders: true });
+  };
 
   const exportData = async () => {
     try {
@@ -74,13 +82,25 @@ export default function SettingsScreen() {
           icon="bell"
           label={t('settings.reminders')}
           hint={t('settings.remindersHint')}
-          right={toggle(prefs.reminders, (reminders) => setPref({ reminders }), t('settings.reminders'))}
-          divider={false}
+          right={toggle(prefs.reminders, (on) => void setReminders(on), t('settings.reminders'))}
+          divider={!!prefs.reminders}
         />
+        {prefs.reminders ? (
+          <View style={styles.inline}>
+            <AppText variant="bodyStrong">{t('settings.reminderTime')}</AppText>
+            <View style={styles.chips} accessibilityRole="radiogroup">
+              {REMINDER_TIMES.map((time) => (
+                <Chip key={time} mode="radio" label={time} selected={prefs.reminderTime === time} onPress={() => setPref({ reminderTime: time })} />
+              ))}
+            </View>
+          </View>
+        ) : null}
       </Card>
-      <AppText variant="caption" color="secondary">
-        {t('settings.notificationsUnavailable')}
-      </AppText>
+      {!remindersSupported ? (
+        <AppText variant="caption" color="secondary">
+          {t('settings.remindersWeb')}
+        </AppText>
+      ) : null}
 
       <SectionHeader title={t('settings.privacy')} />
       <Card padded={false}>

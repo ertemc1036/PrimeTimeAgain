@@ -36,5 +36,5 @@ Characters and animations come from the [Microsoft Rocketbox Avatar Library](htt
 ## Not connected yet (each needs approval)
 
 Supabase accounts & sync (draft schema in `docs/supabase/schema.sql`), the AI Prime Coach (server-side
-Claude integration), RevenueCat / Prime Pro, local reminder notifications, selfie-based avatars,
+Claude integration), RevenueCat / Prime Pro, selfie-based avatars,
 EAS builds and store publishing.

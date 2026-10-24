@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { ReminderSync } from '@/components/system/ReminderSync';
 import { ErrorState } from '@/components/ui';
 import { hydrateLanguage } from '@/i18n';
 import { AppStateProvider, useAppState } from '@/state/AppStateProvider';
@@ -44,6 +45,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
   return (
     <>
       <StatusBar style="auto" />
+      {isOnboarded ? <ReminderSync /> : null}
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: lightColors.background } }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="language" options={modal} />

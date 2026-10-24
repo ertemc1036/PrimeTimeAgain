@@ -772,7 +772,6 @@
     "reminders": "Tägliche Erinnerung",
     "remindersHint": "Eine sanfte Erinnerung zu deiner gewählten Zeit. Kein Druck, keine Schuldgefühle.",
     "reminderTime": "Uhrzeit der Erinnerung",
-    "notificationsUnavailable": "Erinnerungen kommen mit einem der nächsten Updates. Deine Einstellung wird gespeichert.",
     "privacy": "Datenschutz",
     "privacyLocal": "Deine Daten werden auf diesem Gerät gespeichert. In dieser Version wird nichts an einen Server gesendet.",
     "coachConsent": "Dem künftigen KI-Coach erlauben, mein Tagebuch zu lesen",
@@ -792,7 +791,9 @@
     "licenses": "Lizenzen",
     "licensesBody": "3D-Charaktere und Animationen: Microsoft Rocketbox Avatar Library, MIT-Lizenz, © 2020 Microsoft.",
     "demo": "Beispieldaten laden",
-    "demoHint": "Ersetzt deinen Verlauf zum Testen durch Beispieldaten."
+    "demoHint": "Ersetzt deinen Verlauf zum Testen durch Beispieldaten.",
+    "remindersDenied": "Benachrichtigungen sind für PrimeTimeAgain deaktiviert. Du kannst sie in den Einstellungen deines Telefons erlauben.",
+    "remindersWeb": "Erinnerungen funktionieren in der iOS- und Android-App."
   },
   "language": {
     "title": "SPRACHE",
@@ -818,5 +819,9 @@
       "r4": "Die erste komplette Woche ist geschafft. Ich fühle mich so sehr wie ich selbst wie lange nicht mehr."
     },
     "badge": "Beispieldaten"
+  },
+  "reminder": {
+    "title": "Zeit für dein Comeback",
+    "body": "Ein paar fokussierte Minuten heute halten deinen Prime in Bewegung."
   }
 }

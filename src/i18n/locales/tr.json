@@ -772,7 +772,6 @@
     "reminders": "Günlük hatırlatma",
     "remindersHint": "Seçtiğin saatte nazik bir hatırlatma. Baskı yok, suçluluk yok.",
     "reminderTime": "Hatırlatma saati",
-    "notificationsUnavailable": "Hatırlatmalar yakında bir güncellemeyle gelecek. Tercihin kaydedildi.",
     "privacy": "Gizlilik",
     "privacyLocal": "Verilerin bu cihazda saklanır. Bu sürümde hiçbir şey bir sunucuya gönderilmez.",
     "coachConsent": "Gelecekteki yapay zekâ koçunun günlüğümü okumasına izin ver",
@@ -792,7 +791,9 @@
     "licenses": "Lisanslar",
     "licensesBody": "3D karakterler ve animasyonlar: Microsoft Rocketbox Avatar Library, MIT Lisansı, © 2020 Microsoft.",
     "demo": "Örnek ilerlemeyi yükle",
-    "demoHint": "Test için geçmişini örnek verilerle değiştirir."
+    "demoHint": "Test için geçmişini örnek verilerle değiştirir.",
+    "remindersDenied": "PrimeTimeAgain için bildirimler kapalı. Telefonunun Ayarlar bölümünden izin verebilirsin.",
+    "remindersWeb": "Hatırlatmalar iOS ve Android uygulamasında çalışır."
   },
   "language": {
     "title": "DİL",
@@ -818,5 +819,9 @@
       "r4": "İlk tam hafta bitti. Uzun zamandır kendimi bu kadar kendim gibi hissetmemiştim."
     },
     "badge": "Örnek veri"
+  },
+  "reminder": {
+    "title": "Geri dönüş zamanı",
+    "body": "Bugün ayıracağın birkaç odaklı dakika Prime’ını ilerletir."
   }
 }

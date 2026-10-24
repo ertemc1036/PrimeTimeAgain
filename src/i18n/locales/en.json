@@ -772,7 +772,6 @@
     "reminders": "Daily reminder",
     "remindersHint": "A gentle reminder at your chosen time. No pressure, no guilt.",
     "reminderTime": "Reminder time",
-    "notificationsUnavailable": "Reminders arrive in a coming update. Your preference is saved.",
     "privacy": "Privacy",
     "privacyLocal": "Your data is stored on this device. Nothing is sent to a server in this version.",
     "coachConsent": "Let the future AI coach read my journal",
@@ -792,7 +791,9 @@
     "licenses": "Licences",
     "licensesBody": "3D characters and animations: Microsoft Rocketbox Avatar Library, MIT License, © 2020 Microsoft.",
     "demo": "Load sample progress",
-    "demoHint": "Replaces your history with example data for testing."
+    "demoHint": "Replaces your history with example data for testing.",
+    "remindersDenied": "Notifications are off for PrimeTimeAgain. You can allow them in your phone’s Settings.",
+    "remindersWeb": "Reminders work in the iOS and Android app."
   },
   "language": {
     "title": "LANGUAGE",
@@ -818,5 +819,9 @@
       "r4": "First full week done. I feel more like myself than I have in a long time."
     },
     "badge": "Sample data"
+  },
+  "reminder": {
+    "title": "Time for your comeback",
+    "body": "A few focused minutes today keep your Prime moving."
   }
 }
