@@ -1,7 +1,7 @@
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
 import { useLanguage } from '@/i18n/useLanguage';
-import { colors, radii, spacing } from '@/theme';
+import { radii, spacing, status, useColors } from '@/theme';
 
 import { AppText } from './AppText';
 
@@ -9,35 +9,44 @@ export interface TextFieldProps extends TextInputProps {
   label: string;
   hint?: string;
   error?: string;
+  optional?: string;
 }
 
-export function TextField({ label, hint, error, style, multiline, ...rest }: TextFieldProps) {
+export function TextField({ label, hint, error, optional, style, multiline, ...rest }: TextFieldProps) {
   const { isRTL } = useLanguage();
+  const colors = useColors();
   return (
     <View style={styles.wrap}>
-      <AppText variant="label" color={colors.textSecondary}>
-        {label}
-      </AppText>
+      <View style={styles.labelRow}>
+        <AppText variant="label" style={styles.flex}>
+          {label}
+        </AppText>
+        {optional ? (
+          <AppText variant="caption" color="secondary">
+            {optional}
+          </AppText>
+        ) : null}
+      </View>
       <TextInput
         accessibilityLabel={label}
         accessibilityHint={hint}
-        placeholderTextColor={colors.textMuted}
+        placeholderTextColor={colors.textSecondary}
         multiline={multiline}
         style={[
           styles.input,
+          { backgroundColor: colors.surface, color: colors.text, borderColor: error ? status.danger : colors.surface },
           multiline && styles.multiline,
           { textAlign: isRTL ? 'right' : 'left' },
-          error ? { borderColor: colors.danger } : null,
           style,
         ]}
         {...rest}
       />
       {error ? (
-        <AppText variant="caption" color={colors.danger} accessibilityLiveRegion="polite">
+        <AppText variant="caption" color={status.danger} accessibilityLiveRegion="polite">
           {error}
         </AppText>
       ) : hint ? (
-        <AppText variant="caption" color={colors.textMuted}>
+        <AppText variant="caption" color="secondary">
           {hint}
         </AppText>
       ) : null}
@@ -47,15 +56,8 @@ export function TextField({ label, hint, error, style, multiline, ...rest }: Tex
 
 const styles = StyleSheet.create({
   wrap: { gap: spacing.xs },
-  input: {
-    minHeight: 54,
-    borderRadius: radii.md,
-    backgroundColor: colors.surface,
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    fontSize: 17,
-    color: colors.text,
-  },
-  multiline: { minHeight: 140, paddingTop: spacing.md, textAlignVertical: 'top' },
+  labelRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  flex: { flex: 1 },
+  input: { minHeight: 52, borderRadius: radii.sm, borderWidth: 1.5, paddingHorizontal: spacing.md, fontSize: 16 },
+  multiline: { minHeight: 110, paddingTop: spacing.sm, textAlignVertical: 'top' },
 });

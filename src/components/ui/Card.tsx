@@ -1,23 +1,31 @@
 import { StyleSheet, View, type ViewProps } from 'react-native';
 
-import { colors, radii, shadows, spacing } from '@/theme';
+import { radii, spacing, useColors } from '@/theme';
 
 export interface CardProps extends ViewProps {
-  tint?: string;
+  variant?: 'filled' | 'outline' | 'inverse';
   padded?: boolean;
-  elevated?: boolean;
 }
 
-export function Card({ tint = colors.surface, padded = true, elevated = true, style, ...rest }: CardProps) {
+/** Flat, precise surfaces: filled (pearl / night), outlined, or inverse (black on light). */
+export function Card({ variant = 'filled', padded = true, style, ...rest }: CardProps) {
+  const colors = useColors();
+  const bg = variant === 'filled' ? colors.surface : variant === 'inverse' ? colors.accent : 'transparent';
   return (
     <View
-      style={[styles.card, { backgroundColor: tint }, padded && styles.padded, elevated && shadows.card, style]}
+      style={[
+        styles.card,
+        { backgroundColor: bg },
+        variant === 'outline' && { borderWidth: 1, borderColor: colors.border },
+        padded && styles.padded,
+        style,
+      ]}
       {...rest}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  card: { borderRadius: radii.lg },
-  padded: { padding: spacing.lg },
+  card: { borderRadius: radii.md, overflow: 'hidden' },
+  padded: { padding: spacing.md },
 });

@@ -13,8 +13,8 @@ const flatten = (tree: Tree, prefix = ''): Record<string, string> =>
 
 const placeholders = (s: string) => (s.match(/{{\s*\w+\s*}}/g) ?? []).map((p) => p.replace(/\s/g, '')).sort();
 
-const source = flatten(en as Tree);
-const locales: Record<string, Tree> = { de: de as Tree, tr: tr as Tree };
+const source = flatten(en as unknown as Tree);
+const locales: Record<string, Tree> = { de: de as unknown as Tree, tr: tr as unknown as Tree };
 
 describe('translations', () => {
   it('registers a locale file for every language', () => {

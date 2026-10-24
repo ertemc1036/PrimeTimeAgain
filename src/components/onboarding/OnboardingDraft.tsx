@@ -1,19 +1,23 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
-import type { DailyMinutes, GoalId, Pillar } from '@/domain/types';
+import { DEFAULT_AVATAR } from '@/avatar/types';
+import type { OnboardingDraft } from '@/domain/plan';
+import { DEFAULT_DURATION } from '@/domain/program';
 
-export interface Draft {
-  name: string;
-  pillars: Pillar[];
-  dailyMinutes: DailyMinutes;
-  goalIds: GoalId[];
-}
+const initialDraft = (): OnboardingDraft => ({
+  goalIds: [],
+  customGoals: [],
+  profile: { name: '', startingPoint: {} },
+  durationDays: DEFAULT_DURATION,
+  dailyMinutes: 30,
+  avatar: { ...DEFAULT_AVATAR },
+});
 
-const DraftContext = createContext<{ draft: Draft; update: (patch: Partial<Draft>) => void } | null>(null);
+const DraftContext = createContext<{ draft: OnboardingDraft; update: (patch: Partial<OnboardingDraft>) => void } | null>(null);
 
-/** Holds onboarding answers until the user finishes; nothing is saved halfway. */
+/** Holds onboarding answers until the user finishes; nothing is saved halfway through. */
 export function OnboardingDraftProvider({ children }: { children: ReactNode }) {
-  const [draft, setDraft] = useState<Draft>({ name: '', pillars: [], dailyMinutes: 20, goalIds: [] });
+  const [draft, setDraft] = useState(initialDraft);
   return (
     <DraftContext.Provider value={{ draft, update: (patch) => setDraft((d) => ({ ...d, ...patch })) }}>
       {children}

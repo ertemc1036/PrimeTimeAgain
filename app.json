@@ -2,12 +2,12 @@
   "expo": {
     "name": "PrimeTimeAgain",
     "slug": "primetimeagain",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "primetimeagain",
     "userInterfaceStyle": "light",
-    "backgroundColor": "#F8F7F2",
+    "backgroundColor": "#FFFFFF",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.primetimeagain.app",
@@ -18,7 +18,7 @@
     "android": {
       "package": "com.primetimeagain.app",
       "adaptiveIcon": {
-        "backgroundColor": "#F8F7F2",
+        "backgroundColor": "#08090B",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -36,15 +36,27 @@
         "expo-localization",
         {
           "supportsRTL": true,
-          "supportedLocales": ["en", "de", "tr"]
+          "supportedLocales": [
+            "en",
+            "de",
+            "tr"
+          ]
         }
       ],
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F8F7F2",
+          "backgroundColor": "#08090B",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "PrimeTimeAgain uses your photo library only when you choose to add a private progress photo. Photos stay on your device.",
+          "cameraPermission": false,
+          "microphonePermission": false
         }
       ]
     ],

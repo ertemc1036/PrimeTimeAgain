@@ -1,181 +1,186 @@
+import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import { StatusPill } from '@/components/journey/StatusPill';
-import { AppText, Card, Icon, PhotoHero, ProgressBar, Screen, SectionHeader } from '@/components/ui';
-import {
-  isJourneyComplete,
-  JOURNEY_LENGTH,
-  MILESTONE_DAYS,
-  nextMilestone,
-  PHASES,
-  phaseProgress,
-  phaseStatus,
-  WEEK_COUNT,
-  weekStatus,
-} from '@/domain/journey';
+import { AppText, Button, Card, Icon, ProgressBar, Screen, SectionHeader, StatTile } from '@/components/ui';
+import { milestones, phases, stageStatus, weekCount, weekTheme, type Milestone } from '@/domain/program';
+import { totals, weeklyTallies } from '@/domain/progress';
 import { useAppState } from '@/state/AppStateProvider';
-import { useDashboard } from '@/state/selectors';
-import { colors, imagery, palette, radii, spacing } from '@/theme';
+import { useProgramInfo, useStreak } from '@/state/selectors';
+import { radii, spacing, status, useColors } from '@/theme';
+
+const milestoneKey = (m: Milestone) =>
+  m.kind === 'phase' ? (`journey.milestone.phase_${m.phase}` as 'journey.milestone.phase_reset') : (`journey.milestone.${m.kind}` as 'journey.milestone.start');
 
 export default function JourneyScreen() {
   const { t } = useTranslation();
-  const { data, today } = useAppState();
-  const { day, activeDays } = useDashboard();
-  const complete = data.profile ? isJourneyComplete(data.profile.startDate, today) : false;
-  const next = nextMilestone(day);
+  const colors = useColors();
+  const { data, today, dispatch } = useAppState();
+  const info = useProgramInfo();
+  const streak = useStreak();
+  if (!info) return null;
+  const { program, day, complete } = info;
+  const percent = Math.round((Math.min(info.rawDay, program.durationDays) / program.durationDays) * 100);
+  const tot = totals(data.days);
+  const weekTallies = new Map(weeklyTallies(program, data.days, today).map((w) => [w.week, w.tally]));
+  const currentWeek = Math.ceil(day / 7);
 
   return (
-    <Screen inTabs title={t('journey.title')} subtitle={t('journey.subtitle')}>
-      <Animated.View entering={FadeInDown.duration(450)}>
-        <PhotoHero uri={imagery.home} height={210}>
-          <View style={styles.heroRow}>
-            <AppText variant="stat" color={colors.textOnPrimary}>
-              {t('journey.day', { day })}
-            </AppText>
-            <AppText variant="subheading" color={colors.textOnPrimary} style={styles.ofTotal}>
-              {t('journey.ofTotal', { total: JOURNEY_LENGTH })}
-            </AppText>
-          </View>
-          <AppText variant="caption" color={colors.textOnPrimary}>
-            {complete
-              ? t('journey.complete')
-              : [t('journey.activeDays', { count: activeDays }), next ? t('journey.nextMilestone', { day: next }) : null]
-                  .filter(Boolean)
-                  .join(' · ')}
+    <Screen inTabs title={t('journey.title')} subtitle={t('journey.subtitle', { days: program.durationDays })}>
+      <Animated.View entering={FadeInDown.duration(400)}>
+        <Card variant="inverse" style={styles.hero}>
+          <AppText variant="overline" color={colors.onAccent} style={styles.dim}>
+            {t('common.dayOf', { day, total: program.durationDays })}
           </AppText>
-        </PhotoHero>
-      </Animated.View>
-
-      <Animated.View entering={FadeInDown.delay(80).duration(450)} style={styles.group}>
-        <SectionHeader title={t('journey.milestonesTitle')} />
-        <Card style={styles.milestones}>
-          {MILESTONE_DAYS.map((m) => {
-            const reached = day >= m;
-            return (
-              <View
-                key={m}
-                style={styles.milestone}
-                accessible
-                accessibilityLabel={`${t('journey.day', { day: m })}, ${t(`journey.milestones.d${m}`)}, ${t(
-                  reached ? 'journey.status.done' : 'journey.status.upcoming',
-                )}`}>
-                <View style={[styles.milestoneDot, reached && styles.milestoneReached]}>
-                  <Icon name={reached ? 'check' : 'flag'} size={16} color={reached ? colors.textOnPrimary : colors.textMuted} />
-                </View>
-                <AppText variant="label" align="center">
-                  {t('journey.day', { day: m })}
-                </AppText>
-                <AppText variant="caption" color={colors.textMuted} align="center" numberOfLines={2}>
-                  {t(`journey.milestones.d${m}`)}
-                </AppText>
-              </View>
-            );
-          })}
+          <AppText variant="hero" color={colors.onAccent}>
+            {`${day}/${program.durationDays}`}
+          </AppText>
+          <ProgressBar progress={percent / 100} color={colors.onAccent} track="rgba(127,127,127,0.35)" height={6} />
+          <AppText variant="caption" color={colors.onAccent} style={styles.dim}>
+            {t('journey.progress', { percent })}
+          </AppText>
         </Card>
       </Animated.View>
 
-      <View style={styles.group}>
-        <SectionHeader title={t('journey.phasesTitle')} />
-        {PHASES.map((phase, i) => {
-          const status = phaseStatus(phase, day);
+      {complete ? (
+        <Card variant="outline" style={styles.complete}>
+          <AppText variant="heading">{t('journey.completeTitle')}</AppText>
+          <AppText variant="caption" color="secondary">
+            {t('journey.completeBody')}
+          </AppText>
+          <Button
+            label={t('journey.extend')}
+            size="md"
+            variant="secondary"
+            onPress={() => void dispatch({ type: 'updateProgram', patch: { durationDays: program.durationDays + 30 } }).catch(() => undefined)}
+          />
+        </Card>
+      ) : null}
+
+      <SectionHeader title={t('journey.phases')} />
+      <View>
+        {phases(program.durationDays).map((p, i, all) => {
+          const st = stageStatus(p.startDay, p.endDay, day);
           return (
-            <Animated.View key={phase.id} entering={FadeInDown.delay(140 + i * 80).duration(450)}>
-              <Card style={[styles.phase, status === 'current' && styles.phaseCurrent]} elevated={status === 'current'}>
-                <View style={styles.phaseHead}>
-                  <View style={styles.flex}>
-                    <AppText variant="overline" color={colors.textMuted}>
-                      {t(`journey.phases.${phase.id}.range`)}
-                    </AppText>
-                    <AppText variant="heading">{t(`journey.phases.${phase.id}.name`)}</AppText>
-                  </View>
-                  <StatusPill status={status} />
+            <Animated.View key={p.id} entering={FadeInDown.delay(80 + i * 90).duration(400)} style={styles.phaseRow}>
+              <View style={styles.rail}>
+                <View
+                  style={[
+                    styles.node,
+                    st === 'done' && { backgroundColor: colors.accent, borderColor: colors.accent },
+                    st === 'current' && { borderColor: colors.accent, borderWidth: 3 },
+                    st === 'upcoming' && { borderColor: colors.border },
+                  ]}>
+                  {st === 'done' ? <Icon name="check" size={14} color={colors.onAccent} /> : null}
                 </View>
-                <AppText variant="caption" color={colors.textSecondary}>
-                  {t(`journey.phases.${phase.id}.description`)}
+                {i < all.length - 1 ? <View style={[styles.line, { backgroundColor: st === 'done' ? colors.accent : colors.border }]} /> : null}
+              </View>
+              <Card variant={st === 'current' ? 'inverse' : 'filled'} style={[styles.phase, st === 'upcoming' && styles.upcoming]}>
+                <View style={styles.phaseHead}>
+                  <AppText variant="title" color={st === 'current' ? colors.onAccent : undefined} style={styles.flex}>
+                    {t(`journey.phase.${p.id}.name`)}
+                  </AppText>
+                  <AppText variant="overline" color={st === 'current' ? colors.onAccent : 'secondary'}>
+                    {t(`journey.status.${st}`)}
+                  </AppText>
+                </View>
+                <AppText variant="label" color={st === 'current' ? colors.onAccent : 'secondary'}>
+                  {t('journey.range', { start: p.startDay, end: p.endDay })}
                 </AppText>
-                {status !== 'upcoming' ? <ProgressBar progress={phaseProgress(phase, day)} /> : null}
+                <AppText variant="caption" color={st === 'current' ? colors.onAccent : 'secondary'}>
+                  {t(`journey.phase.${p.id}.body`)}
+                </AppText>
+                {st === 'current' ? (
+                  <ProgressBar progress={(day - p.startDay + 1) / (p.endDay - p.startDay + 1)} color={colors.onAccent} track="rgba(127,127,127,0.35)" />
+                ) : null}
               </Card>
             </Animated.View>
           );
         })}
       </View>
 
-      <View style={styles.group}>
-        <SectionHeader title={t('journey.weeksTitle')} />
-        <Card padded={false} style={styles.weeks}>
-          {Array.from({ length: WEEK_COUNT }, (_, i) => i + 1).map((week) => {
-            const status = weekStatus(week, day);
-            return (
-              <View key={week} style={[styles.week, status === 'current' && styles.weekCurrent]}>
-                <View style={[styles.weekDot, status === 'done' && styles.milestoneReached, status === 'current' && styles.weekDotCurrent]}>
-                  {status === 'done' ? (
-                    <Icon name="check" size={14} color={colors.textOnPrimary} />
-                  ) : (
-                    <AppText variant="label" color={status === 'current' ? colors.text : colors.textMuted}>
-                      {week}
-                    </AppText>
-                  )}
-                </View>
-                <View style={styles.flex}>
-                  <AppText variant="label" color={colors.textMuted}>
-                    {t('journey.week', { week })}
-                  </AppText>
-                  <AppText variant="bodyStrong" color={status === 'upcoming' ? colors.textSecondary : colors.text}>
-                    {t(`journey.weeks.w${week}` as 'journey.weeks.w1')}
-                  </AppText>
-                </View>
-                {status === 'current' ? <StatusPill status="current" /> : null}
+      <SectionHeader title={t('journey.milestones')} />
+      <Card padded={false}>
+        {milestones(program.durationDays).map((m, i) => {
+          const reached = day >= m.day;
+          return (
+            <View
+              key={m.day}
+              style={[styles.milestone, i > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border }]}
+              accessible
+              accessibilityLabel={`${t('common.dayOf', { day: m.day, total: program.durationDays })}, ${t(milestoneKey(m))}, ${t(reached ? 'journey.status.done' : 'journey.status.upcoming')}`}>
+              <View style={[styles.mNode, reached ? { backgroundColor: status.prime, borderColor: status.prime } : { borderColor: colors.border }]}>
+                <Icon name={reached ? 'check' : 'flag'} size={15} color={reached ? '#08090B' : colors.textSecondary} />
               </View>
-            );
-          })}
-        </Card>
+              <AppText variant="bodyStrong" style={styles.flex}>
+                {t(milestoneKey(m))}
+              </AppText>
+              <AppText variant="label" color="secondary">
+                {t('common.dayOf', { day: m.day, total: program.durationDays })}
+              </AppText>
+            </View>
+          );
+        })}
+      </Card>
+
+      <SectionHeader title={t('journey.weekly')} />
+      <Card padded={false}>
+        {Array.from({ length: weekCount(program.durationDays) }, (_, i) => i + 1).map((week) => {
+          const st = week < currentWeek ? 'done' : week === currentWeek ? 'current' : 'upcoming';
+          const tally = weekTallies.get(week);
+          return (
+            <View
+              key={week}
+              style={[styles.week, { borderBottomColor: colors.border }, st === 'current' && { backgroundColor: colors.accent }]}>
+              <AppText variant="label" color={st === 'current' ? colors.onAccent : 'secondary'} style={styles.weekNum}>
+                {t('journey.week', { week })}
+              </AppText>
+              <AppText variant="bodyStrong" color={st === 'current' ? colors.onAccent : st === 'upcoming' ? 'secondary' : undefined} style={styles.flex}>
+                {t(`journey.weeks.w${weekTheme(week, program.durationDays)}` as 'journey.weeks.w1')}
+              </AppText>
+              {st !== 'upcoming' && tally?.percent !== null && tally ? (
+                <AppText variant="label" color={st === 'current' ? colors.onAccent : undefined}>
+                  {t('common.percent', { value: tally.percent })}
+                </AppText>
+              ) : null}
+            </View>
+          );
+        })}
+      </Card>
+
+      <SectionHeader title={t('journey.achievements')} />
+      <View style={styles.stats}>
+        <StatTile value={String(tot.missionsDone)} label={t('journey.missionsDone')} />
+        <StatTile value={String(tot.minutesInvested)} label={t('journey.minutes')} />
       </View>
+      <View style={styles.stats}>
+        <StatTile value={String(streak.primeDays)} label={t('journey.primeDays')} />
+        <StatTile value={String(streak.longest)} label={t('journey.longestStreak')} />
+      </View>
+      <Button label={t('journey.openCalendar')} icon="calendar" variant="secondary" onPress={() => router.push('/calendar')} />
+      <AppText variant="caption" color="secondary">
+        {t('journey.honesty')}
+      </AppText>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  group: { gap: spacing.sm },
-  heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.xs },
-  ofTotal: { marginBottom: 8 },
-  milestones: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.xs },
-  milestone: { flex: 1, alignItems: 'center', gap: spacing.xxs },
-  milestoneDot: {
-    width: 40,
-    height: 40,
-    borderRadius: radii.pill,
-    backgroundColor: colors.background,
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.xxs,
-  },
-  milestoneReached: { backgroundColor: colors.primary, borderColor: colors.primary },
-  phase: { gap: spacing.sm },
-  phaseCurrent: { borderWidth: 2, borderColor: palette.peach },
-  phaseHead: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
-  weeks: { overflow: 'hidden' },
-  week: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.border,
-  },
-  weekCurrent: { backgroundColor: palette.peachSoft },
-  weekDot: {
-    width: 30,
-    height: 30,
-    borderRadius: radii.pill,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  weekDotCurrent: { backgroundColor: palette.peach },
+  dim: { opacity: 0.7 },
+  hero: { gap: spacing.sm, padding: spacing.lg },
+  complete: { gap: spacing.sm },
+  phaseRow: { flexDirection: 'row', gap: spacing.sm },
+  rail: { width: 24, alignItems: 'center' },
+  node: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, alignItems: 'center', justifyContent: 'center', marginTop: spacing.md },
+  line: { width: 2, flex: 1, marginVertical: 4 },
+  phase: { flex: 1, gap: spacing.xs, marginBottom: spacing.sm },
+  upcoming: { opacity: 0.75 },
+  phaseHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  milestone: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, minHeight: 56 },
+  mNode: { width: 36, height: 36, borderRadius: radii.pill, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center' },
+  week: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderBottomWidth: StyleSheet.hairlineWidth, minHeight: 52 },
+  weekNum: { width: 72 },
+  stats: { flexDirection: 'row', gap: spacing.xs },
 });

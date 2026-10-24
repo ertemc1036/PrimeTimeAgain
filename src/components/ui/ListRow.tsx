@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { colors, layout, radii, spacing } from '@/theme';
+import { layout, radii, spacing, status, useColors } from '@/theme';
 
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
@@ -12,41 +12,43 @@ export interface ListRowProps {
   value?: string;
   hint?: string;
   icon?: IconName;
-  iconTint?: string;
   onPress?: () => void;
   right?: ReactNode;
   destructive?: boolean;
+  divider?: boolean;
 }
 
-export function ListRow({ label, value, hint, icon, iconTint = colors.surfaceAlt, onPress, right, destructive }: ListRowProps) {
+export function ListRow({ label, value, hint, icon, onPress, right, destructive, divider = true }: ListRowProps) {
+  const colors = useColors();
+  const tint = destructive ? status.danger : colors.text;
   const body = (
     <>
       {icon ? (
-        <View style={[styles.icon, { backgroundColor: destructive ? colors.dangerSoft : iconTint }]}>
-          <Icon name={icon} size={18} color={destructive ? colors.danger : colors.primaryText} />
+        <View style={[styles.icon, { backgroundColor: colors.background }]}>
+          <Icon name={icon} size={17} color={tint} />
         </View>
       ) : null}
       <View style={styles.text}>
-        <AppText variant="bodyStrong" color={destructive ? colors.danger : colors.text}>
+        <AppText variant="bodyStrong" color={tint}>
           {label}
         </AppText>
         {hint ? (
-          <AppText variant="caption" color={colors.textSecondary}>
+          <AppText variant="caption" color="secondary">
             {hint}
           </AppText>
         ) : null}
       </View>
       {value ? (
-        <AppText variant="caption" color={colors.textSecondary}>
+        <AppText variant="caption" color="secondary" style={styles.value}>
           {value}
         </AppText>
       ) : null}
       {right}
-      {onPress && !right ? <Icon name="chevron-right" size={18} color={colors.textMuted} /> : null}
+      {onPress && !right ? <Icon name="chevron-right" size={18} color={colors.textSecondary} /> : null}
     </>
   );
-
-  if (!onPress) return <View style={styles.row}>{body}</View>;
+  const style = [styles.row, divider && { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border }];
+  if (!onPress) return <View style={style}>{body}</View>;
   return (
     <PressableScale
       onPress={onPress}
@@ -54,7 +56,7 @@ export function ListRow({ label, value, hint, icon, iconTint = colors.surfaceAlt
       accessibilityRole="button"
       accessibilityLabel={[label, value].filter(Boolean).join(', ')}
       accessibilityHint={hint}
-      style={styles.row}>
+      style={style}>
       {body}
     </PressableScale>
   );
@@ -69,6 +71,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     minHeight: layout.minTouchTarget + 12,
   },
-  icon: { width: 36, height: 36, borderRadius: radii.sm, alignItems: 'center', justifyContent: 'center' },
+  icon: { width: 34, height: 34, borderRadius: radii.sm, alignItems: 'center', justifyContent: 'center' },
   text: { flex: 1, gap: 2 },
+  value: { maxWidth: '45%', textAlign: 'right' },
 });

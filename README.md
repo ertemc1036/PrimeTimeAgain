@@ -1,37 +1,40 @@
 # PrimeTimeAgain
 
-> **Your Prime Isn't Over.**
+> **YOUR PRIME ISN'T OVER.** Become the version of yourself you're proud of.
 
-A wellness and self-improvement app for iOS and Android built around three pillars: **Body**, **Mind** and **Life**.
+A personal comeback app for iOS and Android: define your Prime, build a realistic plan, complete daily
+missions, and track your comeback with your own interactive 3D avatar at the centre.
 
-Built with Expo SDK 58, React Native, TypeScript, Expo Router and i18next. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the architecture, folder structure and roadmap.
+Expo SDK 58 · React Native · TypeScript · Expo Router · Three.js on expo-gl · i18next (EN / DE / TR).
+Architecture: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · 3D: [`docs/AVATAR_3D.md`](docs/AVATAR_3D.md).
 
 ## Run it on your iPhone
 
 1. Install **Expo Go** from the App Store.
-2. On your computer (Node 20+):
-   ```bash
-   npm install
-   npm start
-   ```
-3. Scan the QR code with the iPhone Camera app. Your phone and computer need to be on the same Wi-Fi network. If they aren't, run `npx expo start --tunnel`.
+2. `npm install` then `npm start`.
+3. Scan the QR code with the iPhone camera (same Wi-Fi, or `npx expo start --tunnel`).
 
-On the last onboarding screen, tap **Preview with sample progress** to start on day 19 with example history, so every screen has data. **Begin my journey** gives the real first-day experience with empty states. Settings → **Reset app** starts over.
+On the last onboarding screen, **Preview with sample progress** starts you on day 27 with realistic
+history so the calendar, streaks and charts have data. **Enter Prime Control** starts a real day 1.
+Settings → **Delete all data** starts over.
 
 ## Scripts
 
 | Command | What it does |
 | --- | --- |
-| `npm start` | Start the Expo dev server |
-| `npm run web` | Run in a browser |
-| `npm run typecheck` | TypeScript (also checks every translation key) |
-| `npm test` | Unit tests: Prime Score, journey, dates, translation parity |
+| `npm start` | Expo dev server |
+| `npm run web` | Run in a browser (WebGL needed for the 3D avatar) |
+| `npm run typecheck` | TypeScript, including every translation key |
+| `npm test` | Unit tests: missions, streaks, calendar rules, progress, coach, translations |
 | `npm run lint` | ESLint (Expo config) |
 
-## Localization
+## 3D avatars
 
-English (default), German and Turkish. Strings live in `src/i18n/locales/*.json`. The device language is detected on first launch, English is the fallback, and users can change the language in onboarding or Settings. To add a language, add a JSON file and one entry in `src/i18n/languages.ts`. RTL languages are supported by the architecture.
+Characters and animations come from the [Microsoft Rocketbox Avatar Library](https://github.com/microsoft/Microsoft-Rocketbox)
+(MIT License), converted by `scripts/avatars/build_avatars.py`.
 
-## Not connected yet (each needs your confirmation)
+## Not connected yet (each needs approval)
 
-Supabase (accounts and sync), the Claude-powered coach (via a server-side function, so no API key ships in the app), RevenueCat subscriptions, and EAS builds / store publishing.
+Supabase accounts & sync (draft schema in `docs/supabase/schema.sql`), the AI Prime Coach (server-side
+Claude integration), RevenueCat / Prime Pro, local reminder notifications, selfie-based avatars,
+EAS builds and store publishing.

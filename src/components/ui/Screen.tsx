@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 're
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import { colors, layout, spacing } from '@/theme';
+import { layout, spacing, ThemeProvider, useColors } from '@/theme';
 
 import { AppText } from './AppText';
 import { IconButton } from './IconButton';
@@ -12,7 +12,8 @@ import { IconButton } from './IconButton';
 export interface ScreenProps {
   title?: string;
   subtitle?: string;
-  /** Shows a back (or close, for modals) button above the title. */
+  /** Small label above the title. */
+  eyebrow?: string;
   back?: 'back' | 'close';
   headerRight?: ReactNode;
   footer?: ReactNode;
@@ -20,41 +21,51 @@ export interface ScreenProps {
   children: ReactNode;
   /** Inside the tab navigator the tab bar already handles the bottom safe area. */
   inTabs?: boolean;
+  mode?: 'light' | 'dark';
 }
 
 /**
  * Standard screen frame: safe areas, generous padding, centred max width on tablets,
- * an optional large title and a sticky footer for primary actions.
+ * a bold title block and an optional sticky footer for the primary action.
  */
-export function Screen({ title, subtitle, back, headerRight, footer, scroll = true, children, inTabs = false }: ScreenProps) {
+export function Screen(props: ScreenProps) {
+  return (
+    <ThemeProvider mode={props.mode ?? 'light'}>
+      <ScreenBody {...props} />
+    </ThemeProvider>
+  );
+}
+
+function ScreenBody({ title, subtitle, eyebrow, back, headerRight, footer, scroll = true, children, inTabs = false }: ScreenProps) {
   const insets = useSafeAreaInsets();
+  const colors = useColors();
   const { t } = useTranslation();
 
-  const header =
-    title || back || headerRight ? (
-      <View style={styles.header}>
-        {back || headerRight ? (
-          <View style={styles.headerRow}>
-            {back ? (
-              <IconButton
-                icon={back === 'close' ? 'x' : 'chevron-left'}
-                label={back === 'close' ? t('common.close') : t('common.back')}
-                onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
-              />
-            ) : (
-              <View />
-            )}
-            {headerRight}
-          </View>
-        ) : null}
-        {title ? <AppText variant="title">{title}</AppText> : null}
-        {subtitle ? (
-          <AppText variant="body" color={colors.textSecondary}>
-            {subtitle}
-          </AppText>
-        ) : null}
-      </View>
-    ) : null;
+  const header = (
+    <>
+      {back || headerRight ? (
+        <View style={styles.headerRow}>
+          {back ? (
+            <IconButton
+              icon={back === 'close' ? 'x' : 'chevron-left'}
+              label={back === 'close' ? t('common.close') : t('common.back')}
+              onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+            />
+          ) : (
+            <View />
+          )}
+          {headerRight}
+        </View>
+      ) : null}
+      {eyebrow || title || subtitle ? (
+        <View style={styles.titleBlock}>
+          {eyebrow ? <AppText variant="overline" color="secondary">{eyebrow}</AppText> : null}
+          {title ? <AppText variant="display">{title}</AppText> : null}
+          {subtitle ? <AppText variant="body" color="secondary">{subtitle}</AppText> : null}
+        </View>
+      ) : null}
+    </>
+  );
 
   const content = (
     <View style={styles.inner}>
@@ -65,7 +76,7 @@ export function Screen({ title, subtitle, back, headerRight, footer, scroll = tr
 
   return (
     <KeyboardAvoidingView
-      style={[styles.root, { paddingTop: insets.top }]}
+      style={[styles.root, { paddingTop: insets.top, backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       {scroll ? (
         <ScrollView
@@ -78,8 +89,12 @@ export function Screen({ title, subtitle, back, headerRight, footer, scroll = tr
         <View style={[styles.scroll, styles.flex]}>{content}</View>
       )}
       {footer ? (
-        <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, spacing.md) }]}>
-          <View style={styles.inner}>{footer}</View>
+        <View
+          style={[
+            styles.footer,
+            { paddingBottom: Math.max(insets.bottom, spacing.md), backgroundColor: colors.background, borderTopColor: colors.border },
+          ]}>
+          <View style={[styles.inner, styles.footerInner]}>{footer}</View>
         </View>
       ) : null}
     </KeyboardAvoidingView>
@@ -87,16 +102,12 @@ export function Screen({ title, subtitle, back, headerRight, footer, scroll = tr
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: colors.background },
+  root: { flex: 1 },
   flex: { flex: 1 },
-  scroll: { paddingHorizontal: layout.screenPadding, paddingTop: spacing.md },
+  scroll: { paddingHorizontal: layout.screenPadding, paddingTop: spacing.sm },
   inner: { width: '100%', maxWidth: layout.maxContentWidth, alignSelf: 'center', gap: spacing.lg },
-  header: { gap: spacing.xs, marginBottom: spacing.xs },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs },
-  footer: {
-    paddingHorizontal: layout.screenPadding,
-    paddingTop: spacing.sm,
-    backgroundColor: colors.background,
-    gap: spacing.sm,
-  },
+  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', minHeight: 44 },
+  titleBlock: { gap: spacing.xs, marginTop: spacing.xs },
+  footer: { paddingHorizontal: layout.screenPadding, paddingTop: spacing.sm, borderTopWidth: StyleSheet.hairlineWidth },
+  footerInner: { gap: spacing.xs },
 });

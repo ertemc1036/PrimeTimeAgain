@@ -1,301 +1,630 @@
 {
-  "app": {
-    "name": "PrimeTimeAgain",
-    "tagline": "Deine beste Zeit ist nicht vorbei."
-  },
   "common": {
     "continue": "Weiter",
     "back": "Zurück",
+    "skip": "Überspringen",
     "save": "Speichern",
     "cancel": "Abbrechen",
     "close": "Schließen",
     "edit": "Bearbeiten",
+    "done": "Fertig",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
     "retry": "Erneut versuchen",
     "loading": "Wird geladen …",
+    "optional": "Optional",
+    "recommended": "Empfohlen",
     "comingSoon": "Demnächst",
+    "seeAll": "Alle anzeigen",
     "minutes_one": "{{count}} Min.",
     "minutes_other": "{{count}} Min.",
-    "seeAll": "Alle anzeigen"
+    "days_one": "{{count}} Tag",
+    "days_other": "{{count}} Tage",
+    "dayOf": "Tag {{day}} von {{total}}",
+    "percent": "{{value}} %",
+    "today": "Heute",
+    "custom": "Eigene"
   },
-  "pillars": {
-    "body": {
-      "name": "Körper",
-      "description": "Bewegung, Ernährung, Erholung und Schlaf"
-    },
-    "mind": {
-      "name": "Geist",
-      "description": "Resilienz, Selbstvertrauen, Ruhe und Fokus"
-    },
-    "life": {
-      "name": "Leben",
-      "description": "Routinen, Ziele und Alltagsgewohnheiten"
+  "areas": {
+    "body": "Körper",
+    "mind": "Mindset",
+    "money": "Geld",
+    "social": "Soziales",
+    "lifestyle": "Lifestyle",
+    "presence": "Ausstrahlung",
+    "descriptions": {
+      "body": "Fit, gesund und stark.",
+      "mind": "Fokus, Disziplin und mentale Stärke.",
+      "money": "Fähigkeiten, Karriere und finanzielle Ziele.",
+      "social": "Beziehungen und Verbundenheit.",
+      "lifestyle": "Energie, Routinen und bessere Gewohnheiten.",
+      "presence": "Stil, Selbstvertrauen und Gelassenheit."
     }
   },
   "goals": {
-    "walk": {
-      "title": "Täglicher Spaziergang",
-      "task": "20 Minuten spazieren gehen"
+    "lose_weight": {
+      "title": "Abnehmen",
+      "outcome": "Mich leichter fühlen und meine Gewohnheiten im Griff haben."
     },
-    "strength": {
-      "title": "Sanfte Kraft",
-      "task": "10 Minuten Kraftübungen mit dem eigenen Körpergewicht"
+    "get_fit": {
+      "title": "Fit werden",
+      "outcome": "Mich voller Energie bewegen und im Alltag stark fühlen."
     },
-    "hydrate": {
-      "title": "Genug trinken",
-      "task": "Zu jeder Mahlzeit ein Glas Wasser trinken"
+    "build_muscle": {
+      "title": "Muskeln aufbauen",
+      "outcome": "Regelmäßig trainieren und sichtbar stärker werden."
     },
-    "mobility": {
-      "title": "Beweglichkeit",
-      "task": "5 Minuten dehnen"
+    "look_better": {
+      "title": "Besser aussehen",
+      "outcome": "Mich wohlfühlen mit dem, wie ich auftrete und für mich sorge."
+    },
+    "confidence": {
+      "title": "Mehr Selbstvertrauen",
+      "outcome": "Mir in den Situationen vertrauen, die mir wichtig sind."
+    },
+    "discipline": {
+      "title": "Disziplin aufbauen",
+      "outcome": "Tun, was ich mir vorgenommen habe, auch an schweren Tagen."
+    },
+    "focus": {
+      "title": "Fokus verbessern",
+      "outcome": "Der Arbeit, die zählt, meine volle Aufmerksamkeit schenken."
+    },
+    "energy": {
+      "title": "Mehr Energie",
+      "outcome": "Mit mehr Energie aufwachen und durch den Tag gehen."
     },
     "sleep": {
-      "title": "Abendroutine",
-      "task": "30 Minuten vor dem Schlafen keine Bildschirme"
+      "title": "Besser schlafen",
+      "outcome": "Eine feste Abendroutine haben und erholt aufwachen."
     },
-    "breathe": {
-      "title": "Ruhiges Atmen",
-      "task": "5 Minuten langsam atmen"
+    "habits": {
+      "title": "Bessere Gewohnheiten",
+      "outcome": "Meine Tage mit Routinen gestalten, auf die ich stolz bin."
     },
-    "gratitude": {
-      "title": "Dankbarkeit",
-      "task": "Drei Dinge notieren, für die du dankbar bist"
+    "make_money": {
+      "title": "Mehr Geld verdienen",
+      "outcome": "Fähigkeiten und Chancen aufbauen, die mein Einkommen steigern."
     },
-    "focus": {
-      "title": "Tiefer Fokus",
-      "task": "Eine 25-minütige Fokuseinheit, Handy weg"
+    "career": {
+      "title": "Karriere voranbringen",
+      "outcome": "Sichtbare Schritte in Richtung meiner Wunschposition gehen."
     },
-    "read": {
-      "title": "Lesen",
-      "task": "10 Seiten in einem guten Buch lesen"
+    "business": {
+      "title": "Ein Business aufbauen",
+      "outcome": "Eine Idee Schritt für Schritt Wirklichkeit werden lassen."
     },
-    "kindness": {
-      "title": "Freundlich zu dir",
-      "task": "Eine Stärke aufschreiben, die du heute gezeigt hast"
+    "social_life": {
+      "title": "Soziales Leben stärken",
+      "outcome": "Mehr Zeit mit Menschen verbringen, die mir wichtig sind."
     },
-    "plan": {
-      "title": "Morgen planen",
-      "task": "Die drei wichtigsten Punkte für morgen aufschreiben"
+    "communication": {
+      "title": "Besser kommunizieren",
+      "outcome": "Klar sprechen und gut zuhören."
     },
-    "reset": {
-      "title": "Ordnung schaffen",
-      "task": "10 Minuten einen Bereich aufräumen"
+    "style": {
+      "title": "Persönlichen Stil verbessern",
+      "outcome": "Mich so kleiden, dass es sich nach meiner besten Version anfühlt."
     },
-    "connect": {
-      "title": "Verbunden bleiben",
-      "task": "Dich bei einem lieben Menschen melden"
+    "presence": {
+      "title": "Ausstrahlung / Aura stärken",
+      "outcome": "Mit ruhigem Selbstvertrauen und Gelassenheit auftreten."
     },
-    "learn": {
-      "title": "Weiterlernen",
-      "task": "15 Minuten an einer Fähigkeit arbeiten, die du ausbauen möchtest"
+    "me_time": {
+      "title": "Mehr Zeit für mich",
+      "outcome": "Zeit schützen, die nur mir gehört."
     },
-    "outdoors": {
-      "title": "Zeit draußen",
-      "task": "15 Minuten an der frischen Luft verbringen"
+    "lifestyle": {
+      "title": "Lifestyle verbessern",
+      "outcome": "Einen Lebensrhythmus finden, der mir Energie gibt."
+    },
+    "custom": {
+      "title": "Eigenes Ziel erstellen",
+      "outcome": "Stetige Fortschritte bei dem machen, was mir wichtig ist."
     }
   },
+  "actions": {
+    "walk_10": "10 Minuten spazieren gehen",
+    "walk_20": "20 Minuten spazieren gehen",
+    "workout_20": "Ein 20-minütiges Workout absolvieren",
+    "workout_30": "Ein 30-minütiges Workout absolvieren",
+    "strength_15": "15 Minuten Krafttraining",
+    "strength_30": "30 Minuten Krafttraining",
+    "cardio_15": "15 Minuten Cardio in deinem Tempo",
+    "mobility_10": "10 Minuten Mobility-Übungen",
+    "stretch_5": "5 Minuten dehnen",
+    "plan_meal": "Eine ausgewogene Mahlzeit für morgen planen",
+    "review_eating": "Die heutigen Essgewohnheiten reflektieren",
+    "protein_meal": "Eine proteinreiche Mahlzeit zubereiten",
+    "water": "Zu jeder Mahlzeit ein Glas Wasser trinken",
+    "morning_light": "Morgens 10 Minuten Tageslicht tanken",
+    "confidence_win": "Eine Sache aufschreiben, die dir heute gut gelungen ist",
+    "posture_check": "Haltungs-Check: 5 Minuten aufrecht stehen",
+    "social_challenge": "Eine kleine soziale Challenge meistern",
+    "practice_speaking": "Über etwas sprechen üben, das dir wichtig ist",
+    "hard_thing_first": "Die Aufgabe zuerst erledigen, die du vor dir herschiebst",
+    "plan_day": "Die drei wichtigsten Prioritäten für morgen planen",
+    "cold_finish": "Die Dusche mit 30 Sekunden kaltem Wasser beenden",
+    "deep_work_25": "Eine 25-minütige Fokuseinheit, Handy weg",
+    "deep_work_50": "Ein 50-minütiger Deep-Work-Block",
+    "breathing_5": "5 Minuten langsam atmen",
+    "read_15": "15 Minuten lesen",
+    "reflect_5": "5 Minuten über deinen Tag nachdenken",
+    "skill_15": "15 Minuten an einer wertvollen Fähigkeit arbeiten",
+    "skill_30": "30 Minuten eine wertvolle Fähigkeit lernen",
+    "business_idea_30": "30 Minuten an deiner Geschäftsidee arbeiten",
+    "business_task_45": "Eine wichtige Business-Aufgabe erledigen",
+    "career_task": "Eine Aufgabe für deine Karriereentwicklung erledigen",
+    "review_finances": "Ein persönliches Finanzziel überprüfen",
+    "network_reach": "Einen beruflichen Kontakt anschreiben",
+    "portfolio_update": "Lebenslauf oder Portfolio aktualisieren",
+    "income_research": "Eine neue Einkommensmöglichkeit recherchieren",
+    "message_friend": "Einer Person schreiben, von der du lange nichts gehört hast",
+    "call_someone": "Jemanden anrufen, der dir wichtig ist",
+    "plan_meetup": "Ein Treffen mit Freunden planen",
+    "join_event": "Ein Event, einen Kurs oder eine Gruppe besuchen",
+    "active_listening": "In einem Gespräch aktives Zuhören üben",
+    "conversation_starter": "Ein Gespräch mit einer neuen Person beginnen",
+    "wind_down": "30 Minuten vor dem Schlafen keine Bildschirme",
+    "bed_on_time": "Zur geplanten Zeit ins Bett gehen",
+    "screen_limit": "In den ersten 30 Minuten des Tages kein Handy",
+    "morning_routine": "Deine Morgenroutine durchziehen",
+    "tidy_space": "10 Minuten deinen Bereich aufräumen",
+    "me_time": "20 Minuten nur für dich",
+    "hobby": "30 Minuten für ein Hobby, das dir Freude macht",
+    "outdoors": "20 Minuten draußen verbringen",
+    "plan_week": "Die kommende Woche planen",
+    "skincare": "Deine Hautpflege-Routine machen",
+    "grooming": "10 Minuten für Körperpflege",
+    "outfit_plan": "Das Outfit für morgen planen",
+    "wardrobe_review": "Kleiderschrank sichten: behalten, reparieren oder weggeben",
+    "style_inspiration": "15 Minuten Stil-Inspiration sammeln",
+    "body_language": "Offene, selbstbewusste Körpersprache üben",
+    "voice_practice": "Langsam und deutlich sprechen üben",
+    "composure_breath": "Vor deinem nächsten Gespräch ruhig durchatmen",
+    "custom_work": "An „{{goal}}“ arbeiten",
+    "custom_plan": "Den nächsten Schritt für „{{goal}}“ planen",
+    "custom_review": "Deinen Fortschritt bei „{{goal}}“ überprüfen"
+  },
+  "difficulty": {
+    "1": "Leicht",
+    "2": "Mittel",
+    "3": "Anspruchsvoll"
+  },
   "welcome": {
-    "eyebrow": "Körper · Geist · Leben",
-    "headline": "Deine beste Zeit ist nicht vorbei.",
-    "subhead": "Entdecke deine Stärke, Ruhe und Zuversicht neu – mit kleinen täglichen Schritten, die in dein echtes Leben passen.",
-    "getStarted": "Los geht's",
-    "footnote": "Dauert etwa zwei Minuten. Kein Druck, keine Perfektion."
+    "headline": "WELCOME BACK.",
+    "body": "Du kannst deinen Körper, dein Selbstvertrauen, deine Disziplin und deinen Lifestyle neu aufbauen.",
+    "support": "Werde die Version von dir, auf die du stolz bist.",
+    "cta": "MEIN COMEBACK STARTEN",
+    "footnote": "Dein Comeback beginnt heute.",
+    "language": "Sprache"
   },
   "onboarding": {
-    "step": "Schritt {{current}} von {{total}}",
-    "language": {
-      "title": "Wähle deine Sprache",
-      "subtitle": "Du kannst sie jederzeit in den Einstellungen ändern."
-    },
-    "about": {
-      "title": "Wie dürfen wir dich nennen?",
-      "subtitle": "Ein Vorname oder Spitzname ist perfekt.",
-      "placeholder": "Dein Name",
-      "label": "Name",
-      "hint": "Wird nur auf diesem Gerät gespeichert."
-    },
-    "focus": {
-      "title": "Womit möchtest du beginnen?",
-      "subtitle": "Wähle eine oder mehrere Säulen. In die anderen kannst du später hineinwachsen.",
-      "minOne": "Wähle mindestens eine Säule, um fortzufahren."
-    },
-    "goals": {
-      "title": "Wähle ein paar kleine Tagesziele",
-      "subtitle": "Kleine, stetige Schritte sind besser als große Versprechen. Zwei oder drei sind ein toller Anfang.",
-      "selected_one": "{{count}} Ziel ausgewählt",
-      "selected_other": "{{count}} Ziele ausgewählt",
-      "maxReached": "Das reicht für den Anfang. Du kannst später weitere hinzufügen.",
-      "minOne": "Wähle mindestens ein Ziel, um fortzufahren."
-    },
-    "rhythm": {
-      "title": "Wie viel Zeit ist für dich täglich realistisch?",
-      "subtitle": "Wähle, was an einem vollen Tag passt – nicht an einem perfekten.",
-      "m10": {
-        "title": "10 Minuten",
-        "description": "Ein sanfter Start"
+    "step": "{{current}} von {{total}}",
+    "how": {
+      "title": "SO FUNKTIONIERT'S",
+      "subtitle": "Definiere deinen Prime. Erstelle deinen Plan. Erfülle deine Missionen. Verfolge dein Comeback.",
+      "s1": {
+        "title": "Lege fest, wer du werden willst",
+        "body": "Wähle die Ziele, die dir wichtig sind, oder formuliere eigene."
       },
-      "m20": {
-        "title": "20 Minuten",
-        "description": "Ein stetiger Rhythmus"
+      "s2": {
+        "title": "Erstelle deinen Comeback-Plan",
+        "body": "Ein realistischer Plan, der zu deiner verfügbaren Zeit passt."
       },
-      "m30": {
-        "title": "30 Minuten",
-        "description": "Bereit, dranzubleiben"
+      "s3": {
+        "title": "Handle jeden Tag",
+        "body": "Erfülle Missionen, baue deine Serie aus und sieh deinen Fortschritt."
       }
     },
+    "goals": {
+      "title": "WAS IST DEIN PRIME?",
+      "subtitle": "Wähle alles, was dir wichtig ist. Du kannst es jederzeit ändern.",
+      "selected_one": "{{count}} Ziel ausgewählt",
+      "selected_other": "{{count}} Ziele ausgewählt",
+      "minOne": "Wähle mindestens ein Ziel, um fortzufahren.",
+      "max": "Das sind {{count}} Ziele – ein starker Plan. Weitere kannst du später hinzufügen.",
+      "customTitle": "Dein eigenes Ziel",
+      "customPlaceholder": "z. B. Einen Halbmarathon laufen",
+      "customArea": "Zu welchem Bereich gehört es?",
+      "customAdd": "Ziel hinzufügen",
+      "customRemove": "{{goal}} entfernen"
+    },
+    "memory": {
+      "title": "WANN HAST DU DICH ZULETZT WIE DEINE BESTE VERSION GEFÜHLT?",
+      "subtitle": "Es gibt keine falsche Antwort. So können wir dein Comeback besser einordnen.",
+      "options": {
+        "last_year": "Im letzten Jahr",
+        "one_two": "Vor 1–2 Jahren",
+        "three_five": "Vor 3–5 Jahren",
+        "five_plus": "Vor mehr als 5 Jahren",
+        "first": "Ich baue meinen ersten Prime auf"
+      },
+      "special": "Was hat diese Zeit besonders gemacht?",
+      "changed": "Was hat sich verändert?",
+      "regain": "Was möchtest du zurückgewinnen?",
+      "firstPrime": "Wie würde dein erster Prime aussehen?",
+      "private": "Deine Antworten bleiben privat auf diesem Gerät."
+    },
+    "start": {
+      "title": "DEIN STARTPUNKT",
+      "subtitle": "Ein paar kurze Fragen, damit dein Plan zu deinem Leben passt. Überspringe, was du möchtest.",
+      "privacy": "Wir fragen nie nach medizinischen oder finanziellen Details.",
+      "activity": "Wie aktiv bist du im Moment?",
+      "activityOptions": {
+        "low": "Kaum aktiv",
+        "some": "Ab und zu aktiv",
+        "regular": "Fast jede Woche aktiv",
+        "high": "Sehr aktiv"
+      },
+      "training": "Wo trainierst du am liebsten?",
+      "trainingOptions": {
+        "home": "Zu Hause",
+        "gym": "Im Fitnessstudio",
+        "outdoors": "Draußen",
+        "mixed": "Gemischt"
+      },
+      "confidence": "Wo möchtest du dich selbstbewusster fühlen?",
+      "confidenceOptions": {
+        "work": "Bei der Arbeit",
+        "social": "In sozialen Situationen",
+        "dating": "Beim Dating",
+        "speaking": "Beim Sprechen vor anderen",
+        "new_people": "Beim Kennenlernen neuer Menschen",
+        "appearance": "Mit meinem Aussehen"
+      },
+      "money": "Worauf möchtest du dich konzentrieren?",
+      "moneyOptions": {
+        "skill": "Eine wertvolle Fähigkeit lernen",
+        "side_project": "Ein Nebenprojekt",
+        "career": "Meine Karriere",
+        "business": "Ein Business gründen",
+        "saving": "Bessere Geldgewohnheiten"
+      },
+      "sleep": "Wie schläfst du derzeit?",
+      "sleepOptions": {
+        "poor": "Nicht gut",
+        "ok": "Es geht",
+        "good": "Gut"
+      },
+      "priority": "Was ist dir im Alltag am wichtigsten?",
+      "priorityOptions": {
+        "routine": "Eine feste Routine",
+        "free_time": "Mehr Freizeit",
+        "health": "Mich gesund fühlen",
+        "order": "Ordnung und Ruhe"
+      }
+    },
+    "duration": {
+      "title": "WÄHLE DEIN COMEBACK",
+      "subtitle": "Wie lange soll dein erstes Programm laufen? Du kannst es später ändern.",
+      "d30": "Ein fokussierter Sprint",
+      "d60": "Echtes Momentum aufbauen",
+      "d90": "Das komplette Comeback",
+      "d180": "Eine tiefe Veränderung",
+      "custom": "Wähle deine eigene Dauer",
+      "decrease": "Weniger Tage",
+      "increase": "Mehr Tage"
+    },
+    "time": {
+      "title": "WIE VIEL ZEIT HAST DU PRO TAG?",
+      "subtitle": "Sei realistisch. Deine täglichen Missionen passen in diese Zeit.",
+      "plus": "{{count}}+ Min.",
+      "hints": {
+        "15": "Kleine, wirkungsvolle Schritte",
+        "30": "Eine solide tägliche Routine",
+        "45": "Raum für echten Fortschritt",
+        "60": "Ein ernsthaftes Commitment",
+        "90": "Maximaler Fokus"
+      },
+      "decrease": "Weniger Zeit",
+      "increase": "Mehr Zeit"
+    },
+    "avatar": {
+      "title": "ERSTELLE DEINEN PRIME-AVATAR",
+      "subtitle": "Dein Avatar steht im Zentrum von Prime Control. Wähle einen Start-Look – du kannst ihn jederzeit ändern.",
+      "hint": "Ziehen zum Drehen · Zwei Finger zum Zoomen"
+    },
     "ready": {
-      "title": "Willkommen, {{name}}.",
-      "titleNoName": "Willkommen.",
-      "subtitle": "Deine 90-Tage-Comeback-Reise beginnt heute. Wir gehen sie Tag für Tag.",
-      "focus": "Dein Fokus",
-      "goals": "Tagesziele",
+      "title": "DEIN PRIME-PLAN IST BEREIT",
+      "subtitle": "So beginnt dein Comeback, {{name}}.",
+      "subtitleNoName": "So beginnt dein Comeback.",
+      "goals": "Deine Ziele",
+      "duration": "Comeback",
       "time": "Zeit pro Tag",
-      "start": "Meine Reise beginnen"
+      "start": "Start",
+      "firstMissions": "Deine ersten Missionen",
+      "avatar": "Avatar",
+      "avatarSkipped": "Standard-Avatar, später anpassbar",
+      "cta": "PRIME CONTROL ÖFFNEN",
+      "demo": "Mit Beispieldaten ansehen",
+      "demoHint": "Startet bei Tag {{day}} mit einem Beispielverlauf, damit du alle Bereiche erkunden kannst."
+    },
+    "name": {
+      "label": "Wie dürfen wir dich nennen?",
+      "placeholder": "Dein Vorname"
     }
   },
   "tabs": {
-    "home": "Start",
-    "today": "Heute",
-    "journey": "Reise",
-    "progress": "Fortschritt",
+    "control": "Control",
+    "missions": "Missionen",
+    "journey": "Journey",
+    "evolution": "Evolution",
     "profile": "Profil"
   },
-  "home": {
-    "greeting": {
-      "morning": "Guten Morgen",
-      "afternoon": "Guten Tag",
-      "evening": "Guten Abend",
-      "withName": "{{greeting}}, {{name}}"
-    },
-    "dayOfJourney": "Tag {{day}} deines Comebacks",
-    "todayTitle": "Dein Fokus heute",
-    "todayProgress": "{{completed}} von {{total}} heute erledigt",
-    "allDone": "Für heute ist alles erledigt. Genieß den Rest deines Tages.",
-    "coachTitle": "Ein Gedanke für heute",
-    "reflectTitle": "Wie geht es dir?",
-    "reflectBody": "Nimm dir eine ruhige Minute, um über deinen Tag nachzudenken.",
-    "reflectAction": "Gedanken festhalten",
-    "journeyTitle": "90-Tage-Comeback"
+  "control": {
+    "title": "PRIME CONTROL",
+    "cta": "COMEBACK FORTSETZEN",
+    "ctaDone": "HEUTIGE MISSIONEN ANSEHEN",
+    "todayStatus": "{{done}} von {{total}} Missionen heute erledigt",
+    "todayRecovery": "Erholungstag: Ruhe gehört zum Plan",
+    "todayComplete": "Prime-Tag gesichert. Stark gemacht.",
+    "coach": "Coach",
+    "notifications": "Benachrichtigungen",
+    "profile": "Profil",
+    "moduleA11y": "{{area}}: {{percent}} umgesetzt. Öffnet die Ziele für {{area}}.",
+    "moduleEmpty": "{{area}}: noch keine Missionen. Öffnet die Ziele für {{area}}.",
+    "progressNote": "Die Prozentwerte zeigen, wie viele deiner geplanten Missionen du in den letzten 14 Tagen erledigt hast.",
+    "programComplete": "Programm abgeschlossen. Dein nächstes Kapitel wartet.",
+    "noGoals": "Füge ein Ziel hinzu, damit es um deinen Avatar erscheint.",
+    "addGoal": "Ziel hinzufügen",
+    "streak_one": "{{count}} Tag in Folge",
+    "streak_other": "{{count}} Tage in Folge"
   },
-  "primeScore": {
-    "title": "Prime Score",
-    "caption": "Deine Umsetzung in den letzten 7 Tagen",
-    "outOf": "von 100",
-    "learnMore": "Was bedeutet das?",
-    "levels": {
-      "beginning": "Ein frischer Start",
-      "rhythm": "Du findest deinen Rhythmus",
-      "momentum": "Du kommst in Schwung",
-      "prime": "In deiner Bestform"
-    },
-    "messages": {
-      "beginning": "Jeder Check-in zählt. Ein kleiner Erfolg heute ist ein wunderbarer Anfang.",
-      "rhythm": "Du bleibst dran. Halte deine Schritte klein und stetig.",
-      "momentum": "Deine Beständigkeit wächst. Genau so entsteht ein Comeback.",
-      "prime": "Du setzt deine Ziele wunderbar um. Denk auch an Pausen."
-    },
-    "info": {
-      "title": "Über den Prime Score",
-      "p1": "Dein Prime Score zeigt, wie beständig du deine selbst gewählten Ziele in den letzten sieben Tagen umgesetzt hast.",
-      "p2": "Die Berechnung ist einfach: erledigte Check-ins geteilt durch geplante Check-ins. Tage vor deinem Start zählen nie gegen dich.",
-      "p3": "Er ist kein Maß für deine Gesundheit, deine Fitness oder deinen Wert. Er ist ein sanfter Spiegel deiner eigenen Vorhaben – mehr nicht.",
-      "p4": "Wenn das Leben voll ist, wähle weniger Ziele. Der Score passt sich dir an, nicht umgekehrt.",
-      "formula": "Erledigte ÷ geplante Check-ins, letzte 7 Tage"
-    }
+  "area": {
+    "followThrough": "Umsetzung · letzte 14 Tage",
+    "goals": "Ziele",
+    "noGoals": "In diesem Bereich gibt es noch keine Ziele.",
+    "missionsDone_one": "{{count}} Mission erledigt",
+    "missionsDone_other": "{{count}} Missionen erledigt"
   },
-  "today": {
-    "title": "Heute",
-    "progress": "{{completed}} von {{total}} erledigt",
-    "gentleNote": "Etwas verpasst? Das ist in Ordnung. Morgen ist ein neuer Anfang.",
-    "editGoals": "Ziele bearbeiten",
+  "goal": {
+    "objective": "Ziel",
+    "startingPoint": "Startpunkt",
+    "startingPlaceholder": "Wo startest du?",
+    "outcome": "Gewünschtes Ergebnis",
+    "outcomePlaceholder": "Was möchtest du erreichen?",
+    "notSet": "Noch nicht festgelegt",
+    "progress": "Fortschritt",
+    "progressCaption": "Erledigte vs. geplante Missionen, letzte 14 Tage",
+    "dailyActions": "Tägliche Aktionen",
+    "actionsHint": "Missionen werden aus den aktiven Aktionen unten ausgewählt.",
+    "weekly": "Wochenziele",
+    "weekLabel": "Woche {{week}}",
+    "history": "Letzte Aktivitäten",
+    "noHistory": "Erledigte Missionen für dieses Ziel erscheinen hier.",
+    "edit": "Ziel bearbeiten",
+    "addAction": "Eigene Aktion hinzufügen",
+    "actionTitle": "Aktion",
+    "actionPlaceholder": "z. B. Gitarrengriffe üben",
+    "actionMinutes": "Minuten",
+    "actionActive": "{{action}}: aktiv",
+    "actionInactive": "{{action}}: pausiert",
+    "name": "Name des Ziels",
+    "archive": "Ziel entfernen",
+    "archiveTitle": "Dieses Ziel entfernen?",
+    "archiveBody": "Es verschwindet ab morgen aus deinem Plan. Erledigte Missionen bleiben in deinem Verlauf.",
+    "invested": "{{minutes}} Min. investiert",
+    "minOneAction": "Lass mindestens eine Aktion aktiv."
+  },
+  "missions": {
+    "title": "HEUTIGE MISSIONEN",
+    "subtitle": "Jede Aktion bringt dich deinem Prime näher.",
+    "progress": "{{done}} von {{total}} erledigt · {{minutes}} Min.",
+    "calendar": "Prime-Kalender",
+    "finishDay": "MEINEN TAG ABSCHLIESSEN",
     "empty": {
-      "title": "Noch keine Tagesziele",
-      "body": "Wähle ein paar kleine Ziele – sie erscheinen dann jeden Tag hier.",
-      "action": "Ziele wählen"
-    }
+      "title": "Keine Missionen geplant",
+      "body": "Füge ein Ziel oder eine Aktion hinzu, dann erscheinen hier deine Missionen.",
+      "action": "Ziele bearbeiten"
+    },
+    "complete": {
+      "title": "Programm abgeschlossen",
+      "body": "Du hast dein Comeback-Programm beendet. Verlängere es oder starte dein nächstes Kapitel."
+    },
+    "recovery": {
+      "title": "Erholungstag",
+      "body": "Ruhe gehört zum Programm. Der heutige Tag zählt für deine Serie.",
+      "make": "Heute zum Erholungstag machen",
+      "makeHint": "Bis zu {{count}} pro Woche. Zählt als Teil des Programms.",
+      "undo": "Zurück zu den Missionen",
+      "limit": "Du hast diese Woche bereits {{count}} Erholungstage geplant."
+    },
+    "carried": "Von gestern verschoben",
+    "add": "Mission hinzufügen",
+    "addTitle": "Mission hinzufügen",
+    "addSubtitle": "Wähle eine Aktion aus einem deiner Ziele.",
+    "markDone": "Als erledigt markieren",
+    "markOpen": "Als nicht erledigt markieren",
+    "done": "Erledigt",
+    "skipped": "Übersprungen",
+    "postponed": "Auf morgen verschoben",
+    "a11yDone": "{{mission}}, erledigt",
+    "a11yOpen": "{{mission}}, noch offen",
+    "a11yHint": "Doppeltippen zum Erledigen. Details öffnen für weitere Optionen.",
+    "details": "Missionsdetails",
+    "detail": {
+      "goal": "Ziel",
+      "duration": "Dauer",
+      "difficulty": "Schwierigkeit",
+      "status": "Status",
+      "replace": "Durch eine andere Aktion ersetzen",
+      "postpone": "Auf morgen verschieben",
+      "skip": "Heute überspringen",
+      "reopen": "Zurückholen",
+      "editDuration": "Dauer anpassen",
+      "noReplacement": "Für dieses Ziel gibt es heute keine weiteren Aktionen.",
+      "readOnly": "Vergangene Tage bleiben, wie sie waren. Nur heutige Missionen können geändert werden."
+    },
+    "feedback": [
+      "Erledigt. So entstehen Comebacks.",
+      "Einen Schritt näher.",
+      "Dranbleiben zählt.",
+      "Stark. Weiter so.",
+      "Versprechen gehalten."
+    ],
+    "allDone": "Alle Missionen erledigt. Prime-Tag gesichert.",
+    "todo": "Offen"
+  },
+  "summary": {
+    "title": "HEUTE WARST DU DA.",
+    "missions": "Erledigte Missionen",
+    "time": "Investierte Zeit",
+    "goals": "Bearbeitete Ziele",
+    "streak": "Aktuelle Serie",
+    "dayType": "Heute zählt als",
+    "reflect": "Wie hat sich der Tag angefühlt?",
+    "reflectPlaceholder": "Ein paar Worte zu deinem Tag (optional)",
+    "save": "Speichern und schließen",
+    "close": "Schließen"
+  },
+  "dayTypes": {
+    "prime": "Prime-Tag",
+    "active": "Aktiver Tag",
+    "recovery": "Erholungstag",
+    "missed": "Nicht erledigt",
+    "open": "Läuft",
+    "upcoming": "Bevorstehend",
+    "none": "Außerhalb des Programms",
+    "primeHint": "Alle geplanten Kernmissionen erledigt.",
+    "activeHint": "Echter Fortschritt, aber nicht jede Mission.",
+    "recoveryHint": "Ein geplanter Ruhetag. Zählt für deine Serie.",
+    "missedHint": "Nichts erledigt. Dein Gesamtfortschritt bleibt erhalten."
+  },
+  "calendar": {
+    "title": "PRIME-KALENDER",
+    "previous": "Vorheriger Monat",
+    "next": "Nächster Monat",
+    "currentStreak": "Prime Streak",
+    "longestStreak": "Längste Serie",
+    "primeDays": "Prime-Tage",
+    "completion": "Umsetzung",
+    "trend": "Wöchentliche Umsetzung",
+    "selected": "Ausgewählter Tag",
+    "noMissions": "Für diesen Tag sind keine Missionen erfasst.",
+    "planRecovery": "Als Erholungstag planen",
+    "removeRecovery": "Erholungstag entfernen",
+    "recoveryLimit": "Bis zu {{count}} Erholungstage pro Woche.",
+    "readOnly": "Der Verlauf ist schreibgeschützt, damit deine Bilanz stimmt.",
+    "rulesTitle": "So funktioniert die Serie",
+    "rules": "Dein Prime Streak zählt aufeinanderfolgende Tage, an denen du dabei warst: Prime-Tage, aktive Tage oder geplante Erholungstage. Ein verpasster Tag startet eine neue Serie, aber deine Gesamtwerte und deine längste Serie bleiben immer erhalten.",
+    "dayA11y": "{{date}}: {{type}}"
   },
   "journey": {
-    "title": "90-Tage-Comeback",
-    "subtitle": "Drei Phasen. Ein Tag nach dem anderen.",
-    "day": "Tag {{day}}",
-    "ofTotal": "von {{total}}",
-    "activeDays_one": "{{count}} aktiver Tag",
-    "activeDays_other": "{{count}} aktive Tage",
-    "nextMilestone": "Nächster Meilenstein: Tag {{day}}",
-    "complete": "Reise abgeschlossen. Deine beste Zeit geht weiter.",
-    "phasesTitle": "Phasen",
-    "weeksTitle": "Wochenthemen",
-    "week": "Woche {{week}}",
-    "milestonesTitle": "Meilensteine",
-    "status": {
-      "done": "Abgeschlossen",
-      "current": "Läuft",
-      "upcoming": "Demnächst"
-    },
-    "phases": {
+    "title": "PRIME JOURNEY",
+    "subtitle": "Dein {{days}}-Tage-Comeback.",
+    "progress": "{{percent}} % deines Programms",
+    "phases": "Phasen",
+    "phase": {
       "reset": {
-        "name": "Neustart",
-        "range": "Tag 1–30",
-        "description": "Lege sanfte Grundlagen und entdecke neu, was dir guttut."
+        "name": "RESET",
+        "body": "Grundlagen schaffen, machbare Routinen aufbauen und deine Hindernisse verstehen."
       },
       "rebuild": {
-        "name": "Aufbau",
-        "range": "Tag 31–60",
-        "description": "Festige deine Routinen und stärke dein Selbstvertrauen."
+        "name": "REBUILD",
+        "body": "Beständigkeit steigern, Fähigkeiten entwickeln und deine Gewohnheiten festigen."
       },
-      "rise": {
-        "name": "Aufbruch",
-        "range": "Tag 61–90",
-        "description": "Lebe deinen Rhythmus und setze dir deinen nächsten Horizont."
+      "prime": {
+        "name": "PRIME",
+        "body": "Fortschritte festigen, deine Erfolge reflektieren und dein nächstes Kapitel vorbereiten."
       }
     },
+    "range": "Tag {{start}}–{{end}}",
+    "status": {
+      "done": "Abgeschlossen",
+      "current": "Du bist hier",
+      "upcoming": "Bevorstehend"
+    },
+    "weekly": "Wöchentliche Challenges",
+    "week": "Woche {{week}}",
     "weeks": {
       "w1": "Starte dort, wo du stehst",
-      "w2": "Kleine Erfolge",
-      "w3": "Bewegung mit Freude",
-      "w4": "Ruhe ist Fortschritt",
-      "w5": "Energie tanken",
-      "w6": "Ein ruhiger Geist",
-      "w7": "Gestalte dein Umfeld",
-      "w8": "Stärke durch Routine",
-      "w9": "Verbundenheit",
-      "w10": "Stilles Selbstvertrauen",
-      "w11": "Fokus auf das Wesentliche",
+      "w2": "Gewinne die Morgen",
+      "w3": "Kleine Versprechen halten",
+      "w4": "Kenne deine Hindernisse",
+      "w5": "Den Standard anheben",
+      "w6": "Beständigkeit vor Intensität",
+      "w7": "Die Fähigkeit aufbauen",
+      "w8": "Dabei sein, wenn es schwer ist",
+      "w9": "Gewohnheiten festigen",
+      "w10": "Raus aus der Komfortzone",
+      "w11": "Deinen Rhythmus leben",
       "w12": "Sieh, wie weit du gekommen bist",
-      "w13": "Dein nächster Horizont"
+      "w13": "Dein nächstes Kapitel vorbereiten"
     },
-    "milestones": {
-      "d7": "Erste Woche",
-      "d30": "Neustart geschafft",
-      "d60": "Aufgebaut",
-      "d90": "Prime Time"
-    }
+    "milestones": "Meilensteine",
+    "milestone": {
+      "start": "Die Entscheidung",
+      "first_week": "Erste Woche",
+      "phase_reset": "Reset abgeschlossen",
+      "phase_rebuild": "Rebuild abgeschlossen",
+      "finish": "Comeback abgeschlossen"
+    },
+    "achievements": "Bisherige Erfolge",
+    "missionsDone": "Erledigte Missionen",
+    "minutes": "Investierte Minuten",
+    "primeDays": "Prime-Tage",
+    "longestStreak": "Längste Serie",
+    "openCalendar": "Prime-Kalender öffnen",
+    "honesty": "Deine Journey misst die Schritte, die du gehst. Ergebnisse sind bei jedem anders. Entscheidend ist, dass du dranbleibst.",
+    "completeTitle": "Du hast dein Comeback-Programm abgeschlossen.",
+    "completeBody": "Sieh dir an, was du aufgebaut hast, und entscheide dann, wie es weitergeht.",
+    "extend": "Um 30 Tage verlängern"
   },
-  "progress": {
-    "title": "Fortschritt",
-    "subtitle": "Jeder Schritt ist Teil deiner Geschichte.",
-    "weekTitle": "Diese Woche",
-    "weekCaption": "Anteil erledigter Tagesziele",
-    "pillarsTitle": "Nach Säule",
-    "stats": {
-      "activeDays": "Aktive Tage",
-      "checkIns": "Check-ins",
-      "journeyDay": "Reisetag"
+  "evolution": {
+    "title": "PRIME EVOLUTION",
+    "subtitle": "Deine Veränderung, privat dokumentiert.",
+    "checkin": "Wöchentlicher Check-in",
+    "checkinBody": "Wie bewertest du dich diese Woche? 1 = niedrig, 10 = großartig.",
+    "confidence": "Selbstvertrauen",
+    "energy": "Energie",
+    "logged": "Erfasst am {{date}}",
+    "measurements": "Messwerte",
+    "measurementsBody": "Optional. Erfasse nur, was für dich hilfreich ist.",
+    "weight": "Gewicht",
+    "waist": "Taille",
+    "addMeasurement": "Messwert erfassen",
+    "noMeasurements": "Noch keine Messwerte. Sie sind komplett optional.",
+    "change": "{{value}} seit Start",
+    "journal": "Privates Tagebuch",
+    "newEntry": "Neuer Eintrag",
+    "noEntries": "Schreib deinen ersten Eintrag. Ein paar ehrliche Worte reichen.",
+    "photos": "Fortschrittsfotos",
+    "photosBody": "Optional und privat. Fotos bleiben auf diesem Gerät und werden nie hochgeladen.",
+    "addPhoto": "Foto hinzufügen",
+    "noPhotos": "Noch keine Fotos.",
+    "photoPermission": "Erlaube den Fotozugriff in den Einstellungen, um Fortschrittsfotos hinzuzufügen.",
+    "deletePhoto": "Foto löschen",
+    "deletePhotoBody": "Dieses Foto wird von diesem Gerät entfernt.",
+    "compare": "Erstes vs. neuestes",
+    "achievements": "Erfolge",
+    "film": "Comeback-Film",
+    "filmBody": "Mach aus deinen Fotos und Meilensteinen einen kurzen persönlichen Film. Teilen ist immer freiwillig.",
+    "achievement": {
+      "first_mission": "Erste Mission erledigt",
+      "first_prime": "Erster Prime-Tag",
+      "streak_7": "7 Tage Serie",
+      "missions_25": "25 Missionen erledigt",
+      "missions_100": "100 Missionen erledigt",
+      "hours_10": "10 Stunden investiert",
+      "phase_reset": "Reset-Phase abgeschlossen"
     },
-    "reflectionsTitle": "Reflexionen",
-    "newReflection": "Neue Reflexion",
-    "noReflections": {
-      "title": "Noch keine Reflexionen",
-      "body": "Ein paar ehrliche Worte ab und zu zeigen dir, wie sehr du wächst."
-    },
-    "chartA11y": "{{day}}: {{percent}} Prozent der Ziele erledigt",
-    "noData": {
-      "title": "Hier erscheint dein Fortschritt",
-      "body": "Erledige heute dein erstes Ziel und sieh zu, wie deine Geschichte beginnt."
-    }
+    "locked": "Noch nicht freigeschaltet"
+  },
+  "metric": {
+    "title": "Messwert erfassen",
+    "metric": "Was möchtest du erfassen?",
+    "value": "Wert",
+    "kg": "kg",
+    "lb": "lb",
+    "cm": "cm",
+    "in": "in",
+    "invalid": "Gib eine realistische Zahl ein.",
+    "note": "Das ist nur für deine eigene Übersicht. Körper verändern sich unterschiedlich und in unterschiedlichem Tempo."
   },
   "reflection": {
-    "title": "Neue Reflexion",
-    "moodQuestion": "Wie fühlst du dich heute?",
+    "title": "Neuer Tagebucheintrag",
+    "mood": "Wie fühlst du dich?",
     "moods": {
       "1": "Schwach",
       "2": "Geht so",
@@ -303,83 +632,174 @@
       "4": "Gut",
       "5": "Super"
     },
-    "promptTitle": "Eine Frage zum Nachdenken",
+    "prompt": "Eine Frage zum Nachdenken",
     "prompts": {
-      "p1": "Was hat dir heute Energie gegeben?",
-      "p2": "Auf welchen kleinen Erfolg bist du stolz?",
-      "p3": "Was würde den morgigen Tag ein wenig leichter machen?",
-      "p4": "Wann hast du dich heute am meisten wie du selbst gefühlt?",
-      "p5": "Wofür bist du gerade dankbar?"
+      "p1": "Worauf warst du heute stolz?",
+      "p2": "Was stand dir im Weg, und was probierst du nächstes Mal?",
+      "p3": "Wann hast du dich heute am meisten wie dein Prime-Ich gefühlt?",
+      "p4": "Was würde den morgigen Tag ein wenig leichter machen?",
+      "p5": "Was hat sich seit deinem Start verändert?"
     },
-    "label": "Deine Reflexion",
+    "another": "Andere Frage",
+    "label": "Dein Eintrag",
     "placeholder": "Schreib einfach drauflos …",
-    "privacyNote": "Deine Reflexionen sind privat und bleiben auf diesem Gerät.",
-    "save": "Reflexion speichern",
-    "errorEmpty": "Schreib ein paar Worte, um deine Reflexion zu speichern.",
-    "otherPrompt": "Andere Frage"
+    "private": "Privat. Bleibt auf diesem Gerät.",
+    "save": "Eintrag speichern",
+    "empty": "Schreib ein paar Worte, um deinen Eintrag zu speichern.",
+    "delete": "Eintrag löschen",
+    "deleteBody": "Dieser Eintrag wird von diesem Gerät entfernt."
   },
   "profile": {
-    "title": "Profil",
-    "since": "Auf deiner Reise seit {{date}}",
-    "editProfile": "Profil bearbeiten",
-    "focus": "Dein Fokus",
-    "goals": "Tagesziele",
-    "goalsCount_one": "{{count}} aktives Ziel",
-    "goalsCount_other": "{{count}} aktive Ziele",
-    "dailyTime": "Zeit pro Tag",
-    "manageGoals": "Ziele verwalten",
+    "title": "PROFIL",
+    "streak": "Serie",
+    "progress": "Fortschritt",
+    "day": "Tag",
+    "plan": "Dein Plan",
+    "avatar": "Avatar anpassen",
+    "goals": "Ziele bearbeiten",
+    "goalsValue_one": "{{count}} Ziel",
+    "goalsValue_other": "{{count}} Ziele",
+    "duration": "Comeback-Dauer",
+    "time": "Zeit pro Tag",
     "settings": "Einstellungen",
-    "plus": {
-      "title": "PrimeTimeAgain Plus",
-      "body": "Persönliches Coaching und tiefere Einblicke sind in Arbeit."
-    }
-  },
-  "editProfile": {
-    "title": "Profil bearbeiten",
+    "pro": "Prime Pro",
+    "proValue": "Demnächst",
     "name": "Name",
-    "focus": "Fokus-Säulen",
-    "time": "Zeit pro Tag"
+    "editName": "Namen bearbeiten"
+  },
+  "plan": {
+    "title": "DEIN PLAN",
+    "subtitle": "Passe deinen Plan an, ohne deinen Verlauf zu verlieren.",
+    "duration": "Comeback-Dauer",
+    "time": "Zeit pro Tag",
+    "note": "Änderungen gelten ab morgen. Alles, was du bisher geschafft hast, bleibt in deinem Verlauf.",
+    "minDuration": "Dein Programm kann nicht kürzer sein als die Tage, die du bereits absolviert hast."
   },
   "goalsEditor": {
-    "title": "Deine Tagesziele",
-    "subtitle": "Wähle, was sich gerade machbar anfühlt. Du kannst es jederzeit ändern.",
-    "save": "Ziele speichern"
+    "title": "DEINE ZIELE",
+    "subtitle": "Ziele hinzufügen, entfernen oder selbst erstellen. Dein Verlauf bleibt erhalten.",
+    "current": "Aktuelle Ziele",
+    "add": "Ziel hinzufügen",
+    "note": "Neue Ziele bekommen ab morgen Missionen."
   },
-  "settings": {
-    "title": "Einstellungen",
-    "preferences": "Allgemein",
-    "about": "Info",
-    "data": "Deine Daten",
-    "language": "Sprache",
-    "reminders": "Tägliche Erinnerung",
-    "remindersHint": "Erinnerungen kommen mit einem der nächsten Updates. Deine Auswahl wird gespeichert.",
-    "primeScore": "Über den Prime Score",
-    "privacy": "Datenschutz",
-    "privacyBody": "In dieser Version bleibt alles, was du eingibst, auf deinem Gerät. Sobald es Konten gibt, sind deine Daten nur für dich sichtbar und geschützt.",
-    "version": "Version {{version}}",
-    "demoNote": "Diese Vorschau enthält Beispieldaten, damit du alle Bereiche erkunden kannst.",
-    "reset": "App zurücksetzen",
-    "resetTitle": "PrimeTimeAgain zurücksetzen?",
-    "resetBody": "Dadurch werden deine Ziele, dein Fortschritt und deine Reflexionen von diesem Gerät gelöscht und das Onboarding startet neu.",
-    "resetConfirm": "Zurücksetzen"
+  "studio": {
+    "title": "AVATAR STUDIO",
+    "presets": "Charakter",
+    "presetA11y": "Charakter {{number}}",
+    "pose": "Animation",
+    "poses": {
+      "breathe": "Ruhig",
+      "look": "Umschauen"
+    },
+    "lighting": "Beleuchtung",
+    "lightings": {
+      "studio": "Studio",
+      "dusk": "Goldene Stunde",
+      "cool": "Nacht"
+    },
+    "save": "Avatar speichern",
+    "more": "Weitere Anpassungen folgen",
+    "moreBody": "Frisuren, Outfits, Accessoires und ein Gesicht auf Basis eines Selfies sind geplant. Dafür werden zusätzliche lizenzierte 3D-Assets benötigt, daher sind sie noch nicht verfügbar.",
+    "credit": "3D-Charaktere: Microsoft Rocketbox Avatar Library (MIT-Lizenz)."
   },
-  "language": {
-    "title": "Sprache",
-    "subtitle": "Wähle die Sprache, die du in der App verwenden möchtest.",
-    "device": "Gerätesprache",
-    "restartTitle": "Neustart erforderlich",
-    "restartBody": "Bitte schließe die App und öffne sie erneut, um die Textrichtung zu ändern."
+  "avatar": {
+    "loading": "Dein Avatar wird geladen …",
+    "unavailable": "Die 3D-Ansicht ist gerade nicht verfügbar. Stattdessen wird ein Vorschaubild angezeigt.",
+    "a11yLabel": "Dein 3D-Avatar",
+    "a11yHint": "Ziehen zum Drehen, mit zwei Fingern zoomen, doppelt tippen zum Zurücksetzen. Aktionen zum Drehen oder Zoomen verwenden.",
+    "rotateLeft": "Nach links drehen",
+    "rotateRight": "Nach rechts drehen",
+    "zoomIn": "Heranzoomen",
+    "zoomOut": "Herauszoomen"
   },
   "coach": {
+    "title": "PRIME COACH",
+    "subtitle": "Hinweise auf Basis deines Plans und Fortschritts.",
+    "previewBadge": "Vorschau",
+    "previewNote": "Diese Vorschau nutzt deine Plandaten auf diesem Gerät. Ein persönlicher KI-Coach ist in Entwicklung und nutzt deine Daten nur mit deiner Erlaubnis.",
+    "today": "Für heute",
+    "suggestions": "Vorschläge",
+    "adjustTime": "Tägliche Zeit anpassen",
+    "openMissions": "Heutige Missionen öffnen",
+    "planRecovery": "Erholungstag planen",
+    "messages": {
+      "start": "Tag eins ist die schwerste Entscheidung – und die hast du schon getroffen. Nimm dir deine leichteste Mission vor und erledige sie in der nächsten Stunde.",
+      "allDone": "Heute alle Missionen erledigt. Erhol dich gut: In der Erholung setzt sich Fortschritt fest.",
+      "someDone": "Du hast heute schon etwas bewegt. Eine weitere Mission hält das Momentum.",
+      "noneYet": "Heute noch nichts erledigt, und das ist okay. Starte mit der kürzesten Mission: {{minutes}} Minuten.",
+      "recovery": "Heute ist ein Erholungstag. Energie tanken gehört zum Programm.",
+      "afterMiss": "Gestern lief nicht nach Plan. Das löscht nichts aus. Heute ist ein neuer Anfang.",
+      "streak": "{{count}} Tage in Folge. Du beweist dir selbst, dass du dranbleibst."
+    },
     "tips": {
-      "t1": "Fortschritt verläuft nicht geradlinig. Gerade an gewöhnlichen Tagen dranzubleiben, macht den Unterschied.",
-      "t2": "Deine Energie ist eine Information, kein Urteil. Passe deinen Plan für heute an dein Befinden an.",
-      "t3": "Verknüpfe eine neue Gewohnheit mit etwas, das du schon tust – etwa kurzes Dehnen nach dem Morgenkaffee.",
-      "t4": "Ruhe gehört zum Plan. In der Erholung werden Körper und Geist stärker.",
-      "t5": "Denk an eine Sache, die dir gestern gut gelungen ist. Selbstvertrauen wächst aus Erfahrung.",
-      "t6": "Mach den nächsten Schritt so klein, dass er fast zu leicht wirkt. Und dann geh ihn.",
-      "t7": "Du hast schon Schweres geschafft. Diese Stärke steckt noch in dir."
-    }
+      "lowArea": "Deine Missionen im Bereich {{area}} liegen bei {{percent}} %. Mach sie für eine Woche kürzer oder leichter.",
+      "tooMuch": "Du erledigst weniger als die Hälfte deiner Missionen. Mit weniger Zeit pro Tag könnte der Plan besser passen.",
+      "strong": "Du erledigst die meisten deiner Missionen. Wenn du bereit bist, füge eine neue Aktion hinzu, um weiter zu wachsen.",
+      "phase": "Du bist in der Phase {{phase}}: {{focus}}"
+    },
+    "limits": "Der Coach gibt keine medizinischen, Ernährungs- oder Finanzberatung. Wende dich bei solchen Fragen bitte an eine qualifizierte Fachperson."
+  },
+  "pro": {
+    "title": "PRIME PRO",
+    "subtitle": "Geh weiter, wenn du bereit bist. Alles, was du zum Start brauchst, ist kostenlos.",
+    "free": "Kostenlos",
+    "freeItems": [
+      "Persönliche Ziele",
+      "Tägliche Missionen",
+      "Prime-Kalender und Serien",
+      "Comeback Journey",
+      "Basis-Avatar",
+      "Basis-Fortschritt"
+    ],
+    "proItems": [
+      "Erweiterte Avatar-Anpassung",
+      "Persönlicher KI-Prime-Coach",
+      "Erweiterte Missions-Personalisierung",
+      "Detaillierte Auswertungen",
+      "Transformationsberichte"
+    ],
+    "cta": "Demnächst",
+    "note": "Prime Pro ist noch nicht verfügbar. In dieser Version gibt es keine Zahlungen."
+  },
+  "settings": {
+    "title": "EINSTELLUNGEN",
+    "general": "Allgemein",
+    "language": "Sprache",
+    "units": "Einheiten",
+    "unitsMetric": "Metrisch (kg, cm)",
+    "unitsImperial": "Imperial (lb, in)",
+    "notifications": "Benachrichtigungen",
+    "reminders": "Tägliche Erinnerung",
+    "remindersHint": "Eine sanfte Erinnerung zu deiner gewählten Zeit. Kein Druck, keine Schuldgefühle.",
+    "reminderTime": "Uhrzeit der Erinnerung",
+    "notificationsUnavailable": "Erinnerungen kommen mit einem der nächsten Updates. Deine Einstellung wird gespeichert.",
+    "privacy": "Datenschutz",
+    "privacyLocal": "Deine Daten werden auf diesem Gerät gespeichert. In dieser Version wird nichts an einen Server gesendet.",
+    "coachConsent": "Dem künftigen KI-Coach erlauben, mein Tagebuch zu lesen",
+    "coachConsentHint": "Standardmäßig aus. Du kannst das jederzeit ändern.",
+    "photosPrivate": "Fortschrittsfotos werden nie hochgeladen.",
+    "data": "Deine Daten",
+    "export": "Meine Daten exportieren",
+    "exportHint": "Teile eine Kopie deiner Daten als Datei.",
+    "delete": "Alle Daten löschen",
+    "deleteTitle": "Alle Daten löschen?",
+    "deleteBody": "Dadurch werden dein Plan, dein Verlauf, dein Tagebuch und deine Fotos dauerhaft von diesem Gerät entfernt.",
+    "deleteConfirm": "Löschen",
+    "account": "Konto",
+    "accountBody": "Konten und Synchronisierung kommen mit einem der nächsten Updates. Bis dahin bleibt alles auf diesem Gerät.",
+    "about": "Info",
+    "version": "Version {{version}}",
+    "licenses": "Lizenzen",
+    "licensesBody": "3D-Charaktere und Animationen: Microsoft Rocketbox Avatar Library, MIT-Lizenz, © 2020 Microsoft.",
+    "demo": "Beispieldaten laden",
+    "demoHint": "Ersetzt deinen Verlauf zum Testen durch Beispieldaten."
+  },
+  "language": {
+    "title": "SPRACHE",
+    "subtitle": "Wähle die Sprache, die du in der App verwenden möchtest.",
+    "device": "Gerätesprache: {{language}}",
+    "restartTitle": "Neustart erforderlich",
+    "restartBody": "Bitte schließe die App und öffne sie erneut, um die Textrichtung zu ändern."
   },
   "states": {
     "errorTitle": "Etwas ist schiefgelaufen",
@@ -388,24 +808,15 @@
   },
   "notFound": {
     "title": "Diese Seite gibt es nicht",
-    "action": "Zur Startseite"
-  },
-  "a11y": {
-    "primeScore": "Prime Score: {{score}} von 100. {{level}}.",
-    "primeScoreEmpty": "Prime Score noch nicht verfügbar.",
-    "goalDone": "{{goal}}, erledigt",
-    "goalOpen": "{{goal}}, noch offen",
-    "toggleGoalHint": "Doppeltippen zum Ändern",
-    "progress": "{{percent}} Prozent"
+    "action": "Zu Prime Control"
   },
   "demo": {
     "reflections": {
-      "r1": "Bin zum Bäcker gelaufen statt zu fahren. Eine Kleinigkeit, aber ich habe mich den ganzen Morgen leichter gefühlt.",
-      "r2": "Habe besser geschlafen, seit ich das Handy früher ausschalte. Das möchte ich beibehalten.",
-      "r3": "Ein voller Tag, aber vor der Arbeit habe ich im Auto meine Atemübung gemacht. Das zählt."
+      "r1": "Habe das Workout gemacht, obwohl ich keine Lust hatte. Genau diese Version von mir will ich zurück.",
+      "r2": "Heute im Meeting etwas gesagt. Eine Kleinigkeit, aber vor einem Monat hätte ich das nicht getan.",
+      "r3": "Zwei Missionen verpasst, aber den morgigen Tag gut geplant. Ich gebe nicht auf.",
+      "r4": "Die erste komplette Woche ist geschafft. Ich fühle mich so sehr wie ich selbst wie lange nicht mehr."
     },
-    "preview": "Mit Beispieldaten ansehen",
-    "previewHint": "Startet bei Tag {{day}} mit einem beispielhaften Verlauf.",
-    "load": "Beispieldaten laden"
+    "badge": "Beispieldaten"
   }
 }

@@ -1,5 +1,5 @@
-export { colors, palette, pillarColors } from './colors';
-export { spacing, radii, layout } from './spacing';
+export { darkColors, lightColors, palette, status, type ThemeColors } from './colors';
+export { layout, radii, spacing } from './spacing';
 export { shadows } from './shadows';
-export { fontFamilies, textVariants, type TextVariant } from './typography';
-export { imagery } from './imagery';
+export { textVariants, type TextVariant } from './typography';
+export { ThemeProvider, useColors } from './ThemeProvider';

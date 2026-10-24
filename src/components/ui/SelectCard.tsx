@@ -1,39 +1,42 @@
 import * as Haptics from 'expo-haptics';
 import { Platform, StyleSheet, View } from 'react-native';
 
-import { colors, radii, shadows, spacing } from '@/theme';
+import { radii, spacing, useColors } from '@/theme';
 
 import { AppText } from './AppText';
-import { Icon, type IconName } from './Icon';
+import { Glyph, Icon } from './Icon';
 import { PressableScale } from './PressableScale';
 
 export interface SelectCardProps {
   title: string;
   description?: string;
   meta?: string;
-  icon?: IconName | string;
-  /** Soft background used for the icon badge and the selected state. */
-  tint?: string;
-  accent?: string;
+  glyph?: string;
   selected: boolean;
   onPress: () => void;
-  /** 'checkbox' for multi-select, 'radio' for single choice. */
   mode?: 'checkbox' | 'radio';
+  /** 'row' = full-width list item; 'tile' = half-width grid tile. */
+  layout?: 'row' | 'tile';
   disabled?: boolean;
+  badge?: string;
 }
 
+/** Selectable option. Selected state = solid black (light) / white (dark) for a bold, clear choice. */
 export function SelectCard({
   title,
   description,
   meta,
-  icon,
-  tint = colors.primarySoft,
-  accent = colors.primaryText,
+  glyph,
   selected,
   onPress,
   mode = 'checkbox',
+  layout = 'row',
   disabled,
+  badge,
 }: SelectCardProps) {
+  const colors = useColors();
+  const fg = selected ? colors.onAccent : colors.text;
+  const fg2 = selected ? colors.onAccent : colors.textSecondary;
   return (
     <PressableScale
       onPress={() => {
@@ -43,57 +46,57 @@ export function SelectCard({
       disabled={disabled}
       accessibilityRole={mode}
       accessibilityState={{ checked: selected, disabled: !!disabled }}
-      accessibilityLabel={[title, description, meta].filter(Boolean).join(', ')}
+      accessibilityLabel={[title, description, meta, badge].filter(Boolean).join(', ')}
       style={[
-        styles.card,
-        shadows.soft,
-        selected && { borderColor: accent, backgroundColor: colors.surface },
+        layout === 'tile' ? styles.tile : styles.row,
+        { backgroundColor: selected ? colors.accent : colors.surface },
         disabled && !selected && styles.disabled,
       ]}>
-      {icon ? (
-        <View style={[styles.badge, { backgroundColor: tint }]}>
-          <Icon name={icon} size={20} color={accent} />
+      {glyph ? (
+        <View style={[styles.glyph, { backgroundColor: selected ? 'rgba(127,127,127,0.25)' : colors.background }]}>
+          <Glyph name={glyph} size={layout === 'tile' ? 20 : 19} color={fg} />
         </View>
       ) : null}
-      <View style={styles.text}>
-        <AppText variant="subheading">{title}</AppText>
+      <View style={layout === 'tile' ? styles.tileText : styles.text}>
+        {badge ? (
+          <AppText variant="overline" color={fg2}>
+            {badge}
+          </AppText>
+        ) : null}
+        <AppText variant="subheading" color={fg}>
+          {title}
+        </AppText>
         {description ? (
-          <AppText variant="caption" color={colors.textSecondary}>
+          <AppText variant="caption" color={fg2}>
             {description}
           </AppText>
         ) : null}
       </View>
-      {meta ? (
-        <AppText variant="label" color={colors.textMuted}>
+      {meta && layout === 'row' ? (
+        <AppText variant="label" color={fg2}>
           {meta}
         </AppText>
       ) : null}
       <View
         style={[
           mode === 'radio' ? styles.radio : styles.check,
-          { borderColor: selected ? accent : colors.border, backgroundColor: selected ? accent : 'transparent' },
+          layout === 'tile' && styles.tileCheck,
+          { borderColor: selected ? colors.onAccent : colors.border, backgroundColor: selected ? colors.onAccent : 'transparent' },
         ]}>
-        {selected ? <Icon name="check" size={14} color={colors.textOnPrimary} /> : null}
+        {selected ? <Icon name="check" size={13} color={colors.accent} /> : null}
       </View>
     </PressableScale>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    padding: spacing.md,
-    borderRadius: radii.md,
-    backgroundColor: colors.surface,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    minHeight: 64,
-  },
-  badge: { width: 44, height: 44, borderRadius: radii.pill, alignItems: 'center', justifyContent: 'center' },
+  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, padding: spacing.md, borderRadius: radii.md, minHeight: 64 },
+  tile: { flexBasis: '47%', flexGrow: 1, padding: spacing.md, borderRadius: radii.md, minHeight: 118, gap: spacing.sm },
+  glyph: { width: 40, height: 40, borderRadius: radii.sm, alignItems: 'center', justifyContent: 'center' },
   text: { flex: 1, gap: 2 },
-  check: { width: 26, height: 26, borderRadius: 8, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  radio: { width: 26, height: 26, borderRadius: 13, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  disabled: { opacity: 0.5 },
+  tileText: { gap: 2 },
+  check: { width: 24, height: 24, borderRadius: 7, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center' },
+  radio: { width: 24, height: 24, borderRadius: 12, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center' },
+  tileCheck: { position: 'absolute', top: spacing.sm, end: spacing.sm },
+  disabled: { opacity: 0.4 },
 });

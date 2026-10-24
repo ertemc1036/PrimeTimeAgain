@@ -1,20 +1,18 @@
-import { Fraunces_400Regular } from '@expo-google-fonts/fraunces/400Regular';
-import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold';
 import { Stack } from 'expo-router';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ErrorState } from '@/components/ui';
 import { hydrateLanguage } from '@/i18n';
 import { AppStateProvider, useAppState } from '@/state/AppStateProvider';
-import { colors } from '@/theme';
+import { lightColors } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts({ Fraunces_400Regular, Fraunces_600SemiBold });
   const [languageReady, setLanguageReady] = useState(false);
 
   useEffect(() => {
@@ -22,12 +20,15 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <AppStateProvider>
-      <StatusBar style="dark" />
-      <RootNavigator ready={(fontsLoaded || !!fontError) && languageReady} />
-    </AppStateProvider>
+    <GestureHandlerRootView style={StyleSheet.absoluteFill}>
+      <AppStateProvider>
+        <RootNavigator ready={languageReady} />
+      </AppStateProvider>
+    </GestureHandlerRootView>
   );
 }
+
+const modal = { presentation: 'modal' } as const;
 
 function RootNavigator({ ready }: { ready: boolean }) {
   const { status, isOnboarded, retryLoad } = useAppState();
@@ -41,20 +42,34 @@ function RootNavigator({ ready }: { ready: boolean }) {
   if (status === 'error') return <ErrorState onRetry={retryLoad} />;
 
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
-      <Stack.Screen name="index" />
-      <Stack.Protected guard={!isOnboarded}>
-        <Stack.Screen name="(onboarding)" />
-      </Stack.Protected>
-      <Stack.Protected guard={isOnboarded}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="settings" />
-        <Stack.Screen name="edit-profile" />
-        <Stack.Screen name="goals" />
-        <Stack.Screen name="language" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="reflection" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="prime-score" options={{ presentation: 'modal' }} />
-      </Stack.Protected>
-    </Stack>
+    <>
+      <StatusBar style="auto" />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: lightColors.background } }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="language" options={modal} />
+        <Stack.Protected guard={!isOnboarded}>
+          <Stack.Screen name="(onboarding)" />
+        </Stack.Protected>
+        <Stack.Protected guard={isOnboarded}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="area/[id]" />
+          <Stack.Screen name="goal/[id]" />
+          <Stack.Screen name="goal-edit/[id]" options={modal} />
+          <Stack.Screen name="mission/[id]" options={modal} />
+          <Stack.Screen name="add-mission" options={modal} />
+          <Stack.Screen name="day-summary" options={modal} />
+          <Stack.Screen name="calendar" />
+          <Stack.Screen name="coach" />
+          <Stack.Screen name="avatar-studio" />
+          <Stack.Screen name="goals" />
+          <Stack.Screen name="plan" />
+          <Stack.Screen name="settings" />
+          <Stack.Screen name="edit-name" options={modal} />
+          <Stack.Screen name="reflection" options={modal} />
+          <Stack.Screen name="measurement" options={modal} />
+          <Stack.Screen name="pro" />
+        </Stack.Protected>
+      </Stack>
+    </>
   );
 }

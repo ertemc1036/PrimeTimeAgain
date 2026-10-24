@@ -4,7 +4,10 @@ import { AppState } from 'react-native';
 import { createLocalRepository } from '@/data/localRepository';
 import type { AppRepository } from '@/data/repository';
 import { today as getToday } from '@/domain/dates';
-import { emptyAppData, type AppData, type GoalId, type ISODate, type Preferences, type Profile, type Reflection } from '@/domain/types';
+import { generateMissions } from '@/domain/missions';
+import { applyMutation, type Mutation } from '@/domain/mutations';
+import { isInProgram } from '@/domain/program';
+import { emptyAppData, type AppData, type ISODate } from '@/domain/types';
 
 type Status = 'loading' | 'ready' | 'error';
 
@@ -16,32 +19,22 @@ interface AppStateValue {
   isOnboarded: boolean;
   /** Set when the last write failed, so screens can show a gentle error. */
   saveError: boolean;
-  retryLoad(): void;
   dismissSaveError(): void;
-  completeOnboarding(data: AppData): Promise<void>;
-  toggleGoal(goalId: GoalId, date?: ISODate): void;
-  updateProfile(profile: Profile): Promise<void>;
-  updateGoals(goalIds: GoalId[]): Promise<void>;
-  addReflection(reflection: Omit<Reflection, 'id' | 'createdAt'>): Promise<void>;
-  updatePreferences(preferences: Preferences): void;
+  retryLoad(): void;
+  /** Apply a change: UI updates immediately, storage is written in the background. */
+  dispatch(mutation: Mutation): Promise<void>;
   resetAll(): Promise<void>;
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null);
 
-const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-
-export function AppStateProvider({
-  children,
-  repository: injected,
-}: {
-  children: ReactNode;
-  repository?: AppRepository;
-}) {
+export function AppStateProvider({ children, repository: injected }: { children: ReactNode; repository?: AppRepository }) {
   const repository = useRef(injected ?? createLocalRepository()).current;
   const [status, setStatus] = useState<Status>('loading');
   const [data, setData] = useState<AppData>(emptyAppData);
+  const dataRef = useRef(data);
   const [today, setToday] = useState(getToday);
+  const todayRef = useRef(today);
   const [saveError, setSaveError] = useState(false);
 
   const fetchData = useCallback(
@@ -49,6 +42,7 @@ export function AppStateProvider({
       repository
         .load()
         .then((loaded) => {
+          dataRef.current = loaded;
           setData(loaded);
           setStatus('ready');
         })
@@ -66,62 +60,55 @@ export function AppStateProvider({
   }, [fetchData]);
 
   useEffect(() => {
-    const sub = AppState.addEventListener('change', (s) => s === 'active' && setToday(getToday()));
+    const sub = AppState.addEventListener('change', (s) => {
+      if (s !== 'active') return;
+      todayRef.current = getToday();
+      setToday(todayRef.current);
+    });
     return () => sub.remove();
   }, []);
 
-  /** Optimistic update: change the UI immediately, persist in the background, flag failures. */
-  const persist = useCallback(
-    (update: (d: AppData) => AppData, save: () => Promise<void>) => {
-      setData(update);
-      return save().catch((e: unknown) => {
+  const dispatch = useCallback(
+    (mutation: Mutation) => {
+      const next = applyMutation(dataRef.current, mutation, todayRef.current);
+      if (next === dataRef.current) return Promise.resolve();
+      dataRef.current = next;
+      setData(next);
+      return repository.commit(mutation, next).catch((e: unknown) => {
         setSaveError(true);
         throw e;
       });
     },
-    [],
+    [repository],
   );
+
+  // Plan today's missions the first time the app is opened on a program day.
+  useEffect(() => {
+    const { program, profile, goals, days } = data;
+    if (status !== 'ready' || !program || !profile || !isInProgram(program, today)) return;
+    const day = days[today];
+    if (day?.generated || day?.recovery) return;
+    const missions = generateMissions(goals, program, today, profile.startingPoint, day?.missions ?? []);
+    dispatch({ type: 'ensureDay', date: today, missions }).catch(() => undefined);
+  }, [status, data, today, dispatch]);
 
   const value = useMemo<AppStateValue>(
     () => ({
       status,
       data,
       today,
-      isOnboarded: !!data.profile,
+      isOnboarded: !!data.profile && !!data.program,
       saveError,
-      retryLoad,
       dismissSaveError: () => setSaveError(false),
-      completeOnboarding: (next) => persist(() => next, () => repository.replaceAll(next)),
-      toggleGoal: (goalId, date = today) => {
-        const done = !(data.log[date] ?? []).includes(goalId);
-        persist(
-          (d) => {
-            const set = new Set(d.log[date] ?? []);
-            if (done) set.add(goalId);
-            else set.delete(goalId);
-            return { ...d, log: { ...d.log, [date]: [...set] } };
-          },
-          () => repository.setCompletion(date, goalId, done),
-        ).catch(() => undefined);
-      },
-      updateProfile: (profile) => persist((d) => ({ ...d, profile }), () => repository.saveProfile(profile)),
-      updateGoals: (goalIds) => persist((d) => ({ ...d, goalIds }), () => repository.saveGoals(goalIds)),
-      addReflection: (input) => {
-        const reflection: Reflection = { ...input, id: newId(), createdAt: new Date().toISOString() };
-        return persist(
-          (d) => ({ ...d, reflections: [reflection, ...d.reflections] }),
-          () => repository.addReflection(reflection),
-        );
-      },
-      updatePreferences: (preferences) => {
-        persist((d) => ({ ...d, preferences }), () => repository.savePreferences(preferences)).catch(() => undefined);
-      },
+      retryLoad,
+      dispatch,
       resetAll: async () => {
         await repository.reset();
-        setData(emptyAppData());
+        dataRef.current = emptyAppData();
+        setData(dataRef.current);
       },
     }),
-    [status, data, today, saveError, retryLoad, persist, repository],
+    [status, data, today, saveError, retryLoad, dispatch, repository],
   );
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>;

@@ -1,16 +1,11 @@
 import type { TextStyle } from 'react-native';
 
 /**
- * Display font is Fraunces (elegant serif) for Latin scripts.
- * Body text uses the platform system font for best legibility and glyph coverage.
+ * System fonts (SF Pro on iOS, Roboto on Android): premium, highly legible and with full glyph
+ * coverage for every future language. Hierarchy comes from weight, size and tracking.
  */
-export const fontFamilies = {
-  display: 'Fraunces_600SemiBold',
-  displayRegular: 'Fraunces_400Regular',
-  body: undefined as string | undefined, // system font
-} as const;
-
 export type TextVariant =
+  | 'hero'
   | 'display'
   | 'title'
   | 'heading'
@@ -20,19 +15,25 @@ export type TextVariant =
   | 'caption'
   | 'label'
   | 'overline'
-  | 'stat';
+  | 'stat'
+  | 'button';
 
-type VariantStyle = TextStyle & { serif?: boolean };
+type VariantStyle = TextStyle & {
+  /** Render in capitals (done in JS so Turkish i/İ are handled correctly). */
+  upper?: boolean;
+};
 
 export const textVariants: Record<TextVariant, VariantStyle> = {
-  display: { fontSize: 36, lineHeight: 42, serif: true, letterSpacing: -0.5 },
-  title: { fontSize: 28, lineHeight: 34, serif: true, letterSpacing: -0.3 },
-  heading: { fontSize: 21, lineHeight: 27, serif: true },
-  subheading: { fontSize: 17, lineHeight: 23, fontWeight: '600' },
-  body: { fontSize: 16, lineHeight: 24 },
-  bodyStrong: { fontSize: 16, lineHeight: 24, fontWeight: '600' },
-  caption: { fontSize: 14, lineHeight: 20 },
-  label: { fontSize: 13, lineHeight: 18, fontWeight: '600' },
-  overline: { fontSize: 12, lineHeight: 16, fontWeight: '700', letterSpacing: 1.1, textTransform: 'uppercase' },
-  stat: { fontSize: 44, lineHeight: 50, serif: true, letterSpacing: -1 },
+  hero: { fontSize: 46, lineHeight: 48, fontWeight: '900', letterSpacing: -1.2, upper: true },
+  display: { fontSize: 32, lineHeight: 36, fontWeight: '900', letterSpacing: -0.6 },
+  title: { fontSize: 26, lineHeight: 31, fontWeight: '800', letterSpacing: -0.4 },
+  heading: { fontSize: 19, lineHeight: 24, fontWeight: '800', letterSpacing: -0.2 },
+  subheading: { fontSize: 16, lineHeight: 21, fontWeight: '700' },
+  body: { fontSize: 16, lineHeight: 23 },
+  bodyStrong: { fontSize: 16, lineHeight: 23, fontWeight: '600' },
+  caption: { fontSize: 14, lineHeight: 19 },
+  label: { fontSize: 13, lineHeight: 17, fontWeight: '600' },
+  overline: { fontSize: 11, lineHeight: 14, fontWeight: '800', letterSpacing: 1.4, upper: true },
+  stat: { fontSize: 34, lineHeight: 38, fontWeight: '800', letterSpacing: -0.8, fontVariant: ['tabular-nums'] },
+  button: { fontSize: 15, lineHeight: 19, fontWeight: '800', letterSpacing: 0.6 },
 };

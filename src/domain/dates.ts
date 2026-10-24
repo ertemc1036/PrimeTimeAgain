@@ -26,3 +26,29 @@ export const daysBetween = (a: ISODate, b: ISODate): number =>
 /** The last `n` days ending with `end`, oldest first. */
 export const lastNDays = (end: ISODate, n: number): ISODate[] =>
   Array.from({ length: n }, (_, i) => addDays(end, i - (n - 1)));
+
+/** Monday-based weekday index (0 = Monday … 6 = Sunday). */
+export const weekdayIndex = (iso: ISODate): number => (fromISODate(iso).getDay() + 6) % 7;
+
+/** Monday of the week containing `iso`. */
+export const startOfWeek = (iso: ISODate): ISODate => addDays(iso, -weekdayIndex(iso));
+
+/** `YYYY-MM` key for a date. */
+export const monthKey = (iso: ISODate): string => iso.slice(0, 7);
+
+export const addMonths = (month: string, delta: number): string => {
+  const [y, m] = month.split('-').map(Number);
+  const d = new Date(y, m - 1 + delta, 1, 12);
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+};
+
+/** Calendar grid for a month: weeks of 7 dates (Monday first), with `null` padding outside the month. */
+export const monthGrid = (month: string): (ISODate | null)[][] => {
+  const first = `${month}-01`;
+  const [y, m] = month.split('-').map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const cells: (ISODate | null)[] = Array.from({ length: weekdayIndex(first) }, () => null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(`${month}-${pad(d)}`);
+  while (cells.length % 7) cells.push(null);
+  return Array.from({ length: cells.length / 7 }, (_, i) => cells.slice(i * 7, i * 7 + 7));
+};

@@ -1,18 +1,17 @@
 import * as Haptics from 'expo-haptics';
 import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 
-import { colors, layout, radii, shadows, spacing } from '@/theme';
+import { layout, radii, spacing, status, useColors } from '@/theme';
 
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
 import { PressableScale } from './PressableScale';
 
-type Variant = 'primary' | 'secondary' | 'ghost';
-
 export interface ButtonProps {
   label: string;
   onPress?: () => void;
-  variant?: Variant;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  size?: 'lg' | 'md';
   icon?: IconName;
   loading?: boolean;
   disabled?: boolean;
@@ -20,24 +19,22 @@ export interface ButtonProps {
   fullWidth?: boolean;
 }
 
-const variantStyles = {
-  primary: { bg: colors.primaryStrong, fg: colors.textOnPrimary },
-  secondary: { bg: colors.primarySoft, fg: colors.primaryText },
-  ghost: { bg: 'transparent', fg: colors.primaryText },
-} as const;
-
 export function Button({
   label,
   onPress,
   variant = 'primary',
+  size = 'lg',
   icon,
   loading,
   disabled,
   accessibilityHint,
   fullWidth = true,
 }: ButtonProps) {
-  const v = variantStyles[variant];
+  const colors = useColors();
+  const fill = variant === 'primary' ? colors.accent : variant === 'danger' ? status.danger : 'transparent';
+  const fg = variant === 'primary' ? colors.onAccent : variant === 'danger' ? '#FFFFFF' : colors.text;
   const inactive = disabled || loading;
+
   return (
     <PressableScale
       onPress={() => {
@@ -51,18 +48,19 @@ export function Button({
       accessibilityState={{ disabled: !!inactive, busy: !!loading }}
       style={[
         styles.base,
-        { backgroundColor: v.bg, alignSelf: fullWidth ? 'stretch' : 'flex-start' },
-        variant === 'primary' && shadows.soft,
+        size === 'md' && styles.md,
+        { backgroundColor: fill, alignSelf: fullWidth ? 'stretch' : 'flex-start' },
+        variant === 'secondary' && { borderWidth: 1.5, borderColor: colors.text },
         inactive && styles.disabled,
       ]}>
       {loading ? (
-        <ActivityIndicator color={v.fg} />
+        <ActivityIndicator color={fg} />
       ) : (
         <View style={styles.row}>
-          <AppText variant="bodyStrong" color={v.fg} style={styles.label}>
+          <AppText variant="button" color={fg} align="center" style={styles.label}>
             {label}
           </AppText>
-          {icon ? <Icon name={icon} size={18} color={v.fg} /> : null}
+          {icon ? <Icon name={icon} size={18} color={fg} /> : null}
         </View>
       )}
     </PressableScale>
@@ -71,14 +69,16 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    minHeight: 54,
+    minHeight: 56,
     minWidth: layout.minTouchTarget,
     borderRadius: radii.pill,
     paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  label: { fontSize: 17 },
-  disabled: { opacity: 0.5 },
+  md: { minHeight: 46, paddingHorizontal: spacing.lg },
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing.xs, flexShrink: 1 },
+  label: { flexShrink: 1 },
+  disabled: { opacity: 0.4 },
 });

@@ -19,9 +19,25 @@ export const LANGUAGES = [
   { code: 'en', nativeName: 'English', englishName: 'English', dir: 'ltr', script: 'latin' },
   { code: 'de', nativeName: 'Deutsch', englishName: 'German', dir: 'ltr', script: 'latin' },
   { code: 'tr', nativeName: 'Türkçe', englishName: 'Turkish', dir: 'ltr', script: 'latin' },
-  // Example of a future right-to-left language (add locales/ar.json first):
-  // { code: 'ar', nativeName: 'العربية', englishName: 'Arabic', dir: 'rtl', script: 'arabic' },
 ] as const satisfies readonly LanguageDefinition[];
+
+/**
+ * Prepared but NOT available: these appear in the picker only after a complete, reviewed translation
+ * exists and the screens have been checked for layout (RTL for Arabic). Moving an entry into
+ * LANGUAGES (and adding locales/<code>.json) is all that's needed.
+ */
+export const PLANNED_LANGUAGES: readonly LanguageDefinition[] = [
+  { code: 'es', nativeName: 'Español', englishName: 'Spanish', dir: 'ltr', script: 'latin' },
+  { code: 'fr', nativeName: 'Français', englishName: 'French', dir: 'ltr', script: 'latin' },
+  { code: 'pt', nativeName: 'Português', englishName: 'Portuguese', dir: 'ltr', script: 'latin' },
+  { code: 'it', nativeName: 'Italiano', englishName: 'Italian', dir: 'ltr', script: 'latin' },
+  { code: 'ar', nativeName: 'العربية', englishName: 'Arabic', dir: 'rtl', script: 'arabic' },
+  { code: 'hi', nativeName: 'हिन्दी', englishName: 'Hindi', dir: 'ltr', script: 'other' },
+  { code: 'ja', nativeName: '日本語', englishName: 'Japanese', dir: 'ltr', script: 'cjk' },
+  { code: 'ko', nativeName: '한국어', englishName: 'Korean', dir: 'ltr', script: 'cjk' },
+  { code: 'zh', nativeName: '中文', englishName: 'Chinese', dir: 'ltr', script: 'cjk' },
+  { code: 'id', nativeName: 'Bahasa Indonesia', englishName: 'Indonesian', dir: 'ltr', script: 'latin' },
+];
 
 export type LanguageCode = (typeof LANGUAGES)[number]['code'];
 

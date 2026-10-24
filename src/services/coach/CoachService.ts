@@ -1,25 +1,29 @@
-import type { ISODate } from '@/domain/types';
-import { daysBetween } from '@/domain/dates';
+import { coachTips, coachToday, type CoachMessage, type CoachTip } from '@/domain/coach';
+import type { AppData, ISODate } from '@/domain/types';
 
 /**
- * Coaching boundary. Today it returns curated, translated tips from the app.
- * Later, a remote implementation will call a Supabase Edge Function that talks to
- * the Claude API. The API key stays on the server and never ships in the app.
+ * Coaching boundary.
+ *
+ * Today: `localCoachService` returns deterministic guidance computed on the device from the plan.
+ *
+ * Planned (needs approval): `remoteCoachService` calls a Supabase Edge Function
+ * (`/functions/v1/coach`) with the user's session token. The function holds the Claude API key,
+ * builds a context from goals, phase, mission history and available time (plus reflections only if
+ * `preferences.coachUsesReflections` is true), enforces rate limits and Prime Pro entitlement,
+ * applies the safety policy (no medical diagnosis, no extreme dieting or training, no guaranteed
+ * financial outcomes) and answers in the user's app language. No API key ever ships in the app.
  */
-export type CoachMessage =
-  | { kind: 'tip'; key: `coach.tips.${TipId}` }
-  | { kind: 'text'; text: string };
-
-const TIP_IDS = ['t1', 't2', 't3', 't4', 't5', 't6', 't7'] as const;
-type TipId = (typeof TIP_IDS)[number];
+export interface CoachGuidance {
+  today: CoachMessage;
+  tips: CoachTip[];
+}
 
 export interface CoachService {
-  getDailyMessage(input: { date: ISODate; language: string }): Promise<CoachMessage>;
+  getGuidance(input: { data: AppData; today: ISODate; language: string }): Promise<CoachGuidance>;
 }
 
 export const localCoachService: CoachService = {
-  async getDailyMessage({ date }) {
-    const index = Math.abs(daysBetween('2024-01-01', date)) % TIP_IDS.length;
-    return { kind: 'tip', key: `coach.tips.${TIP_IDS[index]}` };
+  async getGuidance({ data, today }) {
+    return { today: coachToday(data, today), tips: coachTips(data, today) };
   },
 };

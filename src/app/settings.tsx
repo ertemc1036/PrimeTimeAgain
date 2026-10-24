@@ -1,100 +1,124 @@
 import { router } from 'expo-router';
-import { StyleSheet, Switch, View } from 'react-native';
+import { useState } from 'react';
+import { Share, StyleSheet, Switch, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Card, ListRow, Screen } from '@/components/ui';
+import { AppText, Banner, Card, Chip, ListRow, Screen, SectionHeader } from '@/components/ui';
 import { APP_VERSION, DEMO_MODE } from '@/config/app';
-import { buildDemoData } from '@/data/demoSeed';
+import { withDemoHistory } from '@/data/demoSeed';
 import { getLanguage } from '@/i18n/languages';
 import { useLanguage } from '@/i18n/useLanguage';
+import { deleteAllProgressPhotos } from '@/services/photos';
 import { useAppState } from '@/state/AppStateProvider';
-import { colors, spacing } from '@/theme';
-import { confirm, notify } from '@/utils/confirm';
+import { spacing, useColors } from '@/theme';
+import { confirm } from '@/utils/confirm';
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const { code } = useLanguage();
-  const { data, today, updatePreferences, resetAll, completeOnboarding } = useAppState();
+  const colors = useColors();
+  const { data, today, dispatch, resetAll } = useAppState();
+  const [note, setNote] = useState<string | null>(null);
+  const prefs = data.preferences;
+  const setPref = (patch: Partial<typeof prefs>) => void dispatch({ type: 'updatePreferences', patch }).catch(() => setNote(t('states.saveError')));
 
-  const reset = async () => {
-    const ok = await confirm({
-      title: t('settings.resetTitle'),
-      message: t('settings.resetBody'),
-      confirmLabel: t('settings.resetConfirm'),
-      cancelLabel: t('common.cancel'),
-      destructive: true,
-    });
-    if (!ok) return;
+  const exportData = async () => {
     try {
-      await resetAll();
-      router.replace('/welcome');
+      await Share.share({ title: 'PrimeTimeAgain', message: JSON.stringify({ exportedAt: new Date().toISOString(), ...data }, null, 2) });
     } catch {
-      notify(t('states.errorTitle'), t('states.saveError'));
+      setNote(t('states.errorBody'));
     }
+  };
+
+  const deleteAll = async () => {
+    const ok = await confirm({ title: t('settings.deleteTitle'), message: t('settings.deleteBody'), confirmLabel: t('settings.deleteConfirm'), cancelLabel: t('common.cancel'), destructive: true });
+    if (!ok) return;
+    await deleteAllProgressPhotos();
+    await resetAll();
+    router.replace('/welcome');
   };
 
   const loadDemo = async () => {
-    if (!data.profile) return;
-    try {
-      await completeOnboarding(
-        buildDemoData({
-          profile: data.profile,
-          goalIds: data.goalIds,
-          today,
-          reflectionTexts: [t('demo.reflections.r1'), t('demo.reflections.r2'), t('demo.reflections.r3')],
-        }),
-      );
-      router.back();
-    } catch {
-      notify(t('states.errorTitle'), t('states.saveError'));
-    }
+    await dispatch({
+      type: 'replaceAll',
+      data: withDemoHistory({ ...data, days: {} }, today, [t('demo.reflections.r1'), t('demo.reflections.r2'), t('demo.reflections.r3'), t('demo.reflections.r4')]),
+    }).catch(() => undefined);
+    router.back();
   };
+
+  const toggle = (value: boolean, onChange: (v: boolean) => void, label: string) => (
+    <Switch value={value} onValueChange={onChange} trackColor={{ true: colors.accent, false: colors.border }}
+                thumbColor={colors.background}
+                ios_backgroundColor={colors.border} accessibilityLabel={label} />
+  );
 
   return (
     <Screen back="back" title={t('settings.title')}>
-      <Section title={t('settings.preferences')}>
+      {note ? <Banner message={note} onDismiss={() => setNote(null)} /> : null}
+
+      <SectionHeader title={t('settings.general')} />
+      <Card padded={false}>
         <ListRow icon="globe" label={t('settings.language')} value={getLanguage(code).nativeName} onPress={() => router.push('/language')} />
+        <View style={styles.inline}>
+          <AppText variant="bodyStrong">{t('settings.units')}</AppText>
+          <View style={styles.chips} accessibilityRole="radiogroup">
+            <Chip mode="radio" label={t('settings.unitsMetric')} selected={prefs.units === 'metric'} onPress={() => setPref({ units: 'metric' })} />
+            <Chip mode="radio" label={t('settings.unitsImperial')} selected={prefs.units === 'imperial'} onPress={() => setPref({ units: 'imperial' })} />
+          </View>
+        </View>
+      </Card>
+
+      <SectionHeader title={t('settings.notifications')} />
+      <Card padded={false}>
         <ListRow
           icon="bell"
           label={t('settings.reminders')}
           hint={t('settings.remindersHint')}
-          right={
-            <Switch
-              value={data.preferences.reminders}
-              onValueChange={(reminders) => updatePreferences({ ...data.preferences, reminders })}
-              trackColor={{ true: colors.primary, false: colors.border }}
-              accessibilityLabel={t('settings.reminders')}
-            />
-          }
+          right={toggle(prefs.reminders, (reminders) => setPref({ reminders }), t('settings.reminders'))}
+          divider={false}
         />
-      </Section>
+      </Card>
+      <AppText variant="caption" color="secondary">
+        {t('settings.notificationsUnavailable')}
+      </AppText>
 
-      <Section title={t('settings.about')}>
-        <ListRow icon="info" label={t('settings.primeScore')} onPress={() => router.push('/prime-score')} />
-        <ListRow icon="lock" label={t('settings.privacy')} hint={t('settings.privacyBody')} />
-        <ListRow icon="smartphone" label={t('app.name')} value={t('settings.version', { version: APP_VERSION })} />
-      </Section>
+      <SectionHeader title={t('settings.privacy')} />
+      <Card padded={false}>
+        <ListRow icon="smartphone" label={t('settings.privacyLocal')} />
+        <ListRow icon="lock" label={t('settings.photosPrivate')} />
+        <ListRow
+          icon="message-circle"
+          label={t('settings.coachConsent')}
+          hint={t('settings.coachConsentHint')}
+          right={toggle(prefs.coachUsesReflections, (coachUsesReflections) => setPref({ coachUsesReflections }), t('settings.coachConsent'))}
+          divider={false}
+        />
+      </Card>
 
-      <Section title={t('settings.data')}>
-        {DEMO_MODE ? <ListRow icon="layers" label={t('demo.load')} hint={t('settings.demoNote')} onPress={loadDemo} /> : null}
-        <ListRow icon="refresh-ccw" label={t('settings.reset')} destructive onPress={reset} />
-      </Section>
+      <SectionHeader title={t('settings.data')} />
+      <Card padded={false}>
+        <ListRow icon="share" label={t('settings.export')} hint={t('settings.exportHint')} onPress={() => void exportData()} />
+        {DEMO_MODE ? <ListRow icon="layers" label={t('settings.demo')} hint={t('settings.demoHint')} onPress={() => void loadDemo()} /> : null}
+        <ListRow icon="trash-2" label={t('settings.delete')} destructive onPress={() => void deleteAll()} divider={false} />
+      </Card>
+
+      <SectionHeader title={t('settings.account')} />
+      <Card>
+        <AppText variant="caption" color="secondary">
+          {t('settings.accountBody')}
+        </AppText>
+      </Card>
+
+      <SectionHeader title={t('settings.about')} />
+      <Card padded={false}>
+        <ListRow icon="info" label={t('settings.version', { version: APP_VERSION })} />
+        <ListRow icon="file-text" label={t('settings.licenses')} hint={t('settings.licensesBody')} divider={false} />
+      </Card>
     </Screen>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <View style={styles.section}>
-      <AppText variant="overline" color={colors.textMuted} style={styles.sectionTitle}>
-        {title}
-      </AppText>
-      <Card padded={false}>{children}</Card>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  section: { gap: spacing.xs },
-  sectionTitle: { paddingHorizontal: spacing.xs },
+  inline: { padding: spacing.md, gap: spacing.sm },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
 });

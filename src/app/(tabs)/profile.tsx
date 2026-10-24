@@ -1,100 +1,67 @@
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Card, Icon, ListRow, PillarBadge, Screen } from '@/components/ui';
-import { formatDate } from '@/i18n/format';
-import { useLanguage } from '@/i18n/useLanguage';
+import { getPreset } from '@/avatar/presets';
+import { DEFAULT_AVATAR } from '@/avatar/types';
+import { AppText, Card, ListRow, PressableScale, Screen, SectionHeader, StatTile } from '@/components/ui';
+import { overallProgress } from '@/domain/progress';
 import { useAppState } from '@/state/AppStateProvider';
-import { colors, palette, radii, spacing } from '@/theme';
+import { activeGoals, useProgramInfo, useStreak } from '@/state/selectors';
+import { radii, spacing, useColors } from '@/theme';
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
-  const { code } = useLanguage();
-  const { data } = useAppState();
-  const profile = data.profile;
-  if (!profile) return null;
-
-  const initials = (profile.name || '·').trim().charAt(0).toLocaleUpperCase(code);
+  const colors = useColors();
+  const { data, today } = useAppState();
+  const info = useProgramInfo();
+  const streak = useStreak();
+  if (!data.profile || !info) return null;
+  const progress = overallProgress(info.program, data.days, today).percent;
+  const avatar = data.avatar ?? DEFAULT_AVATAR;
 
   return (
     <Screen inTabs title={t('profile.title')}>
-      <Animated.View entering={FadeInDown.duration(400)}>
-        <Card style={styles.identity}>
-          <View style={styles.avatar}>
-            <AppText variant="title" color={colors.primaryText}>
-              {initials}
-            </AppText>
-          </View>
-          <View style={styles.flex}>
-            {profile.name ? <AppText variant="heading">{profile.name}</AppText> : null}
-            <AppText variant="caption" color={colors.textSecondary}>
-              {t('profile.since', { date: formatDate(profile.startDate, code, { day: 'numeric', month: 'long', year: 'numeric' }) })}
-            </AppText>
-            <View style={styles.badges}>
-              {profile.focusPillars.map((p) => (
-                <PillarBadge key={p} pillar={p} />
-              ))}
-            </View>
-          </View>
-        </Card>
-      </Animated.View>
-
-      <Animated.View entering={FadeInDown.delay(80).duration(400)}>
-        <Card padded={false}>
-          <ListRow
-            icon="target"
-            label={t('profile.manageGoals')}
-            value={t('profile.goalsCount', { count: data.goalIds.length })}
-            onPress={() => router.push('/goals')}
-          />
-          <ListRow
-            icon="clock"
-            label={t('profile.dailyTime')}
-            value={t('common.minutes', { count: profile.dailyMinutes })}
-            onPress={() => router.push('/edit-profile')}
-          />
-          <ListRow icon="user" label={t('profile.editProfile')} onPress={() => router.push('/edit-profile')} />
-          <ListRow icon="settings" label={t('profile.settings')} onPress={() => router.push('/settings')} />
-        </Card>
-      </Animated.View>
-
-      <Animated.View entering={FadeInDown.delay(160).duration(400)}>
-        <Card tint={palette.peachSoft} elevated={false} style={styles.plus}>
-          <View style={styles.plusHead}>
-            <Icon name="star" size={18} color={palette.peachDeep} />
-            <AppText variant="subheading" style={styles.flex}>
-              {t('profile.plus.title')}
-            </AppText>
-            <View style={styles.soon}>
-              <AppText variant="label" color={palette.peachDeep}>
-                {t('common.comingSoon')}
-              </AppText>
-            </View>
-          </View>
-          <AppText variant="caption" color={colors.textSecondary}>
-            {t('profile.plus.body')}
+      <View style={styles.identity}>
+        <PressableScale onPress={() => router.push('/avatar-studio')} accessibilityRole="button" accessibilityLabel={t('profile.avatar')} style={styles.avatar}>
+          <Image source={getPreset(avatar.presetId).preview} style={styles.avatarImg} contentFit="cover" accessible={false} />
+        </PressableScale>
+        <View style={styles.flex}>
+          <AppText variant="title">{data.profile.name || '—'}</AppText>
+          <AppText variant="caption" color="secondary">
+            {t('common.dayOf', { day: info.day, total: info.program.durationDays })}
           </AppText>
-        </Card>
-      </Animated.View>
+        </View>
+      </View>
+      <View style={styles.stats}>
+        <StatTile value={String(streak.current)} label={t('profile.streak')} />
+        <StatTile value={progress === null ? '–' : t('common.percent', { value: progress })} label={t('profile.progress')} />
+        <StatTile value={String(info.day)} label={t('profile.day')} />
+      </View>
+
+      <SectionHeader title={t('profile.plan')} />
+      <Card padded={false}>
+        <ListRow icon="user" label={t('profile.avatar')} onPress={() => router.push('/avatar-studio')} />
+        <ListRow icon="target" label={t('profile.goals')} value={t('profile.goalsValue', { count: activeGoals(data.goals).length })} onPress={() => router.push('/goals')} />
+        <ListRow icon="calendar" label={t('profile.duration')} value={t('common.days', { count: info.program.durationDays })} onPress={() => router.push('/plan')} />
+        <ListRow icon="clock" label={t('profile.time')} value={t('common.minutes', { count: info.program.dailyMinutes })} onPress={() => router.push('/plan')} />
+        <ListRow icon="edit-3" label={t('profile.editName')} value={data.profile.name || undefined} onPress={() => router.push('/edit-name')} divider={false} />
+      </Card>
+      <Card padded={false}>
+        <ListRow icon="settings" label={t('profile.settings')} onPress={() => router.push('/settings')} />
+        <ListRow icon="star" label={t('profile.pro')} value={t('profile.proValue')} onPress={() => router.push('/pro')} divider={false} />
+      </Card>
+      <View style={[styles.hairline, { backgroundColor: colors.border }]} />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  identity: { flexDirection: 'row', alignItems: 'center', gap: spacing.lg },
-  avatar: {
-    width: 72,
-    height: 72,
-    borderRadius: radii.pill,
-    backgroundColor: colors.primarySoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badges: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginTop: spacing.xs },
-  plus: { gap: spacing.xs },
-  plusHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  soon: { backgroundColor: palette.white, borderRadius: radii.pill, paddingHorizontal: spacing.sm, paddingVertical: 2 },
+  flex: { flex: 1, gap: 2 },
+  identity: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  avatar: { width: 76, height: 96, borderRadius: radii.md, overflow: 'hidden', backgroundColor: '#08090B' },
+  avatarImg: { width: '100%', height: '100%' },
+  stats: { flexDirection: 'row', gap: spacing.xs },
+  hairline: { height: 0 },
 });

@@ -9,15 +9,15 @@ export const spacing = {
   xxxl: 48,
 } as const;
 
+/** Tighter, more technical radii than the v1 wellness look. */
 export const radii = {
+  xs: 6,
   sm: 10,
-  md: 16,
-  lg: 24,
-  xl: 32,
+  md: 14,
+  lg: 18,
   pill: 999,
 } as const;
 
-/** Screen side padding; generous whitespace is part of the brand. */
 export const layout = {
   screenPadding: 20,
   maxContentWidth: 640,
