@@ -1,0 +1,411 @@
+{
+  "app": {
+    "name": "PrimeTimeAgain",
+    "tagline": "Your Prime Isn't Over."
+  },
+  "common": {
+    "continue": "Continue",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "edit": "Edit",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "comingSoon": "Coming soon",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "seeAll": "See all"
+  },
+  "pillars": {
+    "body": {
+      "name": "Body",
+      "description": "Movement, nutrition, recovery and sleep"
+    },
+    "mind": {
+      "name": "Mind",
+      "description": "Resilience, confidence, calm and focus"
+    },
+    "life": {
+      "name": "Life",
+      "description": "Routines, goals and everyday habits"
+    }
+  },
+  "goals": {
+    "walk": {
+      "title": "Daily walk",
+      "task": "Take a 20-minute walk"
+    },
+    "strength": {
+      "title": "Gentle strength",
+      "task": "10 minutes of bodyweight strength"
+    },
+    "hydrate": {
+      "title": "Stay hydrated",
+      "task": "Drink a glass of water with each meal"
+    },
+    "mobility": {
+      "title": "Mobility",
+      "task": "5 minutes of stretching"
+    },
+    "sleep": {
+      "title": "Wind-down routine",
+      "task": "Screens off 30 minutes before bed"
+    },
+    "breathe": {
+      "title": "Calm breathing",
+      "task": "5 minutes of slow breathing"
+    },
+    "gratitude": {
+      "title": "Gratitude",
+      "task": "Note three things you're grateful for"
+    },
+    "focus": {
+      "title": "Deep focus",
+      "task": "One 25-minute focus session, phone away"
+    },
+    "read": {
+      "title": "Read",
+      "task": "Read 10 pages of a good book"
+    },
+    "kindness": {
+      "title": "Kind self-talk",
+      "task": "Write down one strength you showed today"
+    },
+    "plan": {
+      "title": "Plan tomorrow",
+      "task": "Write tomorrow's top three priorities"
+    },
+    "reset": {
+      "title": "Space reset",
+      "task": "A 10-minute tidy of one space"
+    },
+    "connect": {
+      "title": "Connect",
+      "task": "Reach out to someone you care about"
+    },
+    "learn": {
+      "title": "Keep learning",
+      "task": "15 minutes on a skill you want to grow"
+    },
+    "outdoors": {
+      "title": "Time outside",
+      "task": "Spend 15 minutes outdoors"
+    }
+  },
+  "welcome": {
+    "eyebrow": "Body · Mind · Life",
+    "headline": "Your Prime Isn't Over.",
+    "subhead": "Rediscover your strength, calm and confidence with small daily steps that fit your real life.",
+    "getStarted": "Get started",
+    "footnote": "Takes about two minutes. No pressure, no perfection."
+  },
+  "onboarding": {
+    "step": "Step {{current}} of {{total}}",
+    "language": {
+      "title": "Choose your language",
+      "subtitle": "You can change this anytime in Settings."
+    },
+    "about": {
+      "title": "What should we call you?",
+      "subtitle": "A first name or nickname is perfect.",
+      "placeholder": "Your name",
+      "label": "Name",
+      "hint": "Stored only on this device."
+    },
+    "focus": {
+      "title": "Where would you like to start?",
+      "subtitle": "Choose one or more pillars. You can grow into the others later.",
+      "minOne": "Choose at least one pillar to continue."
+    },
+    "goals": {
+      "title": "Pick a few small daily goals",
+      "subtitle": "Small, steady steps beat big promises. Two or three is a great start.",
+      "selected_one": "{{count}} goal selected",
+      "selected_other": "{{count}} goals selected",
+      "maxReached": "That's plenty for now. You can add more later.",
+      "minOne": "Choose at least one goal to continue."
+    },
+    "rhythm": {
+      "title": "How much time feels realistic each day?",
+      "subtitle": "Choose what fits on a busy day, not a perfect one.",
+      "m10": {
+        "title": "10 minutes",
+        "description": "A gentle start"
+      },
+      "m20": {
+        "title": "20 minutes",
+        "description": "A steady rhythm"
+      },
+      "m30": {
+        "title": "30 minutes",
+        "description": "Ready to commit"
+      }
+    },
+    "ready": {
+      "title": "Welcome, {{name}}.",
+      "titleNoName": "Welcome.",
+      "subtitle": "Your 90-Day Comeback Journey starts today. We'll take it one day at a time.",
+      "focus": "Your focus",
+      "goals": "Daily goals",
+      "time": "Daily time",
+      "start": "Begin my journey"
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "today": "Today",
+    "journey": "Journey",
+    "progress": "Progress",
+    "profile": "Profile"
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "withName": "{{greeting}}, {{name}}"
+    },
+    "dayOfJourney": "Day {{day}} of your comeback",
+    "todayTitle": "Today's focus",
+    "todayProgress": "{{completed}} of {{total}} done today",
+    "allDone": "Everything done for today. Enjoy the rest of your day.",
+    "coachTitle": "A thought for today",
+    "reflectTitle": "How are you feeling?",
+    "reflectBody": "Take a quiet minute to reflect on your day.",
+    "reflectAction": "Write a reflection",
+    "journeyTitle": "90-Day Comeback"
+  },
+  "primeScore": {
+    "title": "Prime Score",
+    "caption": "Your follow-through over the last 7 days",
+    "outOf": "of 100",
+    "learnMore": "What does this mean?",
+    "levels": {
+      "beginning": "A fresh start",
+      "rhythm": "Finding your rhythm",
+      "momentum": "Building momentum",
+      "prime": "In your prime zone"
+    },
+    "messages": {
+      "beginning": "Every check-in counts. One small win today is a great place to begin.",
+      "rhythm": "You're showing up. Keep your steps small and steady.",
+      "momentum": "Your consistency is growing. This is how comebacks are built.",
+      "prime": "You're following through beautifully. Remember to rest, too."
+    },
+    "info": {
+      "title": "About the Prime Score",
+      "p1": "Your Prime Score shows how consistently you've followed through on the goals you chose over the last seven days.",
+      "p2": "It's simple: completed check-ins divided by planned check-ins. Days before you started never count against you.",
+      "p3": "It is not a measure of your health, your fitness or your worth. It's a gentle mirror for your own commitments, nothing more.",
+      "p4": "If life gets busy, choose fewer goals. The score adapts to you, not the other way round.",
+      "formula": "Completed ÷ planned check-ins, last 7 days"
+    }
+  },
+  "today": {
+    "title": "Today",
+    "progress": "{{completed}} of {{total}} done",
+    "gentleNote": "Missed something? That's okay. Tomorrow is a fresh page.",
+    "editGoals": "Edit goals",
+    "empty": {
+      "title": "No daily goals yet",
+      "body": "Choose a few small goals and they'll appear here each day.",
+      "action": "Choose goals"
+    }
+  },
+  "journey": {
+    "title": "90-Day Comeback",
+    "subtitle": "Three phases. One day at a time.",
+    "day": "Day {{day}}",
+    "ofTotal": "of {{total}}",
+    "activeDays_one": "{{count}} active day",
+    "activeDays_other": "{{count}} active days",
+    "nextMilestone": "Next milestone: day {{day}}",
+    "complete": "Journey complete. Your prime continues.",
+    "phasesTitle": "Phases",
+    "weeksTitle": "Weekly themes",
+    "week": "Week {{week}}",
+    "milestonesTitle": "Milestones",
+    "status": {
+      "done": "Completed",
+      "current": "In progress",
+      "upcoming": "Coming up"
+    },
+    "phases": {
+      "reset": {
+        "name": "Reset",
+        "range": "Days 1–30",
+        "description": "Build gentle foundations and rediscover what feels good."
+      },
+      "rebuild": {
+        "name": "Rebuild",
+        "range": "Days 31–60",
+        "description": "Strengthen your routines and grow your confidence."
+      },
+      "rise": {
+        "name": "Rise",
+        "range": "Days 61–90",
+        "description": "Own your rhythm and set your next horizon."
+      }
+    },
+    "weeks": {
+      "w1": "Start where you are",
+      "w2": "Small wins",
+      "w3": "Move with joy",
+      "w4": "Rest is progress",
+      "w5": "Fuel your energy",
+      "w6": "A steady mind",
+      "w7": "Shape your environment",
+      "w8": "Strength in routine",
+      "w9": "Connection",
+      "w10": "Quiet confidence",
+      "w11": "Focus on what matters",
+      "w12": "See how far you've come",
+      "w13": "Your next horizon"
+    },
+    "milestones": {
+      "d7": "First week",
+      "d30": "Reset complete",
+      "d60": "Rebuilt",
+      "d90": "Prime time"
+    }
+  },
+  "progress": {
+    "title": "Progress",
+    "subtitle": "Every step is part of your story.",
+    "weekTitle": "This week",
+    "weekCaption": "Share of daily goals completed",
+    "pillarsTitle": "By pillar",
+    "stats": {
+      "activeDays": "Active days",
+      "checkIns": "Check-ins",
+      "journeyDay": "Journey day"
+    },
+    "reflectionsTitle": "Reflections",
+    "newReflection": "New reflection",
+    "noReflections": {
+      "title": "No reflections yet",
+      "body": "A few honest words now and then can show you how much you're growing."
+    },
+    "chartA11y": "{{day}}: {{percent}} percent of goals completed",
+    "noData": {
+      "title": "Your progress will appear here",
+      "body": "Complete your first goal today and watch your story begin."
+    }
+  },
+  "reflection": {
+    "title": "New reflection",
+    "moodQuestion": "How are you feeling today?",
+    "moods": {
+      "1": "Low",
+      "2": "Meh",
+      "3": "Okay",
+      "4": "Good",
+      "5": "Great"
+    },
+    "promptTitle": "Something to reflect on",
+    "prompts": {
+      "p1": "What gave you energy today?",
+      "p2": "What's one small win you're proud of?",
+      "p3": "What would make tomorrow feel a little easier?",
+      "p4": "When did you feel most like yourself today?",
+      "p5": "What are you grateful for right now?"
+    },
+    "label": "Your reflection",
+    "placeholder": "Write freely…",
+    "privacyNote": "Your reflections are private and stay on this device.",
+    "save": "Save reflection",
+    "errorEmpty": "Write a few words to save your reflection.",
+    "otherPrompt": "Another question"
+  },
+  "profile": {
+    "title": "Profile",
+    "since": "On your journey since {{date}}",
+    "editProfile": "Edit profile",
+    "focus": "Your focus",
+    "goals": "Daily goals",
+    "goalsCount_one": "{{count}} active goal",
+    "goalsCount_other": "{{count}} active goals",
+    "dailyTime": "Daily time",
+    "manageGoals": "Manage goals",
+    "settings": "Settings",
+    "plus": {
+      "title": "PrimeTimeAgain Plus",
+      "body": "Personal coaching and deeper insights are on the way."
+    }
+  },
+  "editProfile": {
+    "title": "Edit profile",
+    "name": "Name",
+    "focus": "Focus pillars",
+    "time": "Daily time"
+  },
+  "goalsEditor": {
+    "title": "Your daily goals",
+    "subtitle": "Choose what feels achievable right now. You can change this anytime.",
+    "save": "Save goals"
+  },
+  "settings": {
+    "title": "Settings",
+    "preferences": "Preferences",
+    "about": "About",
+    "data": "Your data",
+    "language": "Language",
+    "reminders": "Daily reminder",
+    "remindersHint": "Reminders arrive in a coming update. Your choice is saved.",
+    "primeScore": "About the Prime Score",
+    "privacy": "Privacy",
+    "privacyBody": "In this version, everything you enter stays on your device. When accounts arrive, your data will be private to you and protected.",
+    "version": "Version {{version}}",
+    "demoNote": "This preview includes sample progress so you can explore every screen.",
+    "reset": "Reset app",
+    "resetTitle": "Reset PrimeTimeAgain?",
+    "resetBody": "This removes your goals, progress and reflections from this device and restarts onboarding.",
+    "resetConfirm": "Reset"
+  },
+  "language": {
+    "title": "Language",
+    "subtitle": "Choose the language you'd like to use in the app.",
+    "device": "Device language",
+    "restartTitle": "Restart required",
+    "restartBody": "Please close and reopen the app to switch the text direction."
+  },
+  "coach": {
+    "tips": {
+      "t1": "Progress isn't a straight line. Showing up on an ordinary day is what makes the difference.",
+      "t2": "Your energy is information, not judgement. Adjust today's plan to fit how you feel.",
+      "t3": "Pair a new habit with something you already do, like a short stretch after your morning coffee.",
+      "t4": "Rest is part of the plan. Recovery is when your body and mind get stronger.",
+      "t5": "Notice one thing you did well yesterday. Confidence grows from evidence.",
+      "t6": "Make the next step so small it feels almost too easy. Then take it.",
+      "t7": "You've done hard things before. That strength is still yours."
+    }
+  },
+  "states": {
+    "errorTitle": "Something went wrong",
+    "errorBody": "Please try again. Your data is safe.",
+    "saveError": "We couldn't save that. Please try again."
+  },
+  "notFound": {
+    "title": "This page doesn't exist",
+    "action": "Go to home"
+  },
+  "a11y": {
+    "primeScore": "Prime Score: {{score}} out of 100. {{level}}.",
+    "primeScoreEmpty": "Prime Score not available yet.",
+    "goalDone": "{{goal}}, done",
+    "goalOpen": "{{goal}}, not done yet",
+    "toggleGoalHint": "Double tap to change",
+    "progress": "{{percent}} percent"
+  },
+  "demo": {
+    "reflections": {
+      "r1": "Walked to the bakery instead of driving. Small thing, but I felt lighter all morning.",
+      "r2": "Slept better after switching my phone off early. I want to keep that going.",
+      "r3": "A busy day, but I still did my breathing in the car before work. That counts."
+    },
+    "preview": "Preview with sample progress",
+    "previewHint": "Starts you on day {{day}} with example history.",
+    "load": "Load sample progress"
+  }
+}

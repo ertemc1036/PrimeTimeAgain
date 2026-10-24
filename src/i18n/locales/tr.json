@@ -1,0 +1,411 @@
+{
+  "app": {
+    "name": "PrimeTimeAgain",
+    "tagline": "En iyi zamanın henüz bitmedi."
+  },
+  "common": {
+    "continue": "Devam et",
+    "back": "Geri",
+    "save": "Kaydet",
+    "cancel": "Vazgeç",
+    "close": "Kapat",
+    "edit": "Düzenle",
+    "retry": "Tekrar dene",
+    "loading": "Yükleniyor…",
+    "comingSoon": "Yakında",
+    "minutes_one": "{{count}} dk",
+    "minutes_other": "{{count}} dk",
+    "seeAll": "Tümünü gör"
+  },
+  "pillars": {
+    "body": {
+      "name": "Beden",
+      "description": "Hareket, beslenme, toparlanma ve uyku"
+    },
+    "mind": {
+      "name": "Zihin",
+      "description": "Dayanıklılık, özgüven, sakinlik ve odak"
+    },
+    "life": {
+      "name": "Yaşam",
+      "description": "Rutinler, hedefler ve günlük alışkanlıklar"
+    }
+  },
+  "goals": {
+    "walk": {
+      "title": "Günlük yürüyüş",
+      "task": "20 dakika yürüyüş yap"
+    },
+    "strength": {
+      "title": "Nazik güç",
+      "task": "10 dakika vücut ağırlığıyla güç egzersizi"
+    },
+    "hydrate": {
+      "title": "Yeterli su",
+      "task": "Her öğünde bir bardak su iç"
+    },
+    "mobility": {
+      "title": "Esneklik",
+      "task": "5 dakika esneme yap"
+    },
+    "sleep": {
+      "title": "Uyku öncesi rutin",
+      "task": "Yatmadan 30 dakika önce ekranları kapat"
+    },
+    "breathe": {
+      "title": "Sakin nefes",
+      "task": "5 dakika yavaş nefes al"
+    },
+    "gratitude": {
+      "title": "Şükran",
+      "task": "Minnettar olduğun üç şeyi yaz"
+    },
+    "focus": {
+      "title": "Derin odak",
+      "task": "Telefon uzakta, 25 dakikalık bir odak seansı"
+    },
+    "read": {
+      "title": "Okuma",
+      "task": "İyi bir kitaptan 10 sayfa oku"
+    },
+    "kindness": {
+      "title": "Kendine nazik ol",
+      "task": "Bugün gösterdiğin bir güçlü yanını yaz"
+    },
+    "plan": {
+      "title": "Yarını planla",
+      "task": "Yarının en önemli üç önceliğini yaz"
+    },
+    "reset": {
+      "title": "Alanını düzenle",
+      "task": "Bir alanı 10 dakika toparla"
+    },
+    "connect": {
+      "title": "Bağ kur",
+      "task": "Değer verdiğin birine ulaş"
+    },
+    "learn": {
+      "title": "Öğrenmeye devam",
+      "task": "Geliştirmek istediğin bir beceriye 15 dakika ayır"
+    },
+    "outdoors": {
+      "title": "Açık havada zaman",
+      "task": "15 dakika dışarıda vakit geçir"
+    }
+  },
+  "welcome": {
+    "eyebrow": "Beden · Zihin · Yaşam",
+    "headline": "En iyi zamanın henüz bitmedi.",
+    "subhead": "Gerçek hayatına uyan küçük günlük adımlarla gücünü, huzurunu ve özgüvenini yeniden keşfet.",
+    "getStarted": "Başlayalım",
+    "footnote": "Yaklaşık iki dakika sürer. Baskı yok, mükemmellik yok."
+  },
+  "onboarding": {
+    "step": "Adım {{current}} / {{total}}",
+    "language": {
+      "title": "Dilini seç",
+      "subtitle": "Bunu istediğin zaman Ayarlar'dan değiştirebilirsin."
+    },
+    "about": {
+      "title": "Sana nasıl hitap edelim?",
+      "subtitle": "Adın ya da takma adın yeterli.",
+      "placeholder": "Adın",
+      "label": "Ad",
+      "hint": "Yalnızca bu cihazda saklanır."
+    },
+    "focus": {
+      "title": "Nereden başlamak istersin?",
+      "subtitle": "Bir veya daha fazla alan seç. Diğerlerine zamanla geçebilirsin.",
+      "minOne": "Devam etmek için en az bir alan seç."
+    },
+    "goals": {
+      "title": "Birkaç küçük günlük hedef seç",
+      "subtitle": "Küçük ve istikrarlı adımlar büyük sözlerden daha etkilidir. İki ya da üç hedef harika bir başlangıç.",
+      "selected_one": "{{count}} hedef seçildi",
+      "selected_other": "{{count}} hedef seçildi",
+      "maxReached": "Şimdilik bu kadarı yeterli. Daha sonra yenilerini ekleyebilirsin.",
+      "minOne": "Devam etmek için en az bir hedef seç."
+    },
+    "rhythm": {
+      "title": "Her gün için ne kadar zaman gerçekçi?",
+      "subtitle": "Mükemmel bir güne değil, yoğun bir güne uyanı seç.",
+      "m10": {
+        "title": "10 dakika",
+        "description": "Nazik bir başlangıç"
+      },
+      "m20": {
+        "title": "20 dakika",
+        "description": "İstikrarlı bir ritim"
+      },
+      "m30": {
+        "title": "30 dakika",
+        "description": "Kararlıyım"
+      }
+    },
+    "ready": {
+      "title": "Hoş geldin, {{name}}.",
+      "titleNoName": "Hoş geldin.",
+      "subtitle": "90 Günlük Geri Dönüş Yolculuğun bugün başlıyor. Her seferinde bir gün.",
+      "focus": "Odağın",
+      "goals": "Günlük hedefler",
+      "time": "Günlük süre",
+      "start": "Yolculuğuma başla"
+    }
+  },
+  "tabs": {
+    "home": "Ana sayfa",
+    "today": "Bugün",
+    "journey": "Yolculuk",
+    "progress": "İlerleme",
+    "profile": "Profil"
+  },
+  "home": {
+    "greeting": {
+      "morning": "Günaydın",
+      "afternoon": "İyi günler",
+      "evening": "İyi akşamlar",
+      "withName": "{{greeting}}, {{name}}"
+    },
+    "dayOfJourney": "Geri dönüşünün {{day}}. günü",
+    "todayTitle": "Bugünün odağı",
+    "todayProgress": "Bugün {{total}} hedeften {{completed}} tanesi tamam",
+    "allDone": "Bugünlük her şey tamam. Günün geri kalanının tadını çıkar.",
+    "coachTitle": "Bugün için bir düşünce",
+    "reflectTitle": "Nasıl hissediyorsun?",
+    "reflectBody": "Gününü düşünmek için sakin bir dakika ayır.",
+    "reflectAction": "Düşüncelerini yaz",
+    "journeyTitle": "90 Günlük Geri Dönüş"
+  },
+  "primeScore": {
+    "title": "Prime Puanı",
+    "caption": "Son 7 gündeki istikrarın",
+    "outOf": "/ 100",
+    "learnMore": "Bu ne anlama geliyor?",
+    "levels": {
+      "beginning": "Taze bir başlangıç",
+      "rhythm": "Ritmini buluyorsun",
+      "momentum": "İvme kazanıyorsun",
+      "prime": "En iyi halindesin"
+    },
+    "messages": {
+      "beginning": "Her adım önemli. Bugün küçük bir başarı, başlamak için harika bir yer.",
+      "rhythm": "Devam ediyorsun. Adımlarını küçük ve istikrarlı tut.",
+      "momentum": "İstikrarın artıyor. Geri dönüşler tam olarak böyle inşa edilir.",
+      "prime": "Hedeflerine harika bir şekilde bağlı kalıyorsun. Dinlenmeyi de unutma."
+    },
+    "info": {
+      "title": "Prime Puanı hakkında",
+      "p1": "Prime Puanın, son yedi günde kendi seçtiğin hedeflere ne kadar istikrarlı bağlı kaldığını gösterir.",
+      "p2": "Hesaplaması basit: tamamlanan adımlar bölü planlanan adımlar. Başlamadan önceki günler asla aleyhine sayılmaz.",
+      "p3": "Sağlığının, kondisyonunun ya da değerinin bir ölçüsü değildir. Kendi verdiğin sözlerin nazik bir aynasıdır, o kadar.",
+      "p4": "Hayat yoğunlaştığında daha az hedef seç. Puan sana uyum sağlar, sen ona değil.",
+      "formula": "Tamamlanan ÷ planlanan adımlar, son 7 gün"
+    }
+  },
+  "today": {
+    "title": "Bugün",
+    "progress": "{{total}} hedeften {{completed}} tanesi tamam",
+    "gentleNote": "Bir şeyi kaçırdın mı? Sorun değil. Yarın yeni bir sayfa.",
+    "editGoals": "Hedefleri düzenle",
+    "empty": {
+      "title": "Henüz günlük hedef yok",
+      "body": "Birkaç küçük hedef seç; her gün burada görünecekler.",
+      "action": "Hedef seç"
+    }
+  },
+  "journey": {
+    "title": "90 Günlük Geri Dönüş",
+    "subtitle": "Üç aşama. Her seferinde bir gün.",
+    "day": "{{day}}. gün",
+    "ofTotal": "/ {{total}}",
+    "activeDays_one": "{{count}} aktif gün",
+    "activeDays_other": "{{count}} aktif gün",
+    "nextMilestone": "Sonraki dönüm noktası: {{day}}. gün",
+    "complete": "Yolculuk tamamlandı. En iyi zamanın devam ediyor.",
+    "phasesTitle": "Aşamalar",
+    "weeksTitle": "Haftalık temalar",
+    "week": "{{week}}. hafta",
+    "milestonesTitle": "Dönüm noktaları",
+    "status": {
+      "done": "Tamamlandı",
+      "current": "Devam ediyor",
+      "upcoming": "Sırada"
+    },
+    "phases": {
+      "reset": {
+        "name": "Yenilen",
+        "range": "1–30. günler",
+        "description": "Nazik temeller at ve sana iyi gelen şeyleri yeniden keşfet."
+      },
+      "rebuild": {
+        "name": "Güçlen",
+        "range": "31–60. günler",
+        "description": "Rutinlerini sağlamlaştır ve özgüvenini büyüt."
+      },
+      "rise": {
+        "name": "Yüksel",
+        "range": "61–90. günler",
+        "description": "Ritmini sahiplen ve bir sonraki ufkunu belirle."
+      }
+    },
+    "weeks": {
+      "w1": "Olduğun yerden başla",
+      "w2": "Küçük kazanımlar",
+      "w3": "Keyifle hareket et",
+      "w4": "Dinlenmek de ilerlemektir",
+      "w5": "Enerjini besle",
+      "w6": "Sakin bir zihin",
+      "w7": "Çevreni şekillendir",
+      "w8": "Rutindeki güç",
+      "w9": "Bağ kurmak",
+      "w10": "Sessiz özgüven",
+      "w11": "Önemli olana odaklan",
+      "w12": "Ne kadar yol aldığını gör",
+      "w13": "Bir sonraki ufkun"
+    },
+    "milestones": {
+      "d7": "İlk hafta",
+      "d30": "Yenilenme tamam",
+      "d60": "Güçlendin",
+      "d90": "Prime zamanı"
+    }
+  },
+  "progress": {
+    "title": "İlerleme",
+    "subtitle": "Her adım hikâyenin bir parçası.",
+    "weekTitle": "Bu hafta",
+    "weekCaption": "Tamamlanan günlük hedeflerin oranı",
+    "pillarsTitle": "Alanlara göre",
+    "stats": {
+      "activeDays": "Aktif gün",
+      "checkIns": "Tamamlanan",
+      "journeyDay": "Yolculuk günü"
+    },
+    "reflectionsTitle": "Düşünceler",
+    "newReflection": "Yeni not",
+    "noReflections": {
+      "title": "Henüz not yok",
+      "body": "Ara sıra yazılan birkaç samimi cümle, ne kadar geliştiğini sana gösterebilir."
+    },
+    "chartA11y": "{{day}}: hedeflerin yüzde {{percent}} kadarı tamamlandı",
+    "noData": {
+      "title": "İlerlemen burada görünecek",
+      "body": "Bugün ilk hedefini tamamla ve hikâyenin başlamasını izle."
+    }
+  },
+  "reflection": {
+    "title": "Yeni not",
+    "moodQuestion": "Bugün nasıl hissediyorsun?",
+    "moods": {
+      "1": "Düşük",
+      "2": "Eh işte",
+      "3": "İdare eder",
+      "4": "İyi",
+      "5": "Harika"
+    },
+    "promptTitle": "Üzerine düşünmek için",
+    "prompts": {
+      "p1": "Bugün sana ne enerji verdi?",
+      "p2": "Gurur duyduğun küçük bir başarın ne?",
+      "p3": "Yarını biraz daha kolay kılacak şey ne olurdu?",
+      "p4": "Bugün kendini en çok ne zaman kendin gibi hissettin?",
+      "p5": "Şu anda neye minnettarsın?"
+    },
+    "label": "Notun",
+    "placeholder": "İçinden geldiği gibi yaz…",
+    "privacyNote": "Notların sana özeldir ve bu cihazda kalır.",
+    "save": "Notu kaydet",
+    "errorEmpty": "Notunu kaydetmek için birkaç kelime yaz.",
+    "otherPrompt": "Başka bir soru"
+  },
+  "profile": {
+    "title": "Profil",
+    "since": "{{date}} tarihinden beri yolculukta",
+    "editProfile": "Profili düzenle",
+    "focus": "Odağın",
+    "goals": "Günlük hedefler",
+    "goalsCount_one": "{{count}} aktif hedef",
+    "goalsCount_other": "{{count}} aktif hedef",
+    "dailyTime": "Günlük süre",
+    "manageGoals": "Hedefleri yönet",
+    "settings": "Ayarlar",
+    "plus": {
+      "title": "PrimeTimeAgain Plus",
+      "body": "Kişisel koçluk ve daha derin içgörüler yolda."
+    }
+  },
+  "editProfile": {
+    "title": "Profili düzenle",
+    "name": "Ad",
+    "focus": "Odak alanları",
+    "time": "Günlük süre"
+  },
+  "goalsEditor": {
+    "title": "Günlük hedeflerin",
+    "subtitle": "Şu an ulaşılabilir hissettirenleri seç. İstediğin zaman değiştirebilirsin.",
+    "save": "Hedefleri kaydet"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "preferences": "Tercihler",
+    "about": "Hakkında",
+    "data": "Verilerin",
+    "language": "Dil",
+    "reminders": "Günlük hatırlatıcı",
+    "remindersHint": "Hatırlatıcılar yakında bir güncellemeyle gelecek. Tercihin kaydedildi.",
+    "primeScore": "Prime Puanı hakkında",
+    "privacy": "Gizlilik",
+    "privacyBody": "Bu sürümde girdiğin her şey cihazında kalır. Hesaplar geldiğinde verilerin yalnızca sana ait olacak ve korunacak.",
+    "version": "Sürüm {{version}}",
+    "demoNote": "Bu önizleme, tüm ekranları keşfedebilmen için örnek ilerleme verileri içerir.",
+    "reset": "Uygulamayı sıfırla",
+    "resetTitle": "PrimeTimeAgain sıfırlansın mı?",
+    "resetBody": "Bu işlem hedeflerini, ilerlemeni ve notlarını bu cihazdan siler ve tanıtımı yeniden başlatır.",
+    "resetConfirm": "Sıfırla"
+  },
+  "language": {
+    "title": "Dil",
+    "subtitle": "Uygulamada kullanmak istediğin dili seç.",
+    "device": "Cihaz dili",
+    "restartTitle": "Yeniden başlatma gerekli",
+    "restartBody": "Yazı yönünü değiştirmek için lütfen uygulamayı kapatıp yeniden aç."
+  },
+  "coach": {
+    "tips": {
+      "t1": "İlerleme düz bir çizgi değildir. Sıradan bir günde bile devam etmek farkı yaratır.",
+      "t2": "Enerjin bir yargı değil, bir bilgidir. Bugünkü planını nasıl hissettiğine göre ayarla.",
+      "t3": "Yeni bir alışkanlığı zaten yaptığın bir şeye bağla; örneğin sabah kahvenden sonra kısa bir esneme.",
+      "t4": "Dinlenmek planın bir parçası. Bedenin ve zihnin toparlanırken güçlenir.",
+      "t5": "Dün iyi yaptığın bir şeyi fark et. Özgüven kanıtlarla büyür.",
+      "t6": "Bir sonraki adımı neredeyse fazla kolay görünecek kadar küçült. Sonra o adımı at.",
+      "t7": "Daha önce de zor şeylerin üstesinden geldin. O güç hâlâ seninle."
+    }
+  },
+  "states": {
+    "errorTitle": "Bir şeyler ters gitti",
+    "errorBody": "Lütfen tekrar dene. Verilerin güvende.",
+    "saveError": "Bunu kaydedemedik. Lütfen tekrar dene."
+  },
+  "notFound": {
+    "title": "Bu sayfa mevcut değil",
+    "action": "Ana sayfaya git"
+  },
+  "a11y": {
+    "primeScore": "Prime Puanı: 100 üzerinden {{score}}. {{level}}.",
+    "primeScoreEmpty": "Prime Puanı henüz hesaplanmadı.",
+    "goalDone": "{{goal}}, tamamlandı",
+    "goalOpen": "{{goal}}, henüz tamamlanmadı",
+    "toggleGoalHint": "Değiştirmek için iki kez dokun",
+    "progress": "Yüzde {{percent}}"
+  },
+  "demo": {
+    "reflections": {
+      "r1": "Fırına arabayla değil yürüyerek gittim. Küçük bir şey ama bütün sabah kendimi daha hafif hissettim.",
+      "r2": "Telefonu erken kapatınca daha iyi uyudum. Bunu sürdürmek istiyorum.",
+      "r3": "Yoğun bir gündü ama işten önce arabada nefes egzersizimi yaptım. Bu da sayılır."
+    },
+    "preview": "Örnek ilerlemeyle önizle",
+    "previewHint": "Örnek geçmişle {{day}}. günden başlatır.",
+    "load": "Örnek ilerlemeyi yükle"
+  }
+}
