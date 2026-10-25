@@ -61,9 +61,29 @@ export async function syncReminders(data: AppData, today: ISODate, copy: Reminde
     const at = fromISODate(r.date);
     at.setHours(Math.floor(minutes / 60), minutes % 60, 0, 0);
     await Notifications.scheduleNotificationAsync({
-      content: copy(r.kind),
+      content: { ...copy(r.kind), data: { kind: r.kind, date: r.date } },
       trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: at, channelId: 'reminders' },
     });
   }
   return reminders.length;
+}
+
+/** Tab that answers a reminder (tapping a notification opens it). */
+export const ROUTE_FOR_KIND: Record<ReminderKind, '/today' | '/plan' | '/food' | '/workout'> = {
+  morning: '/today',
+  activity: '/workout',
+  meal: '/food',
+  planning: '/plan',
+  checkin: '/today',
+  hourly: '/today',
+  window: '/food',
+};
+
+export function onReminderTapped(fn: (kind: ReminderKind) => void): () => void {
+  if (!notificationsSupported) return () => undefined;
+  const sub = Notifications.addNotificationResponseReceivedListener((r) => {
+    const kind = r.notification.request.content.data?.kind as ReminderKind | undefined;
+    if (kind && kind in ROUTE_FOR_KIND) fn(kind);
+  });
+  return () => sub.remove();
 }

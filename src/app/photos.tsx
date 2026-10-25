@@ -9,6 +9,8 @@ import { useLocale } from '@/i18n/useLanguage';
 import { useSave } from '@/hooks/useSave';
 import { deletePrivate, pickPhoto, storePrivately } from '@/services/photos';
 import { useAppState } from '@/state/AppStateProvider';
+import { PROGRESS_BUCKET, removeRemotePhoto, usePhotoUri } from '@/sync/photos';
+import type { ProgressPhoto } from '@/domain/types';
 import { colors, radii, spacing } from '@/theme';
 import { confirm } from '@/utils/confirm';
 import { newId, nowISO } from '@/utils/id';
@@ -31,10 +33,11 @@ export default function Photos() {
     await save({ type: 'addPhoto', photo: { id, date: today, uri, createdAt: nowISO() } });
   };
 
-  const remove = async (id: string, uri: string) => {
+  const remove = async (p: ProgressPhoto) => {
     if (!(await confirm({ title: t('photos.deleteTitle'), message: t('photos.deleteBody'), confirmLabel: t('common.delete'), cancelLabel: t('common.cancel'), destructive: true }))) return;
-    deletePrivate(uri);
-    await save({ type: 'deletePhoto', id });
+    if (p.uri) deletePrivate(p.uri);
+    await save({ type: 'deletePhoto', id: p.id });
+    void removeRemotePhoto(PROGRESS_BUCKET, p.storagePath).catch(() => undefined);
   };
 
   const photos = [...data.photos].reverse();
@@ -50,18 +53,24 @@ export default function Photos() {
       ) : (
         <View style={styles.grid}>
           {photos.map((p) => (
-            <Pressable key={p.id} style={styles.cell} onLongPress={() => void remove(p.id, p.uri)} accessibilityLabel={`${formatDate(p.date, locale, { day: 'numeric', month: 'short' })}. ${t('photos.delete')}`} accessibilityHint={t('photos.delete')}>
-              <Image source={{ uri: p.uri }} style={styles.img} contentFit="cover" />
+            <Pressable key={p.id} style={styles.cell} onLongPress={() => void remove(p)} accessibilityLabel={`${formatDate(p.date, locale, { day: 'numeric', month: 'short' })}. ${t('photos.delete')}`} accessibilityHint={t('photos.delete')}>
+              <Thumb photo={p} />
               <AppText variant="label" color="secondary">
                 {formatDate(p.date, locale, { day: 'numeric', month: 'short', year: 'numeric' })}
               </AppText>
-              <Button label={t('common.delete')} size="sm" variant="ghost" onPress={() => void remove(p.id, p.uri)} />
+              <Button label={t('common.delete')} size="sm" variant="ghost" onPress={() => void remove(p)} />
             </Pressable>
           ))}
         </View>
       )}
     </Screen>
   );
+}
+
+/** Local file, or the private cloud copy (signed URL) for photos taken on another device. */
+function Thumb({ photo }: { photo: ProgressPhoto }) {
+  const uri = usePhotoUri(photo.uri, PROGRESS_BUCKET, photo.storagePath);
+  return uri ? <Image source={{ uri }} style={styles.img} contentFit="cover" /> : <View style={styles.img} />;
 }
 
 const styles = StyleSheet.create({

@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Button, Card, Icon, OptionCard, Screen, ToggleRow, type IconName } from '@/components/ui';
+import { AppText, Button, Card, Icon, OptionCard, Screen, ToggleRow, useToast, type IconName } from '@/components/ui';
 import { PLACEHOLDER_PRICES } from '@/config/app';
+import { formatDate } from '@/i18n/format';
+import { useLocale } from '@/i18n/useLanguage';
+import { loadPlans, manageSubscriptions, purchase, purchasesUnavailableReason, restore, type PlanId, type StorePlan } from '@/services/subscriptions/revenuecat';
+import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
-import { spacing } from '@/theme';
+import { colors, radii, spacing } from '@/theme';
 import { notify } from '@/utils/confirm';
 
 const BENEFITS: { key: 'b1' | 'b2' | 'b3'; icon: IconName }[] = [
@@ -16,13 +21,67 @@ const BENEFITS: { key: 'b1' | 'b2' | 'b3'; icon: IconName }[] = [
 
 export default function Paywall() {
   const { t } = useTranslation();
-  const { isPro, devPreview, setDevPreview } = usePro();
-  const [plan, setPlan] = useState<'yearly' | 'monthly'>('yearly');
+  const locale = useLocale();
+  const toast = useToast();
+  const auth = useAuth();
+  const pro = usePro();
+  const userId = auth.status === 'signedIn' ? (auth.user?.id ?? null) : null;
+  const [plan, setPlan] = useState<PlanId>('yearly');
+  const [plans, setPlans] = useState<StorePlan[] | null>(null);
+  const [busy, setBusy] = useState<null | 'buy' | 'restore'>(null);
+  const unavailable = purchasesUnavailableReason();
 
-  // Store purchases need RevenueCat + App Store / Google Play products and a development build.
-  // Until those are configured this screen never pretends a purchase succeeded.
-  const subscribe = () => notify(t('pro.title'), t('pro.unavailable'));
-  const restore = () => notify(t('pro.restore'), t('pro.unavailable'));
+  useEffect(() => {
+    if (!unavailable) void loadPlans(userId).then(setPlans);
+  }, [unavailable, userId]);
+
+  const price = (id: PlanId) => plans?.find((p) => p.id === id)?.price ?? PLACEHOLDER_PRICES[id];
+  const provisional = !plans;
+
+  const buy = async () => {
+    if (unavailable) return notify(t('pro.title'), unavailable === 'not_supported' ? t('pro.storeUnavailable') : t('pro.notConfigured'));
+    if (!userId) return router.push('/auth/sign-up');
+    const selected = plans?.find((p) => p.id === plan);
+    if (!selected) return notify(t('pro.title'), t('pro.notConfigured'));
+    setBusy('buy');
+    const r = await purchase(userId, selected);
+    setBusy(null);
+    if (r.ok) {
+      pro.setStoreEntitlement(r.entitlement);
+      await pro.refresh();
+      toast(t('pro.welcome'), 'sparkles-outline');
+      if (router.canGoBack()) router.back();
+    } else if (r.reason === 'pending') notify(t('pro.title'), t('pro.pending'));
+    else if (r.reason !== 'cancelled') notify(t('pro.title'), t('pro.failed'));
+  };
+
+  const doRestore = async () => {
+    if (unavailable) return notify(t('pro.restore'), unavailable === 'not_supported' ? t('pro.storeUnavailable') : t('pro.notConfigured'));
+    setBusy('restore');
+    const r = await restore(userId);
+    setBusy(null);
+    if (!r.ok) return notify(t('pro.restore'), t('pro.failed'));
+    pro.setStoreEntitlement(r.entitlement);
+    await pro.refresh();
+    notify(t('pro.restore'), r.entitlement.tier === 'pro' ? t('pro.restored') : t('pro.nothingToRestore'));
+  };
+
+  if (pro.isPro) {
+    return (
+      <Screen back="close" title={t('pro.isPro')} subtitle={t('pro.subtitle')}>
+        {pro.status === 'grace_period' ? (
+          <Card>
+            <AppText variant="body">{t('pro.grace')}</AppText>
+          </Card>
+        ) : null}
+        {pro.expiresAt ? <AppText variant="body">{t('pro.renews', { date: formatDate(pro.expiresAt.slice(0, 10), locale, { day: 'numeric', month: 'long', year: 'numeric' }) })}</AppText> : null}
+        <Button label={t('pro.manage')} variant="secondary" onPress={() => void manageSubscriptions().then((ok) => !ok && notify(t('pro.manage'), t('pro.cancelInfo')))} />
+        <AppText variant="caption" color="secondary">
+          {t('pro.cancelInfo')}
+        </AppText>
+      </Screen>
+    );
+  }
 
   return (
     <Screen
@@ -30,16 +89,10 @@ export default function Paywall() {
       title={t('pro.title')}
       subtitle={t('pro.subtitle')}
       footer={
-        isPro ? (
-          <AppText variant="bodyStrong" align="center">
-            {t('pro.isPro')}
-          </AppText>
-        ) : (
-          <>
-            <Button label={t('pro.subscribe')} onPress={subscribe} />
-            <Button label={t('pro.restore')} variant="ghost" size="sm" onPress={restore} />
-          </>
-        )
+        <>
+          <Button label={!userId && auth.configured && !unavailable ? t('auth.create') : t('pro.subscribe')} onPress={() => void buy()} loading={busy === 'buy'} />
+          <Button label={t('pro.restore')} variant="ghost" size="sm" onPress={() => void doRestore()} loading={busy === 'restore'} />
+        </>
       }>
       {BENEFITS.map((b) => (
         <View key={b.key} style={styles.benefit}>
@@ -54,11 +107,20 @@ export default function Paywall() {
           </View>
         </View>
       ))}
-      <OptionCard title={t('pro.yearly')} subtitle={`${t('pro.perYear', { price: PLACEHOLDER_PRICES.yearly })} · ${t('pro.save')}`} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} />
-      <OptionCard title={t('pro.monthly')} subtitle={t('pro.perMonth', { price: PLACEHOLDER_PRICES.monthly })} selected={plan === 'monthly'} onPress={() => setPlan('monthly')} />
-      <Card>
-        <AppText variant="caption">{t('pro.unavailable')}</AppText>
-      </Card>
+      <OptionCard title={t('pro.yearly')} subtitle={`${t('pro.perYear', { price: price('yearly') })} · ${t('pro.save')}`} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} />
+      <OptionCard title={t('pro.monthly')} subtitle={t('pro.perMonth', { price: price('monthly') })} selected={plan === 'monthly'} onPress={() => setPlan('monthly')} />
+      {pro.status === 'expired' || pro.status === 'billing_issue' ? (
+        <Card>
+          <AppText variant="body">{t('pro.expired')}</AppText>
+        </Card>
+      ) : null}
+      {unavailable || provisional || (!userId && auth.configured) ? (
+        <Card>
+          <AppText variant="caption">
+            {unavailable === 'not_supported' ? t('pro.storeUnavailable') : unavailable === 'not_configured' || provisional ? t('pro.notConfigured') : t('pro.signInFirst')}
+          </AppText>
+        </Card>
+      ) : null}
       <AppText variant="caption" color="secondary">
         {t('pro.cancelInfo')}
       </AppText>
@@ -70,7 +132,7 @@ export default function Paywall() {
       </AppText>
       {__DEV__ ? (
         <Card variant="outline" padded={false}>
-          <ToggleRow label={t('pro.devPreview')} hint={t('pro.devPreviewHint')} value={devPreview} onChange={setDevPreview} divider={false} />
+          <ToggleRow label={t('pro.devPreview')} hint={t('pro.devPreviewHint')} value={pro.devPreview} onChange={pro.setDevPreview} divider={false} />
         </Card>
       ) : null}
     </Screen>
@@ -79,6 +141,6 @@ export default function Paywall() {
 
 const styles = StyleSheet.create({
   benefit: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  icon: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center' },
+  icon: { width: 44, height: 44, borderRadius: radii.sm, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   flex: { flex: 1, gap: 2 },
 });

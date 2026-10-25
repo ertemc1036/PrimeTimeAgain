@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { AppText, Card, ListRow, Screen, ToggleRow, useToast } from '@/components/ui';
 import { useSave } from '@/hooks/useSave';
-import { exportData } from '@/services/exportData';
+import { exportCloudData } from '@/services/auth';
+import { exportData, shareJson } from '@/services/exportData';
+import { useAuth } from '@/state/AuthProvider';
 import { deletePrivate } from '@/services/photos';
 import { useAppState } from '@/state/AppStateProvider';
 import { confirm } from '@/utils/confirm';
@@ -13,6 +15,16 @@ export default function PrivacyScreen() {
   const { data, resetAll } = useAppState();
   const save = useSave();
   const toast = useToast();
+  const auth = useAuth();
+  // Signed in: export the authoritative cloud copy (includes everything synced from all devices).
+  const doExport = async () => {
+    let ok: boolean;
+    if (auth.status === 'signedIn') {
+      const r = await exportCloudData();
+      ok = r.ok ? await shareJson(r.value) : await exportData(data);
+    } else ok = await exportData(data);
+    if (!ok) toast(t('privacy.exportFailed'), 'alert-circle-outline');
+  };
 
   const ask = () => confirm({ title: t('privacy.confirmTitle'), message: t('privacy.confirmBody'), confirmLabel: t('common.delete'), cancelLabel: t('common.cancel'), destructive: true });
   const run = async (fn: () => Promise<unknown>) => {
@@ -33,7 +45,7 @@ export default function PrivacyScreen() {
         {t('privacy.summary')}
       </AppText>
       <Card variant="outline" padded={false}>
-        <ListRow label={t('privacy.export')} hint={t('privacy.exportHint')} icon="download-outline" onPress={() => void exportData(data).then((ok) => !ok && toast(t('privacy.exportFailed'), 'alert-circle-outline'))} divider={false} />
+        <ListRow label={t('privacy.export')} hint={t('privacy.exportHint')} icon="download-outline" onPress={() => void doExport()} divider={false} />
       </Card>
       <Card variant="outline" padded={false}>
         <ToggleRow label={t('privacy.coachConsent')} hint={t('privacy.coachConsentHint')} value={data.coach.consentToContext} onChange={(value) => void save({ type: 'setCoachConsent', value })} divider={false} />

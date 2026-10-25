@@ -10,6 +10,7 @@ import type { FoodItem } from '@/domain/types';
 import { aiAvailable, scanFood, type AiError } from '@/services/ai/client';
 import { pickPhoto } from '@/services/photos';
 import { putScan } from '@/state/handoff';
+import { useAuth } from '@/state/AuthProvider';
 import { colors, radii, spacing } from '@/theme';
 import { newId } from '@/utils/id';
 
@@ -19,7 +20,9 @@ export default function FoodScan() {
   const { t } = useTranslation();
   const { date } = useLocalSearchParams<{ date?: string }>();
   const [state, setState] = useState<State>({ kind: 'idle' });
-  const available = aiAvailable();
+  const auth = useAuth();
+  const signedOut = auth.configured && auth.status !== 'signedIn';
+  const available = aiAvailable() && !signedOut;
 
   const run = async (source: 'camera' | 'library') => {
     const photo = await pickPhoto(source);
@@ -51,7 +54,13 @@ export default function FoodScan() {
 
   return (
     <Screen back="close" title={t('scan.title')} subtitle={t('scan.subtitle')}>
-      {!available ? (
+      {signedOut ? (
+        <Card style={styles.result}>
+          <AppText variant="bodyStrong">{t('ai.signed_out')}</AppText>
+          <Button label={t('auth.signIn')} size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/auth/sign-in')} />
+        </Card>
+      ) : null}
+      {!aiAvailable() ? (
         <Card>
           <AppText variant="bodyStrong">{t('ai.not_configured')}</AppText>
           <AppText variant="caption">{t('scan.privacy')}</AppText>

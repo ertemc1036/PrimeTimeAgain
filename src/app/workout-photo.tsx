@@ -11,6 +11,7 @@ import { activityLabel } from '@/features/labels';
 import { aiAvailable, analyzeWorkoutPhoto, type AiError } from '@/services/ai/client';
 import { pickPhoto, storePrivately } from '@/services/photos';
 import { putWorkoutPhoto } from '@/state/handoff';
+import { useAuth } from '@/state/AuthProvider';
 import { colors, radii, spacing } from '@/theme';
 import { newId } from '@/utils/id';
 
@@ -25,7 +26,9 @@ export default function WorkoutPhoto() {
   const params = useLocalSearchParams<{ type: WorkoutType; date?: string }>();
   const type = params.type ?? 'gym';
   const [state, setState] = useState<State>({ kind: 'idle' });
-  const available = aiAvailable();
+  const auth = useAuth();
+  const signedOut = auth.configured && auth.status !== 'signedIn';
+  const available = aiAvailable() && !signedOut;
   const label = activityLabel(t, type);
 
   const take = async () => {
@@ -57,7 +60,13 @@ export default function WorkoutPhoto() {
 
   return (
     <Screen back="close" title={t('workoutPhoto.title')} subtitle={t('workoutPhoto.subtitle')}>
-      {!available ? (
+      {signedOut ? (
+        <Card style={styles.result}>
+          <AppText variant="bodyStrong">{t('ai.signed_out')}</AppText>
+          <Button label={t('auth.signIn')} size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/auth/sign-in')} />
+        </Card>
+      ) : null}
+      {!aiAvailable() ? (
         <Card>
           <AppText variant="bodyStrong">{t('ai.not_configured')}</AppText>
         </Card>

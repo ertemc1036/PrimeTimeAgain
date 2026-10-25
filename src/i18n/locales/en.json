@@ -746,7 +746,19 @@
     "free": "Everything you need to plan, log and build your streak stays free.",
     "devPreview": "Developer preview: show Pro screens",
     "devPreviewHint": "Development builds only. Doesn't grant AI access; the server still checks your subscription.",
-    "isPro": "You have MINUS 30 Pro."
+    "isPro": "You have MINUS 30 Pro.",
+    "storeUnavailable": "Subscriptions can be bought in the installed MINUS 30 app from the App Store or Google Play. They aren't available in this preview.",
+    "notConfigured": "Subscriptions aren't set up in this build yet. The prices shown are provisional.",
+    "signInFirst": "Create a free account first, so your Pro subscription works on all your devices.",
+    "welcome": "Welcome to MINUS 30 Pro.",
+    "pending": "Your purchase is waiting for approval. Pro unlocks as soon as it's confirmed.",
+    "failed": "The purchase didn't go through. You haven't been charged.",
+    "restored": "Your purchases were restored.",
+    "nothingToRestore": "No active subscription was found for this store account.",
+    "manage": "Manage subscription",
+    "grace": "There's a problem with your payment. Pro stays active for now. Please update your payment method in your App Store or Google Play account.",
+    "expired": "Your Pro subscription has ended. Everything you logged is still here.",
+    "renews": "Active until {{date}}"
   },
   "coach": {
     "title": "AI Coach",
@@ -778,7 +790,8 @@
     "offline": "You're offline. AI features need an internet connection.",
     "invalid_response": "We received an unexpected result. Please try again or log manually.",
     "provider_error": "The AI service is unavailable right now. Please try again or log manually.",
-    "camera": "Camera access is needed for this. You can allow it in your phone's settings, or log manually."
+    "camera": "Camera access is needed for this. You can allow it in your phone's settings, or log manually.",
+    "timeout": "That took too long. Please try again or log manually."
   },
   "history": {
     "meals": "Meal history",
