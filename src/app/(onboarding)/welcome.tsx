@@ -1,13 +1,14 @@
 import { router, useFocusEffect } from 'expo-router';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { Image } from 'expo-image';
 
 import { AppText, Button, IconButton } from '@/components/ui';
+import { authAvailable } from '@/services/auth';
 import { colors, layout, spacing } from '@/theme';
 
 export default function Welcome() {
@@ -48,6 +49,13 @@ export default function Welcome() {
         <View style={styles.cta}>
           <PrimaryInverse label={t('onboarding.welcome.cta')} onPress={() => router.push('/profile')} />
         </View>
+        {authAvailable() ? (
+          <Pressable onPress={() => router.push('/auth/sign-in')} accessibilityRole="button" style={styles.signIn}>
+            <AppText variant="bodyStrong" color={colors.white} align="center">
+              {t('auth.welcomeSignIn')}
+            </AppText>
+          </Pressable>
+        ) : null}
         <AppText variant="caption" color="#BDBDBD" align="center">
           {t('onboarding.welcome.adults')}
         </AppText>
@@ -68,4 +76,5 @@ const styles = StyleSheet.create({
   lang: { position: 'absolute', right: layout.screenPadding, zIndex: 1 },
   bottom: { gap: spacing.md, width: '100%', maxWidth: layout.maxContentWidth, alignSelf: 'center' },
   cta: { width: '100%' },
+  signIn: { minHeight: 44, justifyContent: 'center' },
 });

@@ -20,6 +20,12 @@ interface AppStateValue {
   retryLoad(): void;
   dispatch(mutation: Mutation): Promise<DispatchResult>;
   resetAll(): Promise<void>;
+  /** Current data without waiting for a re-render (used by sync). */
+  getData(): AppData;
+  /** Replace data with a version merged from the cloud. Not treated as a local change. */
+  applyRemote(next: AppData): Promise<void>;
+  /** Observe local changes (prev → next) after they are applied. */
+  onLocalChange(fn: (prev: AppData, next: AppData) => void): () => void;
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null);
@@ -37,6 +43,7 @@ export function AppStateProvider({ children, repository: injected }: { children:
   const dataRef = useRef(data);
   const [today, setToday] = useState(getToday);
   const todayRef = useRef(today);
+  const listeners = useRef(new Set<(prev: AppData, next: AppData) => void>());
 
   const fetchData = useCallback(
     () =>
@@ -89,6 +96,7 @@ export function AppStateProvider({ children, repository: injected }: { children:
       if (earned.length) next = { ...next, achievements: [...next.achievements, ...earned] };
       dataRef.current = next;
       setData(next);
+      listeners.current.forEach((l) => l(prev, next));
       try {
         await repository.commit(mutation, prev, next);
         return { ok: true, earned };
@@ -111,6 +119,18 @@ export function AppStateProvider({ children, repository: injected }: { children:
         await repository.reset();
         dataRef.current = emptyAppData();
         setData(dataRef.current);
+      },
+      getData: () => dataRef.current,
+      applyRemote: async (next: AppData) => {
+        const prev = dataRef.current;
+        if (prev === next) return;
+        dataRef.current = next;
+        setData(next);
+        await repository.commit({ type: 'replaceAll', data: next }, prev, next);
+      },
+      onLocalChange: (fn) => {
+        listeners.current.add(fn);
+        return () => void listeners.current.delete(fn);
       },
     }),
     [status, data, today, retryLoad, dispatch, repository],

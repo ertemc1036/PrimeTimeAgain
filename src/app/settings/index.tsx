@@ -8,6 +8,7 @@ import { env } from '@/config/env';
 import { getLanguage } from '@/i18n/languages';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useAppState } from '@/state/AppStateProvider';
+import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
 import { spacing } from '@/theme';
 
@@ -20,12 +21,13 @@ export default function SettingsHub() {
   const p = data.profile;
   const n = data.notifications;
   const lang = useLanguage();
+  const auth = useAuth();
 
   const sections: { title: string; rows: Row[] }[] = [
     {
       title: t('profile.account'),
       rows: [
-        { label: t('account.title'), icon: 'person-outline', href: '/settings/account' },
+        { label: t('account.title'), icon: 'person-outline', href: '/settings/account', value: auth.configured ? (auth.user?.email ?? t('account.notSignedIn')) : undefined },
         { label: t('profile.language'), icon: 'globe-outline', href: '/language', value: getLanguage(lang).nativeName },
       ],
     },

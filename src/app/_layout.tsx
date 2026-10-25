@@ -7,7 +7,7 @@ import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
 import { Inter_700Bold } from '@expo-google-fonts/inter/700Bold';
 import { Inter_800ExtraBold } from '@expo-google-fonts/inter/800ExtraBold';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ErrorState, ToastProvider } from '@/components/ui';
 import { ReminderSync } from '@/features/ReminderSync';
 import { AppStateProvider, useAppState } from '@/state/AppStateProvider';
+import { AuthProvider } from '@/state/AuthProvider';
 import { ProProvider } from '@/state/ProProvider';
+import { SyncProvider, useSync } from '@/state/SyncProvider';
 import { colors } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync();
@@ -31,11 +33,15 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <AppStateProvider>
-        <ProProvider>
-          <ToastProvider>
-            <RootNavigator ready={(fontsLoaded || !!fontError) && languageReady} />
-          </ToastProvider>
-        </ProProvider>
+        <AuthProvider>
+          <SyncProvider>
+            <ProProvider>
+              <ToastProvider>
+                <RootNavigator ready={(fontsLoaded || !!fontError) && languageReady} />
+              </ToastProvider>
+            </ProProvider>
+          </SyncProvider>
+        </AuthProvider>
       </AppStateProvider>
     </GestureHandlerRootView>
   );
@@ -58,9 +64,11 @@ function RootNavigator({ ready }: { ready: boolean }) {
     <>
       <StatusBar style="dark" />
       {isOnboarded ? <ReminderSync /> : null}
+      <SyncDecisionGate />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="language" options={modal} />
+        <Stack.Screen name="auth" options={modal} />
         <Stack.Protected guard={!isOnboarded}>
           <Stack.Screen name="(onboarding)" />
         </Stack.Protected>
@@ -82,6 +90,15 @@ function RootNavigator({ ready }: { ready: boolean }) {
       </Stack>
     </>
   );
+}
+
+/** Opens the merge/replace choice when a signed-in account meets existing data on this device. */
+function SyncDecisionGate() {
+  const { decision } = useSync();
+  useEffect(() => {
+    if (decision) router.push('/auth/merge');
+  }, [decision]);
+  return null;
 }
 
 const styles = StyleSheet.create({ root: { flex: 1, backgroundColor: colors.background } });

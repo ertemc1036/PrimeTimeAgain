@@ -130,7 +130,10 @@ export interface ActivityLog {
   description: string;
   /** 'manual' = self-reported; 'photo' = self-reported with an optional AI-described photo for context. */
   entryMethod: 'manual' | 'photo';
+  /** Local file on this device (never synced). */
   photoUri?: string;
+  /** Private cloud copy: "<user id>/<id>.jpg" in the workout-photos bucket. */
+  photoPath?: string;
   aiEnvironment?: EnvironmentAssessment;
   createdAt: string;
   updatedAt: string;
@@ -152,7 +155,10 @@ export interface WeightEntry {
 export interface ProgressPhoto {
   id: string;
   date: ISODate;
+  /** Local file on this device; empty when the photo exists only in the cloud (another device). */
   uri: string;
+  /** Private cloud copy: "<user id>/<id>.jpg" in the progress-photos bucket. */
+  storagePath?: string;
   createdAt: string;
 }
 

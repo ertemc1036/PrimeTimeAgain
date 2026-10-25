@@ -49,7 +49,10 @@ export type Mutation =
   | { type: 'clearCoach' }
   | { type: 'setCoachConsent'; value: boolean }
   | { type: 'deleteAllFood' }
-  | { type: 'deleteAllActivity' };
+  | { type: 'deleteAllActivity' }
+  /** Cloud copy of a photo was uploaded (metadata only; allowed for any date). */
+  | { type: 'setPhotoStoragePath'; id: string; path: string }
+  | { type: 'setActivityPhotoPath'; id: string; path: string };
 
 export type RejectReason = 'locked' | 'duplicate' | 'notFound' | 'empty';
 export class MutationRejected extends Error {
@@ -136,6 +139,10 @@ export function applyMutation(data: AppData, m: Mutation, today: ISODate): AppDa
       return { ...data, savedMeals: data.savedMeals.filter((s) => s.id !== m.id) };
     case 'upsertCustomFood':
       return { ...data, customFoods: upsertById(data.customFoods, m.food) };
+    case 'setPhotoStoragePath':
+      return { ...data, photos: data.photos.map((p) => (p.id === m.id ? { ...p, storagePath: m.path } : p)) };
+    case 'setActivityPhotoPath':
+      return { ...data, activityLogs: data.activityLogs.map((a) => (a.id === m.id ? { ...a, photoPath: m.path } : a)) };
     case 'updateNotifications':
       return { ...data, notifications: { ...data.notifications, ...m.patch } };
     case 'updateEatingWindow':
