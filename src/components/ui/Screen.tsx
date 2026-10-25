@@ -21,10 +21,12 @@ export interface ScreenProps {
   inTabs?: boolean;
   children: ReactNode;
   background?: string;
+  /** Presented as an iOS sheet. Defaults to true for screens with a close button. */
+  modal?: boolean;
 }
 
 /** Standard screen frame: safe areas, generous padding, title block, optional sticky footer. */
-export function Screen({ title, subtitle, eyebrow, back, headerRight, footer, scroll = true, inTabs, children, background = colors.background }: ScreenProps) {
+export function Screen({ title, subtitle, eyebrow, back, headerRight, footer, scroll = true, inTabs, children, background = colors.background, modal = back === 'close' }: ScreenProps) {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const header = (
@@ -66,11 +68,21 @@ export function Screen({ title, subtitle, eyebrow, back, headerRight, footer, sc
       {children}
     </View>
   );
+  // iOS sheets start below the status bar, so the window's top inset would leave a large gap, and the
+  // keyboard offset has to account for the sheet's position on screen.
+  const iosSheet = Platform.OS === 'ios' && modal;
+  const topPad = iosSheet ? spacing.sm : insets.top;
+  const keyboardOffset = iosSheet ? insets.top + spacing.sm : 0;
   const bottomPad = footer ? spacing.lg : inTabs ? spacing.xxxl + 48 : insets.bottom + spacing.xxl;
   return (
-    <KeyboardAvoidingView style={[styles.root, { paddingTop: insets.top, backgroundColor: background }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView
+      style={[styles.root, { paddingTop: topPad, backgroundColor: background }]}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={keyboardOffset}>
       {scroll ? (
-        <ScrollView contentContainerStyle={[styles.scroll, { paddingBottom: bottomPad }]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={[styles.scroll, { paddingBottom: bottomPad }]} keyboardShouldPersistTaps="handled"
+          keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+          showsVerticalScrollIndicator={false}>
           {content}
         </ScrollView>
       ) : (

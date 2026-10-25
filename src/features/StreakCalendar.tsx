@@ -8,7 +8,7 @@ import { addMonths, monthGrid, monthKey } from '@/domain/dates';
 import type { AppData, ISODate } from '@/domain/types';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
-import { colors, radii, spacing } from '@/theme';
+import { colors, fonts, radii, spacing } from '@/theme';
 
 const WEEKDAYS = ['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05', '2024-01-06', '2024-01-07'];
 
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   neutral: {},
   todayRing: { borderWidth: 2, borderColor: colors.black },
   selected: { transform: [{ scale: 1.08 }] },
-  bold: { fontWeight: '700' },
+  bold: { fontFamily: fonts.bold },
   legend: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md, marginTop: spacing.sm, justifyContent: 'center' },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   swatch: { width: 12, height: 12, borderRadius: 6 },

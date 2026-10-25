@@ -19,6 +19,8 @@ npm run web        # or run in a browser
 
 Everything in the free tier works fully offline with no configuration. Data is stored on the device.
 
+**Testing on an iPhone:** step-by-step guide and test checklist in [`docs/IPHONE_TESTING.md`](docs/IPHONE_TESTING.md).
+
 ## What's in the app
 
 | Area | Free | Pro |
