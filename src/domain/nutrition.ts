@@ -1,3 +1,4 @@
+import { foodName, type FoodLang } from './foodNames';
 import { FOODS, getFood, type FoodRef, type Serving } from './foods';
 import type { CustomFood, FoodItem, Macros } from './types';
 
@@ -19,14 +20,14 @@ export function gramsFor(food: FoodRef, quantity: number, unit: string): number 
 }
 
 /** Build an item from the reference database. Unknown units produce no estimate rather than a guess. */
-export function itemFromFood(id: string, foodId: string, quantity: number, unit: string): FoodItem | null {
+export function itemFromFood(id: string, foodId: string, quantity: number, unit: string, lang: FoodLang = 'en'): FoodItem | null {
   const food = getFood(foodId);
   if (!food) return null;
   const grams = gramsFor(food, quantity, unit);
   return {
     id,
     foodId,
-    name: food.name,
+    name: foodName(food, lang),
     quantity,
     unit,
     grams: grams ?? undefined,
@@ -84,7 +85,8 @@ export function totals(items: FoodItem[]): NutritionTotals {
 }
 
 /** Simple search over built-in and custom foods: prefix and word matches rank first. */
-export function searchFoods(query: string, custom: CustomFood[] = [], limit = 20) {
+/** Matches the food's name in the app language and in English, so either works when searching. */
+export function searchFoods(query: string, custom: CustomFood[] = [], limit = 20, lang: FoodLang = 'en') {
   const q = query.trim().toLowerCase();
   if (!q) return { foods: FOODS.slice(0, limit), custom: custom.slice(0, limit) };
   const tokens = q.split(/[\s,]+/).filter(Boolean);
@@ -99,9 +101,9 @@ export function searchFoods(query: string, custom: CustomFood[] = [], limit = 20
     return 99;
   };
   return {
-    foods: FOODS.map((f) => ({ f, s: score(f.name) }))
+    foods: FOODS.map((f) => ({ f, s: Math.min(score(foodName(f, lang)), score(f.name)) }))
       .filter((x) => x.s < 99)
-      .sort((a, b) => a.s - b.s || a.f.name.localeCompare(b.f.name))
+      .sort((a, b) => a.s - b.s || foodName(a.f, lang).localeCompare(foodName(b.f, lang)))
       .slice(0, limit)
       .map((x) => x.f),
     custom: custom.filter((c) => score(c.name) < 99).slice(0, limit),

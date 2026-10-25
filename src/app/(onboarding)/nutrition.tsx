@@ -6,11 +6,12 @@ import { AppText, Card } from '@/components/ui';
 import type { FoodPreferences } from '@/domain/types';
 import { useOnboarding } from '@/features/onboarding/draft';
 import { OnboardingStep } from '@/features/onboarding/OnboardingStep';
-import { FOOD_SUGGESTIONS } from '@/features/foodSuggestions';
+import { useFoodSuggestions } from '@/features/foodSuggestions';
 import { TagInput } from '@/features/TagInput';
 
 export default function NutritionStep() {
   const { t } = useTranslation();
+  const FOOD_SUGGESTIONS = useFoodSuggestions();
   const { draft, update } = useOnboarding();
   const [food, setFood] = useState<FoodPreferences>(draft.food);
   const set = (k: keyof FoodPreferences) => (v: string[]) => setFood({ ...food, [k]: v });

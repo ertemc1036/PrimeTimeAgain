@@ -8,7 +8,7 @@ import { parseTime } from '@/domain/dates';
 import { checkGoalWeight } from '@/domain/goals';
 import type { ActivityPreference, FoodPreferences, GoalType, Units } from '@/domain/types';
 import { BodyFields, type BodyInputs } from '@/features/BodyFields';
-import { FOOD_SUGGESTIONS } from '@/features/foodSuggestions';
+import { useFoodSuggestions } from '@/features/foodSuggestions';
 import { TagInput } from '@/features/TagInput';
 import { formatWeight, heightToInputs, parseHeight, parseWeight, weightToInput, weightUnit } from '@/features/units';
 import { useSave } from '@/hooks/useSave';
@@ -20,6 +20,7 @@ const ACTIVITIES: ActivityPreference[] = ['gym', 'walking', 'running', 'home', '
 
 export default function Health() {
   const { t } = useTranslation();
+  const FOOD_SUGGESTIONS = useFoodSuggestions();
   const { data } = useAppState();
   const save = useSave();
   const p = data.profile!;

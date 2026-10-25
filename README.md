@@ -6,7 +6,9 @@ A health and fitness app for adults (18+) on iOS and Android. The daily loop is
 **Plan → Do → Log → Complete → Repeat**: plan tomorrow's meals and activity, log what you eat,
 log a workout or take a Rest Day, and watch the Today checklist and streak calendar fill in.
 
-Expo SDK 58 · React Native 0.88 · TypeScript · Expo Router · Inter · i18next (English) · zod.
+Expo SDK 58 · React Native 0.88 · TypeScript · Expo Router · Inter · i18next · zod.
+
+**Languages:** English, Deutsch, Türkçe, Español, Français. The app starts in the phone's language when it is one of these (otherwise English) and can be changed any time: globe button on the Welcome screen, or Profile → Language. Built-in food names and serving sizes are translated too and can be searched in the app language or in English. Instagram: [@minus30.app](https://www.instagram.com/minus30.app/) (Profile → Information).
 Optional backend: Supabase (Postgres + RLS, private storage, Edge Functions with Claude for Pro AI).
 
 ## Run it
@@ -52,7 +54,7 @@ Pro gives no extra streak credit. The rules live in [`src/domain/completion.ts`]
 | `npm start` / `npm run web` | Expo dev server |
 | `npm run typecheck` | TypeScript (strict, typed routes, typed translation keys) |
 | `npm run lint` | ESLint (Expo config + React Compiler rules) |
-| `npm test` | Jest: completion rules, streaks, DST/year boundaries, grace window, validation, duplicates, reminders, goal-weight safety, photo assessment, entitlements, persistence, AI schema mirror |
+| `npm test` | Jest: translation completeness for every language, translated food search, completion rules, streaks, DST/year boundaries, grace window, validation, duplicates, reminders, goal-weight safety, photo assessment, entitlements, persistence, AI schema mirror |
 
 ## Project layout
 

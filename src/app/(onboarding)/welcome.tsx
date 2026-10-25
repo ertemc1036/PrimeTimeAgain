@@ -5,7 +5,9 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Button } from '@/components/ui';
+import { Image } from 'expo-image';
+
+import { AppText, Button, IconButton } from '@/components/ui';
 import { colors, layout, spacing } from '@/theme';
 
 export default function Welcome() {
@@ -20,10 +22,18 @@ export default function Welcome() {
   );
   return (
     <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: Math.max(insets.bottom, spacing.lg) }]}>
+      <View style={[styles.lang, { top: insets.top + spacing.xs }]}>
+        <IconButton icon="globe-outline" label={t('common.language')} onPress={() => router.push('/language')} variant="inverse" color={colors.white} />
+      </View>
       <View style={styles.center}>
-        <AppText variant="display" color={colors.white} style={styles.logo} accessibilityRole="header">
-          {t('brand.name')}
-        </AppText>
+        <Image
+          source={require('../../../assets/images/logo-wordmark.png')}
+          style={styles.logo}
+          contentFit="contain"
+          accessible
+          accessibilityRole="header"
+          accessibilityLabel={t('brand.name')}
+        />
         <AppText variant="heading" color={colors.white} align="center">
           {t('onboarding.welcome.subtitle')}
         </AppText>
@@ -54,7 +64,8 @@ function PrimaryInverse({ label, onPress }: { label: string; onPress: () => void
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.black, paddingHorizontal: layout.screenPadding },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md },
-  logo: { fontSize: 56, lineHeight: 60, letterSpacing: -2 },
+  logo: { width: 260, aspectRatio: 957 / 188, marginBottom: spacing.md },
+  lang: { position: 'absolute', right: layout.screenPadding, zIndex: 1 },
   bottom: { gap: spacing.md, width: '100%', maxWidth: layout.maxContentWidth, alignSelf: 'center' },
   cta: { width: '100%' },
 });

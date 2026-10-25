@@ -83,6 +83,15 @@ Work through these in order with a fresh install.
 - [ ] Journey → Progress photos → Add Photo opens the photo library; the photo appears and can be deleted.
 - [ ] Privacy and data → Export opens the iOS share sheet.
 
+**Languages and branding**
+- [ ] With the iPhone set to German, Turkish, Spanish or French, the app opens in that language; otherwise English.
+- [ ] Welcome → globe button → pick a language: every screen switches immediately, including dates and the calendar.
+- [ ] Profile → Language shows the current language; the choice is kept after force-quitting.
+- [ ] In German, searching "Haferflocken" finds oats; English names ("oats") work too.
+- [ ] Long German/French texts aren't cut off in cards, buttons and the tab bar.
+- [ ] Welcome screen shows the MINUS 30 logo; Profile → Information → Instagram opens @minus30.app.
+- [ ] App icon and black splash screen with the logo appear only in a development/production build (Expo Go shows its own icon and splash).
+
 **Pro (expected to say "not available" in this build)**
 - [ ] The floating coach button and the Scan With AI / Photo Check-In buttons open the paywall.
 - [ ] Paywall "Continue" and "Restore Purchases" show "Subscriptions aren't available in this build yet". No purchase is made.

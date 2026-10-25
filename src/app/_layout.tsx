@@ -1,4 +1,5 @@
-import '@/i18n';
+// Initialises translations before any screen renders.
+import { hydrateLanguage } from '@/i18n';
 
 import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
 import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
@@ -9,7 +10,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -23,12 +24,16 @@ void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, Inter_800ExtraBold });
+  const [languageReady, setLanguageReady] = useState(false);
+  useEffect(() => {
+    void hydrateLanguage().finally(() => setLanguageReady(true));
+  }, []);
   return (
     <GestureHandlerRootView style={styles.root}>
       <AppStateProvider>
         <ProProvider>
           <ToastProvider>
-            <RootNavigator ready={fontsLoaded || !!fontError} />
+            <RootNavigator ready={(fontsLoaded || !!fontError) && languageReady} />
           </ToastProvider>
         </ProProvider>
       </AppStateProvider>
@@ -55,6 +60,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
       {isOnboarded ? <ReminderSync /> : null}
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="index" />
+        <Stack.Screen name="language" options={modal} />
         <Stack.Protected guard={!isOnboarded}>
           <Stack.Screen name="(onboarding)" />
         </Stack.Protected>

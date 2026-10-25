@@ -4,7 +4,9 @@ import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Chip, Icon, IconButton, TextField } from '@/components/ui';
+import { foodName, servingLabel } from '@/domain/foodNames';
 import { getFood } from '@/domain/foods';
+import { useLanguage } from '@/i18n/useLanguage';
 import { freeTextItem, itemFromCustomFood, itemFromFood, searchFoods } from '@/domain/nutrition';
 import type { CustomFood, FoodItem, SavedMeal } from '@/domain/types';
 import { newId } from '@/utils/id';
@@ -19,7 +21,7 @@ export function rebuildItem(item: FoodItem, quantity: number, unit: string, cust
     if (cf) return itemFromCustomFood(item.id, cf, quantity);
   } else if (item.foodId) {
     const rebuilt = itemFromFood(item.id, item.foodId, quantity, unit);
-    if (rebuilt) return rebuilt;
+    if (rebuilt) return { ...rebuilt, name: item.name };
   }
   if (item.nutrition && item.quantity > 0 && unit === item.unit) {
     const f = quantity / item.quantity;
@@ -51,7 +53,8 @@ export function ItemsEditor({
 }) {
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
-  const results = useMemo(() => (query.trim() ? searchFoods(query, customFoods, 6) : null), [query, customFoods]);
+  const lang = useLanguage();
+  const results = useMemo(() => (query.trim() ? searchFoods(query, customFoods, 6, lang) : null), [query, customFoods, lang]);
   const recent = useMemo(
     () => [...savedMeals].sort((a, b) => Number(b.favorite) - Number(a.favorite) || (a.lastUsedAt < b.lastUsedAt ? 1 : -1)).slice(0, 6),
     [savedMeals],
@@ -92,9 +95,9 @@ export function ItemsEditor({
             return (
               <ResultRow
                 key={f.id}
-                name={f.name}
-                detail={`${s.label} · ${t('common.kcal', { value: Math.round((f.per100g.kcal * s.grams) / 100) })}`}
-                onPress={() => add(itemFromFood(newId('item'), f.id, 1, s.label))}
+                name={foodName(f, lang)}
+                detail={`${servingLabel(s.label, lang)} · ${t('common.kcal', { value: Math.round((f.per100g.kcal * s.grams) / 100) })}`}
+                onPress={() => add(itemFromFood(newId('item'), f.id, 1, s.label, lang))}
               />
             );
           })}
@@ -144,6 +147,7 @@ function ResultRow({ name, detail, onPress, icon = 'add' }: { name: string; deta
 
 function ItemRow({ item, onChange, onRemove, customFoods }: { item: FoodItem; onChange: (i: FoodItem) => void; onRemove: () => void; customFoods: CustomFood[] }) {
   const { t } = useTranslation();
+  const lang = useLanguage();
   const [qty, setQty] = useState(String(item.quantity));
   const units = unitsFor(item);
   const update = (text: string, unit = item.unit) => {
@@ -157,7 +161,9 @@ function ItemRow({ item, onChange, onRemove, customFoods }: { item: FoodItem; on
         <View style={styles.flex}>
           <AppText variant="bodyStrong">{item.name}</AppText>
           <AppText variant="caption" color="secondary">
-            {item.nutrition ? `${t('common.kcal', { value: item.nutrition.kcal })} · P ${item.nutrition.protein} · C ${item.nutrition.carbs} · F ${item.nutrition.fat}` : t('items.noEstimate')}
+            {item.nutrition
+              ? `${t('common.kcal', { value: item.nutrition.kcal })} · ${t('items.macros', { p: item.nutrition.protein, c: item.nutrition.carbs, f: item.nutrition.fat })}`
+              : t('items.noEstimate')}
           </AppText>
         </View>
         <IconButton icon="close" label={t('items.remove', { name: item.name })} onPress={onRemove} variant="plain" />
@@ -173,7 +179,7 @@ function ItemRow({ item, onChange, onRemove, customFoods }: { item: FoodItem; on
         />
         <View style={styles.units}>
           {units.map((u) => (
-            <Chip key={u} label={u} selected={u === item.unit} mode="radio" onPress={() => update(qty, u)} />
+            <Chip key={u} label={servingLabel(u, lang)} selected={u === item.unit} mode="radio" onPress={() => update(qty, u)} />
           ))}
         </View>
       </View>

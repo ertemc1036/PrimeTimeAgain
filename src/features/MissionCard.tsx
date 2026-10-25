@@ -20,7 +20,7 @@ export function MissionCard({ icon, title, hint, done, onPress }: { icon: IconNa
           {title}
         </AppText>
         {hint ? (
-          <AppText variant="caption" color={done ? '#BDBDBD' : 'secondary'} numberOfLines={2}>
+          <AppText variant="caption" color={done ? '#BDBDBD' : 'secondary'} numberOfLines={3}>
             {hint}
           </AppText>
         ) : null}

@@ -3,8 +3,10 @@ import { Linking, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Card, ListRow, ProBadge, Screen, type IconName } from '@/components/ui';
-import { APP_VERSION } from '@/config/app';
+import { APP_VERSION, INSTAGRAM_HANDLE, INSTAGRAM_URL } from '@/config/app';
 import { env } from '@/config/env';
+import { getLanguage } from '@/i18n/languages';
+import { useLanguage } from '@/i18n/useLanguage';
 import { useAppState } from '@/state/AppStateProvider';
 import { usePro } from '@/state/ProProvider';
 import { spacing } from '@/theme';
@@ -17,9 +19,16 @@ export default function SettingsHub() {
   const { isPro } = usePro();
   const p = data.profile;
   const n = data.notifications;
+  const lang = useLanguage();
 
   const sections: { title: string; rows: Row[] }[] = [
-    { title: t('profile.account'), rows: [{ label: t('account.title'), icon: 'person-outline', href: '/settings/account' }] },
+    {
+      title: t('profile.account'),
+      rows: [
+        { label: t('account.title'), icon: 'person-outline', href: '/settings/account' },
+        { label: t('profile.language'), icon: 'globe-outline', href: '/language', value: getLanguage(lang).nativeName },
+      ],
+    },
     {
       title: t('profile.health'),
       rows: [{ label: t('health.title'), icon: 'heart-outline', href: '/settings/health' }],
@@ -41,6 +50,7 @@ export default function SettingsHub() {
       rows: [
         { label: t('profile.privacyPolicy'), icon: 'document-text-outline', onPress: () => (env.privacyPolicyUrl ? void Linking.openURL(env.privacyPolicyUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'privacy' } })) },
         { label: t('profile.terms'), icon: 'document-outline', onPress: () => (env.termsUrl ? void Linking.openURL(env.termsUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'terms' } })) },
+        { label: t('profile.instagram'), icon: 'logo-instagram', value: INSTAGRAM_HANDLE, onPress: () => void Linking.openURL(INSTAGRAM_URL) },
         { label: t('profile.help'), icon: 'help-circle-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'help' } }) },
         { label: t('profile.contact'), icon: 'mail-outline', onPress: () => (env.supportEmail ? void Linking.openURL(`mailto:${env.supportEmail}`) : router.push({ pathname: '/settings/legal', params: { doc: 'contact' } })) },
       ],

@@ -30,7 +30,8 @@
     "pro": "PRO",
     "on": "On",
     "off": "Off",
-    "portion": "portion"
+    "portion": "portion",
+    "language": "Language"
   },
   "brand": {
     "name": "MINUS 30",
@@ -124,7 +125,41 @@
       "allergies": "Food allergies",
       "dislikes": "Foods you'd rather avoid",
       "addPlaceholder": "Type and add",
-      "allergyNote": "Always check labels yourself. The app can't guarantee foods are allergen-free."
+      "allergyNote": "Always check labels yourself. The app can't guarantee foods are allergen-free.",
+      "suggest": {
+        "preferred": [
+          "Chicken",
+          "Fish",
+          "Eggs",
+          "Rice",
+          "Pasta",
+          "Vegetables",
+          "Fruit",
+          "Yogurt",
+          "Oats",
+          "Legumes"
+        ],
+        "restrictions": [
+          "Vegetarian",
+          "Vegan",
+          "Pescatarian",
+          "Halal",
+          "Kosher",
+          "Gluten-free",
+          "Lactose-free"
+        ],
+        "allergies": [
+          "Peanuts",
+          "Tree nuts",
+          "Milk",
+          "Eggs",
+          "Fish",
+          "Shellfish",
+          "Soy",
+          "Wheat",
+          "Sesame"
+        ]
+      }
     },
     "planning": {
       "title": "When would you like to plan tomorrow?",
@@ -279,7 +314,8 @@
     "remove": "Remove {{name}}",
     "empty": "No foods added yet. Search above or just type a meal name.",
     "estimateNote": "Nutrition values are estimates based on typical reference values. Real foods vary.",
-    "useMeal": "Use {{name}}"
+    "useMeal": "Use {{name}}",
+    "macros": "P {{p}} · C {{c}} · F {{f}}"
   },
   "customFood": {
     "title": "Custom food",
@@ -292,7 +328,8 @@
     "carbs": "Carbohydrates (g)",
     "fat": "Fat (g)",
     "hint": "Use the values on the package label.",
-    "invalid": "Please fill in the name and nutrition values."
+    "invalid": "Please fill in the name and nutrition values.",
+    "defaultServing": "1 serving"
   },
   "food": {
     "title": "Today's Food",
@@ -541,7 +578,9 @@
     "terms": "Terms of Service",
     "version": "Version {{version}}",
     "mealHistory": "Meal history",
-    "workoutHistory": "Workout history"
+    "workoutHistory": "Workout history",
+    "language": "Language",
+    "instagram": "Instagram"
   },
   "account": {
     "title": "Account",
@@ -757,5 +796,9 @@
   "notFound": {
     "title": "This page doesn't exist.",
     "action": "Go to Today"
+  },
+  "language": {
+    "title": "Language",
+    "subtitle": "Choose the language for MINUS 30. Entries you have already saved stay as you wrote them."
   }
 }

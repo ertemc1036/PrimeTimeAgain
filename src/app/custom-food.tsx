@@ -23,7 +23,7 @@ export default function CustomFood() {
     if (!valid) return setError(true);
     const r = await save({
       type: 'upsertCustomFood',
-      food: { id: newId('cf'), name: f.name.trim().slice(0, 60), servingLabel: f.serving.trim() || '1 serving', servingGrams: parseNum(f.grams), perServing: { kcal: kcal!, protein, carbs, fat } },
+      food: { id: newId('cf'), name: f.name.trim().slice(0, 60), servingLabel: f.serving.trim() || t('customFood.defaultServing'), servingGrams: parseNum(f.grams), perServing: { kcal: kcal!, protein, carbs, fat } },
     });
     if (r.ok) router.back();
   };
