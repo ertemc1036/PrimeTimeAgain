@@ -1,62 +1,91 @@
 # MINUS 30 backend setup
 
-The app is local-first and works without any backend. This guide connects the optional cloud
-pieces. Nothing here is deployed or activated by the repository itself.
+The app is local-first and fully usable without a backend. Supabase adds accounts, cloud backup
+and sync across devices, cloud export and deletion, and the server side of AI and Pro. Nothing in
+this repository deploys anything by itself; see [RELEASE.md](RELEASE.md) for the owner steps.
 
-## 1. Supabase project
+## Architecture
 
-1. Create a Supabase project.
-2. Apply the schema: `supabase db push` (or run `supabase/migrations/20261025000000_minus30_init.sql`).
-   - Every user table has row-level security: users can only access their own rows.
-   - `entitlements` is readable by its owner and written only by the RevenueCat webhook.
-   - `ai_usage` is service-role only (rate limiting, no content stored).
-   - Buckets `progress-photos` and `workout-photos` are **private**; files must sit under
-     `<user id>/…`. No public URLs.
-3. Add to `.env` (public values only):
-   `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`.
-4. Enable email sign-in in Supabase Auth. Sessions are stored in the device keychain/keystore.
+- **Auth:** Supabase email + password. Email confirmation and password reset use 6-digit codes
+  (no deep links). Sessions are kept in the iOS Keychain / Android Keystore (`expo-secure-store`).
+- **Data:** one table, `public.user_records`: one row per app record (`collection`, `id`, `data`,
+  `deleted`, `updated_at`, `version`, `server_seq`). Row-level security allows each user only
+  their own rows.
+- **Sync** (`sync` function): the app keeps an outbox of local changes and pushes up to 500 per
+  request. The server applies them with deterministic last-write-wins: the newer `updated_at` wins;
+  on a tie, the higher content hash wins. Deletions are kept as tombstones. Every change gets a
+  per-record result (`applied` / `stale` / `duplicate` / `invalid`). When the server copy wins, it
+  is returned, so nothing is discarded silently. Pulls are paged by `server_seq` (1000 rows per
+  page). A unique index stops the same workout being saved twice (same type, date, start time and
+  duration) across devices.
+- **Photos:** private buckets `progress-photos` and `workout-photos`. Files live under
+  `<user id>/…` and are read through signed URLs that expire after 1 hour. There are no public
+  URLs. Photos are re-encoded on the device first, which removes EXIF/GPS data.
+- **Pro:** `entitlements` holds the verified RevenueCat state, written only by the server
+  (webhook or RevenueCat REST refresh). Users can read only their own row. AI functions check it
+  themselves; the app's own Pro flag never unlocks anything on the server.
+- **AI usage limits:** `ai_usage` (service role only, no content stored) enforces per-minute and
+  per-day limits atomically: food scan 6/min and 30/day, workout photo 6/min and 20/day, coach
+  10/min and 60/day.
 
-## 2. Edge Functions
+## Edge Functions
 
-| Function | Purpose | Auth |
+| Function | Purpose | Access |
 | --- | --- | --- |
-| `food-scan` | Meal photo → editable nutrition estimate (structured output, zod-validated) | Signed in + Pro + daily limit |
-| `workout-photo` | Classifies the photo setting: gym / outdoor / home / unclear / other | Signed in + Pro + daily limit |
-| `coach` | Safe wellness coaching chat (no medical advice, no unsafe diets) | Signed in + Pro + daily limit |
-| `revenuecat-webhook` | Writes `entitlements` from verified RevenueCat events | `Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>` |
-| `delete-account` | Deletes the caller's files and account (rows cascade) | Signed in |
+| `sync` | Push outbox changes, pull changes since a cursor, return the current entitlement | Signed in |
+| `export` | All cloud records of the caller as JSON (data portability) | Signed in |
+| `entitlement` | Re-check Pro with RevenueCat (after a purchase or restore) | Signed in |
+| `food-scan` | Meal photo → editable nutrition estimate (structured output, validated) | Signed in + Pro + limits |
+| `workout-photo` | Photo setting: gym / outdoor / home / unclear (never proof of exercise) | Signed in + Pro + limits |
+| `coach` | Safe wellness coaching, streamed (SSE). No medical advice or unsafe diets | Signed in + Pro + limits |
+| `revenuecat-webhook` | Updates `entitlements` from RevenueCat events | `Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>` |
+| `delete-account` | Deletes the caller's photos, records and account | Signed in |
+
+The functions talk to Postgres directly (`SUPABASE_DB_URL`, provided by Supabase). Per request,
+they set the caller as `authenticated` with their JWT claims, so row-level security applies inside
+the functions as well.
+
+AI: model `claude-opus-5-5` with server-side fallback (`fallbacks: "default"`) and structured
+JSON outputs. Without `ANTHROPIC_API_KEY`, the AI functions answer `503 not_configured` and the
+app says so; it never makes up results. The output shapes in
+`supabase/functions/_shared/schemas.ts` must match `src/domain/aiSchemas.ts`; a Jest test checks
+this.
+
+## Deploy (owner, after approval)
 
 ```bash
-supabase secrets set ANTHROPIC_API_KEY=... REVENUECAT_WEBHOOK_SECRET=...
-supabase functions deploy food-scan workout-photo coach delete-account
+supabase link --project-ref <ref>
+supabase db push                                   # supabase/migrations/20261026000000_minus30_init.sql
+supabase secrets set ANTHROPIC_API_KEY=… REVENUECAT_SECRET_KEY=… REVENUECAT_WEBHOOK_SECRET=…
+supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account
 supabase functions deploy revenuecat-webhook --no-verify-jwt
 ```
 
-- Model: `claude-opus-5-5` with server-side refusal fallback enabled (`fallbacks: "default"`).
-- Output shapes in `supabase/functions/_shared/schemas.ts` must stay identical to
-  `src/domain/aiSchemas.ts` (a Jest test enforces this).
-- Photos are downscaled and re-encoded on the device first, which drops EXIF/GPS metadata. The
-  functions don't store images or chat text.
-- Type-check locally with `deno check supabase/functions/*/index.ts`.
+- **Auth → Email templates:** use `supabase/templates/confirmation.html` (Confirm signup) and
+  `supabase/templates/recovery.html` (Reset password). Both show `{{ .Token }}`.
+- **Auth → Providers → Email:** minimum password length 8. Turn on "Confirm email" if you want
+  verified addresses; the app handles both settings.
+- **Scheduled job:** `select cron.schedule('purge-ai-usage', '17 3 * * *', 'select public.purge_ai_usage()');`
+  (usage rows older than 30 days).
+- App env (EAS environment variables): `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`.
 
-## 3. Subscriptions (RevenueCat)
+Secret keys (service role, Anthropic, RevenueCat secret and webhook) exist only as function
+secrets, never in the app or in `EXPO_PUBLIC_*`. `npm run release-check` checks the latter.
 
-1. Create products `minus30_pro_monthly` and `minus30_pro_yearly` in App Store Connect and Google
-   Play, and an entitlement `pro` in RevenueCat.
-2. `npx expo install react-native-purchases`, then build a development build
-   (`eas build --profile development`); purchases don't work in Expo Go.
-3. Configure RevenueCat with the Supabase user id as the app user id, set
-   `EXPO_PUBLIC_REVENUECAT_IOS_KEY` / `_ANDROID_KEY`, and replace the `FREE` entitlement in
-   `src/state/ProProvider.tsx` with RevenueCat customer info (`fromRevenueCat` in
-   `src/services/subscriptions/entitlements.ts` already maps it, including grace periods).
-4. Point the RevenueCat webhook at `revenuecat-webhook` with the shared secret header.
+## Subscriptions (RevenueCat)
 
-The server never trusts the app for Pro: AI functions read `entitlements` themselves.
+- Products: `minus30_pro_monthly` (€5.99, provisional) and `minus30_pro_yearly` (€39.99,
+  provisional), entitlement `pro`, and an offering with the MONTHLY and ANNUAL packages.
+- The app identifies to RevenueCat with the Supabase user id, so Pro follows the account across
+  devices and platforms.
+- The paywall shows the store's localized prices. Without a store connection (Expo Go, web, or no
+  key), it shows the provisional prices, marked as such, and doesn't offer a purchase.
+- Expiration, grace period (billing retry), cancellation (Pro stays active until the period ends),
+  refunds and transfers are mapped from RevenueCat events and REST data in
+  `supabase/functions/_shared/entitlement.ts`.
 
-## 4. Before release
+## Local test stack
 
-- Replace placeholder prices with store prices, and the legal summaries with reviewed texts
-  (`EXPO_PUBLIC_PRIVACY_URL`, `EXPO_PUBLIC_TERMS_URL`, `EXPO_PUBLIC_SUPPORT_EMAIL`).
-- Set real bundle identifiers in `app.json` (currently `com.minus30.app` placeholders).
-- Cloud sync of local data is not implemented yet: the schema mirrors the local model, and the
-  repository interface (`src/data/repository.ts`) is the place to add a syncing implementation.
+See [`supabase/tests/README.md`](../supabase/tests/README.md). It runs real Postgres with these
+migrations, real GoTrue (Supabase Auth), and the Edge Functions under Deno, with mock Anthropic
+and RevenueCat servers.

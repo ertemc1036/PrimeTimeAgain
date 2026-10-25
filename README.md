@@ -33,7 +33,7 @@ Everything in the free tier works fully offline with no configuration. Data is s
 | Food | Planned vs logged meals, "Log This Meal", manual Add Food, estimated kcal/protein/carbs/fat (missing estimates are shown as missing, never as zero), Finish / reopen food log, yesterday's late entries | Scan With AI |
 | Workout | Planned activity, 4 cards, validated manual log (quick durations, recent descriptions, duplicate protection), Rest Day without photo | Photo check-in (setting only, never proof) |
 | Journey | Streaks, completed days, workouts, recovery days, meals, food consistency, optional weight with chart, optional 7-month journey and Maintenance Mode, milestones, private progress photos | — |
-| Settings | Health preferences, Discipline Mode reminders (Light / Smart / Focused / Hourly, quiet hours, pause), eating window (informational only), export and delete data, legal/help | Account sign-in (when Supabase is configured) |
+| Settings | Health preferences, Discipline Mode reminders (Light / Smart / Focused / Hourly, quiet hours, pause), eating window (informational only), export and delete data, legal/help, account and cloud sync (when Supabase is configured) | — |
 
 ### Daily completion rule
 
@@ -54,6 +54,8 @@ Pro gives no extra streak credit. The rules live in [`src/domain/completion.ts`]
 | `npm start` / `npm run web` | Expo dev server |
 | `npm run typecheck` | TypeScript (strict, typed routes, typed translation keys) |
 | `npm run lint` | ESLint (Expo config + React Compiler rules) |
+| `npm run test:server` | Points to the Deno backend tests (they need a local Postgres, Supabase Auth and Deno; see `supabase/tests/README.md`) |
+| `npm run release-check` | Lists release-blocking configuration that is still missing |
 | `npm test` | Jest: translation completeness for every language, translated food search, completion rules, streaks, DST/year boundaries, grace window, validation, duplicates, reminders, goal-weight safety, photo assessment, entitlements, persistence, AI schema mirror |
 
 ## Project layout
@@ -64,28 +66,32 @@ src/components/ui Monochrome design system (Button, Card, TextField, TimeField, 
 src/features/     Feature components (calendar, food items editor, chart, …)
 src/domain/       Pure business logic + tests (no React)
 src/data/         Local repository (AsyncStorage, one key per collection)
-src/state/        App state provider, Pro entitlement, screen hand-off
+src/state/        App state, auth, sync and Pro providers
+src/sync/         Sync engine, protocol, cloud transport, photo upload
 src/services/     Notifications, photos (EXIF stripped), AI client, Supabase, export
-supabase/         SQL migration (RLS, private buckets) and Edge Functions
+supabase/         SQL migration (RLS, private buckets), Edge Functions, local tests
 ```
 
 More: [`docs/BACKEND.md`](docs/BACKEND.md) (setup for accounts, AI and subscriptions).
 
-## Status of integrations
+## Accounts, sync and Pro
 
-These are **built but not connected** in this repository. The app says so on screen instead of
-pretending they work:
+- **Accounts and cloud sync** (Supabase): optional. Sign up, sign in, password reset with an
+  emailed code, backup and sync across devices (offline queue, deterministic conflicts, no
+  duplicates), merging local data on first sign-in, cloud export and account deletion. Needs a
+  Supabase project with the migration and Edge Functions deployed. See
+  [`docs/BACKEND.md`](docs/BACKEND.md).
+- **AI** (Scan With AI, photo check-in, AI Coach): runs only in Edge Functions with the
+  `ANTHROPIC_API_KEY` secret. The key never ships in the app. Without it, the app says the
+  feature isn't set up.
+- **Subscriptions** (RevenueCat): monthly €5.99 and yearly €39.99 (provisional). Pro on the server
+  comes only from verified RevenueCat data. Purchases need a development or store build, not
+  Expo Go. A developer-only "Pro preview" toggle exists in development builds; it grants no
+  server access.
+- **Reminders** are local notifications. They work in iOS/Android builds, not on web.
 
-- **Supabase** (accounts, cloud AI): needs a project, the migration, the Edge Functions and the two
-  public env vars. See `docs/BACKEND.md`.
-- **AI features** (Scan With AI, photo check-in, AI Coach): need the Edge Functions deployed with an
-  `ANTHROPIC_API_KEY` secret. The key never ships in the app.
-- **Subscriptions**: the paywall shows placeholder prices (€5.99 / month, €39.99 / year). Purchasing
-  needs RevenueCat (`react-native-purchases`), App Store / Google Play products and a development
-  build. Pro status is granted only from the server-side `entitlements` table written by the
-  RevenueCat webhook. A developer-only "Pro preview" toggle (development builds) opens Pro screens
-  but grants no AI access.
-- **Push reminders** are local notifications; they work in iOS/Android builds, not on web.
+Release steps and what still needs the owner (accounts, keys, legal review, store setup):
+[`docs/RELEASE.md`](docs/RELEASE.md). Run `npm run release-check` to see the in-repo gaps.
 
-Legal texts in the app are preliminary summaries and must be reviewed before release. No claim of
-GDPR or other regulatory compliance is made.
+Legal texts in the app are marked "pending legal approval" and must be replaced by reviewed
+documents before release. No claim of GDPR or other regulatory compliance is made.

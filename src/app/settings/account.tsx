@@ -106,7 +106,11 @@ export default function Account() {
             </View>
           </View>
         ) : null}
-        <Button label={t('sync.now')} size="sm" variant="secondary" onPress={() => void syncNow()} loading={busy === 'sync'} />
+        {sync.status === 'signedOut' ? (
+          <Button label={t('auth.signIn')} size="sm" onPress={() => router.push({ pathname: '/auth/sign-in', params: { email: auth.user?.email ?? '' } })} />
+        ) : (
+          <Button label={t('sync.now')} size="sm" variant="secondary" onPress={() => void syncNow()} loading={busy === 'sync'} />
+        )}
       </Card>
       <Button label={t('account.signOut')} variant="secondary" onPress={() => void signOut()} loading={busy === 'signout'} />
       <Button label={t('account.delete')} variant="ghost" onPress={() => void remove()} loading={busy === 'delete'} />

@@ -1,6 +1,6 @@
 import type { Session } from '@supabase/supabase-js';
 
-import { isSupabaseConfigured } from '@/config/env';
+import { env, isSupabaseConfigured } from '@/config/env';
 
 import { getSupabase } from './supabase/client';
 
@@ -55,10 +55,10 @@ const check = <T extends { error: unknown }>(r: T) => {
 
 export const currentSession = () => run(async (sb) => (await sb.auth.getSession()).data.session);
 
-export function onAuthChange(fn: (session: Session | null) => void): Promise<() => void> {
+export function onAuthChange(fn: (session: Session | null, event: string) => void): Promise<() => void> {
   return getSupabase().then((sb) => {
     if (!sb) return () => undefined;
-    const { data } = sb.auth.onAuthStateChange((_event, session) => fn(session));
+    const { data } = sb.auth.onAuthStateChange((event, session) => fn(session, event));
     return () => data.subscription.unsubscribe();
   });
 }
@@ -80,10 +80,25 @@ export const resendSignUpCode = (email: string) => run(async (sb) => void check(
 
 export const requestPasswordReset = (email: string) => run(async (sb) => void check(await sb.auth.resetPasswordForEmail(email.trim().toLowerCase())));
 
+/**
+ * Verify the emailed recovery code and set the new password on a throwaway, in-memory client, then
+ * sign in normally. The app therefore sees one clean sign-in (like the sign-in screen), and no
+ * recovery session is ever stored on the device.
+ */
 export const resetPassword = (email: string, code: string, newPassword: string) =>
   run(async (sb) => {
-    check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'recovery' }));
-    check(await sb.auth.updateUser({ password: newPassword }));
+    const address = email.trim().toLowerCase();
+    const { createClient } = await import('@supabase/supabase-js');
+    const temp = createClient(env.supabaseUrl, env.supabaseAnonKey, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'm30-password-reset' },
+    });
+    try {
+      check(await temp.auth.verifyOtp({ email: address, token: code.trim(), type: 'recovery' }));
+      check(await temp.auth.updateUser({ password: newPassword }));
+    } finally {
+      await temp.auth.signOut({ scope: 'local' }).catch(() => undefined);
+    }
+    return check(await sb.auth.signInWithPassword({ email: address, password: newPassword })).data.session;
   });
 
 export const signOut = () => run(async (sb) => void (await sb.auth.signOut({ scope: 'local' })));

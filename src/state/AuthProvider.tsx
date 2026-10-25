@@ -13,20 +13,27 @@ interface AuthValue {
   configured: boolean;
   status: 'loading' | 'signedOut' | 'signedIn';
   user: AuthUser | null;
+  /** Increases with every sign-in, also when the same account signs in again after its session ended. */
+  signIns: number;
 }
 
-const AuthContext = createContext<AuthValue>({ configured: false, status: 'signedOut', user: null });
+const AuthContext = createContext<AuthValue>({ configured: false, status: 'signedOut', user: null, signIns: 0 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const configured = authAvailable();
-  const [state, setState] = useState<Omit<AuthValue, 'configured'>>({ status: configured ? 'loading' : 'signedOut', user: null });
+  const [state, setState] = useState<Omit<AuthValue, 'configured'>>({ status: configured ? 'loading' : 'signedOut', user: null, signIns: 0 });
 
   useEffect(() => {
     if (!configured) return;
     let unsub: (() => void) | undefined;
     let alive = true;
-    const set = (s: { user: { id: string; email?: string | null } } | null) =>
-      alive && setState(s ? { status: 'signedIn', user: { id: s.user.id, email: s.user.email ?? null } } : { status: 'signedOut', user: null });
+    const set = (s: { user: { id: string; email?: string | null } } | null, event?: string) =>
+      alive &&
+      setState((prev) => ({
+        status: s ? 'signedIn' : 'signedOut',
+        user: s ? { id: s.user.id, email: s.user.email ?? null } : null,
+        signIns: prev.signIns + (event === 'SIGNED_IN' ? 1 : 0),
+      }));
     void currentSession().then((r) => set(r.ok ? r.value : null));
     void onAuthChange(set).then((u) => (unsub = u));
     // Refresh tokens only while the app is in the foreground (Supabase guidance for React Native).

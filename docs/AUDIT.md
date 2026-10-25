@@ -25,6 +25,9 @@ needs live services or a real device), EXTERNAL (needs an account, key or approv
 | Builds | No `eas.json`, no dev client, no build numbers | EAS profiles (development / preview / production), `expo-dev-client`, versioning, prebuild validation |
 | Translations | New strings needed for all features | All 5 languages, enforced by tests |
 | Performance | History lists rendered every row | Virtualised lists |
+| Sessions | A password change ends the sessions on other devices; the old device could only sign out (losing unsynced changes) | "Sign In" on the Account screen; signing in again as the same account resumes syncing with the queue intact |
+| Password reset | The recovery session was created in the app before the new password was set | Code check and new password run on a temporary in-memory client, then a normal sign-in |
+| Auth navigation | Finishing a nested auth step (reset, verify) could leave the sign-in screen open | All auth screens close together and return to where the flow started |
 
 ## What needs the owner (cannot be done from this environment)
 

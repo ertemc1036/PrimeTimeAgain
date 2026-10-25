@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Screen, TextField, useToast } from '@/components/ui';
-import { AuthError, closeAuth } from '@/features/auth/AuthError';
+import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
 import { authAvailable, PASSWORD_MIN, signUp, validEmail, type AuthErrorCode } from '@/services/auth';
 
 export default function SignUp() {
+  const closeAuth = useCloseAuth();
   const { t } = useTranslation();
   const toast = useToast();
   const params = useLocalSearchParams<{ email?: string }>();
@@ -22,9 +23,9 @@ export default function SignUp() {
     const r = await signUp(email, password);
     setBusy(false);
     if (!r.ok) return setError(r.error);
-    if (r.value.needsCode) return router.replace({ pathname: '/auth/verify', params: { email } });
+    if (r.value.needsCode) return router.push({ pathname: '/auth/verify', params: { email } });
     toast(t('auth.signedIn'));
-    closeAuth(router);
+    closeAuth();
   };
 
   return (
@@ -35,7 +36,7 @@ export default function SignUp() {
       footer={
         <>
           <Button label={t('auth.create')} onPress={() => void submit()} loading={busy} disabled={!authAvailable()} />
-          <Button label={t('auth.haveAccount')} variant="ghost" size="sm" onPress={() => router.replace({ pathname: '/auth/sign-in', params: { email } })} />
+          <Button label={t('auth.haveAccount')} variant="ghost" size="sm" onPress={() => router.push({ pathname: '/auth/sign-in', params: { email } })} />
         </>
       }>
       <TextField label={t('auth.email')} value={email} onChangeText={setEmail} autoCapitalize="none" autoComplete="email" keyboardType="email-address" textContentType="emailAddress" />

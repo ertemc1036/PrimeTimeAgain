@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Card, AppText, Screen, TextField, useToast } from '@/components/ui';
-import { AuthError, closeAuth } from '@/features/auth/AuthError';
+import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
 import { authAvailable, signIn, validEmail, type AuthErrorCode } from '@/services/auth';
 
 export default function SignIn() {
+  const closeAuth = useCloseAuth();
   const { t } = useTranslation();
   const toast = useToast();
   const params = useLocalSearchParams<{ email?: string }>();
@@ -26,7 +27,7 @@ export default function SignIn() {
       return setError(r.error);
     }
     toast(t('auth.signedIn'));
-    closeAuth(router);
+    closeAuth();
   };
 
   return (
@@ -37,7 +38,7 @@ export default function SignIn() {
       footer={
         <>
           <Button label={t('auth.signIn')} onPress={() => void submit()} loading={busy} disabled={!authAvailable()} />
-          <Button label={t('auth.noAccount')} variant="ghost" size="sm" onPress={() => router.replace({ pathname: '/auth/sign-up', params: { email } })} />
+          <Button label={t('auth.noAccount')} variant="ghost" size="sm" onPress={() => router.push({ pathname: '/auth/sign-up', params: { email } })} />
         </>
       }>
       {!authAvailable() ? (

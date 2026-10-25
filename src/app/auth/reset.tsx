@@ -1,12 +1,13 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Screen, TextField, useToast } from '@/components/ui';
-import { AuthError, closeAuth } from '@/features/auth/AuthError';
+import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
 import { PASSWORD_MIN, requestPasswordReset, resetPassword, validEmail, type AuthErrorCode } from '@/services/auth';
 
 export default function Reset() {
+  const closeAuth = useCloseAuth();
   const { t } = useTranslation();
   const toast = useToast();
   const params = useLocalSearchParams<{ email?: string }>();
@@ -34,7 +35,7 @@ export default function Reset() {
     setBusy(false);
     if (!r.ok) return setError(r.error);
     toast(t('auth.resetDone'));
-    closeAuth(router);
+    closeAuth();
   };
 
   return (

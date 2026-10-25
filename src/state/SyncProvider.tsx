@@ -70,11 +70,12 @@ export function SyncProvider({ children }: { children: ReactNode }) {
       // Data of a different account is on the device (e.g. a session ended elsewhere): never mix it.
       void appRef.current.resetAll().then(() => engine.connect(userId, transport, 'replace'));
     } else if (hasUserData(appRef.current.getData())) {
-      setDecision({ userId });
+      setDecision((d) => (d?.userId === userId ? d : { userId }));
     } else {
       void engine.connect(userId, transport, 'replace');
     }
-  }, [ready, app.status, userId, engine, transport]);
+    // signIns: a new session for the same account (after it ended elsewhere) restarts syncing too.
+  }, [ready, app.status, userId, auth.signIns, engine, transport]);
 
   // Foreground + periodic sync, then upload photos that only exist on this device.
   useEffect(() => {

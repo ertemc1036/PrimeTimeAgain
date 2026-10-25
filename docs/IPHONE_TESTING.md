@@ -1,8 +1,14 @@
 # Testing MINUS 30 on an iPhone
 
 MINUS 30 runs in **Expo Go**. No development build, Apple Developer account or Xcode is needed for
-the free app. Every native module it uses ships inside Expo Go for SDK 58, at the exact versions
-Expo Go expects.
+the free app, accounts, sync and the AI features. Every native module it uses ships inside Expo Go
+for SDK 58, except **in-app purchases**: in Expo Go, RevenueCat runs in a preview mode and the
+paywall says purchases need the installed app. Testing subscriptions requires a development build
+(`npx eas-cli@latest build --profile development --platform ios`, Apple Developer account needed).
+
+Accounts and sync need a Supabase project. Set `EXPO_PUBLIC_SUPABASE_URL` and
+`EXPO_PUBLIC_SUPABASE_ANON_KEY` in `.env` before `npx expo start` (see docs/BACKEND.md). Without
+them, the app runs local-only and says so.
 
 ## What you need
 
@@ -92,15 +98,33 @@ Work through these in order with a fresh install.
 - [ ] Welcome screen shows the MINUS 30 logo; Profile → Information → Instagram opens @minus30.app.
 - [ ] App icon and black splash screen with the logo appear only in a development/production build (Expo Go shows its own icon and splash).
 
-**Pro (expected to say "not available" in this build)**
-- [ ] The floating coach button and the Scan With AI / Photo Check-In buttons open the paywall.
-- [ ] Paywall "Continue" and "Restore Purchases" show "Subscriptions aren't available in this build yet". No purchase is made.
+**Account and sync** (only with Supabase configured)
+- [ ] Use the app without an account first, then Profile → Account → Create Account. "This device already has data" appears; Continue (merge) keeps everything.
+- [ ] Delete Expo Go (or use a second phone), sign in → all days, meals, workouts, plans, weight and photos come back.
+- [ ] Airplane mode: log a meal, then turn the network back on → it syncs (Account shows "Synced"); nothing appears twice.
+- [ ] Forgot password → the 6-digit code arrives by email → new password works.
+- [ ] Sign Out removes the data from this phone; signing in again restores it.
+- [ ] Delete account → you can't sign in with it any more.
+
+**Pro**
+- [ ] Without Pro: the coach button, Scan With AI and Photo Check-In open the paywall.
+- [ ] Expo Go: the paywall shows the provisional prices and says purchases need the installed app. No purchase is possible.
+- [ ] Development build with RevenueCat sandbox: store prices are shown; buy, restore, cancel (Pro stays until the end of the period), and sign in on a second phone → Pro is there too.
+- [ ] With Pro and the AI key set up: scan a meal → editable results → save → Today shows the meal; the coach answers word by word.
 
 ## What was verified without a phone
 
-- Unit tests (46): completion rules, streaks, DST and year boundaries, late-entry window, validation, duplicates, reminders, goal-weight safety, persistence.
-- Browser walkthroughs at iPhone size, including a 5-day scenario across the 25 Oct 2026 clock change: manual food and workout check-ins update Today, Rest Day counts, the streak grows to 2, a missed day resets it while longest/history stay, older entries lock.
-- The iOS JavaScript bundle builds (`expo export --platform ios`), and all native modules match Expo Go SDK 58.
+- Unit tests (Jest): completion rules, streaks, DST and year boundaries, late-entry window,
+  validation, duplicates, reminders, goal-weight safety, persistence, the sync engine (offline
+  queue, retries, conflicts, account switching), the coach context, entitlements, and
+  translations in all 5 languages.
+- Backend tests against a local Supabase stack (real Postgres + RLS, real Supabase Auth, the real
+  Edge Functions; AI and RevenueCat replaced by mock servers): see `supabase/tests/README.md`.
+- Browser walkthroughs at iPhone size, including two "phones" syncing through the local stack:
+  merge on first sign-in, restore on a new device, sync both ways, sign-out, password reset with
+  the emailed code, paywall, Pro via webhook unlocking the coach (mock AI), and account deletion.
+- The iOS and Android JavaScript bundles build (`expo export`), and `expo prebuild` generates valid
+  native projects (bundle ID, permissions, privacy manifest, localized permission texts).
 
 The web build can't show native-only behaviour (keyboard, sheets, notifications, camera/photo
 permissions, haptics, safe areas on a real notch), so those items above need the phone.
