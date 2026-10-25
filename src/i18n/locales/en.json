@@ -2,826 +2,760 @@
   "common": {
     "continue": "Continue",
     "back": "Back",
-    "skip": "Skip",
-    "save": "Save",
-    "cancel": "Cancel",
     "close": "Close",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
     "edit": "Edit",
     "done": "Done",
-    "delete": "Delete",
     "add": "Add",
-    "retry": "Try again",
-    "loading": "Loading…",
+    "remove": "Remove",
+    "retry": "Try Again",
+    "skip": "Skip",
     "optional": "Optional",
-    "recommended": "Recommended",
-    "comingSoon": "Coming soon",
-    "seeAll": "See all",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "days_one": "{{count}} day",
-    "days_other": "{{count}} days",
-    "dayOf": "Day {{day}} of {{total}}",
-    "percent": "{{value}}%",
+    "loading": "Loading…",
+    "notSet": "Not set",
+    "earlier": "Earlier",
+    "later": "Later",
     "today": "Today",
-    "custom": "Custom"
+    "yesterday": "Yesterday",
+    "tomorrow": "Tomorrow",
+    "minutes_one": "{{count}} minute",
+    "minutes_other": "{{count}} minutes",
+    "min": "{{count}} min",
+    "kcal": "{{value}} kcal",
+    "grams": "{{value}} g",
+    "seeAll": "See all",
+    "pro": "PRO",
+    "on": "On",
+    "off": "Off",
+    "portion": "portion"
   },
-  "areas": {
-    "body": "Body",
-    "mind": "Mindset",
-    "money": "Money",
-    "social": "Social",
-    "lifestyle": "Lifestyle",
-    "presence": "Presence",
-    "descriptions": {
-      "body": "Fit, healthy and strong.",
-      "mind": "Focus, discipline and mental strength.",
-      "money": "Skills, career and financial goals.",
-      "social": "Relationships and connection.",
-      "lifestyle": "Energy, routines and better habits.",
-      "presence": "Style, confidence and composure."
-    }
-  },
-  "goals": {
-    "lose_weight": {
-      "title": "Lose Weight",
-      "outcome": "Feel lighter and more in control of my habits."
-    },
-    "get_fit": {
-      "title": "Get Fit",
-      "outcome": "Move with energy and feel strong in everyday life."
-    },
-    "build_muscle": {
-      "title": "Build Muscle",
-      "outcome": "Train consistently and get visibly stronger."
-    },
-    "look_better": {
-      "title": "Look Better",
-      "outcome": "Feel good about how I show up and look after myself."
-    },
-    "confidence": {
-      "title": "Improve Confidence",
-      "outcome": "Trust myself in the situations that matter to me."
-    },
-    "discipline": {
-      "title": "Build Discipline",
-      "outcome": "Do what I said I would, even on hard days."
-    },
-    "focus": {
-      "title": "Improve Focus",
-      "outcome": "Give my full attention to the work that matters."
-    },
-    "energy": {
-      "title": "Increase Energy",
-      "outcome": "Wake up and move through the day with more energy."
-    },
-    "sleep": {
-      "title": "Improve Sleep",
-      "outcome": "Have a steady evening routine and wake up rested."
-    },
-    "habits": {
-      "title": "Build Better Habits",
-      "outcome": "Run my days with routines I'm proud of."
-    },
-    "make_money": {
-      "title": "Make More Money",
-      "outcome": "Build skills and opportunities that grow my income."
-    },
-    "career": {
-      "title": "Advance My Career",
-      "outcome": "Take visible steps toward the role I want."
-    },
-    "business": {
-      "title": "Build a Business",
-      "outcome": "Turn an idea into something real, step by step."
-    },
-    "social_life": {
-      "title": "Improve My Social Life",
-      "outcome": "Spend more time with people who matter to me."
-    },
-    "communication": {
-      "title": "Improve Communication",
-      "outcome": "Speak clearly and listen well."
-    },
-    "style": {
-      "title": "Improve My Personal Style",
-      "outcome": "Dress in a way that feels like the best version of me."
-    },
-    "presence": {
-      "title": "Improve My Presence / Aura",
-      "outcome": "Carry myself with calm confidence and composure."
-    },
-    "me_time": {
-      "title": "More Time for Myself",
-      "outcome": "Protect time that's just for me."
-    },
-    "lifestyle": {
-      "title": "Improve My Lifestyle",
-      "outcome": "Build a life rhythm that gives me energy."
-    },
-    "custom": {
-      "title": "Create My Own Goal",
-      "outcome": "Make steady progress on what matters to me."
-    }
-  },
-  "actions": {
-    "walk_10": "Take a 10-minute walk",
-    "walk_20": "Go for a 20-minute walk",
-    "workout_20": "Complete a 20-minute workout",
-    "workout_30": "Complete a 30-minute workout",
-    "strength_15": "15 minutes of strength training",
-    "strength_30": "30-minute strength session",
-    "cardio_15": "15 minutes of cardio at your own pace",
-    "mobility_10": "10 minutes of mobility work",
-    "stretch_5": "5 minutes of stretching",
-    "plan_meal": "Plan a balanced meal for tomorrow",
-    "review_eating": "Review today's eating habits",
-    "protein_meal": "Prepare a protein-rich meal",
-    "water": "Drink a glass of water with each meal",
-    "morning_light": "Get 10 minutes of daylight in the morning",
-    "confidence_win": "Write down one thing you did well today",
-    "posture_check": "Posture check: stand tall for 5 minutes",
-    "social_challenge": "Complete one small social challenge",
-    "practice_speaking": "Practise speaking about something you care about",
-    "hard_thing_first": "Do the task you're avoiding first",
-    "plan_day": "Plan your top three priorities for tomorrow",
-    "cold_finish": "Finish your shower with 30 seconds of cold water",
-    "deep_work_25": "One 25-minute focus session, phone away",
-    "deep_work_50": "One 50-minute deep work block",
-    "breathing_5": "5 minutes of slow breathing",
-    "read_15": "Read for 15 minutes",
-    "reflect_5": "Reflect for 5 minutes on your day",
-    "skill_15": "15 minutes on a valuable skill",
-    "skill_30": "Learn a valuable skill for 30 minutes",
-    "business_idea_30": "Work on your business idea for 30 minutes",
-    "business_task_45": "Complete one important business task",
-    "career_task": "Complete one career development task",
-    "review_finances": "Review one personal financial goal",
-    "network_reach": "Reach out to one professional contact",
-    "portfolio_update": "Update your CV or portfolio",
-    "income_research": "Research one new income opportunity",
-    "message_friend": "Message a friend you haven't talked to in a while",
-    "call_someone": "Call someone you care about",
-    "plan_meetup": "Plan a meetup with friends",
-    "join_event": "Attend an event, class or group",
-    "active_listening": "Practise active listening in one conversation",
-    "conversation_starter": "Start a conversation with someone new",
-    "wind_down": "Screens off 30 minutes before bed",
-    "bed_on_time": "Go to bed at your planned time",
-    "screen_limit": "Keep your phone out of the first 30 minutes of the day",
-    "morning_routine": "Complete your morning routine",
-    "tidy_space": "A 10-minute reset of your space",
-    "me_time": "20 minutes just for yourself",
-    "hobby": "30 minutes on a hobby you enjoy",
-    "outdoors": "Spend 20 minutes outdoors",
-    "plan_week": "Plan your week ahead",
-    "skincare": "Complete your skincare routine",
-    "grooming": "Take 10 minutes for grooming",
-    "outfit_plan": "Plan tomorrow's outfit",
-    "wardrobe_review": "Review your wardrobe: keep, fix or let go",
-    "style_inspiration": "Collect style inspiration for 15 minutes",
-    "body_language": "Practise open, confident body language",
-    "voice_practice": "Practise speaking slowly and clearly",
-    "composure_breath": "Take a calm breath before your next conversation",
-    "custom_work": "Work on {{goal}}",
-    "custom_plan": "Plan your next step for {{goal}}",
-    "custom_review": "Review your progress on {{goal}}"
-  },
-  "difficulty": {
-    "1": "Easy",
-    "2": "Moderate",
-    "3": "Challenging"
-  },
-  "welcome": {
-    "headline": "WELCOME BACK.",
-    "body": "You can rebuild your body, confidence, discipline and lifestyle.",
-    "support": "Become the version of yourself you're proud of.",
-    "cta": "START MY COMEBACK",
-    "footnote": "Your comeback starts today.",
-    "language": "Language"
-  },
-  "onboarding": {
-    "step": "{{current}} of {{total}}",
-    "how": {
-      "title": "HOW IT WORKS",
-      "subtitle": "Define your Prime. Build your plan. Complete your missions. Track your comeback.",
-      "s1": {
-        "title": "Define who you want to become",
-        "body": "Choose the goals that matter to you, or write your own."
-      },
-      "s2": {
-        "title": "Build your comeback plan",
-        "body": "A realistic plan that fits the time you really have."
-      },
-      "s3": {
-        "title": "Take action every day",
-        "body": "Complete missions, grow your streak and watch your progress."
-      }
-    },
-    "goals": {
-      "title": "WHAT DOES YOUR PRIME LOOK LIKE?",
-      "subtitle": "Choose everything that matters to you. You can change this anytime.",
-      "selected_one": "{{count}} goal selected",
-      "selected_other": "{{count}} goals selected",
-      "minOne": "Choose at least one goal to continue.",
-      "max": "That's {{count}} goals, a strong plan. You can add more later.",
-      "customTitle": "Your own goal",
-      "customPlaceholder": "e.g. Run a half marathon",
-      "customArea": "Which area is it part of?",
-      "customAdd": "Add goal",
-      "customRemove": "Remove {{goal}}"
-    },
-    "memory": {
-      "title": "WHEN DID YOU FEEL LIKE YOUR BEST SELF?",
-      "subtitle": "There's no wrong answer. This helps us frame your comeback.",
-      "options": {
-        "last_year": "Within the last year",
-        "one_two": "1–2 years ago",
-        "three_five": "3–5 years ago",
-        "five_plus": "More than 5 years ago",
-        "first": "I'm building my first Prime"
-      },
-      "special": "What made that time special?",
-      "changed": "What changed?",
-      "regain": "What would you like to regain?",
-      "firstPrime": "What would your first Prime look like?",
-      "private": "Your answers stay private on this device."
-    },
-    "start": {
-      "title": "YOUR STARTING POINT",
-      "subtitle": "A few quick questions so your plan fits your life. Skip anything you like.",
-      "privacy": "We never ask for medical or financial details.",
-      "activity": "How active are you right now?",
-      "activityOptions": {
-        "low": "Not very active",
-        "some": "Sometimes active",
-        "regular": "Active most weeks",
-        "high": "Very active"
-      },
-      "training": "Where do you prefer to train?",
-      "trainingOptions": {
-        "home": "At home",
-        "gym": "At the gym",
-        "outdoors": "Outdoors",
-        "mixed": "A mix"
-      },
-      "confidence": "Where do you want to feel more confident?",
-      "confidenceOptions": {
-        "work": "At work",
-        "social": "In social situations",
-        "dating": "Dating",
-        "speaking": "Speaking in front of others",
-        "new_people": "Meeting new people",
-        "appearance": "With how I look"
-      },
-      "money": "What would you like to focus on?",
-      "moneyOptions": {
-        "skill": "Learning a valuable skill",
-        "side_project": "A side project",
-        "career": "My career",
-        "business": "Starting a business",
-        "saving": "Better money habits"
-      },
-      "sleep": "How do you sleep at the moment?",
-      "sleepOptions": {
-        "poor": "Not well",
-        "ok": "It's okay",
-        "good": "Well"
-      },
-      "priority": "What matters most in your everyday life?",
-      "priorityOptions": {
-        "routine": "A steady routine",
-        "free_time": "More free time",
-        "health": "Feeling healthy",
-        "order": "Order and calm"
-      }
-    },
-    "duration": {
-      "title": "CHOOSE YOUR COMEBACK",
-      "subtitle": "How long should your first program run? You can change it later.",
-      "d30": "A focused sprint",
-      "d60": "Build real momentum",
-      "d90": "The complete comeback",
-      "d180": "A deep transformation",
-      "custom": "Choose your own length",
-      "decrease": "Fewer days",
-      "increase": "More days"
-    },
-    "time": {
-      "title": "HOW MUCH TIME DO YOU HAVE EACH DAY?",
-      "subtitle": "Be realistic. Your daily missions will fit into this time.",
-      "plus": "{{count}}+ min",
-      "hints": {
-        "15": "Small, powerful steps",
-        "30": "A solid daily routine",
-        "45": "Room for real progress",
-        "60": "A serious commitment",
-        "90": "Maximum focus"
-      },
-      "decrease": "Less time",
-      "increase": "More time"
-    },
-    "avatar": {
-      "title": "CREATE YOUR PRIME AVATAR",
-      "subtitle": "Your avatar stands at the centre of Prime Control. Choose a starting look. You can change it anytime.",
-      "hint": "Drag to rotate · Pinch to zoom"
-    },
-    "ready": {
-      "title": "YOUR PRIME PLAN IS READY",
-      "subtitle": "Here's how your comeback begins, {{name}}.",
-      "subtitleNoName": "Here's how your comeback begins.",
-      "goals": "Your goals",
-      "duration": "Comeback",
-      "time": "Daily time",
-      "start": "Starts",
-      "firstMissions": "Your first missions",
-      "avatar": "Avatar",
-      "avatarSkipped": "Default avatar, customise later",
-      "cta": "ENTER PRIME CONTROL",
-      "demo": "Preview with sample progress",
-      "demoHint": "Starts you on day {{day}} with example history so you can explore every screen."
-    },
-    "name": {
-      "label": "What should we call you?",
-      "placeholder": "Your first name"
-    }
+  "brand": {
+    "name": "MINUS 30",
+    "slogan": "Plan Tomorrow. Complete Today.",
+    "secondary": "Your Transformation Journey."
   },
   "tabs": {
-    "control": "Control",
-    "missions": "Missions",
-    "journey": "Journey",
-    "evolution": "Evolution",
-    "profile": "Profile"
+    "today": "Today",
+    "plan": "Plan",
+    "food": "Food",
+    "workout": "Workout",
+    "journey": "Journey"
   },
-  "control": {
-    "title": "PRIME CONTROL",
-    "cta": "CONTINUE YOUR COMEBACK",
-    "ctaDone": "VIEW TODAY'S MISSIONS",
-    "todayStatus": "{{done}} of {{total}} missions done today",
-    "todayRecovery": "Recovery day: rest is part of the plan",
-    "todayComplete": "Prime Day secured. Well done.",
-    "coach": "Coach",
-    "notifications": "Notifications",
-    "profile": "Profile",
-    "moduleA11y": "{{area}}: {{percent}} follow-through. Opens {{area}} goals.",
-    "moduleEmpty": "{{area}}: no missions yet. Opens {{area}} goals.",
-    "progressNote": "Module percentages show how many of your planned missions you completed in the last 14 days.",
-    "programComplete": "Program complete. Your next chapter is waiting.",
-    "noGoals": "Add a goal to see it around your avatar.",
-    "addGoal": "Add a goal",
-    "streak_one": "{{count}}-day streak",
-    "streak_other": "{{count}}-day streak"
+  "meals": {
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snacks",
+    "snackSingle": "Snack"
   },
-  "area": {
-    "followThrough": "Follow-through · last 14 days",
-    "goals": "Goals",
-    "noGoals": "No goals in this area yet.",
-    "missionsDone_one": "{{count}} mission done",
-    "missionsDone_other": "{{count}} missions done"
+  "activity": {
+    "gym": "Gym",
+    "outdoor": "Outdoor",
+    "outdoor_walk": "Outdoor Walk",
+    "outdoor_run": "Outdoor Run",
+    "walking": "Walking",
+    "running": "Running",
+    "home": "Home Workout",
+    "rest": "Rest Day",
+    "summary": "{{activity}} — {{time}} — {{duration}}",
+    "summaryNoDuration": "{{activity}} — {{time}}"
   },
-  "goal": {
-    "objective": "Objective",
-    "startingPoint": "Starting point",
-    "startingPlaceholder": "Where are you starting from?",
-    "outcome": "Desired outcome",
-    "outcomePlaceholder": "What would you like to reach?",
-    "notSet": "Not set yet",
-    "progress": "Progress",
-    "progressCaption": "Missions completed vs planned, last 14 days",
-    "dailyActions": "Daily actions",
-    "actionsHint": "Missions are chosen from the active actions below.",
-    "weekly": "Weekly milestones",
-    "weekLabel": "Week {{week}}",
-    "history": "Recent activity",
-    "noHistory": "Completed missions for this goal will appear here.",
-    "edit": "Edit goal",
-    "addAction": "Add your own action",
-    "actionTitle": "Action",
-    "actionPlaceholder": "e.g. Practise guitar chords",
-    "actionMinutes": "Minutes",
-    "actionActive": "{{action}}: active",
-    "actionInactive": "{{action}}: paused",
-    "name": "Goal name",
-    "archive": "Remove goal",
-    "archiveTitle": "Remove this goal?",
-    "archiveBody": "It disappears from your plan from tomorrow. Your completed missions stay in your history.",
-    "invested": "{{minutes}} min invested",
-    "minOneAction": "Keep at least one action active."
+  "onboarding": {
+    "step": "Step {{current}} of {{total}}",
+    "welcome": {
+      "subtitle": "Your transformation starts today.",
+      "loop": "Plan. Do. Log. Complete. Repeat.",
+      "cta": "Get Started",
+      "adults": "For adults 18 and over."
+    },
+    "profile": {
+      "title": "Let's set up your profile",
+      "name": "Preferred name",
+      "namePlaceholder": "What should we call you?",
+      "nameError": "Please enter a name.",
+      "adult": "I confirm I am 18 years or older",
+      "adultHint": "MINUS 30 is designed for adults.",
+      "units": "Units",
+      "metric": "Metric (kg, cm)",
+      "imperial": "Imperial (lb, ft)",
+      "height": "Height",
+      "weight": "Current weight",
+      "ft": "ft",
+      "in": "in",
+      "privacy": "Health details are optional and stay on your device."
+    },
+    "adultsOnly": {
+      "title": "MINUS 30 is for adults",
+      "body": "Our nutrition and weight-management features are designed for people aged 18 and over. If you'd like support with healthy habits, a doctor, school nurse or trusted adult can help.",
+      "back": "Go back"
+    },
+    "goals": {
+      "title": "What would you like to achieve?",
+      "subtitle": "Choose as many as you like.",
+      "habits": "Build healthier habits",
+      "nutrition": "Improve my nutrition",
+      "active": "Become more active",
+      "weight": "Manage my weight",
+      "goalWeight": "Goal weight",
+      "goalWeightHint": "Optional. You can change or remove it anytime.",
+      "minOne": "Choose at least one goal.",
+      "underweight": "This goal is below a generally healthy weight for your height. Please choose a goal of at least {{min}}, or talk to a doctor about the right goal for you.",
+      "largeChange": "This is a big change. It's best approached gradually and with support from a healthcare professional.",
+      "invalid": "Please enter a realistic weight."
+    },
+    "activity": {
+      "title": "How do you like to stay active?",
+      "subtitle": "Choose everything that fits your life.",
+      "gym": "Gym",
+      "walking": "Outdoor walking",
+      "running": "Running",
+      "home": "Home workouts",
+      "combination": "A combination",
+      "minOne": "Choose at least one option."
+    },
+    "nutrition": {
+      "title": "Your food preferences",
+      "subtitle": "This helps tailor suggestions. You can edit it later.",
+      "preferred": "Foods you enjoy",
+      "restrictions": "Dietary restrictions",
+      "allergies": "Food allergies",
+      "dislikes": "Foods you'd rather avoid",
+      "addPlaceholder": "Type and add",
+      "allergyNote": "Always check labels yourself. The app can't guarantee foods are allergen-free."
+    },
+    "planning": {
+      "title": "When would you like to plan tomorrow?",
+      "subtitle": "Most people plan in the evening. A few minutes is enough.",
+      "time": "Planning time"
+    },
+    "notifications": {
+      "title": "Daily reminders",
+      "subtitle": "Optional. A gentle nudge at your planning time. You can change or turn this off anytime.",
+      "enable": "Turn on reminders",
+      "notNow": "Not now",
+      "denied": "Notifications are turned off for MINUS 30 in your phone's settings. You can still use every feature.",
+      "web": "Reminders work in the iOS and Android app.",
+      "enabled": "Reminders are on."
+    },
+    "finish": {
+      "title": "You're all set",
+      "subtitle": "Here's your starting point.",
+      "name": "Name",
+      "goals": "Goals",
+      "activity": "Activity",
+      "planning": "Planning time",
+      "reminders": "Reminders",
+      "journey": "Optional 7-month journey",
+      "journeyHint": "A gentle, habit-focused structure. No weight targets.",
+      "cta": "Start My Journey"
+    }
   },
-  "missions": {
-    "title": "TODAY'S MISSIONS",
-    "subtitle": "Every action brings you closer to your Prime.",
-    "progress": "{{done}} of {{total}} done · {{minutes}} min",
-    "calendar": "Prime Calendar",
-    "finishDay": "FINISH MY DAY",
-    "empty": {
-      "title": "No missions planned",
-      "body": "Add a goal or an action and your missions will appear here.",
-      "action": "Edit goals"
+  "today": {
+    "morning": "Good Morning, {{name}}",
+    "afternoon": "Good Afternoon, {{name}}",
+    "evening": "Good Evening, {{name}}",
+    "subtitle": "Let's make today count.",
+    "profile": "Profile and settings",
+    "streak_one": "{{count}} Day Streak",
+    "streak_other": "{{count}} Day Streak",
+    "streakZero": "Start your streak today",
+    "longest": "Longest: {{count}}",
+    "mission": "Today's Mission",
+    "progress": "{{done}} / 3 Completed",
+    "food": {
+      "pending": "Log Your Food",
+      "done": "Food Logged",
+      "pendingHint": "Log your meals, then finish today's food log.",
+      "doneHint_one": "{{count}} meal logged",
+      "doneHint_other": "{{count}} meals logged"
+    },
+    "activity": {
+      "pending": "Complete Your Activity",
+      "done": "Activity Completed",
+      "rest": "Rest Day Saved",
+      "pendingHint": "Log a workout or choose Rest Day."
+    },
+    "planning": {
+      "pending": "Plan Tomorrow",
+      "done": "Tomorrow Planned",
+      "pendingHint": "Plan tomorrow's meals and activity."
     },
     "complete": {
-      "title": "Program complete",
-      "body": "You finished your comeback program. Extend it or start your next chapter."
+      "title": "Daily Mission Complete",
+      "body": "You showed up for yourself today."
     },
-    "recovery": {
-      "title": "Recovery day",
-      "body": "Rest is part of the program. Today counts toward your streak.",
-      "make": "Make today a recovery day",
-      "makeHint": "Up to {{count}} per week. Counts as following the program.",
-      "undo": "Back to missions",
-      "limit": "You've already planned {{count}} recovery days this week."
+    "calendar": "Streak Calendar",
+    "quick": {
+      "food": "Log Food",
+      "activity": "Log Activity",
+      "plan": "Plan Tomorrow"
     },
-    "carried": "Moved from yesterday",
-    "add": "Add a mission",
-    "addTitle": "Add a mission",
-    "addSubtitle": "Pick an action from one of your goals.",
-    "markDone": "Mark as done",
-    "markOpen": "Mark as not done",
-    "done": "Done",
-    "skipped": "Skipped",
-    "postponed": "Moved to tomorrow",
-    "a11yDone": "{{mission}}, done",
-    "a11yOpen": "{{mission}}, not done yet",
-    "a11yHint": "Double tap to complete. Open details for more options.",
-    "details": "Mission details",
-    "detail": {
-      "goal": "Goal",
-      "duration": "Duration",
-      "difficulty": "Difficulty",
-      "status": "Status",
-      "replace": "Replace with another action",
-      "postpone": "Move to tomorrow",
-      "skip": "Skip today",
-      "reopen": "Bring back",
-      "editDuration": "Adjust duration",
-      "noReplacement": "No other actions available for this goal today.",
-      "readOnly": "Past days are kept as they were. Only today's missions can be changed."
-    },
-    "feedback": [
-      "Done. That's how comebacks are built.",
-      "One step closer.",
-      "Showing up counts.",
-      "Strong. Keep it going.",
-      "That's a promise kept."
-    ],
-    "allDone": "All missions done. Prime Day secured.",
-    "todo": "To do"
-  },
-  "summary": {
-    "title": "TODAY YOU SHOWED UP.",
-    "missions": "Missions completed",
-    "time": "Time invested",
-    "goals": "Goals worked on",
-    "streak": "Current streak",
-    "dayType": "Today counts as",
-    "reflect": "How did today feel?",
-    "reflectPlaceholder": "A few words about your day (optional)",
-    "save": "Save and close",
-    "close": "Close"
-  },
-  "dayTypes": {
-    "prime": "Prime Day",
-    "active": "Active Day",
-    "recovery": "Recovery Day",
-    "missed": "Not completed",
-    "open": "In progress",
-    "upcoming": "Upcoming",
-    "none": "Outside program",
-    "primeHint": "All planned core missions completed.",
-    "activeHint": "Real progress, but not every mission.",
-    "recoveryHint": "A planned rest day. Counts toward your streak.",
-    "missedHint": "Nothing completed. Your overall progress is still there."
+    "planned": "Today's plan",
+    "noPlan": "No plan for today. You can still log food and activity.",
+    "milestone": "New milestone: {{name}}"
   },
   "calendar": {
-    "title": "PRIME CALENDAR",
     "previous": "Previous month",
     "next": "Next month",
-    "currentStreak": "Prime Streak",
-    "longestStreak": "Longest streak",
-    "primeDays": "Prime Days",
-    "completion": "Completion",
-    "trend": "Weekly completion",
-    "selected": "Selected day",
-    "noMissions": "No missions recorded for this day.",
-    "planRecovery": "Plan as recovery day",
-    "removeRecovery": "Remove recovery day",
-    "recoveryLimit": "Up to {{count}} recovery days per week.",
-    "readOnly": "History is read-only so your record stays accurate.",
-    "rulesTitle": "How streaks work",
-    "rules": "Your Prime Streak counts consecutive days you showed up: Prime, Active or planned Recovery days. A missed day starts a new streak, but your totals and longest streak are always kept.",
-    "dayA11y": "{{date}}: {{type}}"
-  },
-  "journey": {
-    "title": "PRIME JOURNEY",
-    "subtitle": "Your {{days}}-day comeback.",
-    "progress": "{{percent}}% of your program",
-    "phases": "Phases",
-    "phase": {
-      "reset": {
-        "name": "RESET",
-        "body": "Build foundations, set manageable routines and understand your obstacles."
-      },
-      "rebuild": {
-        "name": "REBUILD",
-        "body": "Increase consistency, develop skills and strengthen your habits."
-      },
-      "prime": {
-        "name": "PRIME",
-        "body": "Consolidate your progress, review your achievements and prepare your next chapter."
-      }
+    "legend": {
+      "complete": "Completed",
+      "partial": "Partial",
+      "incomplete": "Incomplete",
+      "today": "Today"
     },
-    "range": "Days {{start}}–{{end}}",
+    "dayA11y": "{{date}}: {{status}}",
     "status": {
-      "done": "Completed",
-      "current": "You are here",
-      "upcoming": "Upcoming"
+      "complete": "Completed",
+      "partial": "Partially completed",
+      "incomplete": "Not completed",
+      "today": "Today, in progress",
+      "future": "Upcoming",
+      "before": "Before you started"
     },
-    "weekly": "Weekly challenges",
-    "week": "Week {{week}}",
-    "weeks": {
-      "w1": "Start where you are",
-      "w2": "Win the mornings",
-      "w3": "Small promises, kept",
-      "w4": "Know your obstacles",
-      "w5": "Raise the standard",
-      "w6": "Consistency over intensity",
-      "w7": "Build the skill",
-      "w8": "Show up when it's hard",
-      "w9": "Strengthen your habits",
-      "w10": "Step outside your comfort zone",
-      "w11": "Own your rhythm",
-      "w12": "See how far you've come",
-      "w13": "Prepare your next chapter"
+    "breakdown": {
+      "food": "Food",
+      "activity": "Workout / Rest",
+      "planning": "Next day planned"
     },
-    "milestones": "Milestones",
-    "milestone": {
-      "start": "The decision",
-      "first_week": "First week",
-      "phase_reset": "Reset complete",
-      "phase_rebuild": "Rebuild complete",
-      "finish": "Comeback complete"
-    },
-    "achievements": "Achievements so far",
-    "missionsDone": "Missions done",
-    "minutes": "Minutes invested",
-    "primeDays": "Prime Days",
-    "longestStreak": "Longest streak",
-    "openCalendar": "Open Prime Calendar",
-    "honesty": "Your journey measures the actions you take. Results differ for everyone. What matters is that you keep showing up.",
-    "completeTitle": "You completed your comeback program.",
-    "completeBody": "Review what you built, then decide what comes next.",
-    "extend": "Extend by 30 days"
-  },
-  "evolution": {
-    "title": "PRIME EVOLUTION",
-    "subtitle": "Your transformation, documented privately.",
-    "checkin": "Weekly check-in",
-    "checkinBody": "How do you rate yourself this week? 1 = low, 10 = great.",
-    "confidence": "Confidence",
-    "energy": "Energy",
-    "logged": "Logged {{date}}",
-    "measurements": "Measurements",
-    "measurementsBody": "Optional. Only track what feels useful to you.",
-    "weight": "Weight",
-    "waist": "Waist",
-    "addMeasurement": "Log measurement",
-    "noMeasurements": "No measurements yet. They're completely optional.",
-    "change": "{{value}} since start",
-    "journal": "Private journal",
-    "newEntry": "New entry",
-    "noEntries": "Write your first entry. A few honest words are enough.",
-    "photos": "Progress photos",
-    "photosBody": "Optional and private. Photos stay on this device and are never uploaded.",
-    "addPhoto": "Add photo",
-    "noPhotos": "No photos yet.",
-    "photoPermission": "Allow photo access in Settings to add progress photos.",
-    "deletePhoto": "Delete photo",
-    "deletePhotoBody": "This photo will be removed from this device.",
-    "compare": "First vs latest",
-    "achievements": "Achievements",
-    "film": "Comeback Film",
-    "filmBody": "Turn your photos and milestones into a short personal film. Sharing will always be optional.",
-    "achievement": {
-      "first_mission": "First mission completed",
-      "first_prime": "First Prime Day",
-      "streak_7": "7-day streak",
-      "missions_25": "25 missions completed",
-      "missions_100": "100 missions completed",
-      "hours_10": "10 hours invested",
-      "phase_reset": "Reset phase complete"
-    },
-    "locked": "Not yet unlocked"
-  },
-  "metric": {
-    "title": "Log measurement",
-    "metric": "What would you like to log?",
-    "value": "Value",
-    "kg": "kg",
-    "lb": "lb",
-    "cm": "cm",
-    "in": "in",
-    "invalid": "Enter a realistic number.",
-    "note": "This is for your own tracking only. Bodies change in different ways and at different speeds."
-  },
-  "reflection": {
-    "title": "New journal entry",
-    "mood": "How are you feeling?",
-    "moods": {
-      "1": "Low",
-      "2": "Meh",
-      "3": "Okay",
-      "4": "Good",
-      "5": "Great"
-    },
-    "prompt": "Something to reflect on",
-    "prompts": {
-      "p1": "What made you proud today?",
-      "p2": "What got in your way, and what will you try next time?",
-      "p3": "When did you feel most like your Prime self?",
-      "p4": "What would make tomorrow a little easier?",
-      "p5": "What has changed since you started?"
-    },
-    "another": "Another question",
-    "label": "Your entry",
-    "placeholder": "Write freely…",
-    "private": "Private. Stays on this device.",
-    "save": "Save entry",
-    "empty": "Write a few words to save your entry.",
-    "delete": "Delete entry",
-    "deleteBody": "This entry will be removed from this device."
-  },
-  "profile": {
-    "title": "PROFILE",
-    "streak": "Streak",
-    "progress": "Progress",
-    "day": "Day",
-    "plan": "Your plan",
-    "avatar": "Customise avatar",
-    "goals": "Edit goals",
-    "goalsValue_one": "{{count}} goal",
-    "goalsValue_other": "{{count}} goals",
-    "duration": "Comeback duration",
-    "time": "Daily time",
-    "settings": "Settings",
-    "pro": "Prime Pro",
-    "proValue": "Coming soon",
-    "name": "Name",
-    "editName": "Edit name"
+    "graceNote": "You can add late entries for yesterday until midnight tonight."
   },
   "plan": {
-    "title": "YOUR PLAN",
-    "subtitle": "Adjust your plan without losing your history.",
-    "duration": "Comeback duration",
-    "time": "Daily time",
-    "note": "Changes apply from tomorrow. Everything you've done so far stays in your history.",
-    "minDuration": "Your program can't be shorter than the days you've already completed."
+    "title": "Plan Tomorrow",
+    "titleDate": "Plan for {{date}}",
+    "subtitle": "Prepare today. Progress tomorrow.",
+    "date": "Planning date",
+    "meals": "Meals",
+    "addMeal": "Add {{meal}}",
+    "flexible": "Keep meals flexible",
+    "flexibleHint": "No meals planned for this day. That's fine.",
+    "copyDay": "Copy a previous day",
+    "copyNothing": "There's no earlier plan to copy yet.",
+    "copied": "Meals copied from {{date}}.",
+    "activity": "Tomorrow's Activity",
+    "activityFor": "Activity",
+    "time": "Planned time",
+    "duration": "Planned duration",
+    "notes": "Notes",
+    "notesPlaceholder": "Optional",
+    "restBody": "Recovery is part of progress. Nothing else to fill in.",
+    "save": "Save Tomorrow's Plan",
+    "saveDate": "Save Plan",
+    "saved": "Plan saved.",
+    "needMeals": "Add at least one meal or choose to keep meals flexible.",
+    "needActivity": "Choose an activity or Rest Day.",
+    "needTime": "Add a time and duration for your activity.",
+    "ai": "Plan With AI",
+    "aiHint": "Get suggested meals and an activity schedule to review.",
+    "emptyTitle": "Tomorrow is a fresh start.",
+    "emptyBody": "Create a simple plan for your meals and activity.",
+    "savedOn": "Saved {{time}}",
+    "unsaved": "Unsaved changes"
   },
-  "goalsEditor": {
-    "title": "YOUR GOALS",
-    "subtitle": "Add, remove or create goals. Your history stays.",
-    "current": "Current goals",
-    "add": "Add a goal",
-    "note": "New goals get missions from tomorrow."
+  "planMeal": {
+    "title": "Plan {{meal}}",
+    "editTitle": "Edit planned {{meal}}",
+    "name": "Meal name",
+    "namePlaceholder": "e.g. Chicken and rice",
+    "time": "Preferred time",
+    "notes": "Notes",
+    "remove": "Remove from plan",
+    "saveFavorite": "Save as favorite"
   },
-  "studio": {
-    "title": "AVATAR STUDIO",
-    "presets": "Character",
-    "presetA11y": "Character {{number}}",
-    "pose": "Idle animation",
-    "poses": {
-      "breathe": "Calm",
-      "look": "Look around"
-    },
-    "lighting": "Lighting",
-    "lightings": {
-      "studio": "Studio",
-      "dusk": "Golden hour",
-      "cool": "Night"
-    },
-    "save": "Save avatar",
-    "more": "More customisation is coming",
-    "moreBody": "Hairstyles, outfits, accessories and a selfie-based face are planned. They need additional licensed 3D assets, so they aren't available yet.",
-    "credit": "3D characters: Microsoft Rocketbox Avatar Library (MIT License)."
+  "items": {
+    "title": "Foods",
+    "search": "Search foods",
+    "searchPlaceholder": "Search e.g. oats, chicken, rice",
+    "recent": "Recent and favorite meals",
+    "results": "Foods",
+    "custom": "Your foods",
+    "createCustom": "Create custom food",
+    "addAsText": "Add \"{{name}}\" without nutrition",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "noEstimate": "Estimate unavailable",
+    "remove": "Remove {{name}}",
+    "empty": "No foods added yet. Search above or just type a meal name.",
+    "estimateNote": "Nutrition values are estimates based on typical reference values. Real foods vary.",
+    "useMeal": "Use {{name}}"
   },
-  "avatar": {
-    "loading": "Loading your avatar…",
-    "unavailable": "3D view isn't available right now. Showing a preview image instead.",
-    "a11yLabel": "Your 3D avatar",
-    "a11yHint": "Drag to rotate, pinch to zoom, double tap to reset. Use actions to rotate or zoom.",
-    "rotateLeft": "Rotate left",
-    "rotateRight": "Rotate right",
-    "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+  "customFood": {
+    "title": "Custom food",
+    "name": "Food name",
+    "serving": "Serving",
+    "servingPlaceholder": "e.g. 1 bar",
+    "servingGrams": "Serving weight (g)",
+    "kcal": "Calories (kcal)",
+    "protein": "Protein (g)",
+    "carbs": "Carbohydrates (g)",
+    "fat": "Fat (g)",
+    "hint": "Use the values on the package label.",
+    "invalid": "Please fill in the name and nutrition values."
   },
-  "coach": {
-    "title": "PRIME COACH",
-    "subtitle": "Guidance based on your plan and progress.",
-    "previewBadge": "Preview",
-    "previewNote": "This preview uses your plan data on this device. A personal AI coach is in development and will only use your data with your permission.",
-    "today": "For today",
-    "suggestions": "Suggestions",
-    "adjustTime": "Adjust daily time",
-    "openMissions": "Open today's missions",
-    "planRecovery": "Plan a recovery day",
-    "messages": {
-      "start": "Day one is the hardest decision, and you already made it. Pick your easiest mission and finish it within the next hour.",
-      "allDone": "Every mission done today. Rest well: recovery is where progress settles in.",
-      "someDone": "You've already moved today. One more mission keeps the momentum going.",
-      "noneYet": "Nothing done yet today, and that's fine. Start with the shortest mission: {{minutes}} minutes.",
-      "recovery": "Today is a recovery day. Recharging is part of the program.",
-      "afterMiss": "Yesterday didn't go to plan. That doesn't erase anything. Today is a fresh start.",
-      "streak": "{{count}} days in a row. You're proving to yourself that you follow through."
+  "food": {
+    "title": "Today's Food",
+    "titleDate": "Food — {{date}}",
+    "subtitle": "Track what you eat. Keep it simple.",
+    "add": "Add Food",
+    "scan": "Scan With AI",
+    "planned": "Planned meals",
+    "logThis": "Log This Meal",
+    "loggedPlanned": "Logged",
+    "logged": "Logged meals",
+    "totals": "Estimated nutrition",
+    "kcal": "Calories",
+    "protein": "Protein",
+    "carbs": "Carbs",
+    "fat": "Fat",
+    "partial_one": "{{count}} item has no estimate and isn't included.",
+    "partial_other": "{{count}} items have no estimate and aren't included.",
+    "aiLabel": "AI estimate",
+    "finish": "Finish Today's Food Log",
+    "finishDate": "Finish Food Log",
+    "finished": "Food log finished",
+    "finishedHint": "You can still add or edit meals.",
+    "reopen": "Reopen food log",
+    "needMeal": "Log at least one meal first.",
+    "emptyTitle": "Nothing logged yet.",
+    "emptyBody": "Start by adding your first meal.",
+    "history": "Meal history",
+    "outsideWindow": "This meal is outside your preferred schedule. Your entry has been saved.",
+    "locked": "This day is closed for edits. You can add late entries for yesterday until midnight tonight.",
+    "eatingWindow": "Eating window {{start}}–{{end}}",
+    "dayYesterday": "Yesterday"
+  },
+  "foodEntry": {
+    "title": "Add Food",
+    "editTitle": "Edit Meal",
+    "fromPlan": "Planned: {{name}}. Adjust it to what you actually ate.",
+    "name": "Food name",
+    "namePlaceholder": "e.g. Oatmeal and banana",
+    "mealType": "Meal",
+    "time": "Time eaten",
+    "notes": "Notes",
+    "save": "Save Meal",
+    "saved": "Meal saved.",
+    "deleted": "Meal deleted.",
+    "delete": "Delete meal",
+    "deleteTitle": "Delete this meal?",
+    "deleteBody": "It will be removed from your food log.",
+    "favorite": "Save as favorite"
+  },
+  "scan": {
+    "title": "Scan With AI",
+    "subtitle": "Take a photo of your meal. You'll review everything before saving.",
+    "take": "Take Photo",
+    "library": "Choose from Library",
+    "analyzing": "Analyzing your meal…",
+    "result": "AI estimate",
+    "resultNote": "These are estimates from a photo. Ingredients, oils and portion sizes can't always be seen. Please check and correct them.",
+    "notFood": "We couldn't find food in this photo.",
+    "failed": "We couldn't analyze this meal.",
+    "manual": "Log Manually",
+    "useResult": "Review and save",
+    "privacy": "Your photo is sent securely for analysis and isn't kept after the estimate is returned."
+  },
+  "workout": {
+    "title": "Today's Activity",
+    "titleDate": "Activity — {{date}}",
+    "subtitle": "Move your way. Progress every day.",
+    "planned": "Planned: {{summary}}",
+    "noPlan": "Nothing planned. Choose what you did today.",
+    "choose": "What did you do?",
+    "logged": "Logged today",
+    "restSaved": "Rest Day saved",
+    "restTitle": "Rest Day",
+    "restBody": "Recovery is part of progress.",
+    "restSupport": "Give your body time to recharge.",
+    "saveRest": "Save Rest Day",
+    "restDone": "Rest Day saved. Recovery counts.",
+    "undoRest": "Remove Rest Day",
+    "logWorkout": "Log Workout",
+    "photo": "Photo Check-In",
+    "emptyTitle": "Your activity journey starts here.",
+    "emptyBody": "Log a workout or choose a recovery day.",
+    "history": "Workout history",
+    "selfReported": "Self-reported",
+    "withPhoto": "With photo context"
+  },
+  "workoutLog": {
+    "title": "Log {{activity}}",
+    "editTitle": "Edit {{activity}}",
+    "activity": "Activity",
+    "date": "Date",
+    "startTime": "Start time",
+    "duration": "Duration",
+    "custom": "Custom",
+    "customMinutes": "Minutes",
+    "description": "Description",
+    "descriptionPlaceholder": "e.g. Strength training",
+    "recent": "Recent",
+    "save": "Save Workout",
+    "saveCheckIn": "Save Check-In",
+    "saved": "Workout saved.",
+    "deleted": "Workout deleted.",
+    "delete": "Delete workout",
+    "deleteTitle": "Delete this workout?",
+    "deleteBody": "It will be removed from your activity history.",
+    "duplicate": "You've already saved this exact workout.",
+    "note": "Manual check-ins are self-reported."
+  },
+  "workoutPhoto": {
+    "title": "Photo Check-In",
+    "subtitle": "Take a photo of where you're training. It adds context to your entry; you'll still confirm your activity.",
+    "take": "Take {{activity}} Photo",
+    "analyzing": "Looking at your photo…",
+    "recognized": {
+      "gym": "Gym environment detected",
+      "outdoor": "Outdoor environment detected",
+      "home": "Workout equipment detected"
     },
-    "tips": {
-      "lowArea": "Your {{area}} missions are at {{percent}}%. Try making them shorter or easier for a week.",
-      "tooMuch": "You're completing less than half of your missions. A smaller daily time could make the plan fit better.",
-      "strong": "You're completing most of your missions. When you're ready, add a new action to keep growing.",
-      "phase": "You're in the {{phase}} phase: {{focus}}"
+    "confirm": "Confirm your activity details to save this check-in.",
+    "uncertain": "We couldn't clearly identify your workout environment.",
+    "mismatch": "This photo doesn't look like a {{activity}} setting.",
+    "failed": "We couldn't analyze this photo right now.",
+    "retake": "Retake Photo",
+    "correct": "Continue Anyway",
+    "manual": "Log Manually",
+    "disclaimer": "A photo shows a place, not that a workout happened. Your entry is self-reported.",
+    "privacy": "Don't include faces or other people. Location data is removed before the photo is analyzed."
+  },
+  "journey": {
+    "title": "Your Journey",
+    "subtitle": "Small steps. Lasting change.",
+    "currentStreak": "Current streak",
+    "longestStreak": "Longest streak",
+    "completedDays": "Completed days",
+    "workouts": "Workouts",
+    "recoveryDays": "Recovery days",
+    "meals": "Meals logged",
+    "foodConsistency": "Food log consistency",
+    "weight": "Weight",
+    "addWeight": "Add Weight",
+    "noWeight": "Weight tracking is optional. Add an entry whenever it's useful to you.",
+    "weightChange": "{{value}} since first entry",
+    "weightNote": "Day-to-day changes are normal and say little about progress.",
+    "week": "Week",
+    "month": "Month",
+    "all": "All",
+    "history": "History",
+    "program": "7-Month Journey",
+    "programOff": "An optional, habit-focused structure for the next seven months. No weight targets.",
+    "programStart": "Start the 7-Month Journey",
+    "programMonth": "Month {{month}} of 7",
+    "programDay": "Day {{day}}",
+    "programEnd": "Leave journey",
+    "months": {
+      "foundation": {
+        "title": "Foundation",
+        "body": "Establish a sustainable daily routine."
+      },
+      "nutrition": {
+        "title": "Nutrition",
+        "body": "Build familiarity with meal planning and portions."
+      },
+      "movement": {
+        "title": "Movement",
+        "body": "Create a realistic and sustainable activity routine."
+      },
+      "consistency": {
+        "title": "Consistency",
+        "body": "Review routines and adapt plans."
+      },
+      "progress": {
+        "title": "Progress",
+        "body": "Reflect on improvements and personal goals."
+      },
+      "sustainability": {
+        "title": "Sustainability",
+        "body": "Strengthen habits that can last beyond the program."
+      },
+      "maintenance": {
+        "title": "Maintenance",
+        "body": "Prepare for long-term maintenance and continued healthy living."
+      }
     },
-    "limits": "The coach doesn't give medical, nutritional or financial advice. For those questions, please talk to a qualified professional."
+    "finished": "You completed the 7-month journey.",
+    "maintenance": "Maintenance Mode",
+    "maintenanceOn": "Maintenance Mode is on. Keep planning, logging and recovering at your own pace.",
+    "maintenanceStart": "Switch to Maintenance Mode",
+    "milestones": "Milestones",
+    "milestone": {
+      "first_plan": "First plan saved",
+      "first_day": "First complete day",
+      "streak_3": "3-day streak",
+      "streak_7": "7-day streak",
+      "streak_30": "30-day streak",
+      "days_30": "30 completed days",
+      "workouts_10": "10 workouts logged",
+      "meals_50": "50 meals logged",
+      "first_recovery": "First recovery day"
+    },
+    "photos": "Progress photos",
+    "photosHint": "Private and optional. Stored only on this device.",
+    "emptyTitle": "Every journey begins somewhere.",
+    "emptyBody": "Your progress will appear here as you build your routine.",
+    "emptyAction": "Get Started"
+  },
+  "weight": {
+    "title": "Add Weight",
+    "editTitle": "Edit Weight",
+    "value": "Weight",
+    "date": "Date",
+    "save": "Save",
+    "delete": "Delete entry",
+    "invalid": "Please enter a realistic weight.",
+    "futureDate": "Please choose today or an earlier date."
+  },
+  "photos": {
+    "title": "Progress Photos",
+    "subtitle": "Only you can see these. They never leave this device.",
+    "add": "Add Photo",
+    "none": "No photos yet. Photos are completely optional.",
+    "delete": "Delete photo",
+    "deleteTitle": "Delete this photo?",
+    "deleteBody": "It will be permanently removed from this device.",
+    "permission": "Allow photo access in your phone's settings to add progress photos."
+  },
+  "profile": {
+    "title": "Profile",
+    "pro": "MINUS 30 Pro",
+    "free": "Free plan",
+    "proActive": "Pro active",
+    "upgrade": "Upgrade to Pro",
+    "account": "Account",
+    "health": "Health preferences",
+    "routine": "Routine",
+    "notifications": "Notifications",
+    "discipline": "Discipline Mode",
+    "eatingWindow": "Eating Window",
+    "planningTime": "Preferred planning time",
+    "premium": "Premium",
+    "privacy": "Privacy and data",
+    "info": "Information",
+    "help": "Help",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "version": "Version {{version}}",
+    "mealHistory": "Meal history",
+    "workoutHistory": "Workout history"
+  },
+  "account": {
+    "title": "Account",
+    "localOnly": "Using MINUS 30 without an account",
+    "localBody": "Your data is stored on this device. Accounts and cloud backup become available once the MINUS 30 cloud service is set up for this build.",
+    "notConfigured": "Cloud accounts aren't configured in this build.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signUp": "Create Account",
+    "signOut": "Sign Out",
+    "signedInAs": "Signed in as {{email}}",
+    "error": "We couldn't sign you in. Check your details and try again.",
+    "checkEmail": "Check your email to confirm your account.",
+    "delete": "Delete account",
+    "deleteBody": "This permanently deletes your account and cloud data. Data on this device is deleted too."
+  },
+  "health": {
+    "title": "Health preferences",
+    "save": "Save changes",
+    "saved": "Preferences saved."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "enabled": "Reminders",
+    "enabledHint": "Optional. Never required to keep your streak.",
+    "pause": "Pause reminders",
+    "pauseHint": "Keep your settings but send nothing for now.",
+    "discipline": "Discipline Mode",
+    "modes": {
+      "light": {
+        "title": "Light",
+        "body": "About one reminder a day, at your planning time."
+      },
+      "smart": {
+        "title": "Smart",
+        "body": "A morning overview, your planned activity and evening planning."
+      },
+      "focused": {
+        "title": "Focused",
+        "body": "Smart, plus planned meals and a gentle evening check-in."
+      },
+      "hourly": {
+        "title": "Hourly",
+        "body": "Optional hourly nudges within your chosen hours, until your day is complete."
+      }
+    },
+    "morning": "Morning overview",
+    "quietStart": "Quiet hours start",
+    "quietEnd": "Quiet hours end",
+    "hourlyStart": "Hourly from",
+    "hourlyEnd": "Hourly until",
+    "nextUp_one": "{{count}} reminder scheduled for the next two days.",
+    "nextUp_other": "{{count}} reminders scheduled for the next two days.",
+    "denied": "Notifications are turned off for MINUS 30 in your phone's settings.",
+    "web": "Reminders work in the iOS and Android app.",
+    "content": {
+      "morning": {
+        "title": "Your daily plan is ready.",
+        "body": "Open MINUS 30 to see today's meals and activity."
+      },
+      "activity": {
+        "title": "Time for your planned activity.",
+        "body": "Log it when you're done, or choose a Rest Day."
+      },
+      "meal": {
+        "title": "Meal time.",
+        "body": "Log what you eat when you're ready."
+      },
+      "planning": {
+        "title": "Tomorrow starts tonight. Ready to plan?",
+        "body": "A few minutes is enough."
+      },
+      "checkin": {
+        "title": "You can finish your daily check-in whenever you're ready.",
+        "body": "No pressure."
+      },
+      "hourly": {
+        "title": "A small step counts.",
+        "body": "Your daily mission is waiting whenever you are."
+      },
+      "window": {
+        "title": "Your eating window has started.",
+        "body": "This is only a preference. Eat when it works for you."
+      }
+    }
+  },
+  "eatingWindow": {
+    "title": "Eating Window",
+    "subtitle": "Optional preferred hours for your meals. It's a scheduling preference, never a restriction.",
+    "enable": "Use an eating window",
+    "start": "Start",
+    "end": "End",
+    "reminders": "Remind me when it starts",
+    "behavior": "You can always log food at any time. Meals outside your window are saved normally and never affect your streak.",
+    "health": "Time-restricted eating isn't suitable for everyone. If you're pregnant or breastfeeding, have diabetes, take medication that affects blood sugar, or have a history of disordered eating, please talk to a healthcare professional first."
+  },
+  "privacy": {
+    "title": "Privacy and data",
+    "summary": "Your food, activity, weight and photos are stored on this device. Nothing is sent anywhere unless you use an AI feature, and then only what that feature needs.",
+    "export": "Export my data",
+    "exportHint": "Share a copy of all your data as a JSON file.",
+    "exportFailed": "We couldn't export your data. Please try again.",
+    "coachConsent": "Let the AI Coach use my plans and logs",
+    "coachConsentHint": "Off by default. When on, only the relevant recent entries are sent with your messages.",
+    "deleteFood": "Delete all food entries",
+    "deleteActivity": "Delete all workout and rest records",
+    "deletePhotos": "Delete all photos",
+    "deleteCoach": "Delete AI conversations",
+    "deleteAll": "Delete all data",
+    "confirmTitle": "Are you sure?",
+    "confirmBody": "This can't be undone.",
+    "deleted": "Deleted."
+  },
+  "about": {
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms of Service",
+    "draft": "Preliminary summary. The full legal text must be reviewed before release.",
+    "privacyBody": "MINUS 30 stores your profile, plans, food and activity logs, optional weight entries and optional photos on your device. If you use AI features (Pro), the photo or message and only the context needed for that request are processed by our secure server and an AI provider, and are not kept after processing except your saved results. We don't sell your data or use it for advertising. You can export or delete your data at any time in Privacy and data.",
+    "termsBody": "MINUS 30 supports healthy routines and is not a medical device or a substitute for professional advice. Nutrition values and AI results are estimates. Workout entries are self-reported. The app is intended for adults aged 18 and over. Subscriptions renew automatically until cancelled in your App Store or Google Play account settings.",
+    "medical": "MINUS 30 doesn't provide medical advice. If you have a health condition, are pregnant, or are unsure what's right for you, please talk to a healthcare professional.",
+    "help": "Plan tomorrow in Plan, log meals in Food, log a workout or Rest Day in Workout. When all three are done, today's mission is complete.",
+    "contact": "Contact",
+    "noContact": "A support contact will be added before release."
   },
   "pro": {
-    "title": "PRIME PRO",
-    "subtitle": "Go further when you're ready. Everything you need to start is free.",
-    "free": "Free",
-    "freeItems": [
-      "Personal goals",
-      "Daily missions",
-      "Prime Calendar and streaks",
-      "Comeback Journey",
-      "Basic avatar",
-      "Basic progress"
-    ],
-    "proItems": [
-      "Advanced avatar customisation",
-      "Personal AI Prime Coach",
-      "Advanced mission personalisation",
-      "Detailed analytics",
-      "Transformation reports"
-    ],
-    "cta": "Coming soon",
-    "note": "Prime Pro isn't available yet. No payments are taken in this version."
+    "title": "Unlock MINUS 30 Pro",
+    "subtitle": "Smarter tracking. Less effort. More support.",
+    "b1": {
+      "title": "Scan meals with AI",
+      "body": "Photograph a meal and review estimated nutrition."
+    },
+    "b2": {
+      "title": "AI-assisted workout check-ins",
+      "body": "Add photo context to your gym, outdoor or home workouts."
+    },
+    "b3": {
+      "title": "Personal AI coaching",
+      "body": "Plan meals, adjust routines and stay on track."
+    },
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "perMonth": "{{price}} / month",
+    "perYear": "{{price}} / year",
+    "save": "Best value",
+    "subscribe": "Continue",
+    "restore": "Restore Purchases",
+    "unavailable": "Subscriptions aren't available in this build yet. Prices shown are preliminary.",
+    "cancelInfo": "Subscriptions renew automatically. Cancel anytime in your App Store or Google Play settings at least 24 hours before renewal.",
+    "noGuarantee": "Pro adds convenience and support. It doesn't guarantee weight loss or any specific result.",
+    "free": "Everything you need to plan, log and build your streak stays free.",
+    "devPreview": "Developer preview: show Pro screens",
+    "devPreviewHint": "Development builds only. Doesn't grant AI access; the server still checks your subscription.",
+    "isPro": "You have MINUS 30 Pro."
   },
-  "settings": {
-    "title": "SETTINGS",
-    "general": "General",
-    "language": "Language",
-    "units": "Units",
-    "unitsMetric": "Metric (kg, cm)",
-    "unitsImperial": "Imperial (lb, in)",
-    "notifications": "Notifications",
-    "reminders": "Daily reminder",
-    "remindersHint": "A gentle reminder at your chosen time. No pressure, no guilt.",
-    "reminderTime": "Reminder time",
-    "privacy": "Privacy",
-    "privacyLocal": "Your data is stored on this device. Nothing is sent to a server in this version.",
-    "coachConsent": "Let the future AI coach read my journal",
-    "coachConsentHint": "Off by default. You can change this anytime.",
-    "photosPrivate": "Progress photos are never uploaded.",
-    "data": "Your data",
-    "export": "Export my data",
-    "exportHint": "Share a copy of your data as a file.",
-    "delete": "Delete all data",
-    "deleteTitle": "Delete all data?",
-    "deleteBody": "This permanently removes your plan, history, journal and photos from this device.",
-    "deleteConfirm": "Delete",
-    "account": "Account",
-    "accountBody": "Accounts and sync arrive in a coming update. Until then, everything stays on this device.",
-    "about": "About",
-    "version": "Version {{version}}",
-    "licenses": "Licences",
-    "licensesBody": "3D characters and animations: Microsoft Rocketbox Avatar Library, MIT License, © 2020 Microsoft.",
-    "demo": "Load sample progress",
-    "demoHint": "Replaces your history with example data for testing.",
-    "remindersDenied": "Notifications are off for PrimeTimeAgain. You can allow them in your phone’s Settings.",
-    "remindersWeb": "Reminders work in the iOS and Android app."
+  "coach": {
+    "title": "AI Coach",
+    "subtitle": "Practical support for meals, activity and routines.",
+    "placeholder": "Ask anything about your plan",
+    "send": "Send",
+    "thinking": "Thinking…",
+    "suggestions": [
+      "I don't know what to eat tomorrow.",
+      "I missed my workout.",
+      "Help me make a shopping list."
+    ],
+    "unavailable": "The AI Coach isn't available in this build yet. It needs the MINUS 30 cloud service to be set up.",
+    "signedOut": "Sign in to use the AI Coach.",
+    "notPro": "The AI Coach is part of MINUS 30 Pro.",
+    "rateLimited": "You've reached the message limit for now. Please try again later.",
+    "offline": "You're offline. The AI Coach needs an internet connection.",
+    "failed": "Something went wrong. Please try again.",
+    "clear": "Delete conversation",
+    "consentNote": "The coach only sees your plans and logs if you allow it in Privacy and data.",
+    "safety": "The coach doesn't give medical advice. For health concerns, please contact a healthcare professional.",
+    "open": "Open AI Coach"
   },
-  "language": {
-    "title": "LANGUAGE",
-    "subtitle": "Choose the language you'd like to use in the app.",
-    "device": "Device language: {{language}}",
-    "restartTitle": "Restart required",
-    "restartBody": "Please close and reopen the app to switch the text direction."
+  "ai": {
+    "not_configured": "AI features aren't available in this build yet.",
+    "signed_out": "Sign in to use AI features.",
+    "not_pro": "This feature is part of MINUS 30 Pro.",
+    "rate_limited": "You've reached the limit for now. Please try again later.",
+    "offline": "You're offline. AI features need an internet connection.",
+    "invalid_response": "We received an unexpected result. Please try again or log manually.",
+    "provider_error": "The AI service is unavailable right now. Please try again or log manually.",
+    "camera": "Camera access is needed for this. You can allow it in your phone's settings, or log manually."
+  },
+  "history": {
+    "meals": "Meal history",
+    "workouts": "Workout history",
+    "empty": "Nothing here yet."
+  },
+  "validation": {
+    "activityType": "Please choose an activity.",
+    "date": "Please choose a date.",
+    "startTime": "Please enter your start time.",
+    "duration": "Please enter your workout duration.",
+    "durationMax": "Please enter a duration under 10 hours.",
+    "description": "Please add a short description.",
+    "descriptionMax": "Please keep the description under 200 characters.",
+    "foodName": "Please enter what you ate.",
+    "foodNameMax": "Please keep the name under 80 characters.",
+    "mealType": "Please choose a meal.",
+    "time": "Please enter a valid time (HH:MM).",
+    "quantity": "Please enter a quantity."
   },
   "states": {
     "errorTitle": "Something went wrong",
-    "errorBody": "Please try again. Your data is safe.",
-    "saveError": "We couldn't save that. Please try again."
+    "errorBody": "Please try again. Your data is safe on this device.",
+    "saveError": "We couldn't save that. Please try again.",
+    "locked": "This day is closed for edits. Late entries are possible until the end of the next day."
   },
   "notFound": {
-    "title": "This page doesn't exist",
-    "action": "Go to Prime Control"
-  },
-  "demo": {
-    "reflections": {
-      "r1": "Did the workout even though I didn't feel like it. That's the version of me I want back.",
-      "r2": "Spoke up in the meeting today. Small thing, but a month ago I wouldn't have.",
-      "r3": "Missed two missions, but I planned tomorrow properly. Not giving up on this.",
-      "r4": "First full week done. I feel more like myself than I have in a long time."
-    },
-    "badge": "Sample data"
-  },
-  "reminder": {
-    "title": "Time for your comeback",
-    "body": "A few focused minutes today keep your Prime moving."
+    "title": "This page doesn't exist.",
+    "action": "Go to Today"
   }
 }

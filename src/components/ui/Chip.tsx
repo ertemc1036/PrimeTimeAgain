@@ -1,49 +1,28 @@
 import { StyleSheet } from 'react-native';
 
-import { layout, radii, spacing, useColors } from '@/theme';
+import { colors, radii, spacing } from '@/theme';
 
 import { AppText } from './AppText';
+import { Icon, type IconName } from './Icon';
 import { PressableScale } from './PressableScale';
 
-/** Compact toggle for multi-select answers and filters. */
-export function Chip({
-  label,
-  selected,
-  onPress,
-  mode = 'checkbox',
-}: {
-  label: string;
-  selected: boolean;
-  onPress: () => void;
-  mode?: 'checkbox' | 'radio';
-}) {
-  const colors = useColors();
+export function Chip({ label, selected, onPress, mode = 'checkbox', icon }: { label: string; selected: boolean; onPress: () => void; mode?: 'checkbox' | 'radio'; icon?: IconName }) {
   return (
     <PressableScale
       onPress={onPress}
-      scaleTo={0.96}
+      scaleTo={0.95}
       accessibilityRole={mode}
       accessibilityState={{ checked: selected }}
       accessibilityLabel={label}
-      style={[
-        styles.chip,
-        { backgroundColor: selected ? colors.accent : colors.surface, borderColor: selected ? colors.accent : colors.border },
-      ]}>
-      <AppText variant="label" color={selected ? colors.onAccent : colors.text}>
+      style={[styles.chip, { backgroundColor: selected ? colors.black : colors.card }]}>
+      {icon ? <Icon name={icon} size={16} color={selected ? colors.white : colors.text} /> : null}
+      <AppText variant="label" color={selected ? colors.white : colors.text}>
         {label}
       </AppText>
     </PressableScale>
   );
 }
 
-
 const styles = StyleSheet.create({
-  chip: {
-    minHeight: layout.minTouchTarget,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: radii.pill,
-    borderWidth: 1,
-    justifyContent: 'center',
-  },
+  chip: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 44, paddingHorizontal: spacing.md, borderRadius: radii.pill },
 });

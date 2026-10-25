@@ -1,197 +1,263 @@
-import type { AvatarConfig } from '@/avatar/types';
-
-/** Local calendar date, formatted `YYYY-MM-DD`. */
+/** Local calendar date `YYYY-MM-DD` (the user's own day, never a UTC boundary). */
 export type ISODate = string;
+/** Local wall-clock time `HH:MM`. */
+export type LocalTime = string;
 
-/** Life areas. Goals belong to one area; Prime Control shows one module per area the user chose. */
-export type AreaId = 'body' | 'mind' | 'money' | 'social' | 'lifestyle' | 'presence';
-export const AREAS: readonly AreaId[] = ['body', 'mind', 'money', 'social', 'lifestyle', 'presence'];
+export type Units = 'metric' | 'imperial';
+export type GoalType = 'habits' | 'nutrition' | 'active' | 'weight';
+export type ActivityPreference = 'gym' | 'walking' | 'running' | 'home' | 'combination';
+export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
+export const MEAL_TYPES: readonly MealType[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
-export type GoalTemplateId =
-  | 'lose_weight'
-  | 'get_fit'
-  | 'build_muscle'
-  | 'look_better'
-  | 'confidence'
-  | 'discipline'
-  | 'focus'
-  | 'energy'
-  | 'sleep'
-  | 'habits'
-  | 'make_money'
-  | 'career'
-  | 'business'
-  | 'social_life'
-  | 'communication'
-  | 'style'
-  | 'presence'
-  | 'me_time'
-  | 'lifestyle';
+export type WorkoutType = 'gym' | 'outdoor_walk' | 'outdoor_run' | 'home';
+export type PlannedActivityType = WorkoutType | 'rest';
 
-export type Difficulty = 1 | 2 | 3;
+export interface Macros {
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}
 
-/** A reusable action from the catalogue. Text lives in i18n under `actions.<id>`. */
-export interface ActionTemplate {
+/** One food in a meal. `nutrition` is null when no credible estimate exists. */
+export interface FoodItem {
   id: string;
-  minutes: number;
-  difficulty: Difficulty;
-  icon: string;
-}
-
-export interface GoalTemplate {
-  id: GoalTemplateId;
-  area: AreaId;
-  icon: string;
-  actions: string[];
-}
-
-/** One action in a user's goal plan: from the catalogue, or written by the user. */
-export interface GoalAction {
-  id: string;
-  templateId?: string;
-  /** Set for user-written actions. */
-  title?: string;
-  minutes: number;
-  difficulty: Difficulty;
-  active: boolean;
-}
-
-export interface UserGoal {
-  id: string;
-  /** null for goals the user created themselves. */
-  templateId: GoalTemplateId | null;
-  /** Name of a custom goal. */
-  title?: string;
-  area: AreaId;
-  /** Where the user is starting from, in their words (optional). */
-  startingPoint: string;
-  /** What they want to reach (optional; a gentle default is shown when empty). */
-  desiredOutcome: string;
-  actions: GoalAction[];
-  createdAt: string;
-  archived: boolean;
-}
-
-export type MissionStatus = 'open' | 'done' | 'skipped' | 'postponed';
-
-/** A concrete action planned for one day. Text is snapshotted so history stays stable when plans change. */
-export interface Mission {
-  id: string;
-  goalId: string;
-  actionId: string;
-  actionTemplateId?: string;
-  title?: string;
-  minutes: number;
-  difficulty: Difficulty;
-  status: MissionStatus;
-  completedAt?: string;
-  /** Date this mission was postponed from. */
-  carriedFrom?: ISODate;
-}
-
-export interface DayRecord {
-  date: ISODate;
-  missions: Mission[];
-  /** False until the day's missions have been generated (a day can exist earlier with carried missions). */
-  generated: boolean;
-  /** A planned recovery day: counts as following the program. */
-  recovery: boolean;
-}
-
-export type PrimeMemory = 'last_year' | 'one_two' | 'three_five' | 'five_plus' | 'first';
-
-export interface StartingPoint {
-  activity?: 'low' | 'some' | 'regular' | 'high';
-  training?: 'home' | 'gym' | 'outdoors' | 'mixed';
-  confidence?: string[];
-  money?: string[];
-  sleep?: 'poor' | 'ok' | 'good';
-  priority?: 'routine' | 'free_time' | 'health' | 'order';
-}
-
-export interface ComebackProfile {
   name: string;
-  memory?: PrimeMemory;
-  memorySpecial?: string;
-  memoryChanged?: string;
-  memoryRegain?: string;
-  startingPoint: StartingPoint;
+  /** Reference to the built-in or a custom food, when the item came from a database. */
+  foodId?: string;
+  quantity: number;
+  unit: string;
+  grams?: number;
+  nutrition: Macros | null;
+}
+
+export interface FoodPreferences {
+  preferred: string[];
+  restrictions: string[];
+  allergies: string[];
+  dislikes: string[];
+}
+
+export interface Profile {
+  name: string;
+  /** User confirmed they are 18 or older. Required to use the app. */
+  adultConfirmed: boolean;
+  heightCm?: number;
+  units: Units;
+  goals: GoalType[];
+  startWeightKg?: number;
+  goalWeightKg?: number;
+  activityPrefs: ActivityPreference[];
+  food: FoodPreferences;
+  planningTime: LocalTime;
   createdAt: string;
+  onboardingCompletedAt: string;
 }
 
-export interface Program {
-  startDate: ISODate;
-  durationDays: number;
-  dailyMinutes: number;
+export interface PlannedMeal {
+  id: string;
+  mealType: MealType;
+  title: string;
+  items: FoodItem[];
+  time?: LocalTime;
+  notes?: string;
 }
 
-export type Mood = 1 | 2 | 3 | 4 | 5;
+export interface PlannedActivity {
+  type: PlannedActivityType;
+  time?: LocalTime;
+  durationMin?: number;
+  notes?: string;
+}
 
-export interface Reflection {
+/** The plan for one date (created the day before). */
+export interface DayPlan {
+  date: ISODate;
+  meals: PlannedMeal[];
+  /** Explicit "flexible / no meals planned" choice, so nobody has to invent meals. */
+  flexibleMeals: boolean;
+  activity: PlannedActivity | null;
+  /** Set when the user taps "Save Tomorrow's Plan". */
+  savedAt?: string;
+  /** Local date on which the plan was saved. */
+  savedOn?: ISODate;
+  updatedAt: string;
+}
+
+export type EntryMethod = 'manual' | 'plan' | 'ai';
+
+export interface FoodLog {
   id: string;
   date: ISODate;
-  mood: Mood;
-  promptKey?: string;
-  body: string;
+  /** Absolute timestamp of eating, plus the local wall time the user saw. */
+  consumedAt: string;
+  time: LocalTime;
+  mealType: MealType;
+  title: string;
+  items: FoodItem[];
+  notes?: string;
+  entryMethod: EntryMethod;
+  /** The planned meal this entry was logged from, if any. */
+  planMealId?: string;
+  /** Nutrition came from an AI photo estimate (always labelled as such). */
+  aiEstimated?: boolean;
+  /** Logged outside the optional eating window (informational only). */
+  outsideWindow?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FoodCompletion {
+  date: ISODate;
+  completedAt: string;
+}
+
+export type EnvironmentClass = 'gym' | 'outdoor' | 'home' | 'unclear' | 'other';
+
+export interface EnvironmentAssessment {
+  environment: EnvironmentClass;
+  confidence: 'high' | 'medium' | 'low';
+  matchesSelected: boolean;
+  summary: string;
+}
+
+export interface ActivityLog {
+  id: string;
+  date: ISODate;
+  type: WorkoutType;
+  startTime: LocalTime;
+  durationMin: number;
+  description: string;
+  /** 'manual' = self-reported; 'photo' = self-reported with an optional AI-described photo for context. */
+  entryMethod: 'manual' | 'photo';
+  photoUri?: string;
+  aiEnvironment?: EnvironmentAssessment;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RecoveryLog {
+  date: ISODate;
   createdAt: string;
 }
 
-export type MetricId = 'weight' | 'waist' | 'confidence' | 'energy';
-
-export interface Measurement {
+export interface WeightEntry {
   id: string;
   date: ISODate;
-  metric: MetricId;
-  /** Stored in metric units (kg, cm) or on a 1–10 scale. */
-  value: number;
+  kg: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface ProgressPhoto {
   id: string;
   date: ISODate;
-  /** Local file inside the app's private documents folder. Never uploaded. */
   uri: string;
   createdAt: string;
 }
 
-export interface Preferences {
+export interface SavedMeal {
+  id: string;
+  title: string;
+  mealType?: MealType;
+  items: FoodItem[];
+  favorite: boolean;
+  lastUsedAt: string;
+}
+
+export interface CustomFood {
+  id: string;
+  name: string;
+  /** Nutrition per serving as entered by the user. */
+  servingLabel: string;
+  servingGrams?: number;
+  perServing: Macros;
+}
+
+export type DisciplineMode = 'light' | 'smart' | 'focused' | 'hourly';
+
+export interface NotificationPrefs {
+  enabled: boolean;
+  mode: DisciplineMode;
+  paused: boolean;
+  morningTime: LocalTime;
+  quietStart: LocalTime;
+  quietEnd: LocalTime;
+  hourlyStart: LocalTime;
+  hourlyEnd: LocalTime;
+}
+
+export interface EatingWindow {
+  enabled: boolean;
+  start: LocalTime;
+  end: LocalTime;
   reminders: boolean;
-  reminderTime: string;
-  units: 'metric' | 'imperial';
-  /** Consent for a future AI coach to read reflections. Off by default. */
-  coachUsesReflections: boolean;
+}
+
+export interface JourneySettings {
+  /** Optional 7-month program. */
+  programEnabled: boolean;
+  startDate?: ISODate;
+  maintenance: boolean;
+}
+
+export interface Achievement {
+  id: string;
+  earnedAt: string;
+}
+
+export interface CoachMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  createdAt: string;
 }
 
 export interface AppData {
-  version: 2;
-  profile: ComebackProfile | null;
-  program: Program | null;
-  goals: UserGoal[];
-  days: Record<ISODate, DayRecord>;
-  reflections: Reflection[];
-  measurements: Measurement[];
+  version: 1;
+  profile: Profile | null;
+  plans: Record<ISODate, DayPlan>;
+  foodLogs: FoodLog[];
+  foodCompletions: Record<ISODate, FoodCompletion>;
+  activityLogs: ActivityLog[];
+  recoveryLogs: Record<ISODate, RecoveryLog>;
+  weights: WeightEntry[];
   photos: ProgressPhoto[];
-  avatar: AvatarConfig | null;
-  preferences: Preferences;
+  savedMeals: SavedMeal[];
+  customFoods: CustomFood[];
+  notifications: NotificationPrefs;
+  eatingWindow: EatingWindow;
+  journey: JourneySettings;
+  achievements: Achievement[];
+  coach: { consentToContext: boolean; messages: CoachMessage[] };
 }
 
-export const defaultPreferences = (): Preferences => ({
-  reminders: false,
-  reminderTime: '20:00',
-  units: 'metric',
-  coachUsesReflections: false,
+export const defaultNotifications = (): NotificationPrefs => ({
+  enabled: false,
+  mode: 'light',
+  paused: false,
+  morningTime: '08:00',
+  quietStart: '22:00',
+  quietEnd: '07:00',
+  hourlyStart: '09:00',
+  hourlyEnd: '20:00',
 });
 
 export const emptyAppData = (): AppData => ({
-  version: 2,
+  version: 1,
   profile: null,
-  program: null,
-  goals: [],
-  days: {},
-  reflections: [],
-  measurements: [],
+  plans: {},
+  foodLogs: [],
+  foodCompletions: {},
+  activityLogs: [],
+  recoveryLogs: {},
+  weights: [],
   photos: [],
-  avatar: null,
-  preferences: defaultPreferences(),
+  savedMeals: [],
+  customFoods: [],
+  notifications: defaultNotifications(),
+  eatingWindow: { enabled: false, start: '08:00', end: '20:00', reminders: false },
+  journey: { programEnabled: false, maintenance: false },
+  achievements: [],
+  coach: { consentToContext: false, messages: [] },
 });

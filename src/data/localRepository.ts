@@ -4,41 +4,55 @@ import { emptyAppData, type AppData } from '@/domain/types';
 
 import type { AppRepository } from './repository';
 
-const STORAGE_KEY = 'pta.data.v2';
-const LEGACY_KEYS = ['pta.data.v1'];
+const PREFIX = 'm30.v1.';
+const KEYS = Object.keys(emptyAppData()).filter((k) => k !== 'version') as (keyof Omit<AppData, 'version'>)[];
 
 /**
- * On-device storage (AsyncStorage) for non-sensitive app data. Progress photos are files in the
- * app's private documents folder; only their local paths are stored here.
- * Writes are serialised so rapid taps can't interleave and lose updates.
+ * Local-first storage: each collection (food logs, activities, plans …) has its own key, and only
+ * collections that changed are written. Writes are serialised so rapid taps can't lose updates.
  */
 export function createLocalRepository(): AppRepository {
   let queue: Promise<void> = Promise.resolve();
 
   return {
     async load() {
-      const raw = await AsyncStorage.getItem(STORAGE_KEY);
-      if (raw) return migrate(JSON.parse(raw));
-      // The v1 wellness prototype used a different model; prototype data is not carried over.
-      await AsyncStorage.multiRemove(LEGACY_KEYS);
-      return emptyAppData();
+      const pairs = await AsyncStorage.multiGet(KEYS.map((k) => PREFIX + k));
+      const base = emptyAppData();
+      const data: AppData = { ...base };
+      for (const [key, raw] of pairs) {
+        if (!raw) continue;
+        const k = key.slice(PREFIX.length) as keyof Omit<AppData, 'version'>;
+        try {
+          (data as unknown as Record<string, unknown>)[k] = JSON.parse(raw);
+        } catch {
+          // Corrupt value: keep the default for this collection rather than failing the whole app.
+        }
+      }
+      return migrate(data);
     },
-    commit(_mutation, next) {
-      const run = queue.then(() => AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)));
+    commit(_mutation, prev, next) {
+      const changed = KEYS.filter((k) => prev[k] !== next[k]);
+      const run = queue.then(() =>
+        changed.length ? AsyncStorage.multiSet(changed.map((k) => [PREFIX + k, JSON.stringify(next[k])])) : undefined,
+      );
       queue = run.catch(() => undefined);
       return run;
     },
     async reset() {
       await queue;
-      await AsyncStorage.multiRemove([STORAGE_KEY, ...LEGACY_KEYS]);
+      await AsyncStorage.multiRemove(KEYS.map((k) => PREFIX + k));
     },
   };
 }
 
-/** Fill in fields added after the data was saved. Unknown or corrupt data falls back to a clean state. */
-export function migrate(value: unknown): AppData {
+/** Fill in fields added after data was saved. */
+export function migrate(data: AppData): AppData {
   const base = emptyAppData();
-  if (!value || typeof value !== 'object' || (value as AppData).version !== 2) return base;
-  const data = value as AppData;
-  return { ...base, ...data, preferences: { ...base.preferences, ...data.preferences } };
+  return {
+    ...data,
+    notifications: { ...base.notifications, ...data.notifications },
+    eatingWindow: { ...base.eatingWindow, ...data.eatingWindow },
+    journey: { ...base.journey, ...data.journey },
+    coach: { ...base.coach, ...data.coach },
+  };
 }

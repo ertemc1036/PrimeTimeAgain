@@ -1,29 +1,36 @@
+import '@/i18n';
+
+import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
+import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
+import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
+import { Inter_700Bold } from '@expo-google-fonts/inter/700Bold';
+import { Inter_800ExtraBold } from '@expo-google-fonts/inter/800ExtraBold';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { ReminderSync } from '@/components/system/ReminderSync';
-import { ErrorState } from '@/components/ui';
-import { hydrateLanguage } from '@/i18n';
+import { ErrorState, ToastProvider } from '@/components/ui';
+import { ReminderSync } from '@/features/ReminderSync';
 import { AppStateProvider, useAppState } from '@/state/AppStateProvider';
-import { lightColors } from '@/theme';
+import { ProProvider } from '@/state/ProProvider';
+import { colors } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [languageReady, setLanguageReady] = useState(false);
-
-  useEffect(() => {
-    hydrateLanguage().finally(() => setLanguageReady(true));
-  }, []);
-
+  const [fontsLoaded, fontError] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, Inter_800ExtraBold });
   return (
-    <GestureHandlerRootView style={StyleSheet.absoluteFill}>
+    <GestureHandlerRootView style={styles.root}>
       <AppStateProvider>
-        <RootNavigator ready={languageReady} />
+        <ProProvider>
+          <ToastProvider>
+            <RootNavigator ready={fontsLoaded || !!fontError} />
+          </ToastProvider>
+        </ProProvider>
       </AppStateProvider>
     </GestureHandlerRootView>
   );
@@ -39,39 +46,36 @@ function RootNavigator({ ready }: { ready: boolean }) {
     if (visible) void SplashScreen.hideAsync();
   }, [visible]);
 
-  if (!visible) return null; // the native splash screen stays up
+  if (!visible) return null; // the native splash screen stays visible
   if (status === 'error') return <ErrorState onRetry={retryLoad} />;
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       {isOnboarded ? <ReminderSync /> : null}
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: lightColors.background } }}>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="language" options={modal} />
         <Stack.Protected guard={!isOnboarded}>
           <Stack.Screen name="(onboarding)" />
         </Stack.Protected>
         <Stack.Protected guard={isOnboarded}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="area/[id]" />
-          <Stack.Screen name="goal/[id]" />
-          <Stack.Screen name="goal-edit/[id]" options={modal} />
-          <Stack.Screen name="mission/[id]" options={modal} />
-          <Stack.Screen name="add-mission" options={modal} />
-          <Stack.Screen name="day-summary" options={modal} />
-          <Stack.Screen name="calendar" />
+          <Stack.Screen name="plan-meal" options={modal} />
+          <Stack.Screen name="food-entry" options={modal} />
+          <Stack.Screen name="custom-food" options={modal} />
+          <Stack.Screen name="food-scan" options={modal} />
+          <Stack.Screen name="workout-log" options={modal} />
+          <Stack.Screen name="workout-photo" options={modal} />
+          <Stack.Screen name="weight" options={modal} />
+          <Stack.Screen name="photos" />
+          <Stack.Screen name="history" />
           <Stack.Screen name="coach" />
-          <Stack.Screen name="avatar-studio" />
-          <Stack.Screen name="goals" />
-          <Stack.Screen name="plan" />
+          <Stack.Screen name="pro" options={modal} />
           <Stack.Screen name="settings" />
-          <Stack.Screen name="edit-name" options={modal} />
-          <Stack.Screen name="reflection" options={modal} />
-          <Stack.Screen name="measurement" options={modal} />
-          <Stack.Screen name="pro" />
         </Stack.Protected>
       </Stack>
     </>
   );
 }
+
+const styles = StyleSheet.create({ root: { flex: 1, backgroundColor: colors.background } });

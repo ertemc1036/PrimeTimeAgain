@@ -1,23 +1,24 @@
-import { streakInfo } from './days';
-import { phases, programDayRaw } from './program';
-import { totals } from './progress';
-import type { AppData, ISODate } from './types';
+import { journeyStats } from './completion';
+import type { Achievement, AppData, ISODate } from './types';
 
-export type AchievementId = 'first_mission' | 'first_prime' | 'streak_7' | 'missions_25' | 'missions_100' | 'hours_10' | 'phase_reset';
+/** Milestones reward consistency (planning, logging, recovery), never weight loss or restriction. */
+export const MILESTONES = [
+  { id: 'first_plan', test: (d: AppData) => Object.values(d.plans).some((p) => !!p.savedAt) },
+  { id: 'first_day', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.completedDays >= 1 },
+  { id: 'streak_3', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.longest >= 3 },
+  { id: 'streak_7', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.longest >= 7 },
+  { id: 'streak_30', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.longest >= 30 },
+  { id: 'days_30', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.completedDays >= 30 },
+  { id: 'workouts_10', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.workouts >= 10 },
+  { id: 'meals_50', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.mealsLogged >= 50 },
+  { id: 'first_recovery', test: (_: AppData, s: ReturnType<typeof journeyStats>) => s.recoveryDays >= 1 },
+] as const;
 
-export const ACHIEVEMENTS: readonly AchievementId[] = ['first_mission', 'first_prime', 'streak_7', 'missions_25', 'hours_10', 'phase_reset', 'missions_100'];
+export type MilestoneId = (typeof MILESTONES)[number]['id'];
 
-/** Achievements reward consistency and effort, never appearance or outcomes. */
-export function unlockedAchievements(data: AppData, today: ISODate): Set<AchievementId> {
-  const out = new Set<AchievementId>();
-  const t = totals(data.days);
-  const s = streakInfo(data.program, data.days, today);
-  if (t.missionsDone >= 1) out.add('first_mission');
-  if (s.primeDays >= 1) out.add('first_prime');
-  if (s.longest >= 7) out.add('streak_7');
-  if (t.missionsDone >= 25) out.add('missions_25');
-  if (t.missionsDone >= 100) out.add('missions_100');
-  if (t.minutesInvested >= 600) out.add('hours_10');
-  if (data.program && programDayRaw(data.program, today) > phases(data.program.durationDays)[0].endDay) out.add('phase_reset');
-  return out;
+/** Milestones newly earned by the current data. Earned milestones are stored and never removed. */
+export function newlyEarned(data: AppData, today: ISODate, now: string): Achievement[] {
+  const stats = journeyStats(data, today);
+  const have = new Set(data.achievements.map((a) => a.id));
+  return MILESTONES.filter((m) => !have.has(m.id) && m.test(data, stats)).map((m) => ({ id: m.id, earnedAt: now }));
 }

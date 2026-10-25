@@ -7,7 +7,7 @@ import { AppText } from './AppText';
 export function SectionHeader({ title, action, onAction }: { title: string; action?: string; onAction?: () => void }) {
   return (
     <View style={styles.row}>
-      <AppText variant="overline" color="secondary" style={styles.title} accessibilityRole="header">
+      <AppText variant="heading" style={styles.title}>
         {title}
       </AppText>
       {action && onAction ? (
@@ -20,6 +20,6 @@ export function SectionHeader({ title, action, onAction }: { title: string; acti
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, marginTop: spacing.sm },
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, marginTop: spacing.xs },
   title: { flex: 1 },
 });

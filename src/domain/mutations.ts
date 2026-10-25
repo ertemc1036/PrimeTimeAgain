@@ -1,122 +1,156 @@
-import type { AvatarConfig } from '@/avatar/types';
-
-import { canEditMissions } from './days';
+import { canEditCheckIns, canEditPlan } from './completion';
+import { isDuplicateWorkout } from './validation';
 import type {
+  ActivityLog,
   AppData,
-  ComebackProfile,
-  DayRecord,
+  CoachMessage,
+  CustomFood,
+  DayPlan,
+  EatingWindow,
+  FoodLog,
   ISODate,
-  Measurement,
-  Mission,
-  MissionStatus,
-  Preferences,
+  JourneySettings,
+  NotificationPrefs,
+  Profile,
   ProgressPhoto,
-  Program,
-  Reflection,
-  UserGoal,
+  SavedMeal,
+  WeightEntry,
 } from './types';
 
 /**
- * Every change to user data is a Mutation. The same pure reducer updates the UI optimistically and
- * the local store; a future Supabase repository maps each mutation to its tables.
+ * Every change is a typed Mutation applied by one pure reducer. The UI applies it optimistically,
+ * the local store persists the result, and a cloud repository can map it to table writes.
+ * Business rules (grace window, duplicates) are enforced here, not in screens.
  */
 export type Mutation =
   | { type: 'replaceAll'; data: AppData }
-  | { type: 'ensureDay'; date: ISODate; missions: Mission[] }
-  | { type: 'setMissionStatus'; date: ISODate; missionId: string; status: MissionStatus; at?: string }
-  | { type: 'replaceMission'; date: ISODate; missionId: string; next: Mission }
-  | { type: 'postponeMission'; date: ISODate; missionId: string; toDate: ISODate }
-  | { type: 'editMission'; date: ISODate; missionId: string; patch: Partial<Pick<Mission, 'minutes' | 'title'>> }
-  | { type: 'addMission'; date: ISODate; mission: Mission }
-  | { type: 'setRecovery'; date: ISODate; recovery: boolean }
-  | { type: 'upsertGoal'; goal: UserGoal }
-  | { type: 'archiveGoal'; goalId: string }
-  | { type: 'updateProgram'; patch: Partial<Pick<Program, 'durationDays' | 'dailyMinutes'>> }
-  | { type: 'updateProfile'; patch: Partial<ComebackProfile> }
-  | { type: 'setAvatar'; avatar: AvatarConfig }
-  | { type: 'addReflection'; reflection: Reflection }
-  | { type: 'deleteReflection'; id: string }
-  | { type: 'addMeasurement'; measurement: Measurement }
-  | { type: 'deleteMeasurement'; id: string }
+  | { type: 'completeOnboarding'; profile: Profile; journey: JourneySettings; notifications: NotificationPrefs }
+  | { type: 'updateProfile'; patch: Partial<Profile> }
+  | { type: 'savePlan'; plan: DayPlan }
+  | { type: 'upsertFood'; log: FoodLog }
+  | { type: 'deleteFood'; id: string }
+  | { type: 'finishFoodLog'; date: ISODate; at: string }
+  | { type: 'reopenFoodLog'; date: ISODate }
+  | { type: 'upsertActivity'; log: ActivityLog }
+  | { type: 'deleteActivity'; id: string }
+  | { type: 'saveRestDay'; date: ISODate; at: string }
+  | { type: 'removeRestDay'; date: ISODate }
+  | { type: 'upsertWeight'; entry: WeightEntry }
+  | { type: 'deleteWeight'; id: string }
   | { type: 'addPhoto'; photo: ProgressPhoto }
   | { type: 'deletePhoto'; id: string }
-  | { type: 'updatePreferences'; patch: Partial<Preferences> };
+  | { type: 'upsertSavedMeal'; meal: SavedMeal }
+  | { type: 'deleteSavedMeal'; id: string }
+  | { type: 'upsertCustomFood'; food: CustomFood }
+  | { type: 'updateNotifications'; patch: Partial<NotificationPrefs> }
+  | { type: 'updateEatingWindow'; patch: Partial<EatingWindow> }
+  | { type: 'updateJourney'; patch: Partial<JourneySettings> }
+  | { type: 'addCoachMessage'; message: CoachMessage }
+  | { type: 'clearCoach' }
+  | { type: 'setCoachConsent'; value: boolean }
+  | { type: 'deleteAllFood' }
+  | { type: 'deleteAllActivity' };
 
-const emptyDay = (date: ISODate): DayRecord => ({ date, missions: [], generated: false, recovery: false });
+export type RejectReason = 'locked' | 'duplicate' | 'notFound' | 'empty';
+export class MutationRejected extends Error {
+  constructor(public reason: RejectReason) {
+    super(reason);
+  }
+}
 
-const updateDay = (data: AppData, date: ISODate, fn: (day: DayRecord) => DayRecord): AppData => ({
-  ...data,
-  days: { ...data.days, [date]: fn(data.days[date] ?? emptyDay(date)) },
-});
+const upsertById = <T extends { id: string }>(list: T[], item: T) =>
+  list.some((x) => x.id === item.id) ? list.map((x) => (x.id === item.id ? item : x)) : [...list, item];
 
-const updateMission = (data: AppData, date: ISODate, id: string, fn: (m: Mission) => Mission): AppData =>
-  updateDay(data, date, (day) => ({ ...day, missions: day.missions.map((m) => (m.id === id ? fn(m) : m)) }));
+const omit = <T>(rec: Record<string, T>, key: string) => {
+  const next = { ...rec };
+  delete next[key];
+  return next;
+};
 
-/** Mutations that change a day's missions are only allowed for today (history is protected). */
-const DAY_EDITS = new Set<Mutation['type']>(['setMissionStatus', 'replaceMission', 'postponeMission', 'editMission', 'addMission']);
-
+/** Apply a mutation. Throws MutationRejected when a business rule forbids the change. */
 export function applyMutation(data: AppData, m: Mutation, today: ISODate): AppData {
-  if (DAY_EDITS.has(m.type) && 'date' in m && !canEditMissions(m.date, today)) return data;
+  const requireCheckInWindow = (date: ISODate) => {
+    if (!canEditCheckIns(date, today)) throw new MutationRejected('locked');
+  };
+  const dateOf = <T extends { id: string; date: ISODate }>(list: T[], id: string) => {
+    const found = list.find((x) => x.id === id);
+    if (!found) throw new MutationRejected('notFound');
+    return found.date;
+  };
 
   switch (m.type) {
     case 'replaceAll':
       return m.data;
-    case 'ensureDay':
-      return updateDay(data, m.date, (day) =>
-        day.generated ? day : { ...day, generated: true, missions: [...day.missions, ...m.missions] },
-      );
-    case 'setMissionStatus':
-      return updateMission(data, m.date, m.missionId, (x) => ({
-        ...x,
-        status: m.status,
-        completedAt: m.status === 'done' ? (m.at ?? new Date().toISOString()) : undefined,
-      }));
-    case 'replaceMission':
-      return updateDay(data, m.date, (day) => ({
-        ...day,
-        missions: day.missions.map((x) => (x.id === m.missionId ? m.next : x)),
-      }));
-    case 'postponeMission': {
-      const mission = data.days[m.date]?.missions.find((x) => x.id === m.missionId);
-      if (!mission || mission.status === 'done') return data;
-      const moved: Mission = { ...mission, id: `${m.toDate}:p:${mission.id}`, status: 'open', carriedFrom: m.date };
-      const next = updateMission(data, m.date, m.missionId, (x) => ({ ...x, status: 'postponed' }));
-      return updateDay(next, m.toDate, (day) =>
-        day.missions.some((x) => x.id === moved.id) ? day : { ...day, missions: [...day.missions, moved] },
-      );
-    }
-    case 'editMission':
-      return updateMission(data, m.date, m.missionId, (x) => ({ ...x, ...m.patch }));
-    case 'addMission':
-      return updateDay(data, m.date, (day) => ({ ...day, missions: [...day.missions, m.mission] }));
-    case 'setRecovery':
-      if (m.date < today) return data;
-      return updateDay(data, m.date, (day) => ({ ...day, recovery: m.recovery }));
-    case 'upsertGoal': {
-      const exists = data.goals.some((g) => g.id === m.goal.id);
-      return { ...data, goals: exists ? data.goals.map((g) => (g.id === m.goal.id ? m.goal : g)) : [...data.goals, m.goal] };
-    }
-    case 'archiveGoal':
-      return { ...data, goals: data.goals.map((g) => (g.id === m.goalId ? { ...g, archived: true } : g)) };
-    case 'updateProgram':
-      return data.program ? { ...data, program: { ...data.program, ...m.patch } } : data;
+    case 'completeOnboarding':
+      return { ...data, profile: m.profile, journey: m.journey, notifications: m.notifications };
     case 'updateProfile':
       return data.profile ? { ...data, profile: { ...data.profile, ...m.patch } } : data;
-    case 'setAvatar':
-      return { ...data, avatar: m.avatar };
-    case 'addReflection':
-      return { ...data, reflections: [m.reflection, ...data.reflections] };
-    case 'deleteReflection':
-      return { ...data, reflections: data.reflections.filter((r) => r.id !== m.id) };
-    case 'addMeasurement':
-      return { ...data, measurements: [...data.measurements, m.measurement] };
-    case 'deleteMeasurement':
-      return { ...data, measurements: data.measurements.filter((x) => x.id !== m.id) };
+    case 'savePlan':
+      if (!canEditPlan(m.plan.date, today)) throw new MutationRejected('locked');
+      return { ...data, plans: { ...data.plans, [m.plan.date]: m.plan } };
+    case 'upsertFood': {
+      requireCheckInWindow(m.log.date);
+      const existing = data.foodLogs.find((f) => f.id === m.log.id);
+      if (existing) requireCheckInWindow(existing.date);
+      return { ...data, foodLogs: upsertById(data.foodLogs, m.log) };
+    }
+    case 'deleteFood': {
+      requireCheckInWindow(dateOf(data.foodLogs, m.id));
+      return { ...data, foodLogs: data.foodLogs.filter((f) => f.id !== m.id) };
+    }
+    case 'finishFoodLog':
+      requireCheckInWindow(m.date);
+      if (!data.foodLogs.some((f) => f.date === m.date)) throw new MutationRejected('empty');
+      return { ...data, foodCompletions: { ...data.foodCompletions, [m.date]: { date: m.date, completedAt: m.at } } };
+    case 'reopenFoodLog':
+      requireCheckInWindow(m.date);
+      return { ...data, foodCompletions: omit(data.foodCompletions, m.date) };
+    case 'upsertActivity': {
+      requireCheckInWindow(m.log.date);
+      const existing = data.activityLogs.find((a) => a.id === m.log.id);
+      if (existing) requireCheckInWindow(existing.date);
+      if (isDuplicateWorkout(data.activityLogs, m.log)) throw new MutationRejected('duplicate');
+      return { ...data, activityLogs: upsertById(data.activityLogs, m.log) };
+    }
+    case 'deleteActivity':
+      requireCheckInWindow(dateOf(data.activityLogs, m.id));
+      return { ...data, activityLogs: data.activityLogs.filter((a) => a.id !== m.id) };
+    case 'saveRestDay':
+      requireCheckInWindow(m.date);
+      if (data.recoveryLogs[m.date]) return data; // idempotent: never duplicated
+      return { ...data, recoveryLogs: { ...data.recoveryLogs, [m.date]: { date: m.date, createdAt: m.at } } };
+    case 'removeRestDay':
+      requireCheckInWindow(m.date);
+      return { ...data, recoveryLogs: omit(data.recoveryLogs, m.date) };
+    case 'upsertWeight':
+      return { ...data, weights: upsertById(data.weights, m.entry).sort((a, b) => (a.date < b.date ? -1 : 1)) };
+    case 'deleteWeight':
+      return { ...data, weights: data.weights.filter((w) => w.id !== m.id) };
     case 'addPhoto':
       return { ...data, photos: [...data.photos, m.photo] };
     case 'deletePhoto':
       return { ...data, photos: data.photos.filter((p) => p.id !== m.id) };
-    case 'updatePreferences':
-      return { ...data, preferences: { ...data.preferences, ...m.patch } };
+    case 'upsertSavedMeal':
+      return { ...data, savedMeals: upsertById(data.savedMeals, m.meal) };
+    case 'deleteSavedMeal':
+      return { ...data, savedMeals: data.savedMeals.filter((s) => s.id !== m.id) };
+    case 'upsertCustomFood':
+      return { ...data, customFoods: upsertById(data.customFoods, m.food) };
+    case 'updateNotifications':
+      return { ...data, notifications: { ...data.notifications, ...m.patch } };
+    case 'updateEatingWindow':
+      return { ...data, eatingWindow: { ...data.eatingWindow, ...m.patch } };
+    case 'updateJourney':
+      return { ...data, journey: { ...data.journey, ...m.patch } };
+    case 'addCoachMessage':
+      return { ...data, coach: { ...data.coach, messages: [...data.coach.messages, m.message] } };
+    case 'clearCoach':
+      return { ...data, coach: { ...data.coach, messages: [] } };
+    case 'setCoachConsent':
+      return { ...data, coach: { ...data.coach, consentToContext: m.value } };
+    case 'deleteAllFood':
+      return { ...data, foodLogs: [], foodCompletions: {}, savedMeals: [] };
+    case 'deleteAllActivity':
+      return { ...data, activityLogs: [], recoveryLogs: {} };
   }
 }

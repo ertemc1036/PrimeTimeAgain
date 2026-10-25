@@ -2,16 +2,15 @@ import type { Mutation } from '@/domain/mutations';
 import type { AppData } from '@/domain/types';
 
 /**
- * The persistence boundary. Screens never talk to storage; the app state applies a Mutation with the
- * pure reducer and hands both the mutation and the resulting data to the repository.
+ * Persistence boundary. Screens never touch storage: they dispatch a Mutation, the pure reducer
+ * produces the next AppData, and the repository persists it.
  *
- * - LocalRepository (today): stores the resulting document on the device.
- * - SupabaseRepository (planned): translates each mutation into row-level writes
- *   (profiles, user_goals, goal_actions, day_records, missions, reflections, measurements, …),
- *   protected by Row Level Security. See docs/ARCHITECTURE.md.
+ * - LocalRepository (active): on-device storage, works fully offline.
+ * - Cloud sync (prepared, needs Supabase): mutations are mapped to row writes on the tables in
+ *   supabase/migrations, protected by Row Level Security. See docs/BACKEND.md.
  */
 export interface AppRepository {
   load(): Promise<AppData>;
-  commit(mutation: Mutation, next: AppData): Promise<void>;
+  commit(mutation: Mutation, prev: AppData, next: AppData): Promise<void>;
   reset(): Promise<void>;
 }

@@ -52,3 +52,29 @@ export const monthGrid = (month: string): (ISODate | null)[][] => {
   while (cells.length % 7) cells.push(null);
   return Array.from({ length: cells.length / 7 }, (_, i) => cells.slice(i * 7, i * 7 + 7));
 };
+
+/** `HH:MM` → minutes after midnight (null if invalid). */
+export const parseTime = (value: string): number | null => {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(value.trim());
+  if (!m) return null;
+  const h = Number(m[1]);
+  const min = Number(m[2]);
+  return h < 24 && min < 60 ? h * 60 + min : null;
+};
+
+export const formatTime = (minutes: number): string => {
+  const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
+  return `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+};
+
+export const nowTime = (d = new Date()): string => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+/** Whether a time falls inside a window; supports windows that cross midnight (e.g. 22:00–06:00). */
+export const isWithinWindow = (time: string, start: string, end: string): boolean => {
+  const t = parseTime(time);
+  const s = parseTime(start);
+  const e = parseTime(end);
+  if (t === null || s === null || e === null) return true;
+  if (s === e) return true;
+  return s < e ? t >= s && t <= e : t >= s || t <= e;
+};

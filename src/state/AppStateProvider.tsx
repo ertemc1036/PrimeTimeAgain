@@ -3,30 +3,32 @@ import { AppState } from 'react-native';
 
 import { createLocalRepository } from '@/data/localRepository';
 import type { AppRepository } from '@/data/repository';
+import { newlyEarned } from '@/domain/achievements';
 import { today as getToday } from '@/domain/dates';
-import { generateMissions } from '@/domain/missions';
-import { applyMutation, type Mutation } from '@/domain/mutations';
-import { isInProgram } from '@/domain/program';
-import { emptyAppData, type AppData, type ISODate } from '@/domain/types';
+import { applyMutation, MutationRejected, type Mutation, type RejectReason } from '@/domain/mutations';
+import { emptyAppData, type Achievement, type AppData, type ISODate } from '@/domain/types';
 
 type Status = 'loading' | 'ready' | 'error';
+export type DispatchResult = { ok: true; earned: Achievement[] } | { ok: false; reason: RejectReason | 'save' };
 
 interface AppStateValue {
   status: Status;
   data: AppData;
-  /** The user's local date; refreshes when the app returns to the foreground. */
+  /** The user's local date. Updates at midnight and when the app returns to the foreground. */
   today: ISODate;
   isOnboarded: boolean;
-  /** Set when the last write failed, so screens can show a gentle error. */
-  saveError: boolean;
-  dismissSaveError(): void;
   retryLoad(): void;
-  /** Apply a change: UI updates immediately, storage is written in the background. */
-  dispatch(mutation: Mutation): Promise<void>;
+  dispatch(mutation: Mutation): Promise<DispatchResult>;
   resetAll(): Promise<void>;
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null);
+
+const msUntilMidnight = () => {
+  const now = new Date();
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
+  return next.getTime() - now.getTime();
+};
 
 export function AppStateProvider({ children, repository: injected }: { children: ReactNode; repository?: AppRepository }) {
   const repository = useRef(injected ?? createLocalRepository()).current;
@@ -35,7 +37,6 @@ export function AppStateProvider({ children, repository: injected }: { children:
   const dataRef = useRef(data);
   const [today, setToday] = useState(getToday);
   const todayRef = useRef(today);
-  const [saveError, setSaveError] = useState(false);
 
   const fetchData = useCallback(
     () =>
@@ -49,57 +50,61 @@ export function AppStateProvider({ children, repository: injected }: { children:
         .catch(() => setStatus('error')),
     [repository],
   );
-
   useEffect(() => {
     void fetchData();
   }, [fetchData]);
-
   const retryLoad = useCallback(() => {
     setStatus('loading');
     void fetchData();
   }, [fetchData]);
 
+  // Keep "today" correct across midnight, time-zone changes and returning from the background.
   useEffect(() => {
-    const sub = AppState.addEventListener('change', (s) => {
-      if (s !== 'active') return;
+    const refresh = () => {
       todayRef.current = getToday();
       setToday(todayRef.current);
-    });
-    return () => sub.remove();
+    };
+    let timer = setTimeout(function tick() {
+      refresh();
+      timer = setTimeout(tick, msUntilMidnight());
+    }, msUntilMidnight());
+    const sub = AppState.addEventListener('change', (s) => s === 'active' && refresh());
+    return () => {
+      clearTimeout(timer);
+      sub.remove();
+    };
   }, []);
 
   const dispatch = useCallback(
-    (mutation: Mutation) => {
-      const next = applyMutation(dataRef.current, mutation, todayRef.current);
-      if (next === dataRef.current) return Promise.resolve();
+    async (mutation: Mutation): Promise<DispatchResult> => {
+      const prev = dataRef.current;
+      let next: AppData;
+      try {
+        next = applyMutation(prev, mutation, todayRef.current);
+      } catch (e) {
+        if (e instanceof MutationRejected) return { ok: false, reason: e.reason };
+        throw e;
+      }
+      const earned = next.profile ? newlyEarned(next, todayRef.current, new Date().toISOString()) : [];
+      if (earned.length) next = { ...next, achievements: [...next.achievements, ...earned] };
       dataRef.current = next;
       setData(next);
-      return repository.commit(mutation, next).catch((e: unknown) => {
-        setSaveError(true);
-        throw e;
-      });
+      try {
+        await repository.commit(mutation, prev, next);
+        return { ok: true, earned };
+      } catch {
+        return { ok: false, reason: 'save' };
+      }
     },
     [repository],
   );
-
-  // Plan today's missions the first time the app is opened on a program day.
-  useEffect(() => {
-    const { program, profile, goals, days } = data;
-    if (status !== 'ready' || !program || !profile || !isInProgram(program, today)) return;
-    const day = days[today];
-    if (day?.generated || day?.recovery) return;
-    const missions = generateMissions(goals, program, today, profile.startingPoint, day?.missions ?? []);
-    dispatch({ type: 'ensureDay', date: today, missions }).catch(() => undefined);
-  }, [status, data, today, dispatch]);
 
   const value = useMemo<AppStateValue>(
     () => ({
       status,
       data,
       today,
-      isOnboarded: !!data.profile && !!data.program,
-      saveError,
-      dismissSaveError: () => setSaveError(false),
+      isOnboarded: !!data.profile,
       retryLoad,
       dispatch,
       resetAll: async () => {
@@ -108,7 +113,7 @@ export function AppStateProvider({ children, repository: injected }: { children:
         setData(dataRef.current);
       },
     }),
-    [status, data, today, saveError, retryLoad, dispatch, repository],
+    [status, data, today, retryLoad, dispatch, repository],
   );
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>;

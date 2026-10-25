@@ -1,24 +1,24 @@
 {
   "expo": {
-    "name": "PrimeTimeAgain",
-    "slug": "primetimeagain",
-    "version": "0.2.0",
+    "name": "MINUS 30",
+    "slug": "minus30",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "primetimeagain",
+    "scheme": "minus30",
     "userInterfaceStyle": "light",
     "backgroundColor": "#FFFFFF",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.primetimeagain.app",
+      "bundleIdentifier": "com.minus30.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "com.primetimeagain.app",
+      "package": "com.minus30.app",
       "adaptiveIcon": {
-        "backgroundColor": "#08090B",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -35,18 +35,15 @@
       [
         "expo-localization",
         {
-          "supportsRTL": true,
           "supportedLocales": [
-            "en",
-            "de",
-            "tr"
+            "en"
           ]
         }
       ],
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#08090B",
+          "backgroundColor": "#FFFFFF",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
@@ -54,17 +51,26 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "PrimeTimeAgain uses your photo library only when you choose to add a private progress photo. Photos stay on your device.",
-          "cameraPermission": false,
+          "photosPermission": "MINUS 30 uses your photo library only when you choose to add a meal, workout or private progress photo.",
+          "cameraPermission": "MINUS 30 uses the camera only when you choose to scan a meal or take a workout or progress photo.",
           "microphonePermission": false
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "MINUS 30 uses the camera only when you choose to scan a meal or take a workout or progress photo.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
         }
       ],
       [
         "expo-notifications",
         {
-          "color": "#08090B"
+          "color": "#000000"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
