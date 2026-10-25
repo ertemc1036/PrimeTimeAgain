@@ -7,7 +7,11 @@ import Anthropic from 'npm:@anthropic-ai/sdk@1.3.0';
 export const MODEL = 'claude-opus-5-5';
 
 let client: Anthropic | null = null;
-export const claude = () => (client ??= new Anthropic({ apiKey: Deno.env.get('ANTHROPIC_API_KEY') }));
+/** 55 s timeout keeps requests inside the Edge Function limit; one retry for transient errors. */
+export const claude = () =>
+  (client ??= new Anthropic({ apiKey: Deno.env.get('ANTHROPIC_API_KEY'), baseURL: Deno.env.get('ANTHROPIC_BASE_URL') || undefined, timeout: 55_000, maxRetries: 1 }));
+
+export const aiConfigured = () => !!Deno.env.get('ANTHROPIC_API_KEY');
 
 /**
  * One structured-output request. Returns the parsed JSON, or null on refusal / truncation / invalid
