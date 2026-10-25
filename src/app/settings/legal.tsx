@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Card, Screen } from '@/components/ui';
+import { colors } from '@/theme';
 
 export default function Legal() {
   const { t } = useTranslation();
@@ -17,8 +18,10 @@ export default function Legal() {
   return (
     <Screen back="back" title={content.title}>
       {content.draft ? (
-        <Card>
-          <AppText variant="bodyStrong">{t('about.draft')}</AppText>
+        <Card variant="inverse">
+          <AppText variant="bodyStrong" color={colors.white}>
+            {t('about.draft')}
+          </AppText>
         </Card>
       ) : null}
       <AppText variant="body">{content.body}</AppText>

@@ -63,7 +63,7 @@ export function Screen({ title, subtitle, eyebrow, back, headerRight, footer, sc
     </>
   );
   const content = (
-    <View style={styles.inner}>
+    <View style={[styles.inner, !scroll && styles.flex]}>
       {header}
       {children}
     </View>

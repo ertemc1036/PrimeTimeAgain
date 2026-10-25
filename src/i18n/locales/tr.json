@@ -127,9 +127,38 @@
       "addPlaceholder": "Yaz ve ekle",
       "allergyNote": "Etiketleri her zaman kendin kontrol et. Uygulama, yiyeceklerin alerjen içermediğini garanti edemez.",
       "suggest": {
-        "preferred": ["Tavuk", "Balık", "Yumurta", "Pirinç", "Makarna", "Sebze", "Meyve", "Yoğurt", "Yulaf", "Baklagiller"],
-        "restrictions": ["Vejetaryen", "Vegan", "Pesketaryen", "Helal", "Koşer", "Glütensiz", "Laktozsuz"],
-        "allergies": ["Yer fıstığı", "Kabuklu yemişler", "Süt", "Yumurta", "Balık", "Kabuklu deniz ürünleri", "Soya", "Buğday", "Susam"]
+        "preferred": [
+          "Tavuk",
+          "Balık",
+          "Yumurta",
+          "Pirinç",
+          "Makarna",
+          "Sebze",
+          "Meyve",
+          "Yoğurt",
+          "Yulaf",
+          "Baklagiller"
+        ],
+        "restrictions": [
+          "Vejetaryen",
+          "Vegan",
+          "Pesketaryen",
+          "Helal",
+          "Koşer",
+          "Glütensiz",
+          "Laktozsuz"
+        ],
+        "allergies": [
+          "Yer fıstığı",
+          "Kabuklu yemişler",
+          "Süt",
+          "Yumurta",
+          "Balık",
+          "Kabuklu deniz ürünleri",
+          "Soya",
+          "Buğday",
+          "Susam"
+        ]
       }
     },
     "planning": {
@@ -456,13 +485,34 @@
     "programDay": "Gün {{day}}",
     "programEnd": "Yolculuktan çık",
     "months": {
-      "foundation": { "title": "Temel", "body": "Sürdürülebilir bir günlük rutin oluştur." },
-      "nutrition": { "title": "Beslenme", "body": "Öğün planlama ve porsiyonlara alış." },
-      "movement": { "title": "Hareket", "body": "Gerçekçi ve sürdürülebilir bir aktivite rutini oluştur." },
-      "consistency": { "title": "İstikrar", "body": "Rutinlerini gözden geçir ve planlarını uyarla." },
-      "progress": { "title": "İlerleme", "body": "Gelişimlerini ve kişisel hedeflerini değerlendir." },
-      "sustainability": { "title": "Sürdürülebilirlik", "body": "Programdan sonra da sürecek alışkanlıkları güçlendir." },
-      "maintenance": { "title": "Koruma", "body": "Uzun vadeli korumaya ve sağlıklı yaşama devam etmeye hazırlan." }
+      "foundation": {
+        "title": "Temel",
+        "body": "Sürdürülebilir bir günlük rutin oluştur."
+      },
+      "nutrition": {
+        "title": "Beslenme",
+        "body": "Öğün planlama ve porsiyonlara alış."
+      },
+      "movement": {
+        "title": "Hareket",
+        "body": "Gerçekçi ve sürdürülebilir bir aktivite rutini oluştur."
+      },
+      "consistency": {
+        "title": "İstikrar",
+        "body": "Rutinlerini gözden geçir ve planlarını uyarla."
+      },
+      "progress": {
+        "title": "İlerleme",
+        "body": "Gelişimlerini ve kişisel hedeflerini değerlendir."
+      },
+      "sustainability": {
+        "title": "Sürdürülebilirlik",
+        "body": "Programdan sonra da sürecek alışkanlıkları güçlendir."
+      },
+      "maintenance": {
+        "title": "Koruma",
+        "body": "Uzun vadeli korumaya ve sağlıklı yaşama devam etmeye hazırlan."
+      }
     },
     "finished": "7 aylık yolculuğu tamamladın.",
     "maintenance": "Koruma modu",
@@ -535,7 +585,7 @@
   "account": {
     "title": "Hesap",
     "localOnly": "MINUS 30'u hesapsız kullanıyorsun",
-    "localBody": "Verilerin bu cihazda saklanır. MINUS 30 bulut hizmeti bu sürüm için kurulduğunda hesaplar ve bulut yedekleme kullanılabilir olacak.",
+    "localBody": "Verilerin bu cihazda saklanır. Hesaplar ve bulut yedekleme bu sürümde henüz kurulmadı.",
     "notConfigured": "Bulut hesapları bu sürümde yapılandırılmamış.",
     "email": "E-posta",
     "password": "Şifre",
@@ -546,7 +596,19 @@
     "error": "Giriş yapamadık. Bilgilerini kontrol edip tekrar dene.",
     "checkEmail": "Hesabını onaylamak için e-postanı kontrol et.",
     "delete": "Hesabı sil",
-    "deleteBody": "Bu işlem hesabını ve bulut verilerini kalıcı olarak siler. Bu cihazdaki veriler de silinir."
+    "deleteBody": "Bu işlem hesabını ve bulut verilerini kalıcı olarak siler. Bu cihazdaki veriler de silinir.",
+    "signedOutTitle": "İlerlemeni yedekle",
+    "signedOutBody": "Telefonunu kaybedersen veya değiştirirsen verilerin güvende kalsın ve MINUS 30'u birden fazla cihazda kullanabilmek için ücretsiz bir hesap oluştur.",
+    "signOutTitle": "Çıkış yapılsın mı?",
+    "signOutBody": "Verilerin hesabında kalır. Tekrar giriş yapana kadar bu cihazdan kaldırılır.",
+    "unsyncedTitle": "Bazı değişiklikler henüz senkronize edilmedi",
+    "unsyncedBody_one": "{{count}} değişiklik henüz buluta ulaşmadı. Şimdi çıkış yaparsan kaybolacak.",
+    "unsyncedBody_other": "{{count}} değişiklik henüz buluta ulaşmadı. Şimdi çıkış yaparsan kaybolacak.",
+    "signOutAnyway": "Yine de çıkış yap",
+    "deleteConfirm": "Hesabımı sil",
+    "deleted": "Hesabın silindi.",
+    "deleteFailed": "Hesabını silemedik. Lütfen bağlantını kontrol edip tekrar dene.",
+    "notSignedIn": "Giriş yapılmadı"
   },
   "health": {
     "title": "Sağlık tercihleri",
@@ -561,10 +623,22 @@
     "pauseHint": "Ayarlarını koru ama şimdilik hiçbir şey gönderme.",
     "discipline": "Disiplin modu",
     "modes": {
-      "light": { "title": "Hafif", "body": "Planlama saatinde günde yaklaşık bir hatırlatma." },
-      "smart": { "title": "Akıllı", "body": "Sabah özeti, planlanan aktiviten ve akşam planlaması." },
-      "focused": { "title": "Odaklı", "body": "Akıllı moda ek olarak planlanan öğünler ve nazik bir akşam kontrolü." },
-      "hourly": { "title": "Saatlik", "body": "Günün tamamlanana kadar, seçtiğin saatler içinde isteğe bağlı saatlik hatırlatmalar." }
+      "light": {
+        "title": "Hafif",
+        "body": "Planlama saatinde günde yaklaşık bir hatırlatma."
+      },
+      "smart": {
+        "title": "Akıllı",
+        "body": "Sabah özeti, planlanan aktiviten ve akşam planlaması."
+      },
+      "focused": {
+        "title": "Odaklı",
+        "body": "Akıllı moda ek olarak planlanan öğünler ve nazik bir akşam kontrolü."
+      },
+      "hourly": {
+        "title": "Saatlik",
+        "body": "Günün tamamlanana kadar, seçtiğin saatler içinde isteğe bağlı saatlik hatırlatmalar."
+      }
     },
     "morning": "Sabah özeti",
     "quietStart": "Sessiz saatler başlangıcı",
@@ -576,13 +650,34 @@
     "denied": "MINUS 30 bildirimleri telefonunun ayarlarında kapalı.",
     "web": "Hatırlatmalar iOS ve Android uygulamasında çalışır.",
     "content": {
-      "morning": { "title": "Günlük planın hazır.", "body": "Bugünün öğünlerini ve aktiviteni görmek için MINUS 30'u aç." },
-      "activity": { "title": "Planladığın aktivitenin zamanı.", "body": "Bitirdiğinde kaydet veya dinlenme günü seç." },
-      "meal": { "title": "Yemek zamanı.", "body": "Hazır olduğunda yediklerini kaydet." },
-      "planning": { "title": "Yarın bu akşam başlar. Planlamaya hazır mısın?", "body": "Birkaç dakika yeterli." },
-      "checkin": { "title": "Günlük kontrolünü hazır olduğunda tamamlayabilirsin.", "body": "Acele yok." },
-      "hourly": { "title": "Küçük bir adım da sayılır.", "body": "Günlük görevin, hazır olduğunda seni bekliyor." },
-      "window": { "title": "Yemek aralığın başladı.", "body": "Bu sadece bir tercih. Sana uyduğunda ye." }
+      "morning": {
+        "title": "Günlük planın hazır.",
+        "body": "Bugünün öğünlerini ve aktiviteni görmek için MINUS 30'u aç."
+      },
+      "activity": {
+        "title": "Planladığın aktivitenin zamanı.",
+        "body": "Bitirdiğinde kaydet veya dinlenme günü seç."
+      },
+      "meal": {
+        "title": "Yemek zamanı.",
+        "body": "Hazır olduğunda yediklerini kaydet."
+      },
+      "planning": {
+        "title": "Yarın bu akşam başlar. Planlamaya hazır mısın?",
+        "body": "Birkaç dakika yeterli."
+      },
+      "checkin": {
+        "title": "Günlük kontrolünü hazır olduğunda tamamlayabilirsin.",
+        "body": "Acele yok."
+      },
+      "hourly": {
+        "title": "Küçük bir adım da sayılır.",
+        "body": "Günlük görevin, hazır olduğunda seni bekliyor."
+      },
+      "window": {
+        "title": "Yemek aralığın başladı.",
+        "body": "Bu sadece bir tercih. Sana uyduğunda ye."
+      }
     }
   },
   "eatingWindow": {
@@ -615,8 +710,8 @@
   "about": {
     "privacyTitle": "Gizlilik politikası",
     "termsTitle": "Kullanım koşulları",
-    "draft": "Ön özet. Tam yasal metin yayından önce incelenmelidir.",
-    "privacyBody": "MINUS 30 profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ile yalnızca o istek için gereken bağlam güvenli sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında işlemden sonra saklanmaz. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman Gizlilik ve veriler bölümünden dışa aktarabilir veya silebilirsin.",
+    "draft": "Yasal belge onay bekliyor. Nihai belge yayından önce burada yayımlanacak. O zamana kadar bu yalnızca sade bir özettir, yasal bir belge değildir.",
+    "privacyBody": "MINUS 30 profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Bir hesap oluşturursan bu veriler, geri yükleyebilmen ve diğer cihazlarda kullanabilmen için bulut veritabanımızda da saklanır; fotoğraflar yalnızca hesabının erişebildiği özel bir depolama alanında tutulur. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ve yalnızca izin verirsen son planlarının ve kayıtlarının kısa bir özeti, o isteği yanıtlamak için sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında saklanmaz. Abonelikler Apple veya Google ve abonelik sağlayıcımız RevenueCat üzerinden yürütülür. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman uygulamada dışa aktarabilir veya silebilir, hesabını silebilirsin.",
     "termsBody": "MINUS 30 sağlıklı rutinleri destekler; tıbbi bir cihaz veya profesyonel tavsiyenin yerine geçen bir araç değildir. Besin değerleri ve yapay zekâ sonuçları tahmindir. Antrenman kayıtları kullanıcının kendi beyanına dayanır. Uygulama 18 yaş ve üzeri yetişkinler içindir. Abonelikler, App Store veya Google Play hesabının ayarlarından iptal edilene kadar otomatik olarak yenilenir.",
     "medical": "MINUS 30 tıbbi tavsiye vermez. Bir sağlık sorunun varsa, hamileysen veya senin için neyin doğru olduğundan emin değilsen lütfen bir sağlık uzmanıyla konuş.",
     "help": "Yarını Plan'da planla, öğünlerini Beslenme'de kaydet, Antrenman'da bir antrenman veya dinlenme günü kaydet. Üçü de tamamlandığında bugünün görevi tamamlanır.",
@@ -626,9 +721,18 @@
   "pro": {
     "title": "MINUS 30 Pro'nun kilidini aç",
     "subtitle": "Daha akıllı takip. Daha az çaba. Daha fazla destek.",
-    "b1": { "title": "Öğünleri yapay zekâ ile tara", "body": "Bir öğünün fotoğrafını çek ve tahmini besin değerlerini incele." },
-    "b2": { "title": "Yapay zekâ destekli antrenman girişleri", "body": "Spor salonu, açık hava veya ev antrenmanlarına fotoğraflı bağlam ekle." },
-    "b3": { "title": "Kişisel yapay zekâ koçluğu", "body": "Öğün planla, rutinlerini uyarla ve yolunda kal." },
+    "b1": {
+      "title": "Öğünleri yapay zekâ ile tara",
+      "body": "Bir öğünün fotoğrafını çek ve tahmini besin değerlerini incele."
+    },
+    "b2": {
+      "title": "Yapay zekâ destekli antrenman girişleri",
+      "body": "Spor salonu, açık hava veya ev antrenmanlarına fotoğraflı bağlam ekle."
+    },
+    "b3": {
+      "title": "Kişisel yapay zekâ koçluğu",
+      "body": "Öğün planla, rutinlerini uyarla ve yolunda kal."
+    },
     "monthly": "Aylık",
     "yearly": "Yıllık",
     "perMonth": "{{price}} / ay",
@@ -642,7 +746,19 @@
     "free": "Planlama, kayıt ve serin için ihtiyacın olan her şey ücretsiz kalır.",
     "devPreview": "Geliştirici önizlemesi: Pro ekranlarını göster",
     "devPreviewHint": "Yalnızca geliştirme sürümlerinde. Yapay zekâ erişimi vermez; sunucu aboneliğini yine kontrol eder.",
-    "isPro": "MINUS 30 Pro'ya sahipsin."
+    "isPro": "MINUS 30 Pro'ya sahipsin.",
+    "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen MINUS 30 uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
+    "notConfigured": "Abonelikler bu sürümde henüz kurulmadı. Gösterilen fiyatlar ön fiyatlardır.",
+    "signInFirst": "Pro aboneliğinin tüm cihazlarında çalışması için önce ücretsiz bir hesap oluştur.",
+    "welcome": "MINUS 30 Pro'ya hoş geldin.",
+    "pending": "Satın alman onay bekliyor. Onaylandığı anda Pro açılır.",
+    "failed": "Satın alma tamamlanamadı. Senden ücret alınmadı.",
+    "restored": "Satın alımların geri yüklendi.",
+    "nothingToRestore": "Bu mağaza hesabı için aktif bir abonelik bulunamadı.",
+    "manage": "Aboneliği yönet",
+    "grace": "Ödemende bir sorun var. Pro şimdilik aktif kalıyor. Lütfen App Store veya Google Play hesabında ödeme yöntemini güncelle.",
+    "expired": "Pro aboneliğin sona erdi. Kaydettiğin her şey hâlâ burada.",
+    "renews": "{{date}} tarihine kadar aktif"
   },
   "coach": {
     "title": "Yapay zekâ koçu",
@@ -650,7 +766,11 @@
     "placeholder": "Planınla ilgili her şeyi sor",
     "send": "Gönder",
     "thinking": "Düşünüyor…",
-    "suggestions": ["Yarın ne yiyeceğimi bilmiyorum.", "Antrenmanımı kaçırdım.", "Alışveriş listesi hazırlamama yardım et."],
+    "suggestions": [
+      "Yarın ne yiyeceğimi bilmiyorum.",
+      "Antrenmanımı kaçırdım.",
+      "Alışveriş listesi hazırlamama yardım et."
+    ],
     "unavailable": "Yapay zekâ koçu bu sürümde henüz kullanılamıyor. MINUS 30 bulut hizmetinin kurulması gerekiyor.",
     "signedOut": "Yapay zekâ koçunu kullanmak için giriş yap.",
     "notPro": "Yapay zekâ koçu MINUS 30 Pro'nun bir parçasıdır.",
@@ -670,7 +790,8 @@
     "offline": "Çevrimdışısın. Yapay zekâ özellikleri internet bağlantısı gerektirir.",
     "invalid_response": "Beklenmedik bir sonuç aldık. Lütfen tekrar dene veya elle kaydet.",
     "provider_error": "Yapay zekâ hizmeti şu anda kullanılamıyor. Lütfen tekrar dene veya elle kaydet.",
-    "camera": "Bunun için kamera erişimi gerekiyor. Telefonunun ayarlarından izin verebilir veya elle kaydedebilirsin."
+    "camera": "Bunun için kamera erişimi gerekiyor. Telefonunun ayarlarından izin verebilir veya elle kaydedebilirsin.",
+    "timeout": "Bu çok uzun sürdü. Lütfen tekrar dene veya elle kaydet."
   },
   "history": {
     "meals": "Öğün geçmişi",
@@ -704,5 +825,68 @@
   "language": {
     "title": "Dil",
     "subtitle": "MINUS 30'un dilini seç. Daha önce kaydettiğin girişler yazdığın gibi kalır."
+  },
+  "auth": {
+    "signInTitle": "Giriş yap",
+    "signInSubtitle": "MINUS 30 hesabınla verilerin güvende kalır ve tüm cihazlarında kullanılabilir.",
+    "email": "E-posta",
+    "password": "Şifre",
+    "passwordHint": "En az 8 karakter.",
+    "signIn": "Giriş yap",
+    "forgot": "Şifreni mi unuttun?",
+    "noAccount": "Yeni misin? Hesap oluştur",
+    "createTitle": "Hesabını oluştur",
+    "createSubtitle": "Planların, öğünlerin ve antrenmanların yedeklenir ve giriş yaptığın her cihazda kullanılabilir.",
+    "create": "Hesap oluştur",
+    "haveAccount": "Zaten hesabın var mı? Giriş yap",
+    "verifyTitle": "E-postanı kontrol et",
+    "verifyBody": "{{email}} adresine 6 haneli bir kod gönderdik. Hesabını onaylamak için kodu gir.",
+    "code": "6 haneli kod",
+    "verify": "Onayla",
+    "resend": "Yeni kod gönder",
+    "resent": "Yeni bir kod yolda.",
+    "resetTitle": "Şifreyi sıfırla",
+    "resetBody": "E-posta adresini gir, sana 6 haneli bir kod gönderelim.",
+    "sendCode": "Kod gönder",
+    "resetCodeBody": "{{email}} adresine gönderdiğimiz kodu gir ve yeni bir şifre seç.",
+    "newPassword": "Yeni şifre",
+    "resetDone": "Şifre değiştirildi. Giriş yaptın.",
+    "signedIn": "Giriş yapıldı.",
+    "welcomeSignIn": "Zaten bir hesabım var",
+    "mergeTitle": "Bu cihazda zaten veriler var",
+    "mergeBody": "MINUS 30'u bu cihazda giriş yapmadan önce kullandın. Bu verilere ne olsun?",
+    "merge": "Hesabıma ekle",
+    "mergeHint": "Önerilen. Bu cihazdaki planlar, öğünler ve antrenmanlar yüklenir. Hiçbir şey silinmez.",
+    "replace": "Yalnızca hesabımdaki verileri kullan",
+    "replaceHint": "Bu cihazdaki veriler kaldırılır ve yerine hesabındaki veriler gelir.",
+    "errors": {
+      "not_configured": "Hesaplar bu sürümde henüz kullanılamıyor.",
+      "invalid_credentials": "E-posta veya şifre yanlış.",
+      "email_not_confirmed": "Lütfen önce e-postanı onayla. Sana yeni bir kod gönderebiliriz.",
+      "user_exists": "Bu e-postayla zaten bir hesap var. Giriş yapmayı dene.",
+      "weak_password": "Lütfen daha güçlü bir şifre seç (en az 8 karakter).",
+      "invalid_email": "Lütfen geçerli bir e-posta adresi gir.",
+      "invalid_code": "Kod yanlış veya süresi dolmuş. Yeni bir kod iste.",
+      "rate_limited": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar dene.",
+      "offline": "Çevrimdışısın. Lütfen bağlantını kontrol et.",
+      "unknown": "Bir şeyler ters gitti. Lütfen tekrar dene."
+    }
+  },
+  "sync": {
+    "title": "Bulut senkronizasyonu",
+    "on": "Senkronize edildi",
+    "syncing": "Senkronize ediliyor…",
+    "offline": "Çevrimdışı. Değişiklikler bu cihazda saklanır ve daha sonra otomatik olarak senkronize edilir.",
+    "error": "Senkronizasyon duraklatıldı. MINUS 30 otomatik olarak tekrar deneyecek.",
+    "signedOut": "Oturumun sona erdi. Senkronizasyona devam etmek için tekrar giriş yap.",
+    "pending_one": "{{count}} değişiklik senkronizasyon bekliyor",
+    "pending_other": "{{count}} değişiklik senkronizasyon bekliyor",
+    "failed_one": "{{count}} kayıt senkronize edilemedi ve bu cihazda tutuluyor",
+    "failed_other": "{{count}} kayıt senkronize edilemedi ve bu cihazda tutuluyor",
+    "last": "Son senkronizasyon {{time}}",
+    "never": "Henüz senkronize edilmedi",
+    "now": "Şimdi senkronize et",
+    "retryFailed": "Tekrar dene",
+    "discardFailed": "Kapat"
   }
 }

@@ -1,0 +1,7 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "MINUS 30",
+    "NSCameraUsageDescription": "MINUS 30 utilise l'appareil photo uniquement lorsque tu scannes un repas ou prends une photo de séance ou de progression.",
+    "NSPhotoLibraryUsageDescription": "MINUS 30 utilise ta photothèque uniquement lorsque tu ajoutes une photo de repas, de séance ou de progression privée."
+  }
+}

@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Card, ListRow, Screen } from '@/components/ui';
@@ -16,10 +16,17 @@ export default function MealHistory() {
   const byDate = new Map<string, typeof data.foodLogs>();
   for (const f of [...data.foodLogs].sort((a, b) => (a.consumedAt < b.consumedAt ? 1 : -1))) byDate.set(f.date, [...(byDate.get(f.date) ?? []), f]);
   return (
-    <Screen back="back" title={t('history.meals')}>
+    <Screen back="back" title={t('history.meals')} scroll={false}>
       {byDate.size === 0 ? <AppText color="secondary">{t('history.empty')}</AppText> : null}
-      {[...byDate.entries()].slice(0, 60).map(([date, logs]) => (
-        <View key={date} style={{ gap: 8 }}>
+      <FlatList
+        data={[...byDate.entries()]}
+        keyExtractor={([date]) => date}
+        initialNumToRender={8}
+        windowSize={7}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={Gap}
+        renderItem={({ item: [date, logs] }) => (
+        <View style={styles.day}>
           <AppText variant="label" color="secondary">
             {formatDate(date, locale, { weekday: 'long', day: 'numeric', month: 'long' })}
           </AppText>
@@ -39,7 +46,11 @@ export default function MealHistory() {
             })}
           </Card>
         </View>
-      ))}
+        )}
+      />
     </Screen>
   );
 }
+
+const Gap = () => <View style={styles.gap} />;
+const styles = StyleSheet.create({ day: { gap: 8 }, gap: { height: 16 } });

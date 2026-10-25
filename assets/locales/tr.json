@@ -1,0 +1,7 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "MINUS 30",
+    "NSCameraUsageDescription": "MINUS 30 kamerayı yalnızca bir öğünü taradığında veya antrenman ya da ilerleme fotoğrafı çektiğinde kullanır.",
+    "NSPhotoLibraryUsageDescription": "MINUS 30 fotoğraf arşivini yalnızca bir öğün, antrenman veya özel ilerleme fotoğrafı eklediğinde kullanır."
+  }
+}

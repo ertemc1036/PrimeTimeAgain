@@ -127,9 +127,38 @@
       "addPlaceholder": "Eingeben und hinzufügen",
       "allergyNote": "Prüfe Zutatenlisten immer selbst. Die App kann nicht garantieren, dass Lebensmittel frei von Allergenen sind.",
       "suggest": {
-        "preferred": ["Hähnchen", "Fisch", "Eier", "Reis", "Nudeln", "Gemüse", "Obst", "Joghurt", "Haferflocken", "Hülsenfrüchte"],
-        "restrictions": ["Vegetarisch", "Vegan", "Pescetarisch", "Halal", "Koscher", "Glutenfrei", "Laktosefrei"],
-        "allergies": ["Erdnüsse", "Schalenfrüchte", "Milch", "Eier", "Fisch", "Schalentiere", "Soja", "Weizen", "Sesam"]
+        "preferred": [
+          "Hähnchen",
+          "Fisch",
+          "Eier",
+          "Reis",
+          "Nudeln",
+          "Gemüse",
+          "Obst",
+          "Joghurt",
+          "Haferflocken",
+          "Hülsenfrüchte"
+        ],
+        "restrictions": [
+          "Vegetarisch",
+          "Vegan",
+          "Pescetarisch",
+          "Halal",
+          "Koscher",
+          "Glutenfrei",
+          "Laktosefrei"
+        ],
+        "allergies": [
+          "Erdnüsse",
+          "Schalenfrüchte",
+          "Milch",
+          "Eier",
+          "Fisch",
+          "Schalentiere",
+          "Soja",
+          "Weizen",
+          "Sesam"
+        ]
       }
     },
     "planning": {
@@ -456,13 +485,34 @@
     "programDay": "Tag {{day}}",
     "programEnd": "Reise beenden",
     "months": {
-      "foundation": { "title": "Fundament", "body": "Eine alltagstaugliche Tagesroutine aufbauen." },
-      "nutrition": { "title": "Ernährung", "body": "Vertraut werden mit Mahlzeitenplanung und Portionen." },
-      "movement": { "title": "Bewegung", "body": "Eine realistische, dauerhafte Bewegungsroutine schaffen." },
-      "consistency": { "title": "Beständigkeit", "body": "Routinen überprüfen und Pläne anpassen." },
-      "progress": { "title": "Fortschritt", "body": "Über Verbesserungen und persönliche Ziele nachdenken." },
-      "sustainability": { "title": "Nachhaltigkeit", "body": "Gewohnheiten stärken, die über das Programm hinaus bleiben." },
-      "maintenance": { "title": "Erhaltung", "body": "Auf langfristiges Halten und ein weiterhin gesundes Leben vorbereiten." }
+      "foundation": {
+        "title": "Fundament",
+        "body": "Eine alltagstaugliche Tagesroutine aufbauen."
+      },
+      "nutrition": {
+        "title": "Ernährung",
+        "body": "Vertraut werden mit Mahlzeitenplanung und Portionen."
+      },
+      "movement": {
+        "title": "Bewegung",
+        "body": "Eine realistische, dauerhafte Bewegungsroutine schaffen."
+      },
+      "consistency": {
+        "title": "Beständigkeit",
+        "body": "Routinen überprüfen und Pläne anpassen."
+      },
+      "progress": {
+        "title": "Fortschritt",
+        "body": "Über Verbesserungen und persönliche Ziele nachdenken."
+      },
+      "sustainability": {
+        "title": "Nachhaltigkeit",
+        "body": "Gewohnheiten stärken, die über das Programm hinaus bleiben."
+      },
+      "maintenance": {
+        "title": "Erhaltung",
+        "body": "Auf langfristiges Halten und ein weiterhin gesundes Leben vorbereiten."
+      }
     },
     "finished": "Du hast die 7-Monats-Reise geschafft.",
     "maintenance": "Erhaltungsmodus",
@@ -535,7 +585,7 @@
   "account": {
     "title": "Konto",
     "localOnly": "MINUS 30 ohne Konto nutzen",
-    "localBody": "Deine Daten werden auf diesem Gerät gespeichert. Konten und Cloud-Sicherung sind verfügbar, sobald der MINUS 30 Cloud-Dienst für diese Version eingerichtet ist.",
+    "localBody": "Deine Daten werden auf diesem Gerät gespeichert. Konten und Cloud-Sicherung sind in dieser Version noch nicht eingerichtet.",
     "notConfigured": "Cloud-Konten sind in dieser Version nicht eingerichtet.",
     "email": "E-Mail",
     "password": "Passwort",
@@ -546,7 +596,19 @@
     "error": "Die Anmeldung hat nicht geklappt. Prüfe deine Angaben und versuche es erneut.",
     "checkEmail": "Bestätige dein Konto über den Link in deiner E-Mail.",
     "delete": "Konto löschen",
-    "deleteBody": "Dadurch werden dein Konto und deine Cloud-Daten dauerhaft gelöscht. Die Daten auf diesem Gerät werden ebenfalls gelöscht."
+    "deleteBody": "Dadurch werden dein Konto und deine Cloud-Daten dauerhaft gelöscht. Die Daten auf diesem Gerät werden ebenfalls gelöscht.",
+    "signedOutTitle": "Sichere deinen Fortschritt",
+    "signedOutBody": "Erstelle ein kostenloses Konto, damit deine Daten sicher sind, wenn du dein Telefon verlierst oder wechselst, und um MINUS 30 auf mehreren Geräten zu nutzen.",
+    "signOutTitle": "Abmelden?",
+    "signOutBody": "Deine Daten bleiben in deinem Konto. Von diesem Gerät werden sie entfernt, bis du dich wieder anmeldest.",
+    "unsyncedTitle": "Einige Änderungen sind noch nicht synchronisiert",
+    "unsyncedBody_one": "{{count}} Änderung ist noch nicht in der Cloud. Wenn du dich jetzt abmeldest, geht sie verloren.",
+    "unsyncedBody_other": "{{count}} Änderungen sind noch nicht in der Cloud. Wenn du dich jetzt abmeldest, gehen sie verloren.",
+    "signOutAnyway": "Trotzdem abmelden",
+    "deleteConfirm": "Mein Konto löschen",
+    "deleted": "Dein Konto wurde gelöscht.",
+    "deleteFailed": "Dein Konto konnte nicht gelöscht werden. Bitte prüfe deine Verbindung und versuche es erneut.",
+    "notSignedIn": "Nicht angemeldet"
   },
   "health": {
     "title": "Gesundheitseinstellungen",
@@ -561,10 +623,22 @@
     "pauseHint": "Einstellungen behalten, aber vorerst nichts senden.",
     "discipline": "Disziplin-Modus",
     "modes": {
-      "light": { "title": "Leicht", "body": "Etwa eine Erinnerung am Tag, zu deiner Planungszeit." },
-      "smart": { "title": "Smart", "body": "Ein Überblick am Morgen, deine geplante Aktivität und die Planung am Abend." },
-      "focused": { "title": "Fokussiert", "body": "Wie Smart, plus geplante Mahlzeiten und ein sanfter Abend-Check-in." },
-      "hourly": { "title": "Stündlich", "body": "Optionale stündliche Hinweise in deinen gewählten Stunden, bis dein Tag geschafft ist." }
+      "light": {
+        "title": "Leicht",
+        "body": "Etwa eine Erinnerung am Tag, zu deiner Planungszeit."
+      },
+      "smart": {
+        "title": "Smart",
+        "body": "Ein Überblick am Morgen, deine geplante Aktivität und die Planung am Abend."
+      },
+      "focused": {
+        "title": "Fokussiert",
+        "body": "Wie Smart, plus geplante Mahlzeiten und ein sanfter Abend-Check-in."
+      },
+      "hourly": {
+        "title": "Stündlich",
+        "body": "Optionale stündliche Hinweise in deinen gewählten Stunden, bis dein Tag geschafft ist."
+      }
     },
     "morning": "Morgenüberblick",
     "quietStart": "Ruhezeit ab",
@@ -576,13 +650,34 @@
     "denied": "Mitteilungen für MINUS 30 sind in den Einstellungen deines Telefons ausgeschaltet.",
     "web": "Erinnerungen funktionieren in der iOS- und Android-App.",
     "content": {
-      "morning": { "title": "Dein Tagesplan ist bereit.", "body": "Öffne MINUS 30, um die heutigen Mahlzeiten und deine Aktivität zu sehen." },
-      "activity": { "title": "Zeit für deine geplante Aktivität.", "body": "Trage sie ein, wenn du fertig bist, oder wähle einen Ruhetag." },
-      "meal": { "title": "Essenszeit.", "body": "Trage ein, was du isst, wann es für dich passt." },
-      "planning": { "title": "Morgen beginnt heute Abend. Bereit zum Planen?", "body": "Ein paar Minuten reichen." },
-      "checkin": { "title": "Du kannst deinen Tages-Check-in abschließen, wann immer du bereit bist.", "body": "Ganz ohne Druck." },
-      "hourly": { "title": "Ein kleiner Schritt zählt.", "body": "Deine Tagesmission wartet, wann immer du so weit bist." },
-      "window": { "title": "Dein Essensfenster hat begonnen.", "body": "Das ist nur eine Vorliebe. Iss, wann es für dich passt." }
+      "morning": {
+        "title": "Dein Tagesplan ist bereit.",
+        "body": "Öffne MINUS 30, um die heutigen Mahlzeiten und deine Aktivität zu sehen."
+      },
+      "activity": {
+        "title": "Zeit für deine geplante Aktivität.",
+        "body": "Trage sie ein, wenn du fertig bist, oder wähle einen Ruhetag."
+      },
+      "meal": {
+        "title": "Essenszeit.",
+        "body": "Trage ein, was du isst, wann es für dich passt."
+      },
+      "planning": {
+        "title": "Morgen beginnt heute Abend. Bereit zum Planen?",
+        "body": "Ein paar Minuten reichen."
+      },
+      "checkin": {
+        "title": "Du kannst deinen Tages-Check-in abschließen, wann immer du bereit bist.",
+        "body": "Ganz ohne Druck."
+      },
+      "hourly": {
+        "title": "Ein kleiner Schritt zählt.",
+        "body": "Deine Tagesmission wartet, wann immer du so weit bist."
+      },
+      "window": {
+        "title": "Dein Essensfenster hat begonnen.",
+        "body": "Das ist nur eine Vorliebe. Iss, wann es für dich passt."
+      }
     }
   },
   "eatingWindow": {
@@ -615,8 +710,8 @@
   "about": {
     "privacyTitle": "Datenschutzerklärung",
     "termsTitle": "Nutzungsbedingungen",
-    "draft": "Vorläufige Zusammenfassung. Der vollständige Rechtstext muss vor der Veröffentlichung geprüft werden.",
-    "privacyBody": "MINUS 30 speichert dein Profil, deine Pläne, Essens- und Aktivitätseinträge, optionale Gewichtseinträge und optionale Fotos auf deinem Gerät. Wenn du KI-Funktionen (Pro) nutzt, werden das Foto oder die Nachricht und nur der für diese Anfrage nötige Kontext von unserem sicheren Server und einem KI-Anbieter verarbeitet und nach der Verarbeitung nicht aufbewahrt, abgesehen von deinen gespeicherten Ergebnissen. Wir verkaufen deine Daten nicht und nutzen sie nicht für Werbung. Unter Datenschutz und Daten kannst du deine Daten jederzeit exportieren oder löschen.",
+    "draft": "Rechtsdokument steht noch aus. Das endgültige Dokument wird vor der Veröffentlichung hier bereitgestellt. Bis dahin ist dies nur eine Zusammenfassung in einfacher Sprache, kein Rechtsdokument.",
+    "privacyBody": "MINUS 30 speichert dein Profil, deine Pläne, Essens- und Aktivitätseinträge, optionale Gewichtseinträge und optionale Fotos auf deinem Gerät. Wenn du ein Konto erstellst, werden diese Daten auch in unserer Cloud-Datenbank gespeichert, damit du sie wiederherstellen und auf anderen Geräten nutzen kannst; Fotos liegen in einem privaten Speicher, auf den nur dein Konto zugreifen kann. Wenn du KI-Funktionen (Pro) nutzt, werden das Foto oder die Nachricht und – nur mit deiner Erlaubnis – eine kurze Zusammenfassung deiner aktuellen Pläne und Einträge von unserem Server und einem KI-Anbieter verarbeitet, um diese Anfrage zu beantworten; abgesehen von den Ergebnissen, die du speicherst, wird nichts aufbewahrt. Abonnements werden über Apple oder Google und unseren Abo-Dienstleister RevenueCat abgewickelt. Wir verkaufen deine Daten nicht und nutzen sie nicht für Werbung. Du kannst deine Daten jederzeit in der App exportieren oder löschen und dein Konto löschen.",
     "termsBody": "MINUS 30 unterstützt gesunde Routinen und ist weder ein Medizinprodukt noch ein Ersatz für fachlichen Rat. Nährwerte und KI-Ergebnisse sind Schätzungen. Trainingseinträge beruhen auf eigenen Angaben. Die App ist für Erwachsene ab 18 Jahren gedacht. Abonnements verlängern sich automatisch, bis sie in deinem App Store- oder Google Play-Konto gekündigt werden.",
     "medical": "MINUS 30 gibt keinen medizinischen Rat. Wenn du eine Erkrankung hast, schwanger bist oder unsicher bist, was für dich richtig ist, sprich bitte mit medizinischem Fachpersonal.",
     "help": "Plane den nächsten Tag unter Plan, trage Mahlzeiten unter Essen ein und trage unter Training ein Training oder einen Ruhetag ein. Wenn alle drei erledigt sind, ist die heutige Mission geschafft.",
@@ -626,9 +721,18 @@
   "pro": {
     "title": "MINUS 30 Pro freischalten",
     "subtitle": "Intelligenter tracken. Weniger Aufwand. Mehr Unterstützung.",
-    "b1": { "title": "Mahlzeiten mit KI scannen", "body": "Fotografiere eine Mahlzeit und prüfe die geschätzten Nährwerte." },
-    "b2": { "title": "KI-gestützte Trainings-Check-ins", "body": "Ergänze Trainings im Studio, draußen oder zu Hause mit einem Foto." },
-    "b3": { "title": "Persönliches KI-Coaching", "body": "Mahlzeiten planen, Routinen anpassen und dranbleiben." },
+    "b1": {
+      "title": "Mahlzeiten mit KI scannen",
+      "body": "Fotografiere eine Mahlzeit und prüfe die geschätzten Nährwerte."
+    },
+    "b2": {
+      "title": "KI-gestützte Trainings-Check-ins",
+      "body": "Ergänze Trainings im Studio, draußen oder zu Hause mit einem Foto."
+    },
+    "b3": {
+      "title": "Persönliches KI-Coaching",
+      "body": "Mahlzeiten planen, Routinen anpassen und dranbleiben."
+    },
     "monthly": "Monatlich",
     "yearly": "Jährlich",
     "perMonth": "{{price}} / Monat",
@@ -642,7 +746,19 @@
     "free": "Alles, was du zum Planen, Eintragen und für deine Serie brauchst, bleibt kostenlos.",
     "devPreview": "Entwicklervorschau: Pro-Bildschirme zeigen",
     "devPreviewHint": "Nur in Entwicklungsversionen. Gewährt keinen KI-Zugang; der Server prüft weiterhin dein Abonnement.",
-    "isPro": "Du hast MINUS 30 Pro."
+    "isPro": "Du hast MINUS 30 Pro.",
+    "storeUnavailable": "Abonnements kannst du in der installierten MINUS 30 App aus dem App Store oder Google Play abschließen. In dieser Vorschau sind sie nicht verfügbar.",
+    "notConfigured": "Abonnements sind in dieser Version noch nicht eingerichtet. Die angezeigten Preise sind vorläufig.",
+    "signInFirst": "Erstelle zuerst ein kostenloses Konto, damit dein Pro-Abo auf all deinen Geräten funktioniert.",
+    "welcome": "Willkommen bei MINUS 30 Pro.",
+    "pending": "Dein Kauf wartet auf Bestätigung. Pro wird freigeschaltet, sobald er bestätigt ist.",
+    "failed": "Der Kauf hat nicht geklappt. Dir wurde nichts berechnet.",
+    "restored": "Deine Käufe wurden wiederhergestellt.",
+    "nothingToRestore": "Für dieses Store-Konto wurde kein aktives Abo gefunden.",
+    "manage": "Abo verwalten",
+    "grace": "Es gibt ein Problem mit deiner Zahlung. Pro bleibt vorerst aktiv. Bitte aktualisiere deine Zahlungsmethode in deinem App Store- oder Google Play-Konto.",
+    "expired": "Dein Pro-Abo ist beendet. Alles, was du eingetragen hast, ist noch da.",
+    "renews": "Aktiv bis {{date}}"
   },
   "coach": {
     "title": "KI-Coach",
@@ -650,7 +766,11 @@
     "placeholder": "Frag alles zu deinem Plan",
     "send": "Senden",
     "thinking": "Denkt nach…",
-    "suggestions": ["Ich weiß nicht, was ich morgen essen soll.", "Ich habe mein Training verpasst.", "Hilf mir bei einer Einkaufsliste."],
+    "suggestions": [
+      "Ich weiß nicht, was ich morgen essen soll.",
+      "Ich habe mein Training verpasst.",
+      "Hilf mir bei einer Einkaufsliste."
+    ],
     "unavailable": "Der KI-Coach ist in dieser Version noch nicht verfügbar. Dafür muss der MINUS 30 Cloud-Dienst eingerichtet sein.",
     "signedOut": "Melde dich an, um den KI-Coach zu nutzen.",
     "notPro": "Der KI-Coach ist Teil von MINUS 30 Pro.",
@@ -670,7 +790,8 @@
     "offline": "Du bist offline. KI-Funktionen brauchen eine Internetverbindung.",
     "invalid_response": "Wir haben ein unerwartetes Ergebnis erhalten. Bitte versuche es erneut oder trage manuell ein.",
     "provider_error": "Der KI-Dienst ist gerade nicht erreichbar. Bitte versuche es erneut oder trage manuell ein.",
-    "camera": "Dafür wird Zugriff auf die Kamera benötigt. Du kannst ihn in den Einstellungen deines Telefons erlauben oder manuell eintragen."
+    "camera": "Dafür wird Zugriff auf die Kamera benötigt. Du kannst ihn in den Einstellungen deines Telefons erlauben oder manuell eintragen.",
+    "timeout": "Das hat zu lange gedauert. Bitte versuche es erneut oder trage manuell ein."
   },
   "history": {
     "meals": "Mahlzeitenverlauf",
@@ -704,5 +825,68 @@
   "language": {
     "title": "Sprache",
     "subtitle": "Wähle die Sprache für MINUS 30. Bereits gespeicherte Einträge bleiben so, wie du sie geschrieben hast."
+  },
+  "auth": {
+    "signInTitle": "Anmelden",
+    "signInSubtitle": "Mit deinem MINUS 30 Konto bleiben deine Daten sicher und auf all deinen Geräten verfügbar.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 8 Zeichen.",
+    "signIn": "Anmelden",
+    "forgot": "Passwort vergessen?",
+    "noAccount": "Neu hier? Konto erstellen",
+    "createTitle": "Konto erstellen",
+    "createSubtitle": "Deine Pläne, Mahlzeiten und Trainings werden gesichert und sind auf jedem Gerät verfügbar, auf dem du dich anmeldest.",
+    "create": "Konto erstellen",
+    "haveAccount": "Schon ein Konto? Anmelden",
+    "verifyTitle": "Prüfe deine E-Mails",
+    "verifyBody": "Wir haben einen 6-stelligen Code an {{email}} gesendet. Gib ihn ein, um dein Konto zu bestätigen.",
+    "code": "6-stelliger Code",
+    "verify": "Bestätigen",
+    "resend": "Neuen Code senden",
+    "resent": "Ein neuer Code ist unterwegs.",
+    "resetTitle": "Passwort zurücksetzen",
+    "resetBody": "Gib deine E-Mail-Adresse ein. Wir senden dir einen 6-stelligen Code.",
+    "sendCode": "Code senden",
+    "resetCodeBody": "Gib den Code ein, den wir an {{email}} gesendet haben, und wähle ein neues Passwort.",
+    "newPassword": "Neues Passwort",
+    "resetDone": "Passwort geändert. Du bist angemeldet.",
+    "signedIn": "Angemeldet.",
+    "welcomeSignIn": "Ich habe schon ein Konto",
+    "mergeTitle": "Auf diesem Gerät sind bereits Daten",
+    "mergeBody": "Du hast MINUS 30 auf diesem Gerät schon vor der Anmeldung genutzt. Was soll mit diesen Daten passieren?",
+    "merge": "Zu meinem Konto hinzufügen",
+    "mergeHint": "Empfohlen. Pläne, Mahlzeiten und Trainings von diesem Gerät werden hochgeladen. Nichts wird gelöscht.",
+    "replace": "Nur die Daten meines Kontos verwenden",
+    "replaceHint": "Die Daten auf diesem Gerät werden entfernt und durch die Daten deines Kontos ersetzt.",
+    "errors": {
+      "not_configured": "Konten sind in dieser Version noch nicht verfügbar.",
+      "invalid_credentials": "E-Mail oder Passwort ist falsch.",
+      "email_not_confirmed": "Bitte bestätige zuerst deine E-Mail-Adresse. Wir können dir einen neuen Code senden.",
+      "user_exists": "Mit dieser E-Mail gibt es bereits ein Konto. Versuche, dich anzumelden.",
+      "weak_password": "Bitte wähle ein stärkeres Passwort (mindestens 8 Zeichen).",
+      "invalid_email": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "invalid_code": "Der Code ist falsch oder abgelaufen. Fordere einen neuen an.",
+      "rate_limited": "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
+      "offline": "Du bist offline. Bitte prüfe deine Verbindung.",
+      "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
+  },
+  "sync": {
+    "title": "Cloud-Synchronisierung",
+    "on": "Synchronisiert",
+    "syncing": "Wird synchronisiert…",
+    "offline": "Offline. Änderungen werden auf diesem Gerät gespeichert und später automatisch synchronisiert.",
+    "error": "Synchronisierung pausiert. MINUS 30 versucht es automatisch erneut.",
+    "signedOut": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu synchronisieren.",
+    "pending_one": "{{count}} Änderung wartet auf Synchronisierung",
+    "pending_other": "{{count}} Änderungen warten auf Synchronisierung",
+    "failed_one": "{{count}} Eintrag konnte nicht synchronisiert werden und bleibt auf diesem Gerät",
+    "failed_other": "{{count}} Einträge konnten nicht synchronisiert werden und bleiben auf diesem Gerät",
+    "last": "Zuletzt synchronisiert {{time}}",
+    "never": "Noch nicht synchronisiert",
+    "now": "Jetzt synchronisieren",
+    "retryFailed": "Erneut versuchen",
+    "discardFailed": "Ausblenden"
   }
 }
