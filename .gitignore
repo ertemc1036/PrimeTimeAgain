@@ -46,3 +46,7 @@ example
 .env
 .env.*
 !.env.example
+
+# Supabase Edge Functions (Deno)
+supabase/functions/node_modules/
+supabase/.temp/

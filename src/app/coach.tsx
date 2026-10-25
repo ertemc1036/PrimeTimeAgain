@@ -41,16 +41,10 @@ export default function Coach() {
     };
   };
 
-  const send = async (content: string) => {
-    const msg = content.trim().slice(0, 1000);
-    if (!msg || busy) return;
+  const ask = async (history: { role: 'user' | 'assistant'; content: string }[]) => {
     setError(null);
-    setText('');
-    const userMsg = { id: newId('cm'), role: 'user' as const, content: msg, createdAt: nowISO() };
-    await save({ type: 'addCoachMessage', message: userMsg });
     setBusy(true);
-    const history = [...messages, userMsg].slice(-12).map((m) => ({ role: m.role, content: m.content }));
-    const res = await askCoach(history, context());
+    const res = await askCoach(history.slice(-12), context());
     setBusy(false);
     if (!res.ok) {
       const key: Record<AiError, string> = {
@@ -67,6 +61,18 @@ export default function Coach() {
     }
     await save({ type: 'addCoachMessage', message: { id: newId('cm'), role: 'assistant', content: res.data.reply, createdAt: nowISO() } });
   };
+
+  const send = async (content: string) => {
+    const msg = content.trim().slice(0, 1000);
+    if (!msg || busy) return;
+    setText('');
+    const userMsg = { id: newId('cm'), role: 'user' as const, content: msg, createdAt: nowISO() };
+    await save({ type: 'addCoachMessage', message: userMsg });
+    await ask([...messages, userMsg].map((m) => ({ role: m.role, content: m.content })));
+  };
+
+  // Retry the last question without adding it again.
+  const retry = () => void ask(messages.map((m) => ({ role: m.role, content: m.content })));
 
   const clear = async () => {
     if (!(await confirm({ title: t('coach.clear'), message: t('privacy.confirmBody'), confirmLabel: t('common.delete'), cancelLabel: t('common.cancel'), destructive: true }))) return;
@@ -128,7 +134,7 @@ export default function Coach() {
           <AppText variant="bodyStrong" accessibilityLiveRegion="polite">
             {error}
           </AppText>
-          <Button label={t('common.retry')} size="sm" variant="secondary" fullWidth={false} onPress={() => void send(messages[messages.length - 1]?.content ?? '')} />
+          <Button label={t('common.retry')} size="sm" variant="secondary" fullWidth={false} onPress={retry} />
         </Card>
       ) : null}
     </Screen>
