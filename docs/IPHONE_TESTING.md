@@ -69,6 +69,16 @@ Work through these in order with a fresh install.
 - [ ] Greeting matches the time of day; streak card, 0/3 mission ring, three cards, calendar below.
 - [ ] Tapping a calendar day shows its Food / Workout-Rest / Next-day-planned breakdown.
 
+**3D avatar (Today)**
+- [ ] The dark "DIET9 BODY SCAN" card shows a 3D body with moving scan rings; "Loading 3D avatar…" disappears within a few seconds.
+- [ ] Drag sideways: the body turns 360° and keeps spinning a little after you let go. Swiping up/down still scrolls the page.
+- [ ] Pinch zooms towards the upper body; double-tap (or the scan button) returns to the start view.
+- [ ] Body button → Male / Female / Neutral: the body changes; the choice stays after force-quitting and (signed in) appears on a second device.
+- [ ] Start, current weight, change, goal with % ring and streak match Journey; add a weight → the card updates.
+- [ ] Animation is smooth and the phone doesn't get hot after a minute on Today; switching to another tab stops the animation.
+- [ ] Settings → Accessibility → Motion → Reduce Motion: slower scan, particles stand still, no spin after letting go.
+- [ ] Profile → Licenses shows the Rocketbox MIT licence.
+
 **Daily loop** (Today must update by itself after each step)
 - [ ] Food → Add Food → search "oat" → add → Save Meal. Then **Finish Today's Food Log** → Today shows **Food Logged**, 1/3.
 - [ ] Workout → Gym → Log Workout → pick 45 min, type a description → Save → Today shows **Activity Completed**, 2/3.

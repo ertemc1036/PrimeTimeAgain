@@ -81,6 +81,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
           <Stack.Screen name="workout-log" options={modal} />
           <Stack.Screen name="workout-photo" options={modal} />
           <Stack.Screen name="weight" options={modal} />
+          <Stack.Screen name="avatar-body" options={modal} />
           <Stack.Screen name="photos" />
           <Stack.Screen name="history" />
           <Stack.Screen name="coach" />

@@ -4,6 +4,9 @@ export type ISODate = string;
 export type LocalTime = string;
 
 export type Units = 'metric' | 'imperial';
+/** Body the 3D avatar shows. Chosen by the user; 'neutral' is the default. */
+export type AvatarBody = 'male' | 'female' | 'neutral';
+
 export type GoalType = 'habits' | 'nutrition' | 'active' | 'weight';
 export type ActivityPreference = 'gym' | 'walking' | 'running' | 'home' | 'combination';
 export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
@@ -47,6 +50,8 @@ export interface Profile {
   goals: GoalType[];
   startWeightKg?: number;
   goalWeightKg?: number;
+  /** Optional body shown by the 3D avatar on Today. Symbolic only; never derived from weight or height. */
+  avatarBody?: AvatarBody;
   activityPrefs: ActivityPreference[];
   food: FoodPreferences;
   planningTime: LocalTime;

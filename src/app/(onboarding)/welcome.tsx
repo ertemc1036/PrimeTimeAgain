@@ -1,15 +1,13 @@
 import { router, useFocusEffect } from 'expo-router';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { useCallback } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import { Image } from 'expo-image';
-
 import { AppText, Button, IconButton } from '@/components/ui';
 import { authAvailable } from '@/services/auth';
-import { colors, layout, spacing } from '@/theme';
+import { colors, fonts, layout, spacing } from '@/theme';
 
 export default function Welcome() {
   const { t } = useTranslation();
@@ -27,14 +25,9 @@ export default function Welcome() {
         <IconButton icon="globe-outline" label={t('common.language')} onPress={() => router.push('/language')} variant="inverse" color={colors.white} />
       </View>
       <View style={styles.center}>
-        <Image
-          source={require('../../../assets/images/logo-wordmark.png')}
-          style={styles.logo}
-          contentFit="contain"
-          accessible
-          accessibilityRole="header"
-          accessibilityLabel={t('brand.name')}
-        />
+        <Text style={styles.wordmark} accessibilityRole="header" maxFontSizeMultiplier={1.2}>
+          {t('brand.name')}
+        </Text>
         <AppText variant="heading" color={colors.white} align="center">
           {t('onboarding.welcome.subtitle')}
         </AppText>
@@ -72,7 +65,7 @@ function PrimaryInverse({ label, onPress }: { label: string; onPress: () => void
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.black, paddingHorizontal: layout.screenPadding },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md },
-  logo: { width: 260, aspectRatio: 957 / 188, marginBottom: spacing.md },
+  wordmark: { color: colors.white, fontFamily: fonts.extrabold, fontSize: 64, lineHeight: 72, letterSpacing: -2.5, marginBottom: spacing.md },
   lang: { position: 'absolute', right: layout.screenPadding, zIndex: 1 },
   bottom: { gap: spacing.md, width: '100%', maxWidth: layout.maxContentWidth, alignSelf: 'center' },
   cta: { width: '100%' },

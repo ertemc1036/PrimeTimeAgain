@@ -7,6 +7,7 @@ import { AppText, Card, Chip, Icon, IconButton, ProgressRing, Screen, useToast }
 import { dayChecks, streakStats } from '@/domain/completion';
 import { addDays } from '@/domain/dates';
 import { activitySummary } from '@/features/labels';
+import { BodyHero } from '@/features/avatar/BodyHero';
 import { MissionCard } from '@/features/MissionCard';
 import { StreakCalendar } from '@/features/StreakCalendar';
 import { formatDate } from '@/i18n/format';
@@ -52,6 +53,8 @@ export default function Today() {
           {t('today.subtitle')}
         </AppText>
       </View>
+
+      <BodyHero data={data} streak={streak.current} />
 
       <Card variant="inverse" style={styles.streak}>
         <View style={styles.flame}>

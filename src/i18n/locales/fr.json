@@ -35,7 +35,7 @@
     "language": "Langue"
   },
   "brand": {
-    "name": "MINUS 30",
+    "name": "Diet9",
     "slogan": "Planifie demain. Accomplis aujourd'hui.",
     "secondary": "Ton parcours de transformation."
   },
@@ -79,7 +79,7 @@
       "namePlaceholder": "Ton prénom",
       "nameError": "Saisis un prénom.",
       "adult": "Je confirme avoir 18 ans ou plus",
-      "adultHint": "MINUS 30 est conçu pour les adultes.",
+      "adultHint": "Diet9 est conçu pour les adultes.",
       "units": "Unités",
       "metric": "Métrique (kg, cm)",
       "imperial": "Impérial (lb, ft)",
@@ -90,7 +90,7 @@
       "privacy": "Les données de santé sont facultatives et restent sur ton appareil."
     },
     "adultsOnly": {
-      "title": "MINUS 30 est réservé aux adultes",
+      "title": "Diet9 est réservé aux adultes",
       "body": "Nos fonctions de nutrition et de gestion du poids sont conçues pour les personnes de 18 ans et plus. Si tu veux de l'aide pour adopter des habitudes saines, un médecin, l'infirmerie scolaire ou un adulte de confiance peut t'accompagner.",
       "back": "Revenir"
     },
@@ -172,7 +172,7 @@
       "subtitle": "Facultatif. Un petit rappel à ton heure de planification. Tu peux le modifier ou le désactiver à tout moment.",
       "enable": "Activer les rappels",
       "notNow": "Pas maintenant",
-      "denied": "Les notifications de MINUS 30 sont désactivées dans les réglages de ton téléphone. Tu peux tout de même utiliser toutes les fonctions.",
+      "denied": "Les notifications de Diet9 sont désactivées dans les réglages de ton téléphone. Tu peux tout de même utiliser toutes les fonctions.",
       "web": "Les rappels fonctionnent dans l'app iOS et Android.",
       "enabled": "Les rappels sont activés."
     },
@@ -562,7 +562,7 @@
   },
   "profile": {
     "title": "Profil",
-    "pro": "MINUS 30 Pro",
+    "pro": "Diet9 Pro",
     "free": "Offre gratuite",
     "proActive": "Pro actif",
     "upgrade": "Passer à Pro",
@@ -588,7 +588,7 @@
   },
   "account": {
     "title": "Compte",
-    "localOnly": "Tu utilises MINUS 30 sans compte",
+    "localOnly": "Tu utilises Diet9 sans compte",
     "localBody": "Tes données sont stockées sur cet appareil. Les comptes et la sauvegarde dans le cloud ne sont pas encore configurés dans cette version.",
     "notConfigured": "Les comptes cloud ne sont pas configurés dans cette version.",
     "email": "E-mail",
@@ -602,7 +602,7 @@
     "delete": "Supprimer le compte",
     "deleteBody": "Cela supprime définitivement ton compte et tes données cloud. Les données de cet appareil sont aussi supprimées.",
     "signedOutTitle": "Sauvegarde tes progrès",
-    "signedOutBody": "Crée un compte gratuit pour garder tes données en sécurité si tu perds ou changes de téléphone, et pour utiliser MINUS 30 sur plusieurs appareils.",
+    "signedOutBody": "Crée un compte gratuit pour garder tes données en sécurité si tu perds ou changes de téléphone, et pour utiliser Diet9 sur plusieurs appareils.",
     "signOutTitle": "Se déconnecter ?",
     "signOutBody": "Tes données restent dans ton compte. Elles sont retirées de cet appareil jusqu'à ta prochaine connexion.",
     "unsyncedTitle": "Certaines modifications ne sont pas encore synchronisées",
@@ -653,12 +653,12 @@
     "nextUp_one": "{{count}} rappel prévu pour les deux prochains jours.",
     "nextUp_many": "{{count}} rappels prévus pour les deux prochains jours.",
     "nextUp_other": "{{count}} rappels prévus pour les deux prochains jours.",
-    "denied": "Les notifications de MINUS 30 sont désactivées dans les réglages de ton téléphone.",
+    "denied": "Les notifications de Diet9 sont désactivées dans les réglages de ton téléphone.",
     "web": "Les rappels fonctionnent dans l'app iOS et Android.",
     "content": {
       "morning": {
         "title": "Ton plan du jour est prêt.",
-        "body": "Ouvre MINUS 30 pour voir les repas et l'activité du jour."
+        "body": "Ouvre Diet9 pour voir les repas et l'activité du jour."
       },
       "activity": {
         "title": "C'est l'heure de ton activité prévue.",
@@ -717,15 +717,17 @@
     "privacyTitle": "Politique de confidentialité",
     "termsTitle": "Conditions d'utilisation",
     "draft": "Document juridique en attente de validation. Le document définitif sera publié ici avant la sortie. D'ici là, il ne s'agit que d'un résumé en langage simple, pas d'un document juridique.",
-    "privacyBody": "MINUS 30 stocke sur ton appareil ton profil, tes plans, tes repas et activités, tes éventuelles mesures de poids et tes éventuelles photos. Si tu crées un compte, ces données sont aussi stockées dans notre base de données cloud pour que tu puisses les restaurer et les utiliser sur d'autres appareils ; les photos sont conservées dans un espace privé accessible uniquement à ton compte. Si tu utilises les fonctions IA (Pro), la photo ou le message et, seulement si tu l'autorises, un court résumé de tes plans et entrées récents sont traités par notre serveur et un fournisseur d'IA pour répondre à cette demande ; ils ne sont pas conservés ensuite, à l'exception des résultats que tu enregistres. Les abonnements sont gérés par Apple ou Google et par notre prestataire d'abonnements, RevenueCat. Nous ne vendons pas tes données et ne les utilisons pas à des fins publicitaires. Tu peux exporter ou supprimer tes données, et supprimer ton compte, à tout moment dans l'app.",
-    "termsBody": "MINUS 30 accompagne des routines saines et n'est ni un dispositif médical ni un substitut à un avis professionnel. Les valeurs nutritionnelles et les résultats de l'IA sont des estimations. Les séances sont déclarées par l'utilisateur. L'app est destinée aux adultes de 18 ans et plus. Les abonnements se renouvellent automatiquement jusqu'à leur résiliation dans les réglages de ton compte App Store ou Google Play.",
-    "medical": "MINUS 30 ne donne pas de conseils médicaux. Si tu as un problème de santé, es enceinte ou ne sais pas ce qui te convient, parles-en à un professionnel de santé.",
+    "privacyBody": "Diet9 stocke sur ton appareil ton profil, tes plans, tes repas et activités, tes éventuelles mesures de poids et tes éventuelles photos. Si tu crées un compte, ces données sont aussi stockées dans notre base de données cloud pour que tu puisses les restaurer et les utiliser sur d'autres appareils ; les photos sont conservées dans un espace privé accessible uniquement à ton compte. Si tu utilises les fonctions IA (Pro), la photo ou le message et, seulement si tu l'autorises, un court résumé de tes plans et entrées récents sont traités par notre serveur et un fournisseur d'IA pour répondre à cette demande ; ils ne sont pas conservés ensuite, à l'exception des résultats que tu enregistres. Les abonnements sont gérés par Apple ou Google et par notre prestataire d'abonnements, RevenueCat. Nous ne vendons pas tes données et ne les utilisons pas à des fins publicitaires. Tu peux exporter ou supprimer tes données, et supprimer ton compte, à tout moment dans l'app.",
+    "termsBody": "Diet9 accompagne des routines saines et n'est ni un dispositif médical ni un substitut à un avis professionnel. Les valeurs nutritionnelles et les résultats de l'IA sont des estimations. Les séances sont déclarées par l'utilisateur. L'app est destinée aux adultes de 18 ans et plus. Les abonnements se renouvellent automatiquement jusqu'à leur résiliation dans les réglages de ton compte App Store ou Google Play.",
+    "medical": "Diet9 ne donne pas de conseils médicaux. Si tu as un problème de santé, es enceinte ou ne sais pas ce qui te convient, parles-en à un professionnel de santé.",
     "help": "Planifie le lendemain dans Plan, note tes repas dans Repas et note une séance ou un jour de repos dans Sport. Quand les trois sont faits, la mission du jour est accomplie.",
     "contact": "Contact",
-    "noContact": "Un contact d'assistance sera ajouté avant la publication."
+    "noContact": "Un contact d'assistance sera ajouté avant la publication.",
+    "licenses": "Licences",
+    "licensesIntro": "Diet9 utilise ces œuvres de tiers. Les corps 3D ont été convertis et ont reçu un style propre à l'app."
   },
   "pro": {
-    "title": "Débloque MINUS 30 Pro",
+    "title": "Débloque Diet9 Pro",
     "subtitle": "Un suivi plus malin. Moins d'efforts. Plus de soutien.",
     "b1": {
       "title": "Scanne tes repas avec l'IA",
@@ -752,11 +754,11 @@
     "free": "Tout ce dont tu as besoin pour planifier, noter et garder ta série reste gratuit.",
     "devPreview": "Aperçu développeur : afficher les écrans Pro",
     "devPreviewHint": "Uniquement dans les versions de développement. Ne donne pas accès à l'IA ; le serveur vérifie toujours ton abonnement.",
-    "isPro": "Tu as MINUS 30 Pro.",
-    "storeUnavailable": "Les abonnements s'achètent dans l'app MINUS 30 installée depuis l'App Store ou Google Play. Ils ne sont pas disponibles dans cet aperçu.",
+    "isPro": "Tu as Diet9 Pro.",
+    "storeUnavailable": "Les abonnements s'achètent dans l'app Diet9 installée depuis l'App Store ou Google Play. Ils ne sont pas disponibles dans cet aperçu.",
     "notConfigured": "Les abonnements ne sont pas encore configurés dans cette version. Les prix affichés sont provisoires.",
     "signInFirst": "Crée d'abord un compte gratuit pour que ton abonnement Pro fonctionne sur tous tes appareils.",
-    "welcome": "Bienvenue dans MINUS 30 Pro.",
+    "welcome": "Bienvenue dans Diet9 Pro.",
     "pending": "Ton achat est en attente de validation. Pro sera activé dès sa confirmation.",
     "failed": "L'achat n'a pas abouti. Tu n'as pas été débité.",
     "restored": "Tes achats ont été restaurés.",
@@ -777,9 +779,9 @@
       "J'ai manqué ma séance.",
       "Aide-moi à faire une liste de courses."
     ],
-    "unavailable": "Le coach IA n'est pas encore disponible dans cette version. Il nécessite la mise en place du service cloud MINUS 30.",
+    "unavailable": "Le coach IA n'est pas encore disponible dans cette version. Il nécessite la mise en place du service cloud Diet9.",
     "signedOut": "Connecte-toi pour utiliser le coach IA.",
-    "notPro": "Le coach IA fait partie de MINUS 30 Pro.",
+    "notPro": "Le coach IA fait partie de Diet9 Pro.",
     "rateLimited": "Tu as atteint la limite de messages pour le moment. Réessaie plus tard.",
     "offline": "Tu es hors ligne. Le coach IA a besoin d'une connexion internet.",
     "failed": "Un problème est survenu. Réessaie.",
@@ -791,7 +793,7 @@
   "ai": {
     "not_configured": "Les fonctions IA ne sont pas encore disponibles dans cette version.",
     "signed_out": "Connecte-toi pour utiliser les fonctions IA.",
-    "not_pro": "Cette fonction fait partie de MINUS 30 Pro.",
+    "not_pro": "Cette fonction fait partie de Diet9 Pro.",
     "rate_limited": "Tu as atteint la limite pour le moment. Réessaie plus tard.",
     "offline": "Tu es hors ligne. Les fonctions IA ont besoin d'une connexion internet.",
     "invalid_response": "Nous avons reçu un résultat inattendu. Réessaie ou note manuellement.",
@@ -830,11 +832,11 @@
   },
   "language": {
     "title": "Langue",
-    "subtitle": "Choisis la langue de MINUS 30. Les entrées déjà enregistrées restent telles que tu les as écrites."
+    "subtitle": "Choisis la langue de Diet9. Les entrées déjà enregistrées restent telles que tu les as écrites."
   },
   "auth": {
     "signInTitle": "Se connecter",
-    "signInSubtitle": "Avec ton compte MINUS 30, tes données restent en sécurité et disponibles sur tous tes appareils.",
+    "signInSubtitle": "Avec ton compte Diet9, tes données restent en sécurité et disponibles sur tous tes appareils.",
     "email": "E-mail",
     "password": "Mot de passe",
     "passwordHint": "Au moins 8 caractères.",
@@ -860,7 +862,7 @@
     "signedIn": "Connecté.",
     "welcomeSignIn": "J'ai déjà un compte",
     "mergeTitle": "Cet appareil contient déjà des données",
-    "mergeBody": "Tu as utilisé MINUS 30 sur cet appareil avant de te connecter. Que faire de ces données ?",
+    "mergeBody": "Tu as utilisé Diet9 sur cet appareil avant de te connecter. Que faire de ces données ?",
     "merge": "Les ajouter à mon compte",
     "mergeHint": "Recommandé. Les plans, repas et séances de cet appareil sont envoyés. Rien n'est supprimé.",
     "replace": "Utiliser uniquement les données de mon compte",
@@ -883,7 +885,7 @@
     "on": "Synchronisé",
     "syncing": "Synchronisation…",
     "offline": "Hors ligne. Les modifications sont enregistrées sur cet appareil et se synchroniseront automatiquement plus tard.",
-    "error": "Synchronisation en pause. MINUS 30 réessaiera automatiquement.",
+    "error": "Synchronisation en pause. Diet9 réessaiera automatiquement.",
     "signedOut": "Ta session a expiré. Reconnecte-toi pour continuer à synchroniser.",
     "pending_one": "{{count}} modification en attente de synchronisation",
     "pending_many": "{{count}} modifications en attente de synchronisation",
@@ -896,5 +898,44 @@
     "now": "Synchroniser maintenant",
     "retryFailed": "Réessayer",
     "discardFailed": "Masquer"
+  },
+  "avatar": {
+    "eyebrow": "DIET9 BODY SCAN",
+    "title": "Ta progression",
+    "resetView": "Réinitialiser la vue",
+    "chooseBody": "Choisir le corps de l'avatar",
+    "start": "Départ",
+    "current": "Actuel",
+    "change": "Évolution",
+    "sinceStart": "depuis le départ",
+    "goal": "Objectif",
+    "noGoal": "Pas d'objectif",
+    "goalReached": "Objectif atteint",
+    "toGo": "encore {{value}}",
+    "streak": "Série",
+    "days_one": "{{count}} jour",
+    "days_many": "{{count}} jours",
+    "days_other": "{{count}} jours",
+    "inARow": "d'affilée",
+    "startToday": "commence aujourd'hui",
+    "addWeight": "Ajoute ton poids",
+    "gestureHint": "Glisse pour tourner · Pince pour zoomer · Touche deux fois pour réinitialiser",
+    "symbolic": "Avatar symbolique : il ne montre ni ta silhouette réelle, ni ta masse grasse, ni ta masse musculaire. Le poids ne permet pas de les déduire.",
+    "bodyTitle": "Corps de l'avatar",
+    "bodySubtitle": "Choisis l'apparence de l'avatar 3D sur Aujourd'hui. C'est facultatif.",
+    "body": {
+      "male": "Masculin",
+      "female": "Féminin",
+      "neutral": "Neutre"
+    },
+    "bodyNote": "L'avatar est une figure symbolique. Diet9 ne calcule jamais une silhouette à partir de ton poids ou de ta taille.",
+    "a11yLabel": "Avatar 3D",
+    "a11yHint": "Utilise les actions pour faire tourner ou zoomer l'avatar.",
+    "rotateLeft": "Tourner à gauche",
+    "rotateRight": "Tourner à droite",
+    "zoomIn": "Zoomer",
+    "zoomOut": "Dézoomer",
+    "loading": "Chargement de l’avatar 3D…",
+    "unavailable": "La vue 3D ne peut pas s'afficher sur cet appareil pour le moment."
   }
 }

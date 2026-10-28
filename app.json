@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "MINUS 30",
+    "name": "Diet9",
     "slug": "minus30",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -69,8 +69,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "MINUS 30 uses your photo library only when you choose to add a meal, workout or private progress photo.",
-          "cameraPermission": "MINUS 30 uses the camera only when you choose to scan a meal or take a workout or progress photo.",
+          "photosPermission": "Diet9 uses your photo library only when you choose to add a meal, workout or private progress photo.",
+          "cameraPermission": "Diet9 uses the camera only when you choose to scan a meal or take a workout or progress photo.",
           "microphonePermission": false
         }
       ],
@@ -80,7 +80,8 @@
           "color": "#000000"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true,

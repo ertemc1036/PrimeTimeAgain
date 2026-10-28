@@ -17,7 +17,21 @@ function useProgress(progress: number, duration: number) {
   return value;
 }
 
-export function ProgressRing({ progress, size = 120, stroke = 10, children }: { progress: number; size?: number; stroke?: number; children?: ReactNode }) {
+export function ProgressRing({
+  progress,
+  size = 120,
+  stroke = 10,
+  color = colors.black,
+  track = colors.border,
+  children,
+}: {
+  progress: number;
+  size?: number;
+  stroke?: number;
+  color?: string;
+  track?: string;
+  children?: ReactNode;
+}) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const value = useProgress(progress, 800);
@@ -25,8 +39,8 @@ export function ProgressRing({ progress, size = 120, stroke = 10, children }: { 
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size} style={{ transform: [{ rotate: '-90deg' }] }}>
-        <Circle cx={size / 2} cy={size / 2} r={r} stroke={colors.border} strokeWidth={stroke} fill="none" />
-        <AnimatedCircle cx={size / 2} cy={size / 2} r={r} stroke={colors.black} strokeWidth={stroke} strokeLinecap="round" fill="none" strokeDasharray={`${c} ${c}`} animatedProps={animatedProps} />
+        <Circle cx={size / 2} cy={size / 2} r={r} stroke={track} strokeWidth={stroke} fill="none" />
+        <AnimatedCircle cx={size / 2} cy={size / 2} r={r} stroke={color} strokeWidth={stroke} strokeLinecap="round" fill="none" strokeDasharray={`${c} ${c}`} animatedProps={animatedProps} />
       </Svg>
       <View style={[StyleSheet.absoluteFill, styles.center]}>{children}</View>
     </View>

@@ -1,4 +1,6 @@
-# MINUS 30
+# Diet9
+
+> Formerly MINUS 30. The visible name is Diet9; bundle ID (`com.minus30.app`), slug, product IDs and the Instagram handle are unchanged for now.
 
 > **Plan Tomorrow. Complete Today.** — Your Transformation Journey.
 
@@ -28,7 +30,7 @@ Everything in the free tier works fully offline with no configuration. Data is s
 | Area | Free | Pro |
 | --- | --- | --- |
 | Onboarding | Profile, 18+ confirmation, goals (unsafe goal weights are blocked), activity and food preferences, planning time, reminders | — |
-| Today | Greeting, streak card, mission ring, 3 automatic cards (Food Logged / Activity Completed / Tomorrow Planned), monthly streak calendar with day breakdown | Floating AI Coach button |
+| Today | Interactive 3D body avatar (male / female / neutral, turn, zoom, scan rings) with real start / current / goal weight and streak — see [`docs/AVATAR.md`](docs/AVATAR.md); greeting, streak card, mission ring, 3 automatic cards (Food Logged / Activity Completed / Tomorrow Planned), monthly streak calendar with day breakdown | Floating AI Coach button |
 | Plan | Any of the next 7 days (defaults to tomorrow); meals with food search, custom foods, favorites, copy a previous day, "keep meals flexible"; Gym / Outdoor / Home / Rest Day with time and duration | Plan With AI (via the coach) |
 | Food | Planned vs logged meals, "Log This Meal", manual Add Food, estimated kcal/protein/carbs/fat (missing estimates are shown as missing, never as zero), Finish / reopen food log, yesterday's late entries | Scan With AI |
 | Workout | Planned activity, 4 cards, validated manual log (quick durations, recent descriptions, duplicate protection), Rest Day without photo | Photo check-in (setting only, never proof) |

@@ -34,7 +34,7 @@
     "language": "Dil"
   },
   "brand": {
-    "name": "MINUS 30",
+    "name": "Diet9",
     "slogan": "Yarını planla. Bugünü tamamla.",
     "secondary": "Dönüşüm yolculuğun."
   },
@@ -78,7 +78,7 @@
       "namePlaceholder": "Adın",
       "nameError": "Lütfen bir ad gir.",
       "adult": "18 yaşında veya daha büyük olduğumu onaylıyorum",
-      "adultHint": "MINUS 30 yetişkinler için tasarlandı.",
+      "adultHint": "Diet9 yetişkinler için tasarlandı.",
       "units": "Birimler",
       "metric": "Metrik (kg, cm)",
       "imperial": "İngiliz (lb, ft)",
@@ -89,7 +89,7 @@
       "privacy": "Sağlık bilgileri isteğe bağlıdır ve cihazında kalır."
     },
     "adultsOnly": {
-      "title": "MINUS 30 yetişkinler içindir",
+      "title": "Diet9 yetişkinler içindir",
       "body": "Beslenme ve kilo yönetimi özelliklerimiz 18 yaş ve üzeri kişiler için tasarlandı. Sağlıklı alışkanlıklar konusunda destek istersen bir doktor, okul hemşiresi veya güvendiğin bir yetişkin sana yardımcı olabilir.",
       "back": "Geri dön"
     },
@@ -171,7 +171,7 @@
       "subtitle": "İsteğe bağlı. Planlama saatinde nazik bir hatırlatma. İstediğin zaman değiştirebilir veya kapatabilirsin.",
       "enable": "Hatırlatmaları aç",
       "notNow": "Şimdi değil",
-      "denied": "MINUS 30 bildirimleri telefonunun ayarlarında kapalı. Yine de tüm özellikleri kullanabilirsin.",
+      "denied": "Diet9 bildirimleri telefonunun ayarlarında kapalı. Yine de tüm özellikleri kullanabilirsin.",
       "web": "Hatırlatmalar iOS ve Android uygulamasında çalışır.",
       "enabled": "Hatırlatmalar açık."
     },
@@ -558,7 +558,7 @@
   },
   "profile": {
     "title": "Profil",
-    "pro": "MINUS 30 Pro",
+    "pro": "Diet9 Pro",
     "free": "Ücretsiz plan",
     "proActive": "Pro aktif",
     "upgrade": "Pro'ya geç",
@@ -584,7 +584,7 @@
   },
   "account": {
     "title": "Hesap",
-    "localOnly": "MINUS 30'u hesapsız kullanıyorsun",
+    "localOnly": "Diet9'u hesapsız kullanıyorsun",
     "localBody": "Verilerin bu cihazda saklanır. Hesaplar ve bulut yedekleme bu sürümde henüz kurulmadı.",
     "notConfigured": "Bulut hesapları bu sürümde yapılandırılmamış.",
     "email": "E-posta",
@@ -598,7 +598,7 @@
     "delete": "Hesabı sil",
     "deleteBody": "Bu işlem hesabını ve bulut verilerini kalıcı olarak siler. Bu cihazdaki veriler de silinir.",
     "signedOutTitle": "İlerlemeni yedekle",
-    "signedOutBody": "Telefonunu kaybedersen veya değiştirirsen verilerin güvende kalsın ve MINUS 30'u birden fazla cihazda kullanabilmek için ücretsiz bir hesap oluştur.",
+    "signedOutBody": "Telefonunu kaybedersen veya değiştirirsen verilerin güvende kalsın ve Diet9'u birden fazla cihazda kullanabilmek için ücretsiz bir hesap oluştur.",
     "signOutTitle": "Çıkış yapılsın mı?",
     "signOutBody": "Verilerin hesabında kalır. Tekrar giriş yapana kadar bu cihazdan kaldırılır.",
     "unsyncedTitle": "Bazı değişiklikler henüz senkronize edilmedi",
@@ -647,12 +647,12 @@
     "hourlyEnd": "Saatlik bitiş",
     "nextUp_one": "Önümüzdeki iki gün için {{count}} hatırlatma planlandı.",
     "nextUp_other": "Önümüzdeki iki gün için {{count}} hatırlatma planlandı.",
-    "denied": "MINUS 30 bildirimleri telefonunun ayarlarında kapalı.",
+    "denied": "Diet9 bildirimleri telefonunun ayarlarında kapalı.",
     "web": "Hatırlatmalar iOS ve Android uygulamasında çalışır.",
     "content": {
       "morning": {
         "title": "Günlük planın hazır.",
-        "body": "Bugünün öğünlerini ve aktiviteni görmek için MINUS 30'u aç."
+        "body": "Bugünün öğünlerini ve aktiviteni görmek için Diet9'u aç."
       },
       "activity": {
         "title": "Planladığın aktivitenin zamanı.",
@@ -711,15 +711,17 @@
     "privacyTitle": "Gizlilik politikası",
     "termsTitle": "Kullanım koşulları",
     "draft": "Yasal belge onay bekliyor. Nihai belge yayından önce burada yayımlanacak. O zamana kadar bu yalnızca sade bir özettir, yasal bir belge değildir.",
-    "privacyBody": "MINUS 30 profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Bir hesap oluşturursan bu veriler, geri yükleyebilmen ve diğer cihazlarda kullanabilmen için bulut veritabanımızda da saklanır; fotoğraflar yalnızca hesabının erişebildiği özel bir depolama alanında tutulur. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ve yalnızca izin verirsen son planlarının ve kayıtlarının kısa bir özeti, o isteği yanıtlamak için sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında saklanmaz. Abonelikler Apple veya Google ve abonelik sağlayıcımız RevenueCat üzerinden yürütülür. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman uygulamada dışa aktarabilir veya silebilir, hesabını silebilirsin.",
-    "termsBody": "MINUS 30 sağlıklı rutinleri destekler; tıbbi bir cihaz veya profesyonel tavsiyenin yerine geçen bir araç değildir. Besin değerleri ve yapay zekâ sonuçları tahmindir. Antrenman kayıtları kullanıcının kendi beyanına dayanır. Uygulama 18 yaş ve üzeri yetişkinler içindir. Abonelikler, App Store veya Google Play hesabının ayarlarından iptal edilene kadar otomatik olarak yenilenir.",
-    "medical": "MINUS 30 tıbbi tavsiye vermez. Bir sağlık sorunun varsa, hamileysen veya senin için neyin doğru olduğundan emin değilsen lütfen bir sağlık uzmanıyla konuş.",
+    "privacyBody": "Diet9 profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Bir hesap oluşturursan bu veriler, geri yükleyebilmen ve diğer cihazlarda kullanabilmen için bulut veritabanımızda da saklanır; fotoğraflar yalnızca hesabının erişebildiği özel bir depolama alanında tutulur. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ve yalnızca izin verirsen son planlarının ve kayıtlarının kısa bir özeti, o isteği yanıtlamak için sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında saklanmaz. Abonelikler Apple veya Google ve abonelik sağlayıcımız RevenueCat üzerinden yürütülür. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman uygulamada dışa aktarabilir veya silebilir, hesabını silebilirsin.",
+    "termsBody": "Diet9 sağlıklı rutinleri destekler; tıbbi bir cihaz veya profesyonel tavsiyenin yerine geçen bir araç değildir. Besin değerleri ve yapay zekâ sonuçları tahmindir. Antrenman kayıtları kullanıcının kendi beyanına dayanır. Uygulama 18 yaş ve üzeri yetişkinler içindir. Abonelikler, App Store veya Google Play hesabının ayarlarından iptal edilene kadar otomatik olarak yenilenir.",
+    "medical": "Diet9 tıbbi tavsiye vermez. Bir sağlık sorunun varsa, hamileysen veya senin için neyin doğru olduğundan emin değilsen lütfen bir sağlık uzmanıyla konuş.",
     "help": "Yarını Plan'da planla, öğünlerini Beslenme'de kaydet, Antrenman'da bir antrenman veya dinlenme günü kaydet. Üçü de tamamlandığında bugünün görevi tamamlanır.",
     "contact": "İletişim",
-    "noContact": "Yayından önce bir destek iletişim bilgisi eklenecek."
+    "noContact": "Yayından önce bir destek iletişim bilgisi eklenecek.",
+    "licenses": "Lisanslar",
+    "licensesIntro": "Diet9 bu üçüncü taraf eserleri kullanır. 3D vücutlar uygulama için dönüştürüldü ve özel bir görünüm kazandı."
   },
   "pro": {
-    "title": "MINUS 30 Pro'nun kilidini aç",
+    "title": "Diet9 Pro'nun kilidini aç",
     "subtitle": "Daha akıllı takip. Daha az çaba. Daha fazla destek.",
     "b1": {
       "title": "Öğünleri yapay zekâ ile tara",
@@ -746,11 +748,11 @@
     "free": "Planlama, kayıt ve serin için ihtiyacın olan her şey ücretsiz kalır.",
     "devPreview": "Geliştirici önizlemesi: Pro ekranlarını göster",
     "devPreviewHint": "Yalnızca geliştirme sürümlerinde. Yapay zekâ erişimi vermez; sunucu aboneliğini yine kontrol eder.",
-    "isPro": "MINUS 30 Pro'ya sahipsin.",
-    "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen MINUS 30 uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
+    "isPro": "Diet9 Pro'ya sahipsin.",
+    "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen Diet9 uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
     "notConfigured": "Abonelikler bu sürümde henüz kurulmadı. Gösterilen fiyatlar ön fiyatlardır.",
     "signInFirst": "Pro aboneliğinin tüm cihazlarında çalışması için önce ücretsiz bir hesap oluştur.",
-    "welcome": "MINUS 30 Pro'ya hoş geldin.",
+    "welcome": "Diet9 Pro'ya hoş geldin.",
     "pending": "Satın alman onay bekliyor. Onaylandığı anda Pro açılır.",
     "failed": "Satın alma tamamlanamadı. Senden ücret alınmadı.",
     "restored": "Satın alımların geri yüklendi.",
@@ -771,9 +773,9 @@
       "Antrenmanımı kaçırdım.",
       "Alışveriş listesi hazırlamama yardım et."
     ],
-    "unavailable": "Yapay zekâ koçu bu sürümde henüz kullanılamıyor. MINUS 30 bulut hizmetinin kurulması gerekiyor.",
+    "unavailable": "Yapay zekâ koçu bu sürümde henüz kullanılamıyor. Diet9 bulut hizmetinin kurulması gerekiyor.",
     "signedOut": "Yapay zekâ koçunu kullanmak için giriş yap.",
-    "notPro": "Yapay zekâ koçu MINUS 30 Pro'nun bir parçasıdır.",
+    "notPro": "Yapay zekâ koçu Diet9 Pro'nun bir parçasıdır.",
     "rateLimited": "Şimdilik mesaj sınırına ulaştın. Lütfen daha sonra tekrar dene.",
     "offline": "Çevrimdışısın. Yapay zekâ koçu internet bağlantısı gerektirir.",
     "failed": "Bir şeyler ters gitti. Lütfen tekrar dene.",
@@ -785,7 +787,7 @@
   "ai": {
     "not_configured": "Yapay zekâ özellikleri bu sürümde henüz kullanılamıyor.",
     "signed_out": "Yapay zekâ özelliklerini kullanmak için giriş yap.",
-    "not_pro": "Bu özellik MINUS 30 Pro'nun bir parçasıdır.",
+    "not_pro": "Bu özellik Diet9 Pro'nun bir parçasıdır.",
     "rate_limited": "Şimdilik sınıra ulaştın. Lütfen daha sonra tekrar dene.",
     "offline": "Çevrimdışısın. Yapay zekâ özellikleri internet bağlantısı gerektirir.",
     "invalid_response": "Beklenmedik bir sonuç aldık. Lütfen tekrar dene veya elle kaydet.",
@@ -824,11 +826,11 @@
   },
   "language": {
     "title": "Dil",
-    "subtitle": "MINUS 30'un dilini seç. Daha önce kaydettiğin girişler yazdığın gibi kalır."
+    "subtitle": "Diet9'un dilini seç. Daha önce kaydettiğin girişler yazdığın gibi kalır."
   },
   "auth": {
     "signInTitle": "Giriş yap",
-    "signInSubtitle": "MINUS 30 hesabınla verilerin güvende kalır ve tüm cihazlarında kullanılabilir.",
+    "signInSubtitle": "Diet9 hesabınla verilerin güvende kalır ve tüm cihazlarında kullanılabilir.",
     "email": "E-posta",
     "password": "Şifre",
     "passwordHint": "En az 8 karakter.",
@@ -854,7 +856,7 @@
     "signedIn": "Giriş yapıldı.",
     "welcomeSignIn": "Zaten bir hesabım var",
     "mergeTitle": "Bu cihazda zaten veriler var",
-    "mergeBody": "MINUS 30'u bu cihazda giriş yapmadan önce kullandın. Bu verilere ne olsun?",
+    "mergeBody": "Diet9'u bu cihazda giriş yapmadan önce kullandın. Bu verilere ne olsun?",
     "merge": "Hesabıma ekle",
     "mergeHint": "Önerilen. Bu cihazdaki planlar, öğünler ve antrenmanlar yüklenir. Hiçbir şey silinmez.",
     "replace": "Yalnızca hesabımdaki verileri kullan",
@@ -877,7 +879,7 @@
     "on": "Senkronize edildi",
     "syncing": "Senkronize ediliyor…",
     "offline": "Çevrimdışı. Değişiklikler bu cihazda saklanır ve daha sonra otomatik olarak senkronize edilir.",
-    "error": "Senkronizasyon duraklatıldı. MINUS 30 otomatik olarak tekrar deneyecek.",
+    "error": "Senkronizasyon duraklatıldı. Diet9 otomatik olarak tekrar deneyecek.",
     "signedOut": "Oturumun sona erdi. Senkronizasyona devam etmek için tekrar giriş yap.",
     "pending_one": "{{count}} değişiklik senkronizasyon bekliyor",
     "pending_other": "{{count}} değişiklik senkronizasyon bekliyor",
@@ -888,5 +890,43 @@
     "now": "Şimdi senkronize et",
     "retryFailed": "Tekrar dene",
     "discardFailed": "Kapat"
+  },
+  "avatar": {
+    "eyebrow": "DIET9 VÜCUT TARAMASI",
+    "title": "İlerlemen",
+    "resetView": "Görünümü sıfırla",
+    "chooseBody": "Avatar vücudunu seç",
+    "start": "Başlangıç",
+    "current": "Güncel",
+    "change": "Değişim",
+    "sinceStart": "başlangıçtan beri",
+    "goal": "Hedef",
+    "noGoal": "Hedef belirlenmedi",
+    "goalReached": "Hedefe ulaşıldı",
+    "toGo": "{{value}} kaldı",
+    "streak": "Seri",
+    "days_one": "{{count}} gün",
+    "days_other": "{{count}} gün",
+    "inARow": "üst üste",
+    "startToday": "bugün başla",
+    "addWeight": "Kilonu ekle",
+    "gestureHint": "Döndürmek için sürükle · Yakınlaştırmak için iki parmak · Sıfırlamak için çift dokun",
+    "symbolic": "Sembolik avatar: Gerçek vücut şeklini, yağ oranını veya kas kütleni göstermez. Bunlar kilodan çıkarılamaz.",
+    "bodyTitle": "Avatar vücudu",
+    "bodySubtitle": "Bugün ekranındaki 3D avatarın görünümünü seç. İsteğe bağlıdır.",
+    "body": {
+      "male": "Erkek",
+      "female": "Kadın",
+      "neutral": "Nötr"
+    },
+    "bodyNote": "Avatar sembolik bir figürdür. Diet9 kilondan veya boyundan asla vücut şekli hesaplamaz.",
+    "a11yLabel": "3D avatar",
+    "a11yHint": "Avatarı döndürmek veya yakınlaştırmak için eylemleri kullan.",
+    "rotateLeft": "Sola döndür",
+    "rotateRight": "Sağa döndür",
+    "zoomIn": "Yakınlaştır",
+    "zoomOut": "Uzaklaştır",
+    "loading": "3D avatar yükleniyor…",
+    "unavailable": "3D görünüm şu anda bu cihazda gösterilemiyor."
   }
 }

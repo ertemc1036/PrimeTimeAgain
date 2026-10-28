@@ -116,6 +116,15 @@ const latestCode = (to) => {
     await b.see('3 / 3 Completed'); await b.see('1 Day Streak');
   });
 
+  await step('A → B: the avatar body choice syncs to the other phone', a, async () => {
+    await a.page.goto(`${APP}/avatar-body`); await a.wait(3000);
+    await a.tap('Female'); await a.wait(2500); // debounce + upload
+    await b.page.goto(`${APP}/settings/account`); await b.wait(3500);
+    await b.role('Sync Now'); await b.wait(1500);
+    await b.page.goto(`${APP}/settings`); await b.wait(3000);
+    await b.see('Female');
+  });
+
   await step('B: sign out removes the data from that device', b, async () => {
     await b.page.goto(`${APP}/settings/account`); await b.wait(3500);
     await b.role('Sign Out'); await b.wait(2500);
@@ -149,8 +158,8 @@ const latestCode = (to) => {
   await step('A: free account is sent to the paywall; Pro via verified subscription unlocks the streaming coach', a, async () => {
     await a.page.goto(`${APP}/today`); await a.wait(3500);
     await a.page.getByRole('button', { name: 'Open AI Coach' }).click(); await a.wait(900);
-    await a.see('Unlock MINUS 30 Pro');
-    await a.seeRe(/bought in the installed MINUS 30 app/);
+    await a.see('Unlock Diet9 Pro');
+    await a.seeRe(/bought in the installed Diet9 app/);
     await a.shot('a-paywall');
     const uid = execSync(`psql -h 127.0.0.1 -p 54322 -U postgres -tAc "select id from auth.users where email='${email}'"`).toString().trim();
     await fetch(`${GW}/mock/control`, { method: 'POST', body: JSON.stringify({ scenario: 'ok', subscriber: { id: uid, data: { entitlements: { pro: { expires_date: new Date(Date.now() + 30 * 864e5).toISOString(), product_identifier: 'minus30_pro_yearly' } }, subscriptions: { minus30_pro_yearly: { store: 'app_store' } } } } }) });

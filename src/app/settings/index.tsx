@@ -33,7 +33,10 @@ export default function SettingsHub() {
     },
     {
       title: t('profile.health'),
-      rows: [{ label: t('health.title'), icon: 'heart-outline', href: '/settings/health' }],
+      rows: [
+        { label: t('health.title'), icon: 'heart-outline', href: '/settings/health' },
+        { label: t('avatar.bodyTitle'), icon: 'body-outline', href: '/avatar-body', value: t(`avatar.body.${p?.avatarBody ?? 'neutral'}`) },
+      ],
     },
     {
       title: t('profile.routine'),
@@ -52,6 +55,7 @@ export default function SettingsHub() {
       rows: [
         { label: t('profile.privacyPolicy'), icon: 'document-text-outline', onPress: () => (env.privacyPolicyUrl ? void Linking.openURL(env.privacyPolicyUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'privacy' } })) },
         { label: t('profile.terms'), icon: 'document-outline', onPress: () => (env.termsUrl ? void Linking.openURL(env.termsUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'terms' } })) },
+        { label: t('about.licenses'), icon: 'ribbon-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'licenses' } }) },
         { label: t('profile.instagram'), icon: 'logo-instagram', value: INSTAGRAM_HANDLE, onPress: () => void Linking.openURL(INSTAGRAM_URL) },
         { label: t('profile.help'), icon: 'help-circle-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'help' } }) },
         { label: t('profile.contact'), icon: 'mail-outline', onPress: () => (env.supportEmail ? void Linking.openURL(`mailto:${env.supportEmail}`) : router.push({ pathname: '/settings/legal', params: { doc: 'contact' } })) },

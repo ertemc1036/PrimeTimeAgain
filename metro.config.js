@@ -1,4 +1,9 @@
 // Learn more https://docs.expo.dev/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
 
-module.exports = getDefaultConfig(__dirname);
+const config = getDefaultConfig(__dirname);
+
+// The 3D avatar models are bundled as binary glTF files.
+config.resolver.assetExts.push('glb');
+
+module.exports = config;
