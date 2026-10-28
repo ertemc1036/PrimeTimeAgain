@@ -1,6 +1,7 @@
 import { GLView, type ExpoWebGLRenderingContext } from 'expo-gl';
+import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, Pressable, StyleSheet, Text, View, type AccessibilityActionEvent } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View, type AccessibilityActionEvent } from 'react-native';
 import { GestureDetector, usePanGesture, usePinchGesture, useSimultaneousGestures, useTapGesture } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
@@ -8,7 +9,10 @@ import * as THREE from 'three';
 import type { AvatarBody } from '@/domain/types';
 
 import { buildAvatar, type LoadedAvatar } from './buildAvatar';
+import { DiagPanel } from './DiagPanel';
+import { createDiagLog, type DiagLog } from './diagnostics';
 import { HOLO } from './hologram';
+import { createRenderer, syncSize } from './renderer';
 import { createStage, frameCamera, type Stage } from './stage';
 
 export interface AvatarViewerProps {
@@ -21,6 +25,8 @@ export interface AvatarViewerProps {
   resetSignal?: number;
   /** Load time in ms once the body is shown (performance check). */
   onReady?: (ms: number) => void;
+  /** Show the pipeline log below the view even when nothing failed (3D test screen). */
+  showDiagnostics?: boolean;
 }
 
 type Status = 'loading' | 'ready' | 'error';
@@ -44,10 +50,13 @@ interface Engine {
  * Vertical drags are left to the page so Today keeps scrolling. If WebGL or a model fails, a
  * message with a retry button replaces the canvas; the rest of the screen keeps working.
  */
-export function AvatarViewer({ body, active, reducedMotion = false, resetSignal = 0, onReady }: AvatarViewerProps) {
+export function AvatarViewer({ body, active, reducedMotion = false, resetSignal = 0, onReady, showDiagnostics = false }: AvatarViewerProps) {
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>('loading');
   const [attempt, setAttempt] = useState(0);
+  // Diagnostics for this attempt: shown with the error so the real cause is visible.
+  const [log, setLog] = useState<DiagLog>(createDiagLog);
+  const [showDetails, setShowDetails] = useState(__DEV__);
 
   // Interaction state lives in refs so the render loop reads it without React re-renders.
   const view = useRef({ yaw: START_YAW - 0.9, targetYaw: START_YAW, spin: 0, zoom: 0, targetZoom: 0 });
@@ -84,7 +93,7 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
     const started = Date.now();
     setStatus('loading');
     try {
-      const avatar = await buildAvatar(next, e.stage.uniforms);
+      const avatar = await buildAvatar(next, e.stage.uniforms, log);
       if (token !== loadToken.current || !engine.current) {
         avatar.dispose();
         return;
@@ -98,7 +107,7 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
       setStatus('ready');
       onReadyRef.current?.(Date.now() - started);
     } catch (err) {
-      if (__DEV__) console.warn('[avatar] load failed', err);
+      log.fail(`Body "${next}"`, err);
       if (token === loadToken.current) setStatus('error');
     }
   };
@@ -108,6 +117,8 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
     if (bodyRef.current === body) return;
     bodyRef.current = body;
     void loadBody(body);
+    // Only a body change should reload; loadBody from this render already has the current log.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [body]);
 
   // Free GPU memory when the view goes away or is recreated after an error.
@@ -128,28 +139,14 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
 
   const onContextCreate = (gl: ExpoWebGLRenderingContext) => {
     try {
-      const canvas = {
-        width: gl.drawingBufferWidth,
-        height: gl.drawingBufferHeight,
-        style: {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        clientWidth: gl.drawingBufferWidth,
-        clientHeight: gl.drawingBufferHeight,
-        getContext: () => gl,
-      } as unknown as HTMLCanvasElement;
-      // The drawing buffer already has the screen's pixel density; antialiasing would only cost
-      // fill rate on a retina display.
-      const renderer = new THREE.WebGLRenderer({ canvas, context: gl as unknown as WebGL2RenderingContext, antialias: false, powerPreference: 'low-power' });
-      renderer.setPixelRatio(1);
-      renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight, false);
-      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      const renderer = log.step('Renderer', () => createRenderer(gl, log));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.1;
 
-      const stage = createStage();
+      const stage = log.step('Scene', () => createStage());
       const timer = new THREE.Timer();
       let elapsed = 0;
+      let frames = 0;
       const e: Engine = {
         renderer,
         stage,
@@ -166,31 +163,34 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
           }
           cur.running = true;
           cur.frame = requestAnimationFrame(cur.tick);
-          timer.update();
-          const dt = Math.min(timer.getDelta(), 0.1);
-          elapsed += dt;
-          const reduced = reducedRef.current;
-          const v = view.current;
-          v.targetYaw += v.spin;
-          v.spin *= 0.93;
-          if (Math.abs(v.spin) < 0.0001) v.spin = 0;
-          v.yaw += (v.targetYaw - v.yaw) * (reduced ? 0.3 : DAMPING);
-          v.zoom += (v.targetZoom - v.zoom) * DAMPING;
-          stage.turntable.rotation.y = v.yaw;
-          const w = gl.drawingBufferWidth;
-          const h = gl.drawingBufferHeight;
-          if (canvas.width !== w || canvas.height !== h) {
-            canvas.width = w;
-            canvas.height = h;
-            renderer.setSize(w, h, false);
+          try {
+            timer.update();
+            const dt = Math.min(timer.getDelta(), 0.1);
+            elapsed += dt;
+            const reduced = reducedRef.current;
+            const v = view.current;
+            v.targetYaw += v.spin;
+            v.spin *= 0.93;
+            if (Math.abs(v.spin) < 0.0001) v.spin = 0;
+            v.yaw += (v.targetYaw - v.yaw) * (reduced ? 0.3 : DAMPING);
+            v.zoom += (v.targetZoom - v.zoom) * DAMPING;
+            stage.turntable.rotation.y = v.yaw;
+            stage.camera.aspect = syncSize(renderer, gl);
+            stage.camera.updateProjectionMatrix();
+            frameCamera(stage.camera, v.zoom);
+            stage.update(elapsed, dt, reduced);
+            cur.avatar?.update(dt, elapsed, reduced);
+            renderer.render(stage.scene, stage.camera);
+            gl.endFrameEXP?.();
+            frames++;
+            if (frames === 1) log.ok('First frame');
+          } catch (err) {
+            // A throwing frame would otherwise repeat every frame without any visible message.
+            cancelAnimationFrame(cur.frame);
+            cur.running = false;
+            log.fail(`Frame ${frames + 1}`, err);
+            setStatus('error');
           }
-          stage.camera.aspect = w / h;
-          stage.camera.updateProjectionMatrix();
-          frameCamera(stage.camera, v.zoom);
-          stage.update(elapsed, dt, reduced);
-          cur.avatar?.update(dt, elapsed, reduced);
-          renderer.render(stage.scene, stage.camera);
-          gl.endFrameEXP?.();
         },
       };
       engine.current = e;
@@ -199,7 +199,7 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
       e.tick();
       void loadBody(bodyRef.current);
     } catch (err) {
-      if (__DEV__) console.warn('[avatar] GL init failed', err);
+      if (!log.entries.some((x) => x.status === 'fail')) log.fail('GL setup', err);
       setStatus('error');
     }
   };
@@ -272,21 +272,33 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
       ]}
       onAccessibilityAction={onAccessibilityAction}>
       {status === 'error' ? (
-        <View style={styles.fallback}>
+        <ScrollView contentContainerStyle={styles.fallback}>
           <Text style={styles.fallbackText}>{t('avatar.unavailable')}</Text>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => {
-              setStatus('loading');
-              setAttempt((a) => a + 1);
-            }}
-            style={styles.retry}>
-            <Text style={styles.retryText}>{t('common.retry')}</Text>
-          </Pressable>
-        </View>
+          <View style={styles.actions}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => {
+                setLog(createDiagLog());
+                setStatus('loading');
+                setAttempt((a) => a + 1);
+              }}
+              style={styles.retry}>
+              <Text style={styles.retryText}>{t('common.retry')}</Text>
+            </Pressable>
+            <Pressable accessibilityRole="button" onPress={() => setShowDetails((v) => !v)} style={styles.retry}>
+              <Text style={styles.retryText}>{t('avatar.details')}</Text>
+            </Pressable>
+            {__DEV__ ? (
+              <Pressable accessibilityRole="button" onPress={() => router.push('/3d-test')} style={styles.retry}>
+                <Text style={styles.retryText}>{t('test3d.title')}</Text>
+              </Pressable>
+            ) : null}
+          </View>
+          {showDetails ? <DiagPanel log={log} /> : null}
+        </ScrollView>
       ) : (
         <GestureDetector gesture={gestures}>
-          <View style={styles.fill} {...webWheel}>
+          <View style={showDiagnostics ? styles.fixed : styles.fill} {...webWheel}>
             <GLView key={attempt} style={styles.fill} onContextCreate={onContextCreate} />
           </View>
         </GestureDetector>
@@ -295,6 +307,11 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
         <View style={styles.loading} pointerEvents="none">
           <ActivityIndicator color={HOLO.neon} />
           <Text style={styles.loadingText}>{t('avatar.loading')}</Text>
+        </View>
+      ) : null}
+      {showDiagnostics && status !== 'error' ? (
+        <View style={styles.diag}>
+          <DiagPanel log={log} />
         </View>
       ) : null}
     </View>
@@ -306,7 +323,10 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   loading: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', gap: 10 },
   loadingText: { color: '#9AA39F', fontSize: 13, letterSpacing: 0.5, fontFamily: 'Inter_500Medium' },
-  fallback: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24 },
+  fallback: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', gap: 14, padding: 16 },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 10 },
+  diag: { padding: 8 },
+  fixed: { height: 440 },
   fallbackText: { color: '#C9D1CD', fontSize: 14, textAlign: 'center', fontFamily: 'Inter_500Medium' },
   retry: { paddingHorizontal: 18, paddingVertical: 10, borderRadius: 999, borderWidth: 1, borderColor: HOLO.neon },
   retryText: { color: HOLO.neon, fontSize: 14, fontFamily: 'Inter_700Bold' },

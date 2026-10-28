@@ -927,6 +927,26 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "loading": "Loading 3D avatar…",
-    "unavailable": "The 3D view can't be shown on this device right now."
+    "unavailable": "The 3D view can't be shown on this device right now.",
+    "details": "Details",
+    "shareDiagnostics": "Share diagnostics",
+    "diagnostics": "3D diagnostics"
+  },
+  "test3d": {
+    "title": "3D test",
+    "subtitle": "Checks 3D on this device step by step. Start with 1; if a step fails, the log shows the exact error.",
+    "restart": "Restart",
+    "steps": {
+      "cube": "Cube",
+      "model": "Body model",
+      "touch": "Touch",
+      "full": "Diet9 look"
+    },
+    "hints": {
+      "cube": "A rotating cube. If you see it turning, 3D rendering works on this device.",
+      "model": "Loads a body model (GLB) with simple grey material and light. It turns slowly and breathes (idle animation).",
+      "touch": "Drag sideways to turn, pinch to zoom, double-tap to reset. The values top left must change.",
+      "full": "The full Today avatar with hologram material, lights and scan rings."
+    }
   }
 }

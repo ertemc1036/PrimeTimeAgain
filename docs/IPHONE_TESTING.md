@@ -69,6 +69,13 @@ Work through these in order with a fresh install.
 - [ ] Greeting matches the time of day; streak card, 0/3 mission ring, three cards, calendar below.
 - [ ] Tapping a calendar day shows its Food / Workout-Rest / Next-day-planned breakdown.
 
+**3D test first** (Profile → 3D test, or open `exp://<computer-ip>:8081/--/3d-test` in Safari while `npx expo start` runs)
+- [ ] 1. Cube: a coloured cube rotates; the log shows "First frame drawn" and no red ✗.
+- [ ] 2. Body model: a grey body turns slowly (male and female).
+- [ ] 3. Touch: dragging changes "yaw", pinching changes "zoom".
+- [ ] 4. Diet9 look: dark body with neon scan rings.
+- [ ] Note the fps value of each step. If something fails: "Share diagnostics" and send the text.
+
 **3D avatar (Today)**
 - [ ] The dark "DIET9 BODY SCAN" card shows a 3D body with moving scan rings; "Loading 3D avatar…" disappears within a few seconds.
 - [ ] Drag sideways: the body turns 360° and keeps spinning a little after you let go. Swiping up/down still scrolls the page.

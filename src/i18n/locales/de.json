@@ -927,6 +927,26 @@
     "zoomIn": "Heranzoomen",
     "zoomOut": "Herauszoomen",
     "loading": "3D-Avatar wird geladen …",
-    "unavailable": "Die 3D-Ansicht kann auf diesem Gerät gerade nicht angezeigt werden."
+    "unavailable": "Die 3D-Ansicht kann auf diesem Gerät gerade nicht angezeigt werden.",
+    "details": "Details",
+    "shareDiagnostics": "Diagnose teilen",
+    "diagnostics": "3D-Diagnose"
+  },
+  "test3d": {
+    "title": "3D-Test",
+    "subtitle": "Prüft 3D auf diesem Gerät Schritt für Schritt. Beginne mit 1; schlägt ein Schritt fehl, zeigt das Protokoll den genauen Fehler.",
+    "restart": "Neu starten",
+    "steps": {
+      "cube": "Würfel",
+      "model": "Körpermodell",
+      "touch": "Touch",
+      "full": "Diet9-Look"
+    },
+    "hints": {
+      "cube": "Ein rotierender Würfel. Wenn er sich dreht, funktioniert 3D auf diesem Gerät.",
+      "model": "Lädt ein Körpermodell (GLB) mit einfachem grauem Material und Licht. Es dreht sich langsam und atmet (Idle-Animation).",
+      "touch": "Seitlich ziehen zum Drehen, zwei Finger zum Zoomen, Doppeltippen zum Zurücksetzen. Die Werte oben links müssen sich ändern.",
+      "full": "Der vollständige Avatar von „Heute“ mit Hologramm-Material, Licht und Scanringen."
+    }
   }
 }

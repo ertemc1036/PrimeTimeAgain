@@ -936,6 +936,26 @@
     "zoomIn": "Zoomer",
     "zoomOut": "Dézoomer",
     "loading": "Chargement de l’avatar 3D…",
-    "unavailable": "La vue 3D ne peut pas s'afficher sur cet appareil pour le moment."
+    "unavailable": "La vue 3D ne peut pas s'afficher sur cet appareil pour le moment.",
+    "details": "Détails",
+    "shareDiagnostics": "Partager le diagnostic",
+    "diagnostics": "Diagnostic 3D"
+  },
+  "test3d": {
+    "title": "Test 3D",
+    "subtitle": "Vérifie la 3D sur cet appareil étape par étape. Commence par 1 ; si une étape échoue, le journal affiche l'erreur exacte.",
+    "restart": "Relancer",
+    "steps": {
+      "cube": "Cube",
+      "model": "Modèle du corps",
+      "touch": "Tactile",
+      "full": "Style Diet9"
+    },
+    "hints": {
+      "cube": "Un cube qui tourne. S'il tourne, la 3D fonctionne sur cet appareil.",
+      "model": "Charge un modèle du corps (GLB) avec un matériau gris simple et de la lumière. Il tourne lentement et respire (animation au repos).",
+      "touch": "Glisse sur le côté pour tourner, pince pour zoomer, touche deux fois pour réinitialiser. Les valeurs en haut à gauche doivent changer.",
+      "full": "L'avatar complet d'Aujourd'hui avec matériau holographique, lumières et anneaux de scan."
+    }
   }
 }

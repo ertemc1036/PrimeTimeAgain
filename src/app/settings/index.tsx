@@ -55,6 +55,7 @@ export default function SettingsHub() {
       rows: [
         { label: t('profile.privacyPolicy'), icon: 'document-text-outline', onPress: () => (env.privacyPolicyUrl ? void Linking.openURL(env.privacyPolicyUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'privacy' } })) },
         { label: t('profile.terms'), icon: 'document-outline', onPress: () => (env.termsUrl ? void Linking.openURL(env.termsUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'terms' } })) },
+        ...(__DEV__ ? [{ label: t('test3d.title'), icon: 'cube-outline' as const, href: '/3d-test' as const }] : []),
         { label: t('about.licenses'), icon: 'ribbon-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'licenses' } }) },
         { label: t('profile.instagram'), icon: 'logo-instagram', value: INSTAGRAM_HANDLE, onPress: () => void Linking.openURL(INSTAGRAM_URL) },
         { label: t('profile.help'), icon: 'help-circle-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'help' } }) },

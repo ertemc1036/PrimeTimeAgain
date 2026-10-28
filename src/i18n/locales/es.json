@@ -936,6 +936,26 @@
     "zoomIn": "Acercar",
     "zoomOut": "Alejar",
     "loading": "Cargando avatar 3D…",
-    "unavailable": "La vista 3D no se puede mostrar en este dispositivo ahora mismo."
+    "unavailable": "La vista 3D no se puede mostrar en este dispositivo ahora mismo.",
+    "details": "Detalles",
+    "shareDiagnostics": "Compartir diagnóstico",
+    "diagnostics": "Diagnóstico 3D"
+  },
+  "test3d": {
+    "title": "Prueba 3D",
+    "subtitle": "Comprueba el 3D en este dispositivo paso a paso. Empieza por 1; si un paso falla, el registro muestra el error exacto.",
+    "restart": "Reiniciar",
+    "steps": {
+      "cube": "Cubo",
+      "model": "Modelo corporal",
+      "touch": "Táctil",
+      "full": "Estilo Diet9"
+    },
+    "hints": {
+      "cube": "Un cubo que gira. Si lo ves girar, el 3D funciona en este dispositivo.",
+      "model": "Carga un modelo corporal (GLB) con material gris simple y luz. Gira despacio y respira (animación en reposo).",
+      "touch": "Arrastra de lado para girar, pellizca para hacer zoom, toca dos veces para restablecer. Los valores arriba a la izquierda deben cambiar.",
+      "full": "El avatar completo de Hoy con material holográfico, luces y anillos de escaneo."
+    }
   }
 }

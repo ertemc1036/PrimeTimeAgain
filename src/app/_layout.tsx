@@ -69,6 +69,8 @@ function RootNavigator({ ready }: { ready: boolean }) {
         <Stack.Screen name="index" />
         <Stack.Screen name="language" options={modal} />
         <Stack.Screen name="auth" options={modal} />
+        {/* Isolated 3D check for real devices; reachable before and after onboarding. */}
+        <Stack.Screen name="3d-test" />
         <Stack.Protected guard={!isOnboarded}>
           <Stack.Screen name="(onboarding)" />
         </Stack.Protected>

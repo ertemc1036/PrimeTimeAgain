@@ -5,6 +5,7 @@ import { GLTFLoader, type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 
 import type { AvatarBody } from '@/domain/types';
 
+import type { DiagLog } from './diagnostics';
 import { createHoloMaterial, type HoloUniforms } from './hologram';
 import { loadArrayBuffer, loadTexture } from './loadAssets';
 import { createMannequinGeometry } from './mannequin';
@@ -19,7 +20,7 @@ export interface LoadedAvatar {
   dispose(): void;
 }
 
-const parseGlb = (buffer: ArrayBuffer) => new Promise<GLTF>((resolve, reject) => new GLTFLoader().parse(buffer, '', resolve, reject));
+export const parseGlb = (buffer: ArrayBuffer) => new Promise<GLTF>((resolve, reject) => new GLTFLoader().parse(buffer, '', resolve, reject));
 
 const clipCache = new Map<number, Promise<THREE.AnimationClip | null>>();
 function loadIdle(module: number) {
@@ -42,7 +43,13 @@ function loadIdle(module: number) {
 }
 
 /** Normal maps add surface detail; if one can't be loaded the body still renders without it. */
-const optionalTexture = (module: number, color: boolean) => loadTexture(module, color).catch(() => null);
+const optionalTexture = (module: number, color: boolean, label: string, log?: DiagLog) =>
+  loadTexture(module, color)
+    .then((t) => (log?.ok(`Texture ${label}`), t))
+    .catch((e: unknown) => {
+      log?.fail(`Texture ${label} (optional, body renders without it)`, e);
+      return null;
+    });
 
 /** Feet on the floor, centred, fixed height (source rigs use different units). */
 function normalise(object: THREE.Object3D) {
@@ -63,15 +70,22 @@ function disposeTree(root: THREE.Object3D) {
   });
 }
 
-async function buildRigged(body: 'male' | 'female', uniforms: HoloUniforms): Promise<LoadedAvatar> {
+async function buildRigged(body: 'male' | 'female', uniforms: HoloUniforms, log?: DiagLog): Promise<LoadedAvatar> {
   const spec = RIGGED_BODIES[body];
+  const readModel = async () => {
+    const buffer = await (log ? log.stepAsync(`Model ${spec.id}.glb download/read`, () => loadArrayBuffer(spec.model)) : loadArrayBuffer(spec.model));
+    log?.info(`Model ${spec.id}.glb size`, `${Math.round(buffer.byteLength / 1024)} KB`);
+    return log ? log.stepAsync(`Model ${spec.id}.glb parse (GLTFLoader)`, () => parseGlb(buffer)) : parseGlb(buffer);
+  };
   const [gltf, bodyN, headN, hair, idle] = await Promise.all([
-    loadArrayBuffer(spec.model).then(parseGlb),
-    optionalTexture(spec.normals.body, false),
-    optionalTexture(spec.normals.head, false),
-    spec.hair === null ? Promise.resolve(null) : optionalTexture(spec.hair, true),
+    readModel(),
+    optionalTexture(spec.normals.body, false, 'body normal map', log),
+    optionalTexture(spec.normals.head, false, 'head normal map', log),
+    spec.hair === null ? Promise.resolve(null) : optionalTexture(spec.hair, true, 'hair', log),
     loadIdle(spec.idle),
   ]);
+  if (idle) log?.ok('Idle animation', `${idle.tracks.length} tracks`);
+  else log?.fail('Idle animation (optional)', 'not loaded; body stands still');
 
   const model = gltf.scene;
   model.traverse((obj) => {
@@ -87,6 +101,7 @@ async function buildRigged(body: 'male' | 'female', uniforms: HoloUniforms): Pro
         : createHoloMaterial(uniforms, { normalMap: name === 'head' ? headN : bodyN });
   });
   normalise(model);
+  log?.ok('Body built', `${body} (${spec.id})`);
 
   const root = new THREE.Group();
   root.add(model);
@@ -125,6 +140,7 @@ function buildNeutral(uniforms: HoloUniforms): LoadedAvatar {
 }
 
 /** Build the chosen body with the hologram material. */
-export async function buildAvatar(body: AvatarBody, uniforms: HoloUniforms): Promise<LoadedAvatar> {
-  return body === 'neutral' ? buildNeutral(uniforms) : buildRigged(body, uniforms);
+export async function buildAvatar(body: AvatarBody, uniforms: HoloUniforms, log?: DiagLog): Promise<LoadedAvatar> {
+  if (body === 'neutral') return log ? log.step('Neutral body', () => buildNeutral(uniforms)) : buildNeutral(uniforms);
+  return buildRigged(body, uniforms, log);
 }

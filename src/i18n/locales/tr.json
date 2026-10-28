@@ -927,6 +927,26 @@
     "zoomIn": "Yakınlaştır",
     "zoomOut": "Uzaklaştır",
     "loading": "3D avatar yükleniyor…",
-    "unavailable": "3D görünüm şu anda bu cihazda gösterilemiyor."
+    "unavailable": "3D görünüm şu anda bu cihazda gösterilemiyor.",
+    "details": "Ayrıntılar",
+    "shareDiagnostics": "Tanılamayı paylaş",
+    "diagnostics": "3D tanılama"
+  },
+  "test3d": {
+    "title": "3D testi",
+    "subtitle": "Bu cihazda 3D’yi adım adım kontrol eder. 1 ile başla; bir adım başarısız olursa kayıt tam hatayı gösterir.",
+    "restart": "Yeniden başlat",
+    "steps": {
+      "cube": "Küp",
+      "model": "Vücut modeli",
+      "touch": "Dokunma",
+      "full": "Diet9 görünümü"
+    },
+    "hints": {
+      "cube": "Dönen bir küp. Dönüyorsa bu cihazda 3D çalışıyor.",
+      "model": "Basit gri malzeme ve ışıkla bir vücut modeli (GLB) yükler. Yavaşça döner ve nefes alır (bekleme animasyonu).",
+      "touch": "Döndürmek için yana sürükle, yakınlaştırmak için iki parmak, sıfırlamak için çift dokun. Sol üstteki değerler değişmeli.",
+      "full": "Hologram malzemesi, ışık ve tarama halkalarıyla Bugün ekranındaki tam avatar."
+    }
   }
 }

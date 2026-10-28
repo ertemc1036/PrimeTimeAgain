@@ -70,8 +70,44 @@ have it confirmed with the other legal items before release. Rebuild assets with
 Measured here only in a browser with software rendering (no GPU), so frame rates from this
 sandbox say nothing about an iPhone. Check smoothness on the device.
 
-## Expo Go
+## Expo Go and the iPhone failure (fixed in this branch)
 
-`expo-gl` is part of Expo SDK 58 and included in Expo Go, and `three` is plain JavaScript, so the
-avatar runs in Expo Go without a development build. If a model or WebGL fails on a device, the
-card shows a message with "Retry" and the rest of Today keeps working.
+**What happened:** on an iPhone the card showed "The 3D view can't be shown on this device right
+now". Cause, found in the library sources:
+
+- three.js ≥ r163 refuses WebGL1 with `context instanceof WebGLRenderingContext`
+  (`three/src/renderers/WebGLRenderer.js`).
+- expo-gl ≥ 56.0.5 (SDK 58 ships 58.0.3) makes the native `WebGL2RenderingContext` *extend*
+  `WebGLRenderingContext` (`expo-gl/CHANGELOG.md`, PR #45871; `common/EXWebGLRenderer.cpp`).
+- So a real WebGL2 context on iOS (OpenGL ES 3) is taken for WebGL1 and the renderer throws
+  "THREE.WebGLRenderer: WebGL 1 is not supported since r163". Browsers don't have this
+  inheritance, which is why the web build worked.
+
+Reproduced two ways: a Jest test with an expo-gl-shaped context (`src/avatar/renderer.test.ts`),
+and the previous build (`1ca1a09`) in a browser where the expo-gl class hierarchy was recreated:
+it shows exactly the iPhone message, with the error above in the console.
+
+**Fix:** `src/avatar/renderer.ts` (`createRenderer`) checks for WebGL2 itself and hides the global
+`WebGLRenderingContext` only while the renderer is constructed. Every 3D view uses it.
+
+**Diagnostics:** each step (GL context, renderer, scene, first frame, model download, GLB parse,
+textures, animation, shader errors, every frame) is logged (`src/avatar/diagnostics.ts`). On an
+error the card shows "Details" (open by default in development / Expo Go) with the exact failing
+step and message, and "Share diagnostics" to send the log as text.
+
+## 3D test screen
+
+`/3d-test` (Profile → 3D test, development / Expo Go only; also linked from the error card):
+
+1. **Cube** – renderer + rotating cube (no lights, textures or custom shaders).
+2. **Body model** – Rocketbox GLB with a plain grey material, lights and idle animation.
+3. **Touch** – drag to turn, pinch to zoom, double-tap to reset, live yaw/zoom values.
+4. **Diet9 look** – the full avatar with hologram material, lights and scan rings.
+
+Each step runs in a fresh GL context with its own log and an on-device FPS counter.
+
+`expo-gl` is part of Expo SDK 58 and included in Expo Go, and `three` is plain JavaScript; the fix
+is JavaScript only, so Expo Go is enough. If a device still fails in Expo Go, a development build
+is prepared (`eas.json` profile `development`, `expo-dev-client` installed):
+`npx eas-cli@latest build --profile development --platform ios` (needs an Apple Developer account;
+not run from here).
