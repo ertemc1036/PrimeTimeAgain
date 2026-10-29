@@ -1,4 +1,8 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+// Imported statically on purpose: loading supabase-js lazily (dynamic import) breaks in development on
+// iOS/Android. Metro requests the split bundle without the file extension (dist/index.bundle), the
+// dev server then resolves dist/index.mjs instead of dist/index.cjs, and the app fails with
+// "Requiring unknown module". Release builds contain every module in one bundle anyway.
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
 
 import { env, isSupabaseConfigured } from '@/config/env';
@@ -36,7 +40,6 @@ const secureStorage = {
 export async function getSupabase(): Promise<SupabaseClient | null> {
   if (!isSupabaseConfigured()) return null;
   if (client) return client;
-  const { createClient } = await import('@supabase/supabase-js');
   client = createClient(env.supabaseUrl, env.supabaseAnonKey, {
     auth: {
       storage: Platform.OS === 'web' ? undefined : secureStorage,

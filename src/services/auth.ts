@@ -1,4 +1,4 @@
-import type { Session } from '@supabase/supabase-js';
+import { createClient, type Session } from '@supabase/supabase-js';
 
 import { env, isSupabaseConfigured } from '@/config/env';
 
@@ -88,7 +88,6 @@ export const requestPasswordReset = (email: string) => run(async (sb) => void ch
 export const resetPassword = (email: string, code: string, newPassword: string) =>
   run(async (sb) => {
     const address = email.trim().toLowerCase();
-    const { createClient } = await import('@supabase/supabase-js');
     const temp = createClient(env.supabaseUrl, env.supabaseAnonKey, {
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'm30-password-reset' },
     });
