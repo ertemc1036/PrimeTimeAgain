@@ -7,7 +7,7 @@ These tests run the real backend code without a Supabase cloud project:
 | Postgres + RLS | PostgreSQL 16 on `:54322`, with `bootstrap.sql` (Supabase roles, `auth` / `storage` schemas) and then `../migrations/*.sql` |
 | Supabase Auth | GoTrue (`github.com/supabase/auth`) on `:9999`, sending mail to a local SMTP catcher on `:2500` |
 | Edge Functions | `local-gateway.ts` (Deno) on `:54321`. It serves the real handlers at `/functions/v1/:fn`, proxies `/auth/v1`, and includes a small Storage emulator |
-| Anthropic / RevenueCat | Mock endpoints in the gateway (`/mock/anthropic`, `/mock/revenuecat`), switchable via `POST /mock/control` |
+| OpenAI / Anthropic / RevenueCat | Mock endpoints in the gateway (`/mock/openai`, `/mock/anthropic`, `/mock/revenuecat`), switchable via `POST /mock/control` (scenario, provider, Pro testers, launch phase, global limit) |
 
 The mocks exist only to test our own code paths (auth, limits, validation, streaming, error
 handling). They say nothing about the quality of real AI answers or about real store purchases.
@@ -42,6 +42,7 @@ Gateway (run from `supabase/functions` so `deno.json` applies):
 export SUPABASE_URL=http://127.0.0.1:54321 SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY \
   SUPABASE_DB_URL=postgres://postgres@127.0.0.1:54322/postgres GOTRUE_URL=http://127.0.0.1:9999 \
   ANTHROPIC_API_KEY=local-test-key ANTHROPIC_BASE_URL=http://127.0.0.1:54321/mock/anthropic \
+  OPENAI_API_KEY=local-openai-key OPENAI_BASE_URL=http://127.0.0.1:54321/mock/openai/v1 AI_PROVIDER=anthropic \
   REVENUECAT_SECRET_KEY=local-rc-secret REVENUECAT_API_URL=http://127.0.0.1:54321/mock/revenuecat \
   REVENUECAT_WEBHOOK_SECRET=local-webhook-secret
 deno run -A --config deno.json ../tests/local-gateway.ts
@@ -67,6 +68,11 @@ M30_CLOUD_URL=http://127.0.0.1:54321 M30_CLOUD_ANON_KEY=… npx jest src/sync/cl
 - export;
 - entitlement via webhook and REST, including grace and expiry;
 - AI auth, Pro and limit checks, plus the not-configured state;
+- the OpenAI path: request format (`store: false`, strict JSON schema, image as data URL), scan
+  with confidence, unclear / not-food photos without numbers, invalid answers, provider errors,
+  quota errors, refusals and coach streaming; the key never appears in a response;
+- Pro test access via `PRO_TESTERS` (only listed accounts, nothing stored), the optional launch
+  phase and the global daily AI limit;
 - coach streaming;
 - storage folder isolation;
 - account deletion.

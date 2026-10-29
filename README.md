@@ -84,9 +84,12 @@ More: [`docs/BACKEND.md`](docs/BACKEND.md) (setup for accounts, AI and subscript
   Supabase project with the migration and Edge Functions deployed. See
   [`docs/BACKEND.md`](docs/BACKEND.md).
 - **AI** (Scan With AI, photo check-in, AI Coach): runs only in Edge Functions with the
-  `ANTHROPIC_API_KEY` secret. The key never ships in the app. Without it, the app says the
-  feature isn't set up.
-- **Subscriptions** (RevenueCat): monthly €5.99 and yearly €39.99 (provisional). Pro on the server
+  `OPENAI_API_KEY` secret (OpenAI Responses API, default model `gpt-5.4-mini`; Anthropic remains
+  as an alternative). The key never ships in the app. Without it, the app says the feature isn't
+  set up. Scan results show confidence and are saved only after the user checks them.
+- **Subscriptions** (RevenueCat): €4.99 per month (provisional); launch phase and friend seat are
+  planned, see [`docs/SUBSCRIPTIONS.md`](docs/SUBSCRIPTIONS.md). Developer test access is a
+  server-side allowlist (`PRO_TESTERS`). Pro on the server
   comes only from verified RevenueCat data. Purchases need a development or store build, not
   Expo Go. A developer-only "Pro preview" toggle exists in development builds; it grants no
   server access.

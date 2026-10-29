@@ -45,18 +45,60 @@ The functions talk to Postgres directly (`SUPABASE_DB_URL`, provided by Supabase
 they set the caller as `authenticated` with their JWT claims, so row-level security applies inside
 the functions as well.
 
-AI: model `claude-opus-5-5` with server-side fallback (`fallbacks: "default"`) and structured
-JSON outputs. Without `ANTHROPIC_API_KEY`, the AI functions answer `503 not_configured` and the
-app says so; it never makes up results. The output shapes in
-`supabase/functions/_shared/schemas.ts` must match `src/domain/aiSchemas.ts`; a Jest test checks
-this.
+## AI provider
+
+The AI functions use **OpenAI** (Responses API, `supabase/functions/_shared/openai.ts`) when
+`OPENAI_API_KEY` is set; otherwise Anthropic (`ANTHROPIC_API_KEY`). `AI_PROVIDER=openai|anthropic`
+picks one when both keys exist. Without any key the AI functions answer `503 not_configured` and
+the app says so; it never makes up results.
+
+Request path for a meal scan: app (photo scaled to 1024 px, JPEG, no EXIF) → `food-scan` Edge
+Function → session check → server-side Pro check → per-user and global limits → image size check
+(≤ 2.8 MB base64) → OpenAI with a strict JSON schema → schema validation → photos marked
+`unclear`/`not_food` lose all numbers (`sanitizeScan`) → app shows the estimate with confidence
+→ the user edits → saved only after confirming. Nothing is stored on the server except one
+`ai_usage` row (user, function, time); requests use `store: false` at OpenAI. Saved meals are
+read from the diary; viewing them never calls the AI again.
+
+| Secret | Default | Purpose |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | – | Turns on OpenAI. Function secret only, never `EXPO_PUBLIC_*` |
+| `OPENAI_MODEL` | `gpt-5.4-mini` | Vision-capable, cost-efficient. `gpt-5.4-nano` is cheaper, but check its quality first |
+| `OPENAI_REASONING_EFFORT` | `low` for gpt-5 / o-models | `off` sends no reasoning setting |
+| `OPENAI_IMAGE_DETAIL` | `auto` | `low` is cheaper but less precise |
+| `AI_PROVIDER` | automatic | `openai` or `anthropic` |
+| `AI_GLOBAL_DAILY_LIMIT` | `2000` | Cost brake: max requests per AI function per 24 h across all users |
+| `PRO_TESTERS` | empty | Account ids (UUIDs, comma separated) with Pro test access, see below |
+| `INTRO_PRO_FIRST_USERS` / `INTRO_PRO_UNTIL` | off | Optional launch phase, see `docs/SUBSCRIPTIONS.md` |
+
+Each response carries `meta` (provider, model, input and output tokens) so costs can be checked;
+`scripts/ai/live-scan-test.mjs` uses it to stay within a budget. With a much higher global limit,
+consider an index on `ai_usage (fn, created_at)` (not needed at the current limits; it would be a
+new migration and needs approval).
+
+The output shapes in `supabase/functions/_shared/schemas.ts` must match `src/domain/aiSchemas.ts`;
+a Jest test checks this.
+
+### Pro test access (developer accounts)
+
+Pro for your own test accounts without a purchase, decided only on the server:
+
+1. In the app: Settings → Account → **Account ID** → share/copy it.
+2. `supabase secrets set PRO_TESTERS=<account-id>` (several: comma separated). Takes effect on the
+   next request, no redeploy needed.
+3. In the app: pull to sync or reopen the app. Settings and the Pro screen show "Pro · Test access".
+
+Removing the id ends the access. Nothing is written to the database, there is no code, switch or
+hidden gesture in the app, and other accounts are unaffected (server test:
+`Pro test access only for allow-listed accounts`).
 
 ## Deploy (owner, after approval)
 
 ```bash
 supabase link --project-ref <ref>
 supabase db push                                   # supabase/migrations/20261026000000_minus30_init.sql
-supabase secrets set ANTHROPIC_API_KEY=… REVENUECAT_SECRET_KEY=… REVENUECAT_WEBHOOK_SECRET=…
+supabase secrets set OPENAI_API_KEY=… REVENUECAT_SECRET_KEY=… REVENUECAT_WEBHOOK_SECRET=…
+supabase secrets set PRO_TESTERS=<your account id>      # optional: your own Pro test access
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account
 supabase functions deploy revenuecat-webhook --no-verify-jwt
 ```
@@ -69,13 +111,14 @@ supabase functions deploy revenuecat-webhook --no-verify-jwt
   (usage rows older than 30 days).
 - App env (EAS environment variables): `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`.
 
-Secret keys (service role, Anthropic, RevenueCat secret and webhook) exist only as function
+Secret keys (service role, OpenAI, Anthropic, RevenueCat secret and webhook) exist only as function
 secrets, never in the app or in `EXPO_PUBLIC_*`. `npm run release-check` checks the latter.
 
 ## Subscriptions (RevenueCat)
 
-- Products: `minus30_pro_monthly` (€5.99, provisional) and `minus30_pro_yearly` (€39.99,
-  provisional), entitlement `pro`, and an offering with the MONTHLY and ANNUAL packages.
+- Product: `minus30_pro_monthly` (€4.99 per month, provisional), entitlement `pro`, offering with
+  the MONTHLY package. A yearly plan (`minus30_pro_yearly`) appears in the paywall only if the
+  store offers it. Plan details: [`SUBSCRIPTIONS.md`](SUBSCRIPTIONS.md).
 - The app identifies to RevenueCat with the Supabase user id, so Pro follows the account across
   devices and platforms.
 - The paywall shows the store's localized prices. Without a store connection (Expo Go, web, or no
@@ -87,5 +130,5 @@ secrets, never in the app or in `EXPO_PUBLIC_*`. `npm run release-check` checks 
 ## Local test stack
 
 See [`supabase/tests/README.md`](../supabase/tests/README.md). It runs real Postgres with these
-migrations, real GoTrue (Supabase Auth), and the Edge Functions under Deno, with mock Anthropic
-and RevenueCat servers.
+migrations, real GoTrue (Supabase Auth), and the Edge Functions under Deno, with mock OpenAI,
+Anthropic and RevenueCat servers.

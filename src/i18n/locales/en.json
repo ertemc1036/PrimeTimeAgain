@@ -392,7 +392,17 @@
     "failed": "We couldn't analyze this meal.",
     "manual": "Log Manually",
     "useResult": "Review and save",
-    "privacy": "Your photo is sent securely for analysis and isn't kept after the estimate is returned."
+    "privacy": "Your photo is sent securely for analysis and isn't kept after the estimate is returned.",
+    "unclear": "We can't clearly make out the food in this photo. Try a bright photo from above with everything visible, or add it manually.",
+    "total": "Total ≈ {{kcal}} kcal",
+    "confidence": "Estimate: {{level}}",
+    "level": {
+      "high": "clearly visible",
+      "medium": "usual uncertainty",
+      "low": "rough estimate – please check carefully"
+    },
+    "values": "≈ {{kcal}} kcal · protein {{protein}} g · carbs {{carbs}} g · fat {{fat}} g",
+    "retake": "Different photo"
   },
   "workout": {
     "title": "Today's Activity",
@@ -608,7 +618,10 @@
     "deleteConfirm": "Delete my account",
     "deleted": "Your account was deleted.",
     "deleteFailed": "We couldn't delete your account. Please check your connection and try again.",
-    "notSignedIn": "Not signed in"
+    "notSignedIn": "Not signed in",
+    "id": "Account ID",
+    "idHint": "For support and test access. It is not a password.",
+    "shareId": "Share account ID"
   },
   "health": {
     "title": "Health preferences",
@@ -760,7 +773,11 @@
     "manage": "Manage subscription",
     "grace": "There's a problem with your payment. Pro stays active for now. Please update your payment method in your App Store or Google Play account.",
     "expired": "Your Pro subscription has ended. Everything you logged is still here.",
-    "renews": "Active until {{date}}"
+    "renews": "Active until {{date}}",
+    "sourceTest": "Pro · Test access",
+    "sourceTestBody": "This account is unlocked as a test account on the server. It is not a subscription and nothing is charged.",
+    "sourceIntro": "Pro · Launch phase",
+    "sourceIntroBody": "During the launch phase, Pro is free for the first users. Nothing is charged."
   },
   "coach": {
     "title": "AI Coach",

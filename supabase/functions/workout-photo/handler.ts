@@ -1,6 +1,7 @@
-import { aiConfigured, structured, WORKOUT_PHOTO_JSON } from '../_shared/claude.ts';
+import { aiConfigured, structuredRequest } from '../_shared/ai.ts';
 import { requirePro, validImage } from '../_shared/guard.ts';
 import { error, json, preflight, readJson } from '../_shared/http.ts';
+import { WORKOUT_PHOTO_JSON } from '../_shared/jsonSchemas.ts';
 import { workoutPhotoSchema } from '../_shared/schemas.ts';
 
 const SYSTEM = `You classify the setting of a photo that a user attached to a self-reported workout.
@@ -24,16 +25,15 @@ export async function handler(req: Request): Promise<Response> {
   const language = LANGS[String(body?.language)] ?? 'English';
 
   try {
-    const raw = await structured({
+    const { data } = await structuredRequest({
       system: SYSTEM,
+      prompt: `Classify the setting of this photo. Language: ${language}.`,
+      imageBase64: body!.image as string,
+      schemaName: 'workout_photo',
       schema: WORKOUT_PHOTO_JSON,
       maxTokens: 1500,
-      content: [
-        { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: body!.image as string } },
-        { type: 'text', text: `Classify the setting of this photo. Language: ${language}.` },
-      ],
     });
-    const parsed = workoutPhotoSchema.safeParse(raw);
+    const parsed = workoutPhotoSchema.safeParse(data);
     if (!parsed.success) return error(502, 'invalid_response');
     return json(parsed.data);
   } catch (e) {

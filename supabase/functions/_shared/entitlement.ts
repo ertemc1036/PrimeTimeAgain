@@ -82,7 +82,7 @@ export async function readEntitlement(userId: string): Promise<EntitlementRow | 
  * Current entitlement. Uses the stored row (kept fresh by the webhook) and re-checks RevenueCat when
  * the row is missing/inactive and older than `maxAgeMs`, or when `force` is set (after a purchase/restore).
  */
-export async function currentEntitlement(userId: string, opts: { force?: boolean; maxAgeMs?: number } = {}): Promise<EntitlementRow> {
+async function storeEntitlement(userId: string, opts: { force?: boolean; maxAgeMs?: number } = {}): Promise<EntitlementRow> {
   const stored = await readEntitlement(userId);
   const age = stored?.updated_at ? Date.now() - new Date(stored.updated_at).getTime() : Infinity;
   const stale = !isProActive(stored) && age > (opts.maxAgeMs ?? 10 * 60 * 1000);
@@ -101,9 +101,54 @@ export async function currentEntitlement(userId: string, opts: { force?: boolean
   return stored ?? FREE;
 }
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+/**
+ * Developer test access: user ids listed in the PRO_TESTERS secret (comma or space separated UUIDs)
+ * get Pro without a purchase. Server-side only — there is no code or switch in the app, nothing is
+ * written to the database, and removing an id from the secret ends the access at the next request.
+ */
+export function isTester(userId: string): boolean {
+  const ids = (Deno.env.get('PRO_TESTERS') ?? '')
+    .split(/[\s,;]+/)
+    .map((s) => s.trim().toLowerCase())
+    .filter((s) => UUID.test(s));
+  return ids.includes(userId.toLowerCase());
+}
+
+/**
+ * Optional launch phase (off unless INTRO_PRO_FIRST_USERS is set): the first N registered accounts
+ * get Pro free, optionally until INTRO_PRO_UNTIL (ISO date). No purchase is involved.
+ */
+export async function introAccess(userId: string, now = new Date()): Promise<EntitlementRow | null> {
+  const n = Number(Deno.env.get('INTRO_PRO_FIRST_USERS'));
+  if (!Number.isInteger(n) || n <= 0) return null;
+  const untilRaw = Deno.env.get('INTRO_PRO_UNTIL');
+  const until = untilRaw ? new Date(untilRaw) : null;
+  if (until && !(until.getTime() > now.getTime())) return null;
+  const [row] = await sql()<{ rank: number | null }[]>`
+    select (select count(*)::int from auth.users u where u.created_at <= me.created_at) as rank
+    from auth.users me where me.id = ${userId}`;
+  if (!row?.rank || row.rank > n) return null;
+  return { tier: 'pro', status: 'active', product_id: null, store: 'intro', expires_at: until ? until.toISOString() : null };
+}
+
+/**
+ * Current entitlement: a paid (RevenueCat-verified) subscription first, then developer test access,
+ * then the optional launch phase.
+ */
+export async function currentEntitlement(userId: string, opts: { force?: boolean; maxAgeMs?: number } = {}): Promise<EntitlementRow> {
+  const paid = await storeEntitlement(userId, opts);
+  if (isProActive(paid)) return paid;
+  if (isTester(userId)) return { tier: 'pro', status: 'active', product_id: null, store: 'test', expires_at: null };
+  return (await introAccess(userId)) ?? paid;
+}
+
 export const publicEntitlement = (e: EntitlementRow) => ({
   tier: isProActive(e) ? 'pro' : 'free',
   status: e.status,
   expiresAt: e.expires_at,
   productId: e.product_id,
+  /** Where Pro comes from: a store subscription, developer test access or the launch phase. */
+  source: !isProActive(e) ? null : e.store === 'test' ? 'test' : e.store === 'intro' ? 'intro' : 'store',
 });

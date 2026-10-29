@@ -16,5 +16,9 @@ export async function requirePro(req: Request, fn: string): Promise<{ userId: st
   return { userId: user.id };
 }
 
-/** Base64 JPEG (re-encoded on the device, so no EXIF), at most ~4 MB. */
-export const validImage = (b64: unknown): b64 is string => typeof b64 === 'string' && b64.length > 100 && b64.length < 5_600_000 && b64.startsWith('/9j/');
+/**
+ * Base64 JPEG (re-encoded and scaled to 1024 px on the device, so no EXIF/GPS), at most ~2 MB.
+ * Keeps request size and AI cost bounded.
+ */
+export const MAX_IMAGE_BASE64 = 2_800_000;
+export const validImage = (b64: unknown): b64 is string => typeof b64 === 'string' && b64.length > 100 && b64.length < MAX_IMAGE_BASE64 && b64.startsWith('/9j/');

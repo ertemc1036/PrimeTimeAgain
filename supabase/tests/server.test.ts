@@ -210,6 +210,121 @@ Deno.test({ name: 'AI: rate limits hold under concurrency; failures are reported
   await control({ scenario: 'ok' });
 }});
 
+Deno.test({ name: 'OpenAI: scan with confidence, unclear photos without numbers, errors reported, key stays on the server', ...opts, async fn() {
+  const u = await newUser('oai');
+  await proSubscriber(u.id, future(30));
+  await callJson('entitlement', u.token);
+  await control({ provider: 'openai', scenario: 'ok', reset: true });
+  try {
+    const scan = await callJson('food-scan', u.token, { image: JPEG, language: 'de' });
+    assertEquals(scan.status, 200);
+    assertEquals(scan.body.items.length, 2);
+    assertEquals(scan.body.confidence, 'medium');
+    assertEquals(scan.body.items[0].confidence, 'high');
+    assertEquals(scan.body.meta.provider, 'openai');
+    assertEquals(scan.body.meta.inputTokens, 812);
+    assertEquals(scan.body.meta.outputTokens, 240);
+    assert(!JSON.stringify(scan.body).includes('local-openai-key'), 'key never in a response');
+
+    const state = await (await fetch(`${BASE}/mock/control`)).json();
+    assertEquals(state.openaiCalls, 1);
+    assertEquals(state.anthropicCalls, 0);
+    const req = state.lastOpenAI;
+    assertEquals(req.store, false);
+    assertEquals(req.text.format.type, 'json_schema');
+    assertEquals(req.text.format.strict, true);
+    assertEquals(req.text.format.name, 'food_scan');
+    const image = req.input[0].content.find((c: { type: string }) => c.type === 'input_image');
+    assert(image.image_url.startsWith('data:image/jpeg;base64,/9j/'));
+    assert(req.input[0].content[0].text.includes('German'));
+    assert(req.instructions.includes('Never invent items'));
+
+    await control({ scenario: 'unclear' });
+    const unclear = await callJson('food-scan', u.token, { image: JPEG });
+    assertEquals(unclear.status, 200);
+    assertEquals(unclear.body.status, 'unclear');
+    assertEquals(unclear.body.items.length, 0, 'no numbers for an unclear photo, even if the model sent some');
+    await control({ scenario: 'not_food' });
+    assertEquals((await callJson('food-scan', u.token, { image: JPEG })).body.status, 'not_food');
+
+    const v = await newUser('oai2');
+    await proSubscriber(v.id, future(30));
+    await callJson('entitlement', v.token);
+    await control({ scenario: 'invalid' });
+    assertEquals((await callJson('food-scan', v.token, { image: JPEG })).body.error, 'invalid_response');
+    await control({ scenario: 'error' });
+    assertEquals((await callJson('food-scan', v.token, { image: JPEG })).body.error, 'provider_error');
+    await control({ scenario: 'quota' });
+    const quota = await callJson('workout-photo', v.token, { image: JPEG, selected: 'gym' });
+    assertEquals(quota.body.error, 'provider_error');
+    await control({ scenario: 'refusal' });
+    assertEquals((await callJson('coach', v.token, { messages: [{ role: 'user', content: 'Hi' }] })).body.error, 'refused');
+
+    await control({ scenario: 'ok' });
+    const w = await newUser('oai3');
+    await proSubscriber(w.id, future(30));
+    await callJson('entitlement', w.token);
+    const photo = await callJson('workout-photo', w.token, { image: JPEG, selected: 'gym' });
+    assertEquals(photo.status, 200);
+    const res = await call('coach', w.token, { stream: true, messages: [{ role: 'user', content: 'Plan my day' }] });
+    const events = (await res.text()).split('\n\n').filter(Boolean).map((l) => JSON.parse(l.replace(/^data: /, '')));
+    assertEquals(events[events.length - 1].t, 'end');
+    assert(events.filter((e) => e.t === 'd').map((e) => e.v).join('').startsWith('Try a simple plan'));
+  } finally {
+    await control({ provider: 'anthropic', scenario: 'ok' });
+  }
+}});
+
+Deno.test({ name: 'Pro test access only for allow-listed accounts (server secret), shown as source "test"', ...opts, async fn() {
+  const t = await newUser('tester');
+  const other = await newUser('not-tester');
+  await control({ scenario: 'ok', testers: '' });
+  try {
+    assertEquals((await callJson('food-scan', t.token, { image: JPEG })).status, 403, 'not unlocked yet');
+    await control({ testers: `not-a-uuid, ${t.id.toUpperCase()}` });
+    const ent = await callJson('entitlement', t.token);
+    assertEquals(ent.body.tier, 'pro');
+    assertEquals(ent.body.source, 'test');
+    assertEquals((await callJson('sync', t.token)).body.entitlement.source, 'test');
+    assertEquals((await callJson('food-scan', t.token, { image: JPEG })).status, 200);
+    assertEquals((await callJson('entitlement', other.token)).body.tier, 'free', 'other accounts unaffected');
+    assertEquals((await callJson('food-scan', other.token, { image: JPEG })).status, 403);
+    const stored = await DB`select * from public.entitlements where user_id = ${t.id} and tier = 'pro'`;
+    assertEquals(stored.length, 0, 'test access is never written to the database');
+  } finally {
+    await control({ testers: '' });
+  }
+  assertEquals((await callJson('entitlement', t.token)).body.tier, 'free', 'removing the id ends the access');
+}});
+
+Deno.test({ name: 'launch phase (off by default) and the global daily AI limit', ...opts, async fn() {
+  const u = await newUser('intro');
+  assertEquals((await callJson('entitlement', u.token)).body.tier, 'free', 'off by default');
+  try {
+    await control({ intro: '100000000' });
+    const ent = await callJson('entitlement', u.token);
+    assertEquals(ent.body.tier, 'pro');
+    assertEquals(ent.body.source, 'intro');
+    await control({ intro: '1' });
+    assertEquals((await callJson('entitlement', u.token)).body.tier, 'free', 'only the first N accounts');
+  } finally {
+    await control({ intro: '' });
+  }
+
+  const g = await newUser('global');
+  await proSubscriber(g.id, future(30));
+  await callJson('entitlement', g.token);
+  const [{ n }] = await DB`select count(*)::int as n from public.ai_usage where fn = 'food-scan' and created_at > now() - interval '24 hours'`;
+  try {
+    await control({ scenario: 'ok', globalLimit: String(n) });
+    assertEquals((await callJson('food-scan', g.token, { image: JPEG })).status, 429, 'global cap reached');
+    await control({ globalLimit: String(n + 1) });
+    assertEquals((await callJson('food-scan', g.token, { image: JPEG })).status, 200);
+  } finally {
+    await control({ globalLimit: '' });
+  }
+}});
+
 Deno.test({ name: 'coach streams replies and only sends consented context', ...opts, async fn() {
   const u = await newUser('coach');
   await proSubscriber(u.id, future(30));

@@ -8,6 +8,8 @@ import { z } from 'zod';
 export const foodScanSchema = z.object({
   status: z.enum(['ok', 'not_food', 'unclear']),
   mealTitle: z.string().max(80),
+  /** How sure the estimate is overall (photo clarity, hidden ingredients, portion depth). */
+  confidence: z.enum(['high', 'medium', 'low']),
   items: z
     .array(
       z.object({
@@ -17,6 +19,7 @@ export const foodScanSchema = z.object({
         protein: z.number().min(0).max(300),
         carbs: z.number().min(0).max(500),
         fat: z.number().min(0).max(300),
+        confidence: z.enum(['high', 'medium', 'low']),
       }),
     )
     .max(15),

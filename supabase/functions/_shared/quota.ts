@@ -8,6 +8,15 @@ export const LIMITS: Record<string, { perMinute: number; perDay: number }> = {
 };
 
 /**
+ * Cost brake across all users: at most this many requests per AI function in 24 hours
+ * (AI_GLOBAL_DAILY_LIMIT secret, default 2000). Protects the AI budget against abuse or bugs.
+ */
+export const globalDailyLimit = () => {
+  const n = Number(Deno.env.get('AI_GLOBAL_DAILY_LIMIT'));
+  return Number.isFinite(n) && n > 0 ? n : 2000;
+};
+
+/**
  * Atomically check and record one AI request. A per-user advisory lock serialises concurrent calls,
  * so parallel requests can't slip past the limit.
  */
@@ -20,6 +29,9 @@ export async function consumeQuota(userId: string, fn: string): Promise<boolean>
              count(*)::int as day
       from public.ai_usage where user_id = ${userId} and fn = ${fn} and created_at > now() - interval '24 hours'`;
     if (minute >= limit.perMinute || day >= limit.perDay) return false;
+    const [{ total }] = await tx<{ total: number }[]>`
+      select count(*)::int as total from public.ai_usage where fn = ${fn} and created_at > now() - interval '24 hours'`;
+    if (total >= globalDailyLimit()) return false;
     await tx`insert into public.ai_usage (user_id, fn) values (${userId}, ${fn})`;
     return true;
   })) as boolean;

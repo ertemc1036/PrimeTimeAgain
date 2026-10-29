@@ -2,7 +2,8 @@
 import { assert, assertEquals } from 'jsr:@std/assert@1';
 
 import { buildMessages } from '../functions/coach/handler.ts';
-import { fromSubscriber, isProActive, type RcSubscriber } from '../functions/_shared/entitlement.ts';
+import { fromSubscriber, isProActive, isTester, type RcSubscriber } from '../functions/_shared/entitlement.ts';
+import { sanitizeScan } from '../functions/food-scan/handler.ts';
 import { canonical, validateChange } from '../functions/_shared/records.ts';
 import { fromEvent } from '../functions/revenuecat-webhook/handler.ts';
 
@@ -62,4 +63,25 @@ Deno.test('coach conversation is normalised and context is attached last', () =>
   assert((m[0].content as string).startsWith('<app_context>'));
   assert((m[0].content as string).endsWith('a\n\nb'));
   assertEquals(buildMessages([{ role: 'assistant', content: 'only' }], null).length, 0);
+});
+
+Deno.test('food scan: unclear or empty results never carry numbers; values are rounded', () => {
+  const item = { name: 'Rice', estimatedGrams: 180.4, kcal: 233.6, protein: 4.96, carbs: 51.04, fat: 0.44, confidence: 'medium' as const };
+  const base = { mealTitle: 'Rice', confidence: 'low' as const, uncertaintyNotes: [] };
+  assertEquals(sanitizeScan({ ...base, status: 'unclear', items: [item] }).items, []);
+  assertEquals(sanitizeScan({ ...base, status: 'not_food', items: [item] }).items, []);
+  assertEquals(sanitizeScan({ ...base, status: 'ok', items: [] }).status, 'unclear');
+  assertEquals(sanitizeScan({ ...base, status: 'ok', items: [item] }).items[0], { ...item, estimatedGrams: 180, kcal: 234, protein: 5, carbs: 51, fat: 0.4 });
+});
+
+Deno.test('Pro test access: only valid UUIDs from the PRO_TESTERS secret', () => {
+  const id = '3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b';
+  Deno.env.delete('PRO_TESTERS');
+  assertEquals(isTester(id), false);
+  Deno.env.set('PRO_TESTERS', `*, true, ${id.toUpperCase()};`);
+  assertEquals(isTester(id), true);
+  assertEquals(isTester('00000000-0000-4000-8000-000000000000'), false);
+  Deno.env.set('PRO_TESTERS', '*');
+  assertEquals(isTester(id), false, 'no wildcard');
+  Deno.env.delete('PRO_TESTERS');
 });

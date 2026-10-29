@@ -23,7 +23,10 @@ export interface ServerEntitlement {
   status: 'active' | 'grace_period' | 'billing_issue' | 'expired' | 'none';
   expiresAt: string | null;
   productId: string | null;
+  /** Where Pro comes from (server-decided): store subscription, developer test access or launch phase. */
+  source?: ProSource | null;
 }
+export type ProSource = 'store' | 'test' | 'intro';
 
 export interface SyncRequest {
   cursor: number;

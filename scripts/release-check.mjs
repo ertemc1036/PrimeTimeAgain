@@ -27,7 +27,9 @@ const checks = [
   ['Support email (EXPO_PUBLIC_SUPPORT_EMAIL)', /@/.test(env.EXPO_PUBLIC_SUPPORT_EMAIL ?? '')],
   ['EAS project linked (expo.extra.eas.projectId in app.json, via `eas init`)', !!app.extra?.eas?.projectId],
   ['eas.json with a production profile', !!eas?.build?.production],
-  ['No secret keys in EXPO_PUBLIC_* variables', !Object.entries(env).some(([k, v]) => k.startsWith('EXPO_PUBLIC_') && /service_role|sk_|sk-ant-|whsec/i.test(String(v)))],
+  ['No secret keys in EXPO_PUBLIC_* variables', !Object.entries(env).some(([k, v]) => k.startsWith('EXPO_PUBLIC_') && /service_role|sk_|sk-|whsec/i.test(String(v)))],
+  // The OpenAI key is an Edge Function secret (supabase secrets set OPENAI_API_KEY=…), never an app variable.
+  ['No AI provider key in the app (no EXPO_PUBLIC_*OPENAI* / *ANTHROPIC* variable)', !Object.keys(env).some((k) => k.startsWith('EXPO_PUBLIC_') && /OPENAI|ANTHROPIC/i.test(k))],
 ];
 let blocking = 0;
 for (const [label, ok] of checks) {

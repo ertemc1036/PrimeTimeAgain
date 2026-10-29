@@ -1,12 +1,13 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Share, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, Card, Icon, Screen, useToast } from '@/components/ui';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
 import { useAuth } from '@/state/AuthProvider';
+import { usePro } from '@/state/ProProvider';
 import { useSync } from '@/state/SyncProvider';
 import { colors, spacing } from '@/theme';
 import { confirm, notify } from '@/utils/confirm';
@@ -17,6 +18,7 @@ export default function Account() {
   const toast = useToast();
   const auth = useAuth();
   const sync = useSync();
+  const pro = usePro();
   const [busy, setBusy] = useState<null | 'signout' | 'delete' | 'sync'>(null);
 
   const signOut = async () => {
@@ -111,6 +113,22 @@ export default function Account() {
         ) : (
           <Button label={t('sync.now')} size="sm" variant="secondary" onPress={() => void syncNow()} loading={busy === 'sync'} />
         )}
+      </Card>
+      <Card style={styles.gap}>
+        <AppText variant="bodyStrong">{t('common.pro')}</AppText>
+        <AppText variant="caption" color="secondary">
+          {!pro.isPro ? t('profile.free') : pro.access === 'test' ? t('pro.sourceTest') : pro.access === 'intro' ? t('pro.sourceIntro') : t('profile.proActive')}
+        </AppText>
+      </Card>
+      <Card style={styles.gap}>
+        <AppText variant="bodyStrong">{t('account.id')}</AppText>
+        <AppText variant="caption" selectable testID="account-id">
+          {auth.user?.id ?? ''}
+        </AppText>
+        <AppText variant="caption" color="secondary">
+          {t('account.idHint')}
+        </AppText>
+        <Button label={t('account.shareId')} size="sm" variant="secondary" fullWidth={false} onPress={() => void Share.share({ message: auth.user?.id ?? '' }).catch(() => undefined)} />
       </Card>
       <Button label={t('account.signOut')} variant="secondary" onPress={() => void signOut()} loading={busy === 'signout'} />
       <Button label={t('account.delete')} variant="ghost" onPress={() => void remove()} loading={busy === 'delete'} />

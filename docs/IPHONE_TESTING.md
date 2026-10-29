@@ -130,6 +130,17 @@ Work through these in order with a fresh install.
 - [ ] Development build with RevenueCat sandbox: store prices are shown; buy, restore, cancel (Pro stays until the end of the period), and sign in on a second phone → Pro is there too.
 - [ ] With Pro and the AI key set up: scan a meal → editable results → save → Today shows the meal; the coach answers word by word.
 
+**Pro test access and the real AI scanner** (needs the deployed Supabase project with `OPENAI_API_KEY`)
+- [ ] Profile → Account shows "Account ID". Tap "Share account ID" → copy it → `supabase secrets set PRO_TESTERS=<id>`.
+- [ ] Reopen the app (or tap "Sync now"): Account shows "Pro · Test access"; the Pro screen says it is test access, with no "Manage subscription" button.
+- [ ] A second account (not in `PRO_TESTERS`) still sees the paywall.
+- [ ] Food → Scan With AI → take a photo of a real meal: "Analysing…" appears once (tapping again does nothing), then the meal title, total ≈ kcal, an estimate rating, every item with ≈ grams, kcal, protein, carbs and fat, and notes on what can't be seen.
+- [ ] "Check and save" opens the edit form with all items marked as AI estimate; change a portion, save → Today shows the corrected meal. Back without saving → nothing is added.
+- [ ] Opening the saved meal again shows the stored values and does not start a new scan.
+- [ ] Photo of a wall or a very dark/blurred photo → "no food found" or "not clear enough", with no numbers.
+- [ ] Airplane mode → scan → an offline message, nothing saved. Seven scans within a minute → the limit message.
+- [ ] Remove your id from `PRO_TESTERS` → after the next sync the scanner opens the paywall again.
+
 ## What was verified without a phone
 
 - Unit tests (Jest): completion rules, streaks, DST and year boundaries, late-entry window,
@@ -137,7 +148,7 @@ Work through these in order with a fresh install.
   queue, retries, conflicts, account switching), the coach context, entitlements, and
   translations in all 5 languages.
 - Backend tests against a local Supabase stack (real Postgres + RLS, real Supabase Auth, the real
-  Edge Functions; AI and RevenueCat replaced by mock servers): see `supabase/tests/README.md`.
+  Edge Functions; OpenAI, Anthropic and RevenueCat replaced by mock servers): see `supabase/tests/README.md`.
 - Browser walkthroughs at iPhone size, including two "phones" syncing through the local stack:
   merge on first sign-in, restore on a new device, sync both ways, sign-out, password reset with
   the emailed code, paywall, Pro via webhook unlocking the coach (mock AI), and account deletion.

@@ -5,6 +5,7 @@
  *   /storage/v1/*     → small in-memory Storage emulator (path must start with the caller's user id)
  *   /templates/*      → auth email templates
  *   /mock/anthropic/* → Anthropic Messages API stand-in with switchable scenarios
+ *   /mock/openai/*    → OpenAI Responses API stand-in (same scenarios, plus unclear / not_food)
  *   /mock/revenuecat/*→ RevenueCat REST stand-in
  * Run: deno run -A supabase/tests/local-gateway.ts   (env: see supabase/tests/README.md)
  */
@@ -72,7 +73,7 @@ async function storage(req: Request, path: string): Promise<Response> {
   }
   if ((m = path.match(/^object\/sign\/(.+)$/)) && req.method === 'GET') {
     const key = signed.get(new URL(req.url).searchParams.get('token') ?? '');
-    return key && files.has(key) ? new Response(files.get(key)!, { headers: { 'Content-Type': 'image/jpeg' } }) : j({ error: 'not_found' }, 404);
+    return key && files.has(key) ? new Response(new Blob([files.get(key)!.slice()]), { headers: { 'Content-Type': 'image/jpeg' } }) : j({ error: 'not_found' }, 404);
   }
   if ((m = path.match(/^object\/([^/]+)$/)) && req.method === 'DELETE') {
     const body = await req.json();
@@ -90,7 +91,7 @@ async function storage(req: Request, path: string): Promise<Response> {
 }
 
 // --- Anthropic stand-in -------------------------------------------------------------------------
-let scenario: 'ok' | 'invalid' | 'error' | 'refusal' = 'ok';
+let scenario: 'ok' | 'invalid' | 'error' | 'refusal' | 'unclear' | 'not_food' | 'quota' = 'ok';
 let lastRequest: unknown = null;
 let anthropicCalls = 0;
 const message = (content: unknown[], stop = 'end_turn') => ({
@@ -106,7 +107,7 @@ function anthropic(body: Record<string, unknown>): Response {
   const isPhoto = system.includes('setting of a photo');
   let text: string;
   if (scenario === 'invalid') text = isScan || isPhoto ? '{"status":"ok","items":"not a list"}' : '';
-  else if (isScan) text = JSON.stringify({ status: 'ok', mealTitle: 'Chicken with rice', items: [{ name: 'Chicken breast', estimatedGrams: 150, kcal: 248, protein: 46, carbs: 0, fat: 5 }, { name: 'White rice', estimatedGrams: 180, kcal: 234, protein: 5, carbs: 51, fat: 0.5 }], uncertaintyNotes: ['Cooking oil may not be visible.'] });
+  else if (isScan) text = JSON.stringify(SCAN_OK);
   else if (isPhoto) text = JSON.stringify({ environment: 'gym', confidence: 'high', summary: 'Indoor gym with weight machines.' });
   else text = 'Try a simple plan: oats for breakfast, a chicken salad for lunch and a 30-minute walk.';
   const stop = scenario === 'refusal' ? 'refusal' : 'end_turn';
@@ -120,6 +121,36 @@ function anthropic(body: Record<string, unknown>): Response {
   events.push(['message_delta', { type: 'message_delta', delta: { stop_reason: stop, stop_sequence: null }, usage: { output_tokens: 10 } }]);
   events.push(['message_stop', { type: 'message_stop' }]);
   return new Response(events.map(([e, d]) => `event: ${e}\ndata: ${JSON.stringify(d)}\n\n`).join(''), { headers: { 'Content-Type': 'text/event-stream' } });
+}
+
+// --- OpenAI Responses stand-in ------------------------------------------------------------------
+let openaiCalls = 0;
+let lastOpenAI: Record<string, unknown> | null = null;
+const SCAN_OK = { status: 'ok', mealTitle: 'Chicken with rice', confidence: 'medium', items: [{ name: 'Chicken breast', estimatedGrams: 150, kcal: 248, protein: 46, carbs: 0, fat: 5, confidence: 'high' }, { name: 'White rice', estimatedGrams: 180, kcal: 234, protein: 5, carbs: 51, fat: 0.5, confidence: 'medium' }], uncertaintyNotes: ['Cooking oil may not be visible.'] };
+function openai(body: Record<string, unknown>): Response {
+  openaiCalls++;
+  lastOpenAI = body;
+  if (scenario === 'error') return j({ error: { message: 'mock failure', type: 'server_error', code: null } }, 500);
+  if (scenario === 'quota') return j({ error: { message: 'quota', type: 'insufficient_quota', code: 'insufficient_quota' } }, 429);
+  const instructions = String(body.instructions ?? '');
+  const format = (body.text as { format?: { name?: string } } | undefined)?.format?.name;
+  const isScan = format === 'food_scan';
+  const isPhoto = format === 'workout_photo';
+  let text: string;
+  if (scenario === 'invalid') text = isScan || isPhoto ? '{"status":"ok","items":"not a list"}' : '';
+  else if (isScan && scenario === 'unclear') text = JSON.stringify({ ...SCAN_OK, status: 'unclear', confidence: 'low' }); // model wrongly adds items
+  else if (isScan && scenario === 'not_food') text = JSON.stringify({ status: 'not_food', mealTitle: '', confidence: 'high', items: [], uncertaintyNotes: [] });
+  else if (isScan) text = JSON.stringify(SCAN_OK);
+  else if (isPhoto) text = JSON.stringify({ environment: 'gym', confidence: 'high', summary: 'Indoor gym with weight machines.' });
+  else text = instructions.includes('coach') ? 'Try a simple plan: oats for breakfast, a chicken salad for lunch and a 30-minute walk.' : 'ok';
+  const content = scenario === 'refusal' ? [{ type: 'refusal', refusal: 'I cannot help with that.' }] : [{ type: 'output_text', text, annotations: [] }];
+  const response = { id: 'resp_test', object: 'response', status: 'completed', model: body.model, output: [{ type: 'reasoning', id: 'rs_1', summary: [] }, { type: 'message', id: 'msg_1', role: 'assistant', status: 'completed', content }], usage: { input_tokens: 812, output_tokens: 240, output_tokens_details: { reasoning_tokens: 96 } } };
+  if (!body.stream) return j(response);
+  const events: unknown[] = [{ type: 'response.created', response: { ...response, status: 'in_progress', output: [] } }];
+  if (scenario === 'refusal') events.push({ type: 'response.refusal.delta', delta: 'I cannot help.' });
+  else for (const part of text.match(/.{1,24}/g) ?? []) events.push({ type: 'response.output_text.delta', delta: part });
+  events.push({ type: 'response.completed', response });
+  return new Response(events.map((e) => `event: ${(e as { type: string }).type}\ndata: ${JSON.stringify(e)}\n\n`).join(''), { headers: { 'Content-Type': 'text/event-stream' } });
 }
 
 // --- RevenueCat stand-in ------------------------------------------------------------------------
@@ -150,14 +181,23 @@ Deno.serve({ port: PORT, hostname: '127.0.0.1' }, async (req) => {
       if (key !== Deno.env.get('ANTHROPIC_API_KEY')) return j({ type: 'error', error: { type: 'authentication_error', message: 'bad key' } }, 401);
       return anthropic(await req.json());
     }
+    if (p === '/mock/openai/v1/responses') {
+      if (req.headers.get('authorization') !== `Bearer ${Deno.env.get('OPENAI_API_KEY')}`) return j({ error: { message: 'bad key', type: 'invalid_request_error', code: 'invalid_api_key' } }, 401);
+      return openai(await req.json());
+    }
     if (p === '/mock/control' && req.method === 'POST') {
       const b = await req.json();
       if (b.scenario) scenario = b.scenario;
+      // Test-only: switch the AI provider and the Pro test allowlist of this local gateway.
+      if (b.provider) Deno.env.set('AI_PROVIDER', b.provider);
+      if (typeof b.testers === 'string') Deno.env.set('PRO_TESTERS', b.testers);
+      if (typeof b.intro === 'string') b.intro ? Deno.env.set('INTRO_PRO_FIRST_USERS', b.intro) : Deno.env.delete('INTRO_PRO_FIRST_USERS');
+      if (typeof b.globalLimit === 'string') b.globalLimit ? Deno.env.set('AI_GLOBAL_DAILY_LIMIT', b.globalLimit) : Deno.env.delete('AI_GLOBAL_DAILY_LIMIT');
       if (b.subscriber) subscribers.set(b.subscriber.id, b.subscriber.data);
-      if (b.reset) { anthropicCalls = 0; lastRequest = null; }
-      return j({ scenario, anthropicCalls });
+      if (b.reset) { anthropicCalls = 0; lastRequest = null; openaiCalls = 0; lastOpenAI = null; }
+      return j({ scenario, anthropicCalls, openaiCalls, provider: Deno.env.get('AI_PROVIDER') ?? null });
     }
-    if (p === '/mock/control' && req.method === 'GET') return j({ scenario, anthropicCalls, lastRequest, files: [...files.keys()] });
+    if (p === '/mock/control' && req.method === 'GET') return j({ scenario, anthropicCalls, lastRequest, openaiCalls, lastOpenAI, files: [...files.keys()] });
     if ((m = p.match(/^\/mock\/revenuecat\/v1\/subscribers\/(.+)$/))) {
       if (req.headers.get('Authorization') !== `Bearer ${Deno.env.get('REVENUECAT_SECRET_KEY')}`) return j({ code: 7225, message: 'Invalid API key' }, 401);
       const id = decodeURIComponent(m[1]);

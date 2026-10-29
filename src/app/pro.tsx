@@ -26,7 +26,7 @@ export default function Paywall() {
   const auth = useAuth();
   const pro = usePro();
   const userId = auth.status === 'signedIn' ? (auth.user?.id ?? null) : null;
-  const [plan, setPlan] = useState<PlanId>('yearly');
+  const [plan, setPlan] = useState<PlanId>('monthly');
   const [plans, setPlans] = useState<StorePlan[] | null>(null);
   const [busy, setBusy] = useState<null | 'buy' | 'restore'>(null);
   const unavailable = purchasesUnavailableReason();
@@ -37,6 +37,7 @@ export default function Paywall() {
 
   const price = (id: PlanId) => plans?.find((p) => p.id === id)?.price ?? PLACEHOLDER_PRICES[id];
   const provisional = !plans;
+  const hasYearly = !!plans?.some((p) => p.id === 'yearly');
 
   const buy = async () => {
     if (unavailable) return notify(t('pro.title'), unavailable === 'not_supported' ? t('pro.storeUnavailable') : t('pro.notConfigured'));
@@ -69,16 +70,26 @@ export default function Paywall() {
   if (pro.isPro) {
     return (
       <Screen back="close" title={t('pro.isPro')} subtitle={t('pro.subtitle')}>
+        {pro.access === 'test' || pro.access === 'intro' ? (
+          <Card>
+            <AppText variant="bodyStrong">{pro.access === 'test' ? t('pro.sourceTest') : t('pro.sourceIntro')}</AppText>
+            <AppText variant="caption">{pro.access === 'test' ? t('pro.sourceTestBody') : t('pro.sourceIntroBody')}</AppText>
+          </Card>
+        ) : null}
         {pro.status === 'grace_period' ? (
           <Card>
             <AppText variant="body">{t('pro.grace')}</AppText>
           </Card>
         ) : null}
         {pro.expiresAt ? <AppText variant="body">{t('pro.renews', { date: formatDate(pro.expiresAt.slice(0, 10), locale, { day: 'numeric', month: 'long', year: 'numeric' }) })}</AppText> : null}
-        <Button label={t('pro.manage')} variant="secondary" onPress={() => void manageSubscriptions().then((ok) => !ok && notify(t('pro.manage'), t('pro.cancelInfo')))} />
-        <AppText variant="caption" color="secondary">
-          {t('pro.cancelInfo')}
-        </AppText>
+        {pro.access === 'store' ? (
+          <>
+            <Button label={t('pro.manage')} variant="secondary" onPress={() => void manageSubscriptions().then((ok) => !ok && notify(t('pro.manage'), t('pro.cancelInfo')))} />
+            <AppText variant="caption" color="secondary">
+              {t('pro.cancelInfo')}
+            </AppText>
+          </>
+        ) : null}
       </Screen>
     );
   }
@@ -107,8 +118,9 @@ export default function Paywall() {
           </View>
         </View>
       ))}
-      <OptionCard title={t('pro.yearly')} subtitle={`${t('pro.perYear', { price: price('yearly') })} · ${t('pro.save')}`} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} />
       <OptionCard title={t('pro.monthly')} subtitle={t('pro.perMonth', { price: price('monthly') })} selected={plan === 'monthly'} onPress={() => setPlan('monthly')} />
+      {/* A yearly plan is shown only once the store actually offers one. */}
+      {hasYearly ? <OptionCard title={t('pro.yearly')} subtitle={t('pro.perYear', { price: price('yearly') })} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} /> : null}
       {pro.status === 'expired' || pro.status === 'billing_issue' ? (
         <Card>
           <AppText variant="body">{t('pro.expired')}</AppText>

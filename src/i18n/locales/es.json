@@ -396,7 +396,17 @@
     "failed": "No hemos podido analizar esta comida.",
     "manual": "Registrar a mano",
     "useResult": "Revisar y guardar",
-    "privacy": "Tu foto se envía de forma segura para el análisis y no se conserva después de devolver la estimación."
+    "privacy": "Tu foto se envía de forma segura para el análisis y no se conserva después de devolver la estimación.",
+    "unclear": "En esta foto no se distingue bien la comida. Prueba con una foto luminosa desde arriba en la que se vea todo, o añádela manualmente.",
+    "total": "Total ≈ {{kcal}} kcal",
+    "confidence": "Estimación: {{level}}",
+    "level": {
+      "high": "bien visible",
+      "medium": "incertidumbre habitual",
+      "low": "estimación aproximada – revísala con atención"
+    },
+    "values": "≈ {{kcal}} kcal · proteínas {{protein}} g · carbohidratos {{carbs}} g · grasas {{fat}} g",
+    "retake": "Otra foto"
   },
   "workout": {
     "title": "Actividad de hoy",
@@ -613,7 +623,10 @@
     "deleteConfirm": "Eliminar mi cuenta",
     "deleted": "Tu cuenta se ha eliminado.",
     "deleteFailed": "No hemos podido eliminar tu cuenta. Comprueba tu conexión e inténtalo de nuevo.",
-    "notSignedIn": "Sin iniciar sesión"
+    "notSignedIn": "Sin iniciar sesión",
+    "id": "ID de la cuenta",
+    "idHint": "Para soporte y acceso de prueba. No es una contraseña.",
+    "shareId": "Compartir ID de la cuenta"
   },
   "health": {
     "title": "Preferencias de salud",
@@ -766,7 +779,11 @@
     "manage": "Gestionar suscripción",
     "grace": "Hay un problema con tu pago. Pro sigue activo por ahora. Actualiza tu método de pago en tu cuenta de App Store o Google Play.",
     "expired": "Tu suscripción Pro ha terminado. Todo lo que registraste sigue aquí.",
-    "renews": "Activa hasta el {{date}}"
+    "renews": "Activa hasta el {{date}}",
+    "sourceTest": "Pro · Acceso de prueba",
+    "sourceTestBody": "Esta cuenta está habilitada como cuenta de prueba en el servidor. No es una suscripción y no se cobra nada.",
+    "sourceIntro": "Pro · Fase de lanzamiento",
+    "sourceIntroBody": "Durante la fase de lanzamiento, Pro es gratis para los primeros usuarios. No se cobra nada."
   },
   "coach": {
     "title": "Coach de IA",

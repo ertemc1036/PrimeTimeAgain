@@ -392,7 +392,17 @@
     "failed": "Wir konnten diese Mahlzeit nicht analysieren.",
     "manual": "Manuell eintragen",
     "useResult": "Prüfen und speichern",
-    "privacy": "Dein Foto wird sicher zur Analyse gesendet und nach der Schätzung nicht aufbewahrt."
+    "privacy": "Dein Foto wird sicher zur Analyse gesendet und nach der Schätzung nicht aufbewahrt.",
+    "unclear": "Auf diesem Foto ist das Essen nicht eindeutig zu erkennen. Versuche ein helles Foto von oben, auf dem alles sichtbar ist, oder trage manuell ein.",
+    "total": "Gesamt ≈ {{kcal}} kcal",
+    "confidence": "Einschätzung: {{level}}",
+    "level": {
+      "high": "gut erkennbar",
+      "medium": "übliche Unsicherheit",
+      "low": "grobe Schätzung – bitte besonders prüfen"
+    },
+    "values": "≈ {{kcal}} kcal · Eiweiß {{protein}} g · Kohlenhydrate {{carbs}} g · Fett {{fat}} g",
+    "retake": "Anderes Foto"
   },
   "workout": {
     "title": "Heutige Aktivität",
@@ -608,7 +618,10 @@
     "deleteConfirm": "Mein Konto löschen",
     "deleted": "Dein Konto wurde gelöscht.",
     "deleteFailed": "Dein Konto konnte nicht gelöscht werden. Bitte prüfe deine Verbindung und versuche es erneut.",
-    "notSignedIn": "Nicht angemeldet"
+    "notSignedIn": "Nicht angemeldet",
+    "id": "Konto-ID",
+    "idHint": "Für Support und Testfreischaltungen. Sie ist kein Passwort.",
+    "shareId": "Konto-ID teilen"
   },
   "health": {
     "title": "Gesundheitseinstellungen",
@@ -760,7 +773,11 @@
     "manage": "Abo verwalten",
     "grace": "Es gibt ein Problem mit deiner Zahlung. Pro bleibt vorerst aktiv. Bitte aktualisiere deine Zahlungsmethode in deinem App Store- oder Google Play-Konto.",
     "expired": "Dein Pro-Abo ist beendet. Alles, was du eingetragen hast, ist noch da.",
-    "renews": "Aktiv bis {{date}}"
+    "renews": "Aktiv bis {{date}}",
+    "sourceTest": "Pro · Testzugang",
+    "sourceTestBody": "Dieses Konto ist serverseitig als Testkonto freigeschaltet. Es ist kein Abo, und es wird nichts berechnet.",
+    "sourceIntro": "Pro · Einführungsphase",
+    "sourceIntroBody": "In der Einführungsphase ist Pro für die ersten Nutzerinnen und Nutzer kostenlos. Es wird nichts berechnet."
   },
   "coach": {
     "title": "KI-Coach",

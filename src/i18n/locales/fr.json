@@ -396,7 +396,17 @@
     "failed": "Nous n'avons pas pu analyser ce repas.",
     "manual": "Noter manuellement",
     "useResult": "Vérifier et enregistrer",
-    "privacy": "Ta photo est envoyée de façon sécurisée pour l'analyse et n'est pas conservée une fois l'estimation renvoyée."
+    "privacy": "Ta photo est envoyée de façon sécurisée pour l'analyse et n'est pas conservée une fois l'estimation renvoyée.",
+    "unclear": "On ne distingue pas clairement le repas sur cette photo. Essaie une photo lumineuse prise du dessus où tout est visible, ou ajoute-le manuellement.",
+    "total": "Total ≈ {{kcal}} kcal",
+    "confidence": "Estimation : {{level}}",
+    "level": {
+      "high": "bien visible",
+      "medium": "incertitude habituelle",
+      "low": "estimation approximative – vérifie attentivement"
+    },
+    "values": "≈ {{kcal}} kcal · protéines {{protein}} g · glucides {{carbs}} g · lipides {{fat}} g",
+    "retake": "Autre photo"
   },
   "workout": {
     "title": "Activité du jour",
@@ -613,7 +623,10 @@
     "deleteConfirm": "Supprimer mon compte",
     "deleted": "Ton compte a été supprimé.",
     "deleteFailed": "Impossible de supprimer ton compte. Vérifie ta connexion et réessaie.",
-    "notSignedIn": "Non connecté"
+    "notSignedIn": "Non connecté",
+    "id": "ID du compte",
+    "idHint": "Pour le support et l'accès test. Ce n'est pas un mot de passe.",
+    "shareId": "Partager l'ID du compte"
   },
   "health": {
     "title": "Préférences santé",
@@ -766,7 +779,11 @@
     "manage": "Gérer l'abonnement",
     "grace": "Il y a un problème avec ton paiement. Pro reste actif pour le moment. Mets à jour ton moyen de paiement dans ton compte App Store ou Google Play.",
     "expired": "Ton abonnement Pro a pris fin. Tout ce que tu as noté est toujours là.",
-    "renews": "Actif jusqu'au {{date}}"
+    "renews": "Actif jusqu'au {{date}}",
+    "sourceTest": "Pro · Accès test",
+    "sourceTestBody": "Ce compte est activé comme compte de test sur le serveur. Ce n'est pas un abonnement et rien n'est facturé.",
+    "sourceIntro": "Pro · Phase de lancement",
+    "sourceIntroBody": "Pendant la phase de lancement, Pro est gratuit pour les premiers utilisateurs. Rien n'est facturé."
   },
   "coach": {
     "title": "Coach IA",

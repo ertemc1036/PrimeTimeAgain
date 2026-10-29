@@ -392,7 +392,17 @@
     "failed": "Bu öğünü analiz edemedik.",
     "manual": "Elle kaydet",
     "useResult": "İncele ve kaydet",
-    "privacy": "Fotoğrafın analiz için güvenli şekilde gönderilir ve tahmin döndükten sonra saklanmaz."
+    "privacy": "Fotoğrafın analiz için güvenli şekilde gönderilir ve tahmin döndükten sonra saklanmaz.",
+    "unclear": "Bu fotoğrafta yemek net olarak anlaşılmıyor. Her şeyin göründüğü, yukarıdan çekilmiş aydınlık bir fotoğraf dene ya da elle ekle.",
+    "total": "Toplam ≈ {{kcal}} kcal",
+    "confidence": "Tahmin: {{level}}",
+    "level": {
+      "high": "net görünüyor",
+      "medium": "olağan belirsizlik",
+      "low": "kaba tahmin – lütfen dikkatle kontrol et"
+    },
+    "values": "≈ {{kcal}} kcal · protein {{protein}} g · karbonhidrat {{carbs}} g · yağ {{fat}} g",
+    "retake": "Başka fotoğraf"
   },
   "workout": {
     "title": "Bugünkü aktivite",
@@ -608,7 +618,10 @@
     "deleteConfirm": "Hesabımı sil",
     "deleted": "Hesabın silindi.",
     "deleteFailed": "Hesabını silemedik. Lütfen bağlantını kontrol edip tekrar dene.",
-    "notSignedIn": "Giriş yapılmadı"
+    "notSignedIn": "Giriş yapılmadı",
+    "id": "Hesap kimliği",
+    "idHint": "Destek ve test erişimi için. Bu bir şifre değildir.",
+    "shareId": "Hesap kimliğini paylaş"
   },
   "health": {
     "title": "Sağlık tercihleri",
@@ -760,7 +773,11 @@
     "manage": "Aboneliği yönet",
     "grace": "Ödemende bir sorun var. Pro şimdilik aktif kalıyor. Lütfen App Store veya Google Play hesabında ödeme yöntemini güncelle.",
     "expired": "Pro aboneliğin sona erdi. Kaydettiğin her şey hâlâ burada.",
-    "renews": "{{date}} tarihine kadar aktif"
+    "renews": "{{date}} tarihine kadar aktif",
+    "sourceTest": "Pro · Test erişimi",
+    "sourceTestBody": "Bu hesap sunucuda test hesabı olarak açıldı. Bir abonelik değildir ve ücret alınmaz.",
+    "sourceIntro": "Pro · Tanıtım dönemi",
+    "sourceIntroBody": "Tanıtım döneminde Pro ilk kullanıcılar için ücretsizdir. Ücret alınmaz."
   },
   "coach": {
     "title": "Yapay zekâ koçu",

@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { getSupabase } from '@/services/supabase/client';
 import { FREE, isPro as isProEntitlement, type Entitlement } from '@/services/subscriptions/entitlements';
 import { identify, onCustomerInfo } from '@/services/subscriptions/revenuecat';
-import type { ServerEntitlement } from '@/sync/protocol';
+import type { ProSource, ServerEntitlement } from '@/sync/protocol';
 
 import { useAuth } from './AuthProvider';
 import { useSync } from './SyncProvider';
@@ -14,6 +14,8 @@ interface ProValue {
   /** Status details for the account screen and paywall. */
   status: Entitlement['status'];
   expiresAt: string | null;
+  /** Where active Pro comes from: 'store' (subscription), 'test' (server allowlist) or 'intro' (launch phase). */
+  access: ProSource | null;
   /** Development builds only: open Pro screens without a subscription. Grants no AI access — the server decides. */
   devPreview: boolean;
   setDevPreview(v: boolean): void;
@@ -66,6 +68,7 @@ export function ProProvider({ children }: { children: ReactNode }) {
       isPro: pro,
       status: shown.status,
       expiresAt: shown.expiresAt ?? null,
+      access: isProEntitlement(srv) ? (server?.source ?? 'store') : isProEntitlement(store) ? 'store' : null,
       devPreview: preview,
       setDevPreview: (v) => setDevPreviewState(__DEV__ && v),
       canOpenPro: pro || preview,

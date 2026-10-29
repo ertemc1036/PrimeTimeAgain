@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +14,9 @@ import { useAuth } from '@/state/AuthProvider';
 import { colors, radii, spacing } from '@/theme';
 import { newId } from '@/utils/id';
 
-type State = { kind: 'idle' } | { kind: 'busy'; uri: string } | { kind: 'error'; uri?: string; message: string } | { kind: 'result'; uri: string; result: FoodScanResult };
+type State = { kind: 'idle' } | { kind: 'busy'; uri: string } | { kind: 'error'; uri?: string; message: string; notPro?: boolean } | { kind: 'result'; uri: string; result: FoodScanResult };
+
+const round1 = (n: number) => Math.round(n * 10) / 10;
 
 export default function FoodScan() {
   const { t } = useTranslation();
@@ -24,17 +26,26 @@ export default function FoodScan() {
   const signedOut = auth.configured && auth.status !== 'signedIn';
   const available = aiAvailable() && !signedOut;
 
+  // One scan at a time: a second tap while the photo is picked or analysed does nothing.
+  const running = useRef(false);
   const run = async (source: 'camera' | 'library') => {
-    const photo = await pickPhoto(source);
-    if (!photo.ok) {
-      if (photo.reason !== 'cancelled') setState({ kind: 'error', message: photo.reason === 'permission' ? t('ai.camera') : t('scan.failed') });
-      return;
+    if (running.current) return;
+    running.current = true;
+    try {
+      const photo = await pickPhoto(source);
+      if (!photo.ok) {
+        if (photo.reason !== 'cancelled') setState({ kind: 'error', message: photo.reason === 'permission' ? t('ai.camera') : t('scan.failed') });
+        return;
+      }
+      setState({ kind: 'busy', uri: photo.uri });
+      const res = await scanFood(photo.base64);
+      if (!res.ok) return setState({ kind: 'error', uri: photo.uri, message: t(`ai.${res.error as AiError}`), notPro: res.error === 'not_pro' });
+      // Unclear photos and photos without food never show numbers.
+      if (res.data.status !== 'ok' || !res.data.items.length) return setState({ kind: 'error', uri: photo.uri, message: res.data.status === 'not_food' ? t('scan.notFood') : t('scan.unclear') });
+      setState({ kind: 'result', uri: photo.uri, result: res.data });
+    } finally {
+      running.current = false;
     }
-    setState({ kind: 'busy', uri: photo.uri });
-    const res = await scanFood(photo.base64);
-    if (!res.ok) return setState({ kind: 'error', uri: photo.uri, message: t(`ai.${res.error as AiError}`) });
-    if (res.data.status !== 'ok' || !res.data.items.length) return setState({ kind: 'error', uri: photo.uri, message: res.data.status === 'not_food' ? t('scan.notFood') : t('scan.failed') });
-    setState({ kind: 'result', uri: photo.uri, result: res.data });
   };
 
   const review = (result: FoodScanResult) => {
@@ -69,10 +80,11 @@ export default function FoodScan() {
       {'uri' in state && state.uri ? <Image source={{ uri: state.uri }} style={styles.photo} contentFit="cover" accessibilityIgnoresInvertColors /> : null}
       {state.kind === 'busy' ? <LoadingState label={t('scan.analyzing')} /> : null}
       {state.kind === 'error' ? (
-        <Card>
+        <Card style={styles.result}>
           <AppText variant="bodyStrong" accessibilityLiveRegion="polite">
             {state.message}
           </AppText>
+          {state.notPro ? <Button label={t('profile.upgrade')} size="sm" fullWidth={false} onPress={() => router.push('/pro')} /> : null}
         </Card>
       ) : null}
       {state.kind === 'result' ? (
@@ -81,10 +93,24 @@ export default function FoodScan() {
             {t('scan.result')}
           </AppText>
           <AppText variant="heading">{state.result.mealTitle}</AppText>
+          <AppText variant="bodyStrong" testID="scan-total">
+            {t('scan.total', { kcal: Math.round(state.result.items.reduce((sum, i) => sum + i.kcal, 0)) })}
+          </AppText>
+          <AppText variant="caption" color="secondary" testID="scan-confidence">
+            {t('scan.confidence', { level: t(`scan.level.${state.result.confidence}`) })}
+          </AppText>
           {state.result.items.map((i, idx) => (
-            <AppText key={idx} variant="body">
-              {i.name} · ~{Math.round(i.estimatedGrams)} g · ~{Math.round(i.kcal)} kcal
-            </AppText>
+            <View key={idx} style={styles.item}>
+              <AppText variant="bodyStrong">
+                {i.name} · ≈ {Math.round(i.estimatedGrams)} g
+              </AppText>
+              <AppText variant="caption">{t('scan.values', { kcal: Math.round(i.kcal), protein: round1(i.protein), carbs: round1(i.carbs), fat: round1(i.fat) })}</AppText>
+              {i.confidence !== 'high' ? (
+                <AppText variant="caption" color="secondary">
+                  {t(`scan.level.${i.confidence}`)}
+                </AppText>
+              ) : null}
+            </View>
           ))}
           {state.result.uncertaintyNotes.map((n, idx) => (
             <AppText key={idx} variant="caption" color="secondary">
@@ -93,6 +119,7 @@ export default function FoodScan() {
           ))}
           <AppText variant="caption">{t('scan.resultNote')}</AppText>
           <Button label={t('scan.useResult')} onPress={() => review(state.result)} />
+          <Button label={t('scan.retake')} variant="secondary" onPress={() => setState({ kind: 'idle' })} />
         </Card>
       ) : null}
       {state.kind !== 'busy' && state.kind !== 'result' ? (
@@ -114,5 +141,6 @@ export default function FoodScan() {
 const styles = StyleSheet.create({
   photo: { width: '100%', aspectRatio: 4 / 3, borderRadius: radii.lg, backgroundColor: colors.card },
   result: { gap: spacing.xs },
+  item: { gap: 2, paddingVertical: spacing.xs },
   buttons: { gap: spacing.sm },
 });

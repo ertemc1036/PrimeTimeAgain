@@ -1,12 +1,10 @@
-import type Anthropic from 'npm:@anthropic-ai/sdk@1.3.0';
-
-import { aiConfigured, claude, MODEL } from '../_shared/claude.ts';
+import { aiConfigured, chatOnce, chatStream } from '../_shared/ai.ts';
 import { requirePro } from '../_shared/guard.ts';
 import { corsHeaders, error, json, preflight, readJson } from '../_shared/http.ts';
 
 const LANGS: Record<string, string> = { en: 'English', de: 'German', tr: 'Turkish', es: 'Spanish', fr: 'French' };
 
-const system = (language: string) => `You are the MINUS 30 coach inside a wellness app for adults. The app's loop: plan tomorrow's meals and activity, log food, log a workout or a rest day, repeat.
+const system = (language: string) => `You are the Diet9 coach inside a wellness app for adults. The app's loop: plan tomorrow's meals and activity, log food, log a workout or a rest day, repeat.
 Help with practical, everyday things: meal ideas and simple plans, shopping lists, getting back on track after a missed day, realistic activity routines, building consistency. Be warm, brief and concrete; use short lists when helpful. Reply in ${language} unless the user writes in another language.
 
 Safety rules (always apply):
@@ -22,7 +20,7 @@ const isMsg = (m: unknown): m is Msg =>
   !!m && typeof m === 'object' && ((m as Msg).role === 'user' || (m as Msg).role === 'assistant') && typeof (m as Msg).content === 'string' && (m as Msg).content.trim().length > 0 && (m as Msg).content.length <= 4000;
 
 /** Build the conversation: alternating turns ending with the user, consented context on the last turn. */
-export function buildMessages(input: unknown[], context: unknown): Anthropic.Beta.BetaMessageParam[] {
+export function buildMessages(input: unknown[], context: unknown): Msg[] {
   const msgs = input.filter(isMsg).slice(-16);
   while (msgs.length && msgs[0].role !== 'user') msgs.shift();
   const merged: Msg[] = [];
@@ -50,22 +48,13 @@ export async function handler(req: Request): Promise<Response> {
   const body = await readJson(req, 512 * 1024);
   const messages = buildMessages(Array.isArray(body?.messages) ? (body!.messages as unknown[]) : [], body?.context ?? null);
   if (!messages.length) return error(400, 'invalid_request');
-  const params = {
-    model: MODEL,
-    max_tokens: 4000,
-    betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default',
-    system: system(LANGS[String(body?.language)] ?? 'English'),
-    output_config: { effort: 'low' },
-    messages,
-  } as unknown as Anthropic.Beta.MessageCreateParamsStreaming;
+  const sys = system(LANGS[String(body?.language)] ?? 'English');
 
   if (body?.stream !== true) {
     try {
-      const msg = await claude().beta.messages.create({ ...params, stream: false } as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming);
-      if (msg.stop_reason === 'refusal') return error(502, 'refused');
-      const reply = msg.content.flatMap((b) => (b.type === 'text' ? [b.text] : [])).join('').trim();
-      return reply ? json({ reply }) : error(502, 'invalid_response');
+      const r = await chatOnce(sys, messages);
+      if (r.refused) return error(502, 'refused');
+      return r.text ? json({ reply: r.text }) : error(502, 'invalid_response');
     } catch (e) {
       console.error('coach provider error', (e as Error).message);
       return error(502, 'provider_error');
@@ -77,15 +66,15 @@ export async function handler(req: Request): Promise<Response> {
     async start(controller) {
       let sent = 0;
       try {
-        const s = claude().beta.messages.stream(params);
-        for await (const ev of s) {
-          if (ev.type === 'content_block_delta' && ev.delta.type === 'text_delta' && ev.delta.text) {
-            sent += ev.delta.text.length;
-            controller.enqueue(sse({ t: 'd', v: ev.delta.text }));
-          }
+        const it = chatStream(sys, messages);
+        let step = await it.next();
+        while (!step.done) {
+          sent += step.value.length;
+          controller.enqueue(sse({ t: 'd', v: step.value }));
+          step = await it.next();
         }
-        const final = await s.finalMessage();
-        controller.enqueue(final.stop_reason === 'refusal' ? sse({ t: 'err', code: 'refused' }) : sent ? sse({ t: 'end' }) : sse({ t: 'err', code: 'invalid_response' }));
+        const end = step.value;
+        controller.enqueue(end.refused ? sse({ t: 'err', code: 'refused' }) : sent && end.ok ? sse({ t: 'end' }) : sse({ t: 'err', code: sent ? 'provider_error' : 'invalid_response' }));
       } catch (e) {
         console.error('coach stream error', (e as Error).message);
         controller.enqueue(sse({ t: 'err', code: 'provider_error' }));
