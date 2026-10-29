@@ -7,6 +7,7 @@ import { AvatarViewer } from '@/avatar/AvatarViewer';
 import { DiagPanel } from '@/avatar/DiagPanel';
 import { createDiagLog } from '@/avatar/diagnostics';
 import { GLTestStage, type GLTestMode } from '@/avatar/GLTestStage';
+import type { BodyShape } from '@/avatar/models';
 
 type Step = GLTestMode | 'full';
 const STEPS: Step[] = ['cube', 'model', 'touch', 'full'];
@@ -18,10 +19,11 @@ const STEPS: Step[] = ['cube', 'model', 'touch', 'full'];
 export default function ThreeDTest() {
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>('cube');
-  const [body, setBody] = useState<'male' | 'female'>('male');
+  const [body, setBody] = useState<'male' | 'female' | 'neutral'>('male');
+  const [shape, setShape] = useState<BodyShape>('start');
   const [run, setRun] = useState(0);
   const [log, setLog] = useState(createDiagLog);
-  const restart = (next: Partial<{ step: Step; body: 'male' | 'female' }>) => {
+  const restart = (next: Partial<{ step: Step; body: 'male' | 'female' | 'neutral' }>) => {
     if (next.step) setStep(next.step);
     if (next.body) setBody(next.body);
     setLog(createDiagLog());
@@ -43,6 +45,7 @@ export default function ThreeDTest() {
         <View style={styles.row}>
           <Chip label={t('avatar.body.male')} selected={body === 'male'} onPress={() => restart({ body: 'male' })} />
           <Chip label={t('avatar.body.female')} selected={body === 'female'} onPress={() => restart({ body: 'female' })} />
+          <Chip label={t('avatar.body.neutral')} selected={body === 'neutral'} onPress={() => restart({ body: 'neutral' })} />
           <Chip label={t('test3d.restart')} selected={false} onPress={() => restart({})} />
         </View>
       ) : (
@@ -51,9 +54,15 @@ export default function ThreeDTest() {
         </View>
       )}
       {step === 'full' ? (
-        <View style={styles.full}>
-          <AvatarViewer key={key} body={body} active showDiagnostics />
-        </View>
+        <>
+          <View style={styles.row}>
+            <Chip label={t('avatar.shapeStart')} selected={shape === 'start'} onPress={() => setShape('start')} />
+            <Chip label={t('avatar.shapeGoal')} selected={shape === 'goal'} onPress={() => setShape('goal')} />
+          </View>
+          <View style={styles.full}>
+            <AvatarViewer key={key} body={body} shape={shape} active showDiagnostics />
+          </View>
+        </>
       ) : (
         <>
           <GLTestStage key={key} mode={step} body={body} log={log} />

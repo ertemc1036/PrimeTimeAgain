@@ -911,7 +911,7 @@
     "startToday": "start today",
     "addWeight": "Add your weight",
     "gestureHint": "Drag to turn · Pinch to zoom · Double-tap to reset",
-    "symbolic": "Symbolic avatar: it doesn't show your actual body shape, body fat or muscle mass. These can't be derived from weight.",
+    "symbolic": "Symbolic avatar: the start and goal shapes are example figures. They don't show your actual body shape, body fat or muscle mass, which can't be derived from weight.",
     "bodyTitle": "Avatar body",
     "bodySubtitle": "Choose how the 3D avatar on Today looks. This is optional.",
     "body": {
@@ -930,7 +930,10 @@
     "unavailable": "The 3D view can't be shown on this device right now.",
     "details": "Details",
     "shareDiagnostics": "Share diagnostics",
-    "diagnostics": "3D diagnostics"
+    "diagnostics": "3D diagnostics",
+    "shapeStart": "Start shape",
+    "shapeGoal": "Goal shape",
+    "shapeLabel": "Body shape shown"
   },
   "test3d": {
     "title": "3D test",
@@ -944,7 +947,7 @@
     },
     "hints": {
       "cube": "A rotating cube. If you see it turning, 3D rendering works on this device.",
-      "model": "Loads a body model (GLB) with simple grey material and light. It turns slowly and breathes (idle animation).",
+      "model": "Loads a Diet9 body model (GLB, goal shape) with simple grey material and light. It turns slowly.",
       "touch": "Drag sideways to turn, pinch to zoom, double-tap to reset. The values top left must change.",
       "full": "The full Today avatar with hologram material, lights and scan rings."
     }

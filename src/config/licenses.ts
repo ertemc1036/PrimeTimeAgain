@@ -1,28 +1,12 @@
 /** Third-party notices shown in Profile → Licenses. License texts stay in their original English. */
 export const THIRD_PARTY_NOTICES = [
   {
-    name: 'Microsoft Rocketbox Avatar Library (3D bodies and idle animations)',
-    url: 'https://github.com/microsoft/Microsoft-Rocketbox',
-    license: `MIT License
-
-Copyright (c) 2020 Microsoft
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.`,
+    name: 'MakeHuman assets: base mesh, body targets and skin weights (3D bodies)',
+    url: 'https://github.com/makehumancommunity/makehuman',
+    license: `The 3D avatar bodies are built from MakeHuman assets (base mesh, targets and skin weights),
+which the MakeHuman project released under Creative Commons CC0 1.0 Universal (public domain
+dedication). Shapes, sportswear and hair were created for Diet9. No MakeHuman program code is
+included. Full CC0 text: assets/avatars/LICENSE-MAKEHUMAN-ASSETS.md in the app source and
+https://creativecommons.org/publicdomain/zero/1.0/legalcode`,
   },
 ] as const;

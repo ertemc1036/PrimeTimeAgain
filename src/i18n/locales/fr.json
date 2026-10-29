@@ -920,7 +920,7 @@
     "startToday": "commence aujourd'hui",
     "addWeight": "Ajoute ton poids",
     "gestureHint": "Glisse pour tourner · Pince pour zoomer · Touche deux fois pour réinitialiser",
-    "symbolic": "Avatar symbolique : il ne montre ni ta silhouette réelle, ni ta masse grasse, ni ta masse musculaire. Le poids ne permet pas de les déduire.",
+    "symbolic": "Avatar symbolique : la forme de départ et la forme visée sont des silhouettes d'exemple. Elles ne montrent ni ta silhouette réelle, ni ta masse grasse, ni ta masse musculaire, que le poids ne permet pas de déduire.",
     "bodyTitle": "Corps de l'avatar",
     "bodySubtitle": "Choisis l'apparence de l'avatar 3D sur Aujourd'hui. C'est facultatif.",
     "body": {
@@ -939,7 +939,10 @@
     "unavailable": "La vue 3D ne peut pas s'afficher sur cet appareil pour le moment.",
     "details": "Détails",
     "shareDiagnostics": "Partager le diagnostic",
-    "diagnostics": "Diagnostic 3D"
+    "diagnostics": "Diagnostic 3D",
+    "shapeStart": "Forme de départ",
+    "shapeGoal": "Forme visée",
+    "shapeLabel": "Silhouette affichée"
   },
   "test3d": {
     "title": "Test 3D",
@@ -953,7 +956,7 @@
     },
     "hints": {
       "cube": "Un cube qui tourne. S'il tourne, la 3D fonctionne sur cet appareil.",
-      "model": "Charge un modèle du corps (GLB) avec un matériau gris simple et de la lumière. Il tourne lentement et respire (animation au repos).",
+      "model": "Charge un modèle du corps Diet9 (GLB, forme visée) avec un matériau gris simple et de la lumière. Il tourne lentement.",
       "touch": "Glisse sur le côté pour tourner, pince pour zoomer, touche deux fois pour réinitialiser. Les valeurs en haut à gauche doivent changer.",
       "full": "L'avatar complet d'Aujourd'hui avec matériau holographique, lumières et anneaux de scan."
     }

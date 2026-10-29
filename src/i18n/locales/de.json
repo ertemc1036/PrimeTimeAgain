@@ -911,7 +911,7 @@
     "startToday": "starte heute",
     "addWeight": "Gewicht eintragen",
     "gestureHint": "Ziehen zum Drehen · Zwei Finger zum Zoomen · Doppeltippen zum Zurücksetzen",
-    "symbolic": "Symbolischer Avatar: Er zeigt nicht deine tatsächliche Körperform, deinen Körperfettanteil oder deine Muskelmasse. Das lässt sich aus dem Gewicht nicht ableiten.",
+    "symbolic": "Symbolischer Avatar: Startform und Zielform sind Beispielfiguren. Sie zeigen nicht deine tatsächliche Körperform, deinen Körperfettanteil oder deine Muskelmasse – das lässt sich aus dem Gewicht nicht ableiten.",
     "bodyTitle": "Avatar-Körper",
     "bodySubtitle": "Wähle, wie der 3D-Avatar auf „Heute“ aussieht. Freiwillig.",
     "body": {
@@ -930,7 +930,10 @@
     "unavailable": "Die 3D-Ansicht kann auf diesem Gerät gerade nicht angezeigt werden.",
     "details": "Details",
     "shareDiagnostics": "Diagnose teilen",
-    "diagnostics": "3D-Diagnose"
+    "diagnostics": "3D-Diagnose",
+    "shapeStart": "Startform",
+    "shapeGoal": "Zielform",
+    "shapeLabel": "Angezeigte Körperform"
   },
   "test3d": {
     "title": "3D-Test",
@@ -944,7 +947,7 @@
     },
     "hints": {
       "cube": "Ein rotierender Würfel. Wenn er sich dreht, funktioniert 3D auf diesem Gerät.",
-      "model": "Lädt ein Körpermodell (GLB) mit einfachem grauem Material und Licht. Es dreht sich langsam und atmet (Idle-Animation).",
+      "model": "Lädt ein Diet9-Körpermodell (GLB, Zielform) mit einfachem grauem Material und Licht. Es dreht sich langsam.",
       "touch": "Seitlich ziehen zum Drehen, zwei Finger zum Zoomen, Doppeltippen zum Zurücksetzen. Die Werte oben links müssen sich ändern.",
       "full": "Der vollständige Avatar von „Heute“ mit Hologramm-Material, Licht und Scanringen."
     }

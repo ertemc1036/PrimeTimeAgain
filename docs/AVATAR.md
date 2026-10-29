@@ -12,15 +12,23 @@ design.
 - **Interaction:** drag sideways to turn 360° (with momentum), pinch to zoom (scroll wheel on
   web), double-tap or the scan button to reset the camera. Vertical swipes still scroll the page.
   VoiceOver: custom actions turn left/right and zoom in/out.
+- **Start shape / goal shape:** a segmented control on the card ("Startform | Zielform") switches
+  between a fuller start body and a fit, athletic goal body with one tap. The body morphs smoothly
+  (0.9 s) while the scan rings flash. Both are example figures chosen by the toggle, never derived
+  from the user's data.
 - **Look:** dark anthracite body with a neon rim, a scan band that follows two animated scan rings,
   fine scan lines, rotating dashed floor rings, rising light particles and soft neon rim lights.
+  Sportswear is matte black with a thin neon hem: men wear sports shorts only; women wear short
+  sports pants and a sports top with straps; the neutral body wears both. Hair: short cap (male,
+  neutral), sleek cap with ponytail (female). No nudity: tests check that the chest (female,
+  neutral) and the pelvis (all) are covered in both shapes.
 - **Real data only:** start weight (profile, else first entry), current weight (latest entry),
   change since start, goal weight with progress ring and remaining distance, and the activity
   streak. Logic: `src/domain/bodyStats.ts` (tested). Without weight data the card offers
   "Add your weight".
 - **Honest by design:** the body never changes with weight or height. A note on the card says
-  the avatar is symbolic and that body shape, body fat and muscle mass can't be derived from
-  weight.
+  start and goal shapes are example figures and that body shape, body fat and muscle mass can't
+  be derived from weight.
 
 ## Files
 
@@ -28,44 +36,58 @@ design.
 | --- | --- |
 | `src/avatar/AvatarViewer.tsx` | GL view, render loop, gestures, loading state, error fallback with retry |
 | `src/avatar/stage.ts` | Scene, camera framing, lights, rings, particles, per-frame animation |
-| `src/avatar/hologram.ts` | Hologram material (extends `MeshStandardMaterial`; skinning and normal maps keep working) |
-| `src/avatar/buildAvatar.ts` | Loads a rigged body or builds the neutral one, normalised to 1.78 m |
-| `src/avatar/mannequin.ts` | Neutral body generated in code (no asset) |
-| `src/avatar/models.ts` | The bundled Rocketbox assets |
+| `src/avatar/hologram.ts` | Body material: hologram skin, sportswear with neon hems, hair (per pixel) |
+| `src/avatar/cloth.ts` | Sportswear band parameters, shader code and the same formula in TypeScript for tests |
+| `src/avatar/buildAvatar.ts` | Loads a body GLB, blends start ↔ goal on the CPU (no morph textures), idle breathing |
+| `src/avatar/models.ts` | The three body GLBs |
 | `src/avatar/loadAssets.ts`, `polyfills.ts` | Asset loading on web/native, `TextDecoder` for GLB parsing |
+| `scripts/avatars/build_makehuman.py` | Builds the GLBs from MakeHuman data (our own code) |
 | `src/features/avatar/BodyHero.tsx` | The Today card (data cards, buttons, disclaimer) |
 | `src/app/avatar-body.tsx` | Body picker |
 
 Reused from commit `3eb4bc1` (earlier V2 avatar): asset loading, GLB parsing, `TextDecoder`
 polyfill, the GL/renderer setup and gesture handling (adapted to scrolling inside Today and to
-the new look), the Rocketbox build script and assets. Not reused: textured realistic presets,
-avatar studio, lighting presets, onboarding avatar step.
+the new look). The Rocketbox bodies used until commit `2a0bb5b` were replaced by the MakeHuman
+bodies below (they had fixed everyday clothes and only one body shape).
 
 ## 3D assets and licence
 
-| Body | Source | Files |
-| --- | --- | --- |
-| Male | Rocketbox `Male_Adult_09` (`m09`) | `model.glb` 320 KB, normal maps, hair alpha texture |
-| Female | Rocketbox `Female_Adult_13` (`f13`) | `model.glb` 485 KB, normal maps, hair alpha texture |
-| Idle animations | Rocketbox idle clips | `idle_m.glb`, `idle_f.glb` |
-| Neutral | Generated in code | none |
+| Body | File | Goal (fit) shape | Start shape | Clothing / hair |
+| --- | --- | --- | --- | --- |
+| Male | `body-male.glb` (≈ 590 KB) | high muscle, low fat, V-taper, defined chest and shoulders | low muscle, max weight, belly | sports shorts (mid-thigh), short hair |
+| Female | `body-female.glb` (≈ 600 KB) | athletic, slim waist, defined hips | fuller, belly, fuller arms | short sports pants + sports top, ponytail |
+| Neutral | `body-neutral.glb` (≈ 590 KB) | androgynous athletic | fuller | sports pants + sports top, short hair |
 
-Total ≈ 1.5 MB. Source: Microsoft Rocketbox Avatar Library, MIT License since 12/2020
-(https://github.com/microsoft/Microsoft-Rocketbox). The licence text ships in
-`assets/avatars/LICENSE-ROCKETBOX.txt` and is shown in the app (Profile → Licenses). The library
-was first announced for research and academic use; the MIT licence allows commercial use, but
-have it confirmed with the other legal items before release. Rebuild assets with
-`scripts/avatars/build_avatars.py`.
+Each body: about 13.5k vertices / 27k triangles, start shape stored as offsets, arms lowered from
+MakeHuman's A-pose to a relaxed stance.
+
+Source: **MakeHuman** (https://github.com/makehumancommunity/makehuman, data at commit
+`a8bc2d5`): base mesh, macro targets (gender, muscle, weight, proportions, height, breast),
+detail targets (V-taper, pectorals, shoulders, belly, arm fat, breast shape) and skin weights. The
+MakeHuman project releases these assets under **CC0 1.0** (public domain; commercial use without
+conditions, see `assets/avatars/LICENSE-MAKEHUMAN-ASSETS.md` and their `LICENSE.md` section C/D).
+MakeHuman's program code (AGPL) is not used: `scripts/avatars/build_makehuman.py` is our own code
+that reads the data files. Sportswear, hair, pose and shape settings were made for Diet9. Credit
+is shown in Profile → Licenses.
+
+Rebuild:
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://github.com/makehumancommunity/makehuman.git mh
+cd mh && git sparse-checkout set makehuman/data/3dobjs makehuman/data/rigs makehuman/data/targets/{macrodetails,breast,torso,stomach,armslegs} && cd ..
+python3 scripts/avatars/build_makehuman.py --data mh/makehuman/data
+```
 
 ## Performance
 
 - Three.js loads lazily when the card is first shown (app start unaffected).
 - One body in memory at a time; switching disposes the old meshes, materials and textures.
-- About 7.4k (male) and 8.7k (female) triangles per rigged body, 10.7k for the neutral one; one draw call per mesh, no shadows or
-  post-processing, no MSAA (the drawing buffer is already at screen density).
+- About 27k triangles per body, one draw call, no shadows or post-processing, no MSAA (the
+  drawing buffer is already at screen density). The start ↔ goal blend runs on the CPU only during
+  the 0.9 s transition (13.5k vertices); otherwise the geometry is static.
 - The render loop stops completely when Today isn't focused or the app is in the background.
 - "Reduce Motion": slower scan and rings, particles stand still, no spin momentum, weaker scan band.
-- Tests check the triangle budget (< 15k) and the asset size budget (< 2 MB).
+- Tests check the triangle budget (< 30k per body) and the asset size budget (< 2 MB for all three).
 
 Measured here only in a browser with software rendering (no GPU), so frame rates from this
 sandbox say nothing about an iPhone. Check smoothness on the device.
@@ -100,9 +122,9 @@ step and message, and "Share diagnostics" to send the log as text.
 `/3d-test` (Profile → 3D test, development / Expo Go only; also linked from the error card):
 
 1. **Cube** – renderer + rotating cube (no lights, textures or custom shaders).
-2. **Body model** – Rocketbox GLB with a plain grey material, lights and idle animation.
+2. **Body model** – a Diet9 body GLB (male, female or neutral) with a plain grey material and lights.
 3. **Touch** – drag to turn, pinch to zoom, double-tap to reset, live yaw/zoom values.
-4. **Diet9 look** – the full avatar with hologram material, lights and scan rings.
+4. **Diet9 look** – the full avatar with hologram material, lights and scan rings; start/goal toggle.
 
 Each step runs in a fresh GL context with its own log and an on-device FPS counter.
 

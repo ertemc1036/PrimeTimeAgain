@@ -920,7 +920,7 @@
     "startToday": "empieza hoy",
     "addWeight": "Añade tu peso",
     "gestureHint": "Arrastra para girar · Pellizca para hacer zoom · Doble toque para restablecer",
-    "symbolic": "Avatar simbólico: no muestra tu forma corporal real, tu grasa corporal ni tu masa muscular. Eso no se puede deducir del peso.",
+    "symbolic": "Avatar simbólico: la forma inicial y la forma objetivo son figuras de ejemplo. No muestran tu forma corporal real, tu grasa corporal ni tu masa muscular, que no se pueden deducir del peso.",
     "bodyTitle": "Cuerpo del avatar",
     "bodySubtitle": "Elige cómo se ve el avatar 3D en Hoy. Es opcional.",
     "body": {
@@ -939,7 +939,10 @@
     "unavailable": "La vista 3D no se puede mostrar en este dispositivo ahora mismo.",
     "details": "Detalles",
     "shareDiagnostics": "Compartir diagnóstico",
-    "diagnostics": "Diagnóstico 3D"
+    "diagnostics": "Diagnóstico 3D",
+    "shapeStart": "Forma inicial",
+    "shapeGoal": "Forma objetivo",
+    "shapeLabel": "Forma corporal mostrada"
   },
   "test3d": {
     "title": "Prueba 3D",
@@ -953,7 +956,7 @@
     },
     "hints": {
       "cube": "Un cubo que gira. Si lo ves girar, el 3D funciona en este dispositivo.",
-      "model": "Carga un modelo corporal (GLB) con material gris simple y luz. Gira despacio y respira (animación en reposo).",
+      "model": "Carga un modelo corporal de Diet9 (GLB, forma objetivo) con material gris simple y luz. Gira despacio.",
       "touch": "Arrastra de lado para girar, pellizca para hacer zoom, toca dos veces para restablecer. Los valores arriba a la izquierda deben cambiar.",
       "full": "El avatar completo de Hoy con material holográfico, luces y anillos de escaneo."
     }

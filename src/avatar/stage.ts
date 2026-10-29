@@ -61,6 +61,8 @@ export interface Stage {
   turntable: THREE.Group;
   uniforms: HoloUniforms;
   update(t: number, dt: number, reducedMotion: boolean): void;
+  /** Brief brighter, faster scan (e.g. when the body shape changes). */
+  pulse(): void;
   dispose(): void;
 }
 
@@ -147,6 +149,7 @@ export function createStage(): Stage {
   scene.add(particles);
 
   const ease = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * x);
+  let boost = 0;
 
   return {
     scene,
@@ -172,11 +175,12 @@ export function createStage(): Stage {
       scanB.group.scale.x = 1 - pb * 0.28;
       scanB.group.scale.z = 0.62 * (1 - pb * 0.28);
       uniforms.uScan.value = ya;
-      uniforms.uScanStrength.value = reducedMotion ? 0.4 : 1;
+      boost = Math.max(0, boost - dt / 1.2);
+      uniforms.uScanStrength.value = (reducedMotion ? 0.4 : 1) * (1 + boost * 0.9);
       const pulse = 0.85 + 0.15 * Math.sin(t * 3);
-      scanA.line.opacity = scanA.opacity * pulse;
-      scanB.line.opacity = scanB.opacity * (1.15 - pulse * 0.3);
-      (pool.material as THREE.MeshBasicMaterial).opacity = 0.18 + 0.05 * Math.sin(t * 1.3);
+      scanA.line.opacity = Math.min(1, scanA.opacity * pulse * (1 + boost));
+      scanB.line.opacity = Math.min(1, scanB.opacity * (1.15 - pulse * 0.3) * (1 + boost));
+      (pool.material as THREE.MeshBasicMaterial).opacity = 0.18 + 0.05 * Math.sin(t * 1.3) + boost * 0.15;
       if (!reducedMotion) {
         const p = particleGeo.getAttribute('position') as THREE.BufferAttribute;
         for (let i = 0; i < COUNT; i++) {
@@ -186,6 +190,9 @@ export function createStage(): Stage {
         }
         p.needsUpdate = true;
       }
+    },
+    pulse() {
+      boost = 1;
     },
     dispose() {
       disposables.forEach((d) => d.dispose());

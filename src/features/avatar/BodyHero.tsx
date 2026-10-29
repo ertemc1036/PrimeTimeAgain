@@ -1,11 +1,13 @@
+import * as Haptics from 'expo-haptics';
 import { router, useFocusEffect } from 'expo-router';
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, AppState, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, AppState, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, ProgressRing } from '@/components/ui';
 import { HOLO } from '@/avatar/hologram';
+import type { BodyShape } from '@/avatar/models';
 import { weightProgress } from '@/domain/bodyStats';
 import type { AppData } from '@/domain/types';
 import { formatWeight } from '@/features/units';
@@ -50,6 +52,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
   const [focused, setFocused] = useState(true);
   const [foreground, setForeground] = useState(AppState.currentState === 'active');
   const [resetSignal, setResetSignal] = useState(0);
+  const [shape, setShape] = useState<BodyShape>('start');
 
   useFocusEffect(
     useCallback(() => {
@@ -96,6 +99,30 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
         </Pressable>
       </View>
 
+      {/* Start ↔ goal body: one tap, both states named. */}
+      <View style={styles.segment} accessibilityRole="radiogroup" accessibilityLabel={t('avatar.shapeLabel')}>
+        {(['start', 'goal'] as const).map((s) => {
+          const selected = shape === s;
+          return (
+            <Pressable
+              key={s}
+              onPress={() => {
+                if (selected) return;
+                setShape(s);
+                if (Platform.OS !== 'web') void Haptics.selectionAsync();
+              }}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: selected }}
+              aria-checked={selected}
+              style={[styles.segmentItem, selected && styles.segmentOn]}>
+              <Text style={[styles.segmentText, selected && styles.segmentTextOn]} numberOfLines={1}>
+                {t(s === 'start' ? 'avatar.shapeStart' : 'avatar.shapeGoal')}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
       <View style={styles.stage}>
         <Suspense
           fallback={
@@ -103,7 +130,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
               <ActivityIndicator color={C.neon} />
             </View>
           }>
-          <AvatarViewer body={body} active={focused && foreground} reducedMotion={reducedMotion} resetSignal={resetSignal} />
+          <AvatarViewer body={body} shape={shape} active={focused && foreground} reducedMotion={reducedMotion} resetSignal={resetSignal} />
         </Suspense>
         {/* Start and current weight float over the scan; touches pass through to the 3D view. */}
         <View style={styles.overlay} pointerEvents="none">
@@ -165,6 +192,11 @@ const styles = StyleSheet.create({
   eyebrow: { color: C.neon, fontFamily: 'Inter_700Bold', fontSize: 11, letterSpacing: 1.6 },
   title: { color: C.text, fontFamily: 'Inter_700Bold', fontSize: 20, lineHeight: 26, marginTop: 2 },
   iconBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line, alignItems: 'center', justifyContent: 'center' },
+  segment: { flexDirection: 'row', marginHorizontal: 16, marginTop: 8, padding: 4, borderRadius: 999, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line },
+  segmentItem: { flex: 1, minHeight: 36, borderRadius: 999, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
+  segmentOn: { backgroundColor: C.neon },
+  segmentText: { color: C.muted, fontFamily: 'Inter_600SemiBold', fontSize: 14 },
+  segmentTextOn: { color: C.bg, fontFamily: 'Inter_700Bold' },
   stage: { height: 400 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   overlay: { ...StyleSheet.absoluteFill, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: 14 },

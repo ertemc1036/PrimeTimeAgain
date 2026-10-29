@@ -911,7 +911,7 @@
     "startToday": "bugün başla",
     "addWeight": "Kilonu ekle",
     "gestureHint": "Döndürmek için sürükle · Yakınlaştırmak için iki parmak · Sıfırlamak için çift dokun",
-    "symbolic": "Sembolik avatar: Gerçek vücut şeklini, yağ oranını veya kas kütleni göstermez. Bunlar kilodan çıkarılamaz.",
+    "symbolic": "Sembolik avatar: Başlangıç ve hedef formu örnek figürlerdir. Gerçek vücut şeklini, yağ oranını veya kas kütleni göstermez; bunlar kilodan çıkarılamaz.",
     "bodyTitle": "Avatar vücudu",
     "bodySubtitle": "Bugün ekranındaki 3D avatarın görünümünü seç. İsteğe bağlıdır.",
     "body": {
@@ -930,7 +930,10 @@
     "unavailable": "3D görünüm şu anda bu cihazda gösterilemiyor.",
     "details": "Ayrıntılar",
     "shareDiagnostics": "Tanılamayı paylaş",
-    "diagnostics": "3D tanılama"
+    "diagnostics": "3D tanılama",
+    "shapeStart": "Başlangıç formu",
+    "shapeGoal": "Hedef form",
+    "shapeLabel": "Gösterilen vücut formu"
   },
   "test3d": {
     "title": "3D testi",
@@ -944,7 +947,7 @@
     },
     "hints": {
       "cube": "Dönen bir küp. Dönüyorsa bu cihazda 3D çalışıyor.",
-      "model": "Basit gri malzeme ve ışıkla bir vücut modeli (GLB) yükler. Yavaşça döner ve nefes alır (bekleme animasyonu).",
+      "model": "Basit gri malzeme ve ışıkla bir Diet9 vücut modeli (GLB, hedef form) yükler. Yavaşça döner.",
       "touch": "Döndürmek için yana sürükle, yakınlaştırmak için iki parmak, sıfırlamak için çift dokun. Sol üstteki değerler değişmeli.",
       "full": "Hologram malzemesi, ışık ve tarama halkalarıyla Bugün ekranındaki tam avatar."
     }

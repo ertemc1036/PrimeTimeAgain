@@ -55,7 +55,7 @@ describe('avatar assets and licence', () => {
     const walk = (d: string) =>
       fs.readdirSync(d, { withFileTypes: true }).forEach((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : shipped.push(path.relative(root, path.join(d, e.name)))));
     walk(dir);
-    expect(shipped.filter((f) => !f.endsWith('LICENSE-ROCKETBOX.txt')).sort()).toEqual([...referenced].sort());
+    expect(shipped.filter((f) => !f.endsWith('LICENSE-MAKEHUMAN-ASSETS.md')).sort()).toEqual([...referenced].sort());
   });
 
   it('keeps the bundled 3D assets small (download size budget 2 MB)', () => {
@@ -65,14 +65,11 @@ describe('avatar assets and licence', () => {
     expect(bytes).toBeLessThan(2 * 1024 * 1024);
   });
 
-  it('includes the MIT licence next to the assets and in the app (Profile → Licenses)', () => {
-    const file = fs.readFileSync(path.join(dir, 'LICENSE-ROCKETBOX.txt'), 'utf8');
-    expect(file).toContain('Microsoft Rocketbox');
-    expect(file).toContain('MIT License');
-    const notice = THIRD_PARTY_NOTICES.find((n) => n.name.includes('Rocketbox'));
-    expect(notice).toBeDefined();
-    const norm = (s: string) => s.replace(/\s+/g, ' ').trim();
-    // The in-app text is the full licence from the file (copyright line, permission and warranty notice).
-    expect(norm(file)).toContain(norm(notice!.license));
+  it('includes the CC0 licence of the MakeHuman assets next to them and a notice in the app', () => {
+    const file = fs.readFileSync(path.join(dir, 'LICENSE-MAKEHUMAN-ASSETS.md'), 'utf8');
+    expect(file).toContain('CC0 1.0 Universal');
+    const notice = THIRD_PARTY_NOTICES.find((n) => n.name.includes('MakeHuman'));
+    expect(notice?.license).toContain('CC0 1.0');
+    expect(THIRD_PARTY_NOTICES.some((n) => n.name.includes('Rocketbox'))).toBe(false); // no longer shipped
   });
 });

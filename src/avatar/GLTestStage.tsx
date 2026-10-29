@@ -4,10 +4,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { GestureDetector, usePanGesture, usePinchGesture, useSimultaneousGestures, useTapGesture } from 'react-native-gesture-handler';
 import * as THREE from 'three';
 
-import { AVATAR_HEIGHT, parseGlb } from './buildAvatar';
+import { parseGlb, readBody } from './buildAvatar';
 import type { DiagLog } from './diagnostics';
 import { loadArrayBuffer } from './loadAssets';
-import { RIGGED_BODIES } from './models';
+import { BODY_MODELS } from './models';
 import { createRenderer, syncSize } from './renderer';
 
 export type GLTestMode = 'cube' | 'model' | 'touch';
@@ -15,10 +15,10 @@ export type GLTestMode = 'cube' | 'model' | 'touch';
 /**
  * Minimal 3D checks for a real phone, each in its own GL context:
  * - cube:  renderer + one rotating cube (MeshNormalMaterial: no lights, textures or custom shaders)
- * - model: a Rocketbox body GLB with a plain standard material, lights and its idle animation
+ * - model: a Diet9 body GLB (goal shape) with a plain standard material and lights
  * - touch: the same body with drag-to-turn and pinch zoom (live values shown)
  */
-export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male' | 'female'; log: DiagLog }) {
+export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male' | 'female' | 'neutral'; log: DiagLog }) {
   const [fps, setFps] = useState<number | null>(null);
   const [view, setView] = useState({ yaw: 0, zoom: 0 });
   const state = useRef({ yaw: 0, targetYaw: 0, zoom: 0, targetZoom: 0 });
@@ -36,7 +36,6 @@ export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male
       const camera = new THREE.PerspectiveCamera(mode === 'cube' ? 50 : 30, 1, 0.05, 50);
       const turntable = new THREE.Group();
       scene.add(turntable);
-      let mixer: THREE.AnimationMixer | null = null;
 
       if (mode === 'cube') {
         turntable.add(new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshNormalMaterial()));
@@ -48,43 +47,21 @@ export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male
         const key = new THREE.DirectionalLight(0xffffff, 2.2);
         key.position.set(1.5, 2.5, 2.5);
         scene.add(key);
-        const spec = RIGGED_BODIES[body];
-        const buffer = await log.stepAsync(`Model ${spec.id}.glb download/read`, () => loadArrayBuffer(spec.model));
+        const file = `body-${body}.glb`;
+        const buffer = await log.stepAsync(`Model ${file} download/read`, () => loadArrayBuffer(BODY_MODELS[body]));
         log.info('Model size', `${Math.round(buffer.byteLength / 1024)} KB`);
         const gltf = await log.stepAsync('GLTFLoader parse', () => parseGlb(buffer));
         if (disposed) return;
-        let meshes = 0;
-        gltf.scene.traverse((o) => {
-          const m = o as THREE.SkinnedMesh;
-          if (!m.isMesh) return;
-          meshes++;
-          m.frustumCulled = false;
-          const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.Material;
-          // Hair cards would be opaque planes without their texture, so they are hidden in this test.
-          m.visible = old.name !== 'opacity';
-          old.dispose();
-          m.material = new THREE.MeshStandardMaterial({ color: 0x9aa39f, roughness: 0.6, metalness: 0.1 });
-        });
-        const box = new THREE.Box3().setFromObject(gltf.scene);
-        const size = box.getSize(new THREE.Vector3());
-        const s = AVATAR_HEIGHT / size.y;
-        gltf.scene.scale.setScalar(s);
-        const c = box.getCenter(new THREE.Vector3());
-        gltf.scene.position.set(-c.x * s, -box.min.y * s, -c.z * s);
-        turntable.add(gltf.scene);
-        log.ok('Body in scene', `${meshes} meshes, source height ${size.y.toFixed(2)}`);
-        try {
-          const idle = await parseGlb(await loadArrayBuffer(spec.idle));
-          const clip = idle.animations[0];
-          if (clip) {
-            clip.tracks = clip.tracks.filter((t) => t.name.endsWith('.quaternion'));
-            mixer = new THREE.AnimationMixer(gltf.scene);
-            mixer.clipAction(clip).setLoop(THREE.LoopPingPong, Infinity).play();
-            log.ok('Idle animation', `${clip.tracks.length} tracks`);
-          }
-        } catch (e) {
-          log.fail('Idle animation (optional)', e);
-        }
+        const data = log.step('Read body (goal + start shape)', () => readBody(gltf));
+        // Plain grey goal body: checks the model itself, without the hologram shader or morphing.
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(data.goal, 3));
+        geo.setIndex(data.index);
+        geo.computeVertexNormals();
+        const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x9aa39f, roughness: 0.6, metalness: 0.1 }));
+        mesh.frustumCulled = false;
+        turntable.add(mesh);
+        log.ok('Body in scene', `${data.goal.length / 3} vertices, ${data.index.count / 3} triangles`);
       }
 
       const timer = new THREE.Timer();
@@ -111,7 +88,6 @@ export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male
             camera.position.set(0, target + 0.25, dist);
             camera.lookAt(0, target, 0);
           }
-          mixer?.update(dt);
           camera.aspect = syncSize(renderer, gl);
           camera.updateProjectionMatrix();
           renderer.render(scene, camera);

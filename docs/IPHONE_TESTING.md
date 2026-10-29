@@ -71,9 +71,9 @@ Work through these in order with a fresh install.
 
 **3D test first** (Profile → 3D test, or open `exp://<computer-ip>:8081/--/3d-test` in Safari while `npx expo start` runs)
 - [ ] 1. Cube: a coloured cube rotates; the log shows "First frame drawn" and no red ✗.
-- [ ] 2. Body model: a grey body turns slowly (male and female).
+- [ ] 2. Body model: a grey body turns slowly (male, female, neutral).
 - [ ] 3. Touch: dragging changes "yaw", pinching changes "zoom".
-- [ ] 4. Diet9 look: dark body with neon scan rings.
+- [ ] 4. Diet9 look: dark body with neon scan rings; Startform/Zielform switches the body.
 - [ ] Note the fps value of each step. If something fails: "Share diagnostics" and send the text.
 
 **3D avatar (Today)**
@@ -81,10 +81,11 @@ Work through these in order with a fresh install.
 - [ ] Drag sideways: the body turns 360° and keeps spinning a little after you let go. Swiping up/down still scrolls the page.
 - [ ] Pinch zooms towards the upper body; double-tap (or the scan button) returns to the start view.
 - [ ] Body button → Male / Female / Neutral: the body changes; the choice stays after force-quitting and (signed in) appears on a second device.
+- [ ] "Startform | Zielform": one tap morphs the body smoothly; start is clearly fuller, goal clearly athletic. Man: sports shorts only; woman: sports pants + sports top.
 - [ ] Start, current weight, change, goal with % ring and streak match Journey; add a weight → the card updates.
 - [ ] Animation is smooth and the phone doesn't get hot after a minute on Today; switching to another tab stops the animation.
 - [ ] Settings → Accessibility → Motion → Reduce Motion: slower scan, particles stand still, no spin after letting go.
-- [ ] Profile → Licenses shows the Rocketbox MIT licence.
+- [ ] Profile → Licenses shows the MakeHuman CC0 notice.
 
 **Daily loop** (Today must update by itself after each step)
 - [ ] Food → Add Food → search "oat" → add → Save Meal. Then **Finish Today's Food Log** → Today shows **Food Logged**, 1/3.

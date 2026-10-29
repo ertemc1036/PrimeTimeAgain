@@ -9,6 +9,7 @@ import * as THREE from 'three';
 import type { AvatarBody } from '@/domain/types';
 
 import { buildAvatar, type LoadedAvatar } from './buildAvatar';
+import type { BodyShape } from './models';
 import { DiagPanel } from './DiagPanel';
 import { createDiagLog, type DiagLog } from './diagnostics';
 import { HOLO } from './hologram';
@@ -17,6 +18,8 @@ import { createStage, frameCamera, type Stage } from './stage';
 
 export interface AvatarViewerProps {
   body: AvatarBody;
+  /** Start (heavier) or goal (fit) body; changes animate smoothly. */
+  shape?: BodyShape;
   /** Render only while visible (screen focused, app in foreground) to save battery. */
   active: boolean;
   /** Fewer and slower animations (system "Reduce Motion"). */
@@ -50,7 +53,7 @@ interface Engine {
  * Vertical drags are left to the page so Today keeps scrolling. If WebGL or a model fails, a
  * message with a retry button replaces the canvas; the rest of the screen keeps working.
  */
-export function AvatarViewer({ body, active, reducedMotion = false, resetSignal = 0, onReady, showDiagnostics = false }: AvatarViewerProps) {
+export function AvatarViewer({ body, shape = 'start', active, reducedMotion = false, resetSignal = 0, onReady, showDiagnostics = false }: AvatarViewerProps) {
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>('loading');
   const [attempt, setAttempt] = useState(0);
@@ -64,6 +67,7 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
   const activeRef = useRef(active);
   const reducedRef = useRef(reducedMotion);
   const bodyRef = useRef(body);
+  const shapeRef = useRef(shape);
   const onReadyRef = useRef(onReady);
   const loadToken = useRef(0);
 
@@ -93,7 +97,7 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
     const started = Date.now();
     setStatus('loading');
     try {
-      const avatar = await buildAvatar(next, e.stage.uniforms, log);
+      const avatar = await buildAvatar(next, e.stage.uniforms, log, shapeRef.current);
       if (token !== loadToken.current || !engine.current) {
         avatar.dispose();
         return;
@@ -111,6 +115,15 @@ export function AvatarViewer({ body, active, reducedMotion = false, resetSignal 
       if (token === loadToken.current) setStatus('error');
     }
   };
+
+  // Start ↔ goal: morph the loaded body and sweep the scan rings.
+  useEffect(() => {
+    if (shapeRef.current === shape) return;
+    shapeRef.current = shape;
+    const e = engine.current;
+    e?.avatar?.setShape(shape);
+    e?.stage.pulse();
+  }, [shape]);
 
   // Swap the body without recreating the GL context.
   useEffect(() => {
