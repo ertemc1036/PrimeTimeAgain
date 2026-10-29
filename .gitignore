@@ -51,3 +51,6 @@ example
 supabase/functions/node_modules/
 supabase/.temp/
 e2e/out/
+
+# Python
+__pycache__/
