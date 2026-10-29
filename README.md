@@ -95,6 +95,8 @@ More: [`docs/BACKEND.md`](docs/BACKEND.md) (setup for accounts, AI and subscript
   server access.
 - **Reminders** are local notifications. They work in iOS/Android builds, not on web.
 
+Live setup on your Mac (Supabase + real AI scanner): [`docs/LIVE_SETUP.md`](docs/LIVE_SETUP.md).
+
 Release steps and what still needs the owner (accounts, keys, legal review, store setup):
 [`docs/RELEASE.md`](docs/RELEASE.md). Run `npm run release-check` to see the in-repo gaps.
 
