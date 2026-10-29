@@ -776,8 +776,19 @@
     "renews": "Aktiv bis {{date}}",
     "sourceTest": "Pro · Testzugang",
     "sourceTestBody": "Dieses Konto ist serverseitig als Testkonto freigeschaltet. Es ist kein Abo, und es wird nichts berechnet.",
-    "sourceIntro": "Pro · Einführungsphase",
-    "sourceIntroBody": "In der Einführungsphase ist Pro für die ersten Nutzerinnen und Nutzer kostenlos. Es wird nichts berechnet."
+    "sourceFounder": "Pro · Gründerplatz",
+    "sourceFounderSeat": "Pro · Gründerplatz #{{seat}}",
+    "sourceFounderBody": "Du gehörst zu den ersten Diet9-Gründern. Pro ist für dich kostenlos – ohne Abo und ohne Zahlungsdaten – und bleibt es auch, wenn alle Plätze vergeben sind.",
+    "founders": {
+      "title": "Founders Edition",
+      "counter": "{{taken}} von {{capacity}} kostenlosen Pro-Plätzen vergeben.",
+      "full": "Alle {{capacity}} kostenlosen Gründerplätze sind vergeben.",
+      "body": "Die ersten {{capacity}} bestätigten Konten erhalten Diet9 Pro kostenlos – ohne Abo und ohne Zahlungsdaten.",
+      "create": "Kostenloses Konto erstellen",
+      "check": "Gründerplatz prüfen",
+      "signedInHint": "Dein Platz wird vergeben, sobald deine E-Mail-Adresse bestätigt ist.",
+      "notEligible": "Für dieses Konto wurde kein Gründerplatz vergeben. Bitte bestätige zuerst deine E-Mail-Adresse oder versuche es gleich noch einmal."
+    }
   },
   "coach": {
     "title": "KI-Coach",

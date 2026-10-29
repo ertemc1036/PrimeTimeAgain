@@ -38,6 +38,20 @@ const proSubscriber = (id: string, expires: string | null, extra: Record<string,
   control({ subscriber: { id, data: { entitlements: { pro: { expires_date: expires, product_identifier: 'minus30_pro_monthly', ...extra } }, subscriptions: { minus30_pro_monthly: { store: 'app_store', ...extra } } } } });
 
 const opts = { sanitizeOps: false, sanitizeResources: false };
+/** Founders Edition capacity for the following tests (0 = no free seats, the default for other tests). */
+const founderCapacity = (n: number) => DB`update public.founder_settings set capacity = ${n} where id`;
+const seatOf = async (userId: string) => (await DB`select seat_no from public.founder_seats where user_id = ${userId}`)[0]?.seat_no ?? null;
+/** An account row created directly in the database (like Supabase Auth does), verified or not. */
+async function rawUser(tag: string, opts: { confirmed: boolean; anonymous?: boolean }) {
+  const [u] = await DB`insert into auth.users (instance_id, id, aud, role, email, email_confirmed_at, is_anonymous, created_at, updated_at)
+    values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', ${`${tag}-${crypto.randomUUID().slice(0, 8)}@raw.test`},
+      ${opts.confirmed ? new Date() : null}, ${opts.anonymous ?? false}, now(), now()) returning id`;
+  return u.id as string;
+}
+
+Deno.test({ name: 'setup: no founder seats for the general tests', ...opts, async fn() {
+  await founderCapacity(0);
+}});
 
 Deno.test({ name: 'row-level security isolates users at the database level', ...opts, async fn() {
   const a = await newUser('rls-a');
@@ -297,20 +311,7 @@ Deno.test({ name: 'Pro test access only for allow-listed accounts (server secret
   assertEquals((await callJson('entitlement', t.token)).body.tier, 'free', 'removing the id ends the access');
 }});
 
-Deno.test({ name: 'launch phase (off by default) and the global daily AI limit', ...opts, async fn() {
-  const u = await newUser('intro');
-  assertEquals((await callJson('entitlement', u.token)).body.tier, 'free', 'off by default');
-  try {
-    await control({ intro: '100000000' });
-    const ent = await callJson('entitlement', u.token);
-    assertEquals(ent.body.tier, 'pro');
-    assertEquals(ent.body.source, 'intro');
-    await control({ intro: '1' });
-    assertEquals((await callJson('entitlement', u.token)).body.tier, 'free', 'only the first N accounts');
-  } finally {
-    await control({ intro: '' });
-  }
-
+Deno.test({ name: 'global daily AI limit across all users', ...opts, async fn() {
   const g = await newUser('global');
   await proSubscriber(g.id, future(30));
   await callJson('entitlement', g.token);
@@ -322,6 +323,151 @@ Deno.test({ name: 'launch phase (off by default) and the global daily AI limit',
     assertEquals((await callJson('food-scan', g.token, { image: JPEG })).status, 200);
   } finally {
     await control({ globalLimit: '' });
+  }
+}});
+
+Deno.test({ name: 'Founders: verified accounts get a stored free seat; unverified and anonymous ones do not', ...opts, async fn() {
+  await DB`delete from public.founder_seats`;
+  await founderCapacity(1000);
+  try {
+    const pending = await rawUser('unverified', { confirmed: false });
+    assertEquals(await seatOf(pending), null, 'unverified account gets no seat');
+    const anon = await rawUser('anon', { confirmed: true, anonymous: true });
+    assertEquals(await seatOf(anon), null, 'anonymous account gets no seat');
+    await DB`update auth.users set email_confirmed_at = now() where id = ${pending}`;
+    assertEquals(await seatOf(pending), 1, 'seat handed out when the email is confirmed');
+
+    const f = await newUser('founder'); // sign-up through Supabase Auth (auto-confirm locally)
+    assertEquals(await seatOf(f.id), 2);
+    const ent = await callJson('entitlement', f.token);
+    assertEquals([ent.body.tier, ent.body.source, ent.body.founderSeat], ['pro', 'founder', 2]);
+    assertEquals((await callJson('sync', f.token)).body.entitlement.source, 'founder');
+    await control({ scenario: 'ok' });
+    assertEquals((await callJson('food-scan', f.token, { image: JPEG })).status, 200, 'founders use the Pro features');
+    assertEquals((await DB`select * from public.entitlements where user_id = ${f.id} and tier = 'pro'`).length, 0, 'no subscription row');
+
+    // Idempotent: claiming again never creates a second seat.
+    const again = await Promise.all(Array.from({ length: 10 }, () => DB`select public.claim_founder_seat(${f.id}::uuid) as s`));
+    assert(again.every(([r]) => r.s === 2));
+    assertEquals((await DB`select count(*)::int as n from public.founder_seats where user_id = ${f.id}`)[0].n, 1);
+
+    // Signed-in users can read only their own seat and cannot hand out seats (checked as the
+    // `authenticated` role with the user's JWT claims, like PostgREST does).
+    const asRole = (role: string, uid: string | null, q: (tx: postgres.TransactionSql) => Promise<unknown>) =>
+      DB.begin(async (tx) => {
+        await tx`select set_config('request.jwt.claims', ${JSON.stringify({ sub: uid, role })}, true), set_config('role', ${role}, true)`;
+        return q(tx);
+      }).then((r) => ({ ok: true, r: Array.isArray(r) ? [...r] : r }), (e) => ({ ok: false, r: (e as Error).message }));
+    assertEquals((await asRole('authenticated', f.id, (tx) => tx`select seat_no from public.founder_seats`)).r, [{ seat_no: 2 }], 'own seat only');
+    assertEquals((await asRole('authenticated', pending, (tx) => tx`select seat_no from public.founder_seats`)).r, [{ seat_no: 1 }]);
+    for (const [label, q] of [
+      ['insert a seat', (tx: postgres.TransactionSql) => tx`insert into public.founder_seats (seat_no, user_id) values (999, ${f.id})`],
+      ['change a seat', (tx: postgres.TransactionSql) => tx`update public.founder_seats set seat_no = 5 where user_id = ${f.id} returning seat_no`],
+      ['claim a seat', (tx: postgres.TransactionSql) => tx`select public.claim_founder_seat(${f.id}::uuid)`],
+      ['change the capacity', (tx: postgres.TransactionSql) => tx`update public.founder_settings set capacity = 5000 returning capacity`],
+      ['read the counter function directly', (tx: postgres.TransactionSql) => tx`select public.founder_seats_status()`],
+    ] as const) {
+      for (const role of ['authenticated', 'anon']) {
+        const r = await asRole(role, role === 'anon' ? null : f.id, q);
+        assert(!r.ok || (Array.isArray(r.r) && r.r.length === 0), `${role} must not ${label}: ${JSON.stringify(r.r)}`);
+      }
+    }
+    assertEquals(await seatOf(f.id), 2);
+
+    // Public counter (no sign-in): real numbers from the database.
+    const counter = await fetch(`${BASE}/functions/v1/founders`).then((r) => r.json());
+    assertEquals(counter, { capacity: 1000, taken: 2, remaining: 998 });
+
+    // Deleting a founder account keeps the seat used; the seat number is never handed out twice.
+    assertEquals((await callJson('delete-account', f.token)).status, 200);
+    assertEquals((await DB`select count(*)::int as n from public.founder_seats`)[0].n, 2);
+    assertEquals((await DB`select user_id from public.founder_seats where seat_no = 2`)[0].user_id, null);
+  } finally {
+    await founderCapacity(0);
+  }
+}});
+
+Deno.test({ name: 'Founders: accounts 999, 1000 and 1001; founders keep Pro once all seats are gone', ...opts, async fn() {
+  await DB`delete from public.founder_seats`;
+  await DB`insert into public.founder_seats (seat_no, user_id) select g, null from generate_series(1, 998) g`;
+  await founderCapacity(1000);
+  try {
+    const u999 = await newUser('seat999');
+    const u1000 = await newUser('seat1000');
+    const u1001 = await newUser('seat1001');
+    assertEquals(await seatOf(u999.id), 999);
+    assertEquals(await seatOf(u1000.id), 1000);
+    assertEquals(await seatOf(u1001.id), null, 'account 1001 gets no founder seat');
+    assertEquals((await callJson('entitlement', u1001.token)).body.tier, 'free');
+    assertEquals((await callJson('food-scan', u1001.token, { image: JPEG })).status, 403, 'account 1001 sees the paywall');
+    assertEquals(await fetch(`${BASE}/functions/v1/founders`).then((r) => r.json()), { capacity: 1000, taken: 1000, remaining: 0 });
+    const later = await newUser('seat-later');
+    assertEquals((await callJson('entitlement', later.token)).body.tier, 'free');
+    const keep = await callJson('entitlement', u1000.token);
+    assertEquals([keep.body.tier, keep.body.source, keep.body.founderSeat], ['pro', 'founder', 1000], 'founder keeps Pro after the seats are gone');
+  } finally {
+    await founderCapacity(0);
+  }
+}});
+
+Deno.test({ name: 'Founders: parallel sign-ups never exceed the seats or double-assign them', ...opts, async fn() {
+  await DB`delete from public.founder_seats`;
+  await DB`insert into public.founder_seats (seat_no, user_id) select g, null from generate_series(1, 990) g`;
+  await founderCapacity(1000);
+  try {
+    const users = await Promise.all(Array.from({ length: 25 }, (_, i) => newUser(`race${i}`)));
+    const seats = (await Promise.all(users.map((u) => seatOf(u.id)))).filter((s) => s !== null) as number[];
+    assertEquals(seats.length, 10, `exactly the 10 remaining seats: ${seats}`);
+    assertEquals(new Set(seats).size, 10);
+    assertEquals(Math.min(...seats), 991);
+    assertEquals(Math.max(...seats), 1000);
+    assertEquals((await DB`select count(*)::int as n from public.founder_seats`)[0].n, 1000);
+    // Parallel entitlement checks for the losers do not create seats either.
+    const losers = users;
+    await Promise.all(losers.map((u) => callJson('entitlement', u.token)));
+    assertEquals((await DB`select count(*)::int as n from public.founder_seats`)[0].n, 1000);
+
+    // 60 accounts confirmed at the same moment over 30 connections, 20 seats left.
+    await DB`delete from public.founder_seats where seat_no > 980`;
+    const pending = await Promise.all(Array.from({ length: 60 }, (_, i) => rawUser(`burst${i}`, { confirmed: false })));
+    const pool = postgres(Deno.env.get('SUPABASE_DB_URL') ?? 'postgres://postgres@127.0.0.1:54322/postgres', { prepare: false, max: 30 });
+    try {
+      await Promise.all(pending.map((id) => pool`update auth.users set email_confirmed_at = now() where id = ${id}`));
+    } finally {
+      await pool.end();
+    }
+    const burst = await DB`select seat_no from public.founder_seats where user_id = any(${pending}) order by seat_no`;
+    assertEquals(burst.length, 20, 'exactly the 20 remaining seats');
+    assertEquals(burst.map((r) => r.seat_no), Array.from({ length: 20 }, (_, i) => 981 + i), 'gap-free, no duplicates');
+    assertEquals((await DB`select count(*)::int as n from public.founder_seats`)[0].n, 1000);
+
+    // A verification trigger that was missed is caught up by the entitlement check (same rules).
+    await DB`delete from public.founder_seats where seat_no = 1000`;
+    const late = await newUser('late');
+    await DB`delete from public.founder_seats where user_id = ${late.id}`;
+    assertEquals(await seatOf(late.id), null);
+    const ent = await callJson('entitlement', late.token);
+    assertEquals([ent.body.source, ent.body.founderSeat], ['founder', 1000]);
+  } finally {
+    await founderCapacity(0);
+  }
+}});
+
+Deno.test({ name: 'Pro sources: paid before test before founder', ...opts, async fn() {
+  await DB`delete from public.founder_seats`;
+  await founderCapacity(1000);
+  try {
+    const u = await newUser('sources');
+    assertEquals((await callJson('entitlement', u.token)).body.source, 'founder');
+    await control({ testers: u.id });
+    assertEquals((await callJson('entitlement', u.token)).body.source, 'test');
+    await proSubscriber(u.id, future(30));
+    await webhook({ type: 'INITIAL_PURCHASE', app_user_id: u.id, entitlement_ids: ['pro'] });
+    const paid = await callJson('entitlement', u.token);
+    assertEquals([paid.body.source, paid.body.founderSeat], ['store', null]);
+  } finally {
+    await control({ testers: '' });
+    await founderCapacity(0);
   }
 }});
 

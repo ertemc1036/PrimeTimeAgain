@@ -40,6 +40,7 @@ this repository deploys anything by itself; see [RELEASE.md](RELEASE.md) for the
 | `coach` | Safe wellness coaching, streamed (SSE). No medical advice or unsafe diets | Signed in + Pro + limits |
 | `revenuecat-webhook` | Updates `entitlements` from RevenueCat events | `Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>` |
 | `delete-account` | Deletes the caller's photos, records and account | Signed in |
+| `founders` | Founders Edition counter: seats taken / total (counts only) | Public (`--no-verify-jwt`) |
 
 The functions talk to Postgres directly (`SUPABASE_DB_URL`, provided by Supabase). Per request,
 they set the caller as `authenticated` with their JWT claims, so row-level security applies inside
@@ -69,7 +70,6 @@ read from the diary; viewing them never calls the AI again.
 | `AI_PROVIDER` | automatic | `openai` or `anthropic` |
 | `AI_GLOBAL_DAILY_LIMIT` | `2000` | Cost brake: max requests per AI function per 24 h across all users |
 | `PRO_TESTERS` | empty | Account ids (UUIDs, comma separated) with Pro test access, see below |
-| `INTRO_PRO_FIRST_USERS` / `INTRO_PRO_UNTIL` | off | Optional launch phase, see `docs/SUBSCRIPTIONS.md` |
 
 Each response carries `meta` (provider, model, input and output tokens) so costs can be checked;
 `scripts/ai/live-scan-test.mjs` uses it to stay within a budget. With a much higher global limit,
@@ -92,6 +92,25 @@ Removing the id ends the access. Nothing is written to the database, there is no
 hidden gesture in the app, and other accounts are unaffected (server test:
 `Pro test access only for allow-listed accounts`).
 
+### Founders Edition
+
+Migration `20261030000000_founder_seats.sql` (needs approval before `supabase db push`):
+
+- `public.founder_settings` (capacity 1,000) and `public.founder_seats` (seat number, account, time).
+  Users can read only their own seat; nobody but the server can write.
+- `public.claim_founder_seat(user)`: gives a verified account the next seat, idempotent, one claim at
+  a time (advisory lock), unique seat number and account. Not callable from the app.
+- Triggers on `auth.users` call it when an account is verified (at sign-up with auto-confirm, or when
+  the email code is confirmed). A trigger error never blocks a sign-up; the entitlement check claims
+  the seat later.
+- The migration gives existing verified accounts their seats in the order they were verified.
+- `public.founder_seats_status()` → `{capacity, taken}` for the `founders` Edge Function.
+
+Every Pro check (`entitlement`, `sync`, AI functions) returns `source: "founder"` and `founderSeat`.
+If the functions are deployed before the migration, founder checks simply find no seat (logged as
+"founder seat check failed"); nothing else breaks. Details and App Store notes:
+[`SUBSCRIPTIONS.md`](SUBSCRIPTIONS.md).
+
 ## Deploy (owner, after approval)
 
 ```bash
@@ -100,7 +119,7 @@ supabase db push                                   # supabase/migrations/2026102
 supabase secrets set OPENAI_API_KEY=… REVENUECAT_SECRET_KEY=… REVENUECAT_WEBHOOK_SECRET=…
 supabase secrets set PRO_TESTERS=<your account id>      # optional: your own Pro test access
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account
-supabase functions deploy revenuecat-webhook --no-verify-jwt
+supabase functions deploy revenuecat-webhook founders --no-verify-jwt
 ```
 
 - **Auth → Email templates:** use `supabase/templates/confirmation.html` (Confirm signup) and

@@ -19,6 +19,8 @@ handling). They say nothing about the quality of real AI answers or about real s
 initdb -D <dir> -U postgres && pg_ctl -D <dir> -o "-p 54322 -k /tmp" start
 psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/tests/bootstrap.sql
 psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261026000000_minus30_init.sql
+# after GoTrue has created auth.users (auth migrate):
+psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261030000000_founder_seats.sql
 
 # Keys: one HS256 secret; anon / service_role JWTs signed with it (role claim "anon" / "service_role")
 export JWT_SECRET=… ANON_KEY=… SERVICE_ROLE_KEY=…
@@ -71,8 +73,11 @@ M30_CLOUD_URL=http://127.0.0.1:54321 M30_CLOUD_ANON_KEY=… npx jest src/sync/cl
 - the OpenAI path: request format (`store: false`, strict JSON schema, image as data URL), scan
   with confidence, unclear / not-food photos without numbers, invalid answers, provider errors,
   quota errors, refusals and coach streaming; the key never appears in a response;
-- Pro test access via `PRO_TESTERS` (only listed accounts, nothing stored), the optional launch
-  phase and the global daily AI limit;
+- Pro test access via `PRO_TESTERS` (only listed accounts, nothing stored) and the global daily AI
+  limit;
+- Founders Edition: verified vs. unverified/anonymous accounts, accounts 999/1000/1001, 25 parallel
+  sign-ups and 60 simultaneous confirmations, double claims, table/function permissions for
+  `anon`/`authenticated`, account deletion, the public counter, and the order Paid → Test → Founders;
 - coach streaming;
 - storage folder isolation;
 - account deletion.

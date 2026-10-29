@@ -7,6 +7,8 @@ export interface EntitlementRow {
   store: string | null;
   expires_at: string | null;
   updated_at?: string;
+  /** Only for Founders Pro (never stored in public.entitlements). */
+  founder_seat?: number;
 }
 
 export const FREE: EntitlementRow = { tier: 'free', status: 'none', product_id: null, store: null, expires_at: null };
@@ -117,38 +119,46 @@ export function isTester(userId: string): boolean {
 }
 
 /**
- * Optional launch phase (off unless INTRO_PRO_FIRST_USERS is set): the first N registered accounts
- * get Pro free, optionally until INTRO_PRO_UNTIL (ISO date). No purchase is involved.
+ * Founders Edition: the first verified accounts (capacity in public.founder_settings, 1,000) own a
+ * permanent, free founder seat in public.founder_seats. The database hands seats out when an account
+ * is verified; this call also claims one if that trigger was missed (idempotent, same rules).
  */
-export async function introAccess(userId: string, now = new Date()): Promise<EntitlementRow | null> {
-  const n = Number(Deno.env.get('INTRO_PRO_FIRST_USERS'));
-  if (!Number.isInteger(n) || n <= 0) return null;
-  const untilRaw = Deno.env.get('INTRO_PRO_UNTIL');
-  const until = untilRaw ? new Date(untilRaw) : null;
-  if (until && !(until.getTime() > now.getTime())) return null;
-  const [row] = await sql()<{ rank: number | null }[]>`
-    select (select count(*)::int from auth.users u where u.created_at <= me.created_at) as rank
-    from auth.users me where me.id = ${userId}`;
-  if (!row?.rank || row.rank > n) return null;
-  return { tier: 'pro', status: 'active', product_id: null, store: 'intro', expires_at: until ? until.toISOString() : null };
+export async function founderSeat(userId: string): Promise<number | null> {
+  try {
+    const [row] = await sql()<{ seat: number | null }[]>`select public.claim_founder_seat(${userId}::uuid) as seat`;
+    return row?.seat ?? null;
+  } catch (e) {
+    // e.g. the founder migration isn't applied yet: no founder seat, everything else keeps working.
+    console.error('founder seat check failed', (e as Error).message);
+    return null;
+  }
 }
 
+const FOUNDER = (seat: number): EntitlementRow => ({ tier: 'pro', status: 'active', product_id: null, store: 'founder', expires_at: null, founder_seat: seat });
+
 /**
- * Current entitlement: a paid (RevenueCat-verified) subscription first, then developer test access,
- * then the optional launch phase.
+ * Current entitlement, decided on the server only. Order: Paid Pro (RevenueCat-verified store
+ * subscription) → Test Pro (PRO_TESTERS secret) → Founders Pro (stored founder seat). Duo Guest
+ * (a friend seat of a paying subscriber) is planned and not granted anywhere yet.
  */
 export async function currentEntitlement(userId: string, opts: { force?: boolean; maxAgeMs?: number } = {}): Promise<EntitlementRow> {
   const paid = await storeEntitlement(userId, opts);
   if (isProActive(paid)) return paid;
   if (isTester(userId)) return { tier: 'pro', status: 'active', product_id: null, store: 'test', expires_at: null };
-  return (await introAccess(userId)) ?? paid;
+  const seat = await founderSeat(userId);
+  return seat ? FOUNDER(seat) : paid;
 }
+
+/** Where Pro comes from. 'duo_guest' is reserved for the planned friend seat. */
+export type ProSource = 'store' | 'test' | 'founder' | 'duo_guest';
 
 export const publicEntitlement = (e: EntitlementRow) => ({
   tier: isProActive(e) ? 'pro' : 'free',
   status: e.status,
   expiresAt: e.expires_at,
   productId: e.product_id,
-  /** Where Pro comes from: a store subscription, developer test access or the launch phase. */
-  source: !isProActive(e) ? null : e.store === 'test' ? 'test' : e.store === 'intro' ? 'intro' : 'store',
+  /** Where Pro comes from: store subscription (Paid Pro), developer test access or a founder seat. */
+  source: (!isProActive(e) ? null : e.store === 'test' ? 'test' : e.store === 'founder' ? 'founder' : 'store') as ProSource | null,
+  /** Founder seat number (1..1000) when Pro comes from the Founders Edition. */
+  founderSeat: isProActive(e) && e.store === 'founder' ? (e.founder_seat ?? null) : null,
 });

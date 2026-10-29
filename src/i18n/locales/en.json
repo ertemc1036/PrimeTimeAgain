@@ -776,8 +776,19 @@
     "renews": "Active until {{date}}",
     "sourceTest": "Pro · Test access",
     "sourceTestBody": "This account is unlocked as a test account on the server. It is not a subscription and nothing is charged.",
-    "sourceIntro": "Pro · Launch phase",
-    "sourceIntroBody": "During the launch phase, Pro is free for the first users. Nothing is charged."
+    "sourceFounder": "Pro · Founder seat",
+    "sourceFounderSeat": "Pro · Founder seat #{{seat}}",
+    "sourceFounderBody": "You are one of the first Diet9 founders. Pro is free for you – no subscription, no payment details – and stays that way after all seats are taken.",
+    "founders": {
+      "title": "Founders Edition",
+      "counter": "{{taken}} of {{capacity}} free Pro seats taken.",
+      "full": "All {{capacity}} free founder seats are taken.",
+      "body": "The first {{capacity}} verified accounts get Diet9 Pro for free – no subscription, no payment details.",
+      "create": "Create free account",
+      "check": "Check founder seat",
+      "signedInHint": "Your seat is assigned as soon as your email address is confirmed.",
+      "notEligible": "No founder seat was assigned to this account. Please confirm your email address first or try again in a moment."
+    }
   },
   "coach": {
     "title": "AI Coach",

@@ -14,12 +14,13 @@ import { handler as deleteAccount } from '../functions/delete-account/handler.ts
 import { handler as entitlement } from '../functions/entitlement/handler.ts';
 import { handler as exportData } from '../functions/export/handler.ts';
 import { handler as foodScan } from '../functions/food-scan/handler.ts';
+import { handler as founders } from '../functions/founders/handler.ts';
 import { handler as webhook } from '../functions/revenuecat-webhook/handler.ts';
 import { handler as sync } from '../functions/sync/handler.ts';
 import { handler as workoutPhoto } from '../functions/workout-photo/handler.ts';
 
 const FUNCTIONS: Record<string, (req: Request) => Promise<Response>> = {
-  sync, export: exportData, entitlement, 'food-scan': foodScan, 'workout-photo': workoutPhoto, coach, 'revenuecat-webhook': webhook, 'delete-account': deleteAccount,
+  sync, export: exportData, entitlement, 'food-scan': foodScan, 'workout-photo': workoutPhoto, coach, 'revenuecat-webhook': webhook, 'delete-account': deleteAccount, founders,
 };
 const GOTRUE = Deno.env.get('GOTRUE_URL') ?? 'http://127.0.0.1:9999';
 const JWT_SECRET = Deno.env.get('JWT_SECRET') ?? '';
@@ -188,10 +189,9 @@ Deno.serve({ port: PORT, hostname: '127.0.0.1' }, async (req) => {
     if (p === '/mock/control' && req.method === 'POST') {
       const b = await req.json();
       if (b.scenario) scenario = b.scenario;
-      // Test-only: switch the AI provider and the Pro test allowlist of this local gateway.
+      // Test-only: switch the AI provider, the Pro test allowlist and the global AI limit of this local gateway.
       if (b.provider) Deno.env.set('AI_PROVIDER', b.provider);
       if (typeof b.testers === 'string') Deno.env.set('PRO_TESTERS', b.testers);
-      if (typeof b.intro === 'string') b.intro ? Deno.env.set('INTRO_PRO_FIRST_USERS', b.intro) : Deno.env.delete('INTRO_PRO_FIRST_USERS');
       if (typeof b.globalLimit === 'string') b.globalLimit ? Deno.env.set('AI_GLOBAL_DAILY_LIMIT', b.globalLimit) : Deno.env.delete('AI_GLOBAL_DAILY_LIMIT');
       if (b.subscriber) subscribers.set(b.subscriber.id, b.subscriber.data);
       if (b.reset) { anthropicCalls = 0; lastRequest = null; openaiCalls = 0; lastOpenAI = null; }

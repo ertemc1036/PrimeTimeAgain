@@ -48,7 +48,7 @@ export default function SettingsHub() {
         { label: t('profile.workoutHistory'), icon: 'barbell-outline', href: '/history/workouts' },
       ],
     },
-    { title: t('profile.premium'), rows: [{ label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'sparkles-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'intro' ? t('pro.sourceIntro') : undefined }] },
+    { title: t('profile.premium'), rows: [{ label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'sparkles-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'founder' ? t('pro.sourceFounder') : undefined }] },
     { title: t('profile.privacy'), rows: [{ label: t('privacy.title'), icon: 'shield-checkmark-outline', href: '/settings/privacy' }] },
     {
       title: t('profile.info'),

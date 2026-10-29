@@ -16,7 +16,7 @@ if [ -z "$REF" ]; then
   exit 1
 fi
 
-FUNCTIONS=(sync export entitlement food-scan workout-photo coach delete-account revenuecat-webhook)
+FUNCTIONS=(sync export entitlement food-scan workout-photo coach delete-account revenuecat-webhook founders)
 REQUIRED_SECRETS=(OPENAI_API_KEY)
 OPTIONAL_SECRETS=(PRO_TESTERS OPENAI_MODEL AI_GLOBAL_DAILY_LIMIT REVENUECAT_SECRET_KEY REVENUECAT_WEBHOOK_SECRET)
 

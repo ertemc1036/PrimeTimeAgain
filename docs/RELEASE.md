@@ -21,7 +21,7 @@ touches a live service, money or a store needs the owner's explicit go-ahead.
 | 10 | **Store listings** | Screenshots, description, App Privacy "nutrition label" / Data safety form (health and fitness data, photos, email, purchase history; no tracking, no ads), age rating, and sign-in details for App Review. | Submission |
 | 11 | **Data retention jobs** | Schedule `select public.purge_ai_usage();` daily (pg_cron) in the Supabase project. | Usage-log retention (30 days) |
 | 12 | **Pro test accounts** | Keep `PRO_TESTERS` limited to your own and App Review test accounts. Test access is server-side only and shows as "Pro · Test access" in the app. | Testing Pro without purchases |
-| 13 | **Launch phase and friend seat** | Decide the launch-phase rule (first 1,000 accounts free, how long) and the friend-seat model, and confirm them with App Review before turning them on. See [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md). Both are off / not built yet. | Pricing at launch |
+| 13 | **Founders Edition and friend seat** | Apply the founder migration (`20261030000000_founder_seats.sql`, see [LIVE_SETUP.md](LIVE_SETUP.md)) and turn on "Confirm email" in Supabase Auth. Describe the free founder seats in the App Review notes. Decide the Duo friend-seat model and confirm it with App Review before building it ([SUBSCRIPTIONS.md](SUBSCRIPTIONS.md)). | Free Pro for the first 1,000 accounts |
 
 ## Builds
 

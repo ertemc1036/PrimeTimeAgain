@@ -23,10 +23,16 @@ export interface ServerEntitlement {
   status: 'active' | 'grace_period' | 'billing_issue' | 'expired' | 'none';
   expiresAt: string | null;
   productId: string | null;
-  /** Where Pro comes from (server-decided): store subscription, developer test access or launch phase. */
+  /** Where Pro comes from (server-decided). */
   source?: ProSource | null;
+  /** Founder seat number when Pro comes from the Founders Edition. */
+  founderSeat?: number | null;
 }
-export type ProSource = 'store' | 'test' | 'intro';
+/**
+ * store = Paid Pro (subscription), test = Test Pro (authorised developer account),
+ * founder = Founders Pro (free founder seat), duo_guest = Duo Guest (planned friend seat).
+ */
+export type ProSource = 'store' | 'test' | 'founder' | 'duo_guest';
 
 export interface SyncRequest {
   cursor: number;

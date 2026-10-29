@@ -776,8 +776,19 @@
     "renews": "{{date}} tarihine kadar aktif",
     "sourceTest": "Pro · Test erişimi",
     "sourceTestBody": "Bu hesap sunucuda test hesabı olarak açıldı. Bir abonelik değildir ve ücret alınmaz.",
-    "sourceIntro": "Pro · Tanıtım dönemi",
-    "sourceIntroBody": "Tanıtım döneminde Pro ilk kullanıcılar için ücretsizdir. Ücret alınmaz."
+    "sourceFounder": "Pro · Kurucu yeri",
+    "sourceFounderSeat": "Pro · Kurucu yeri #{{seat}}",
+    "sourceFounderBody": "İlk Diet9 kurucularından birisin. Pro senin için ücretsiz – abonelik ve ödeme bilgisi yok – ve tüm yerler dolduktan sonra da öyle kalır.",
+    "founders": {
+      "title": "Founders Edition",
+      "counter": "{{capacity}} ücretsiz Pro yerinden {{taken}} tanesi verildi.",
+      "full": "{{capacity}} ücretsiz kurucu yerinin tamamı verildi.",
+      "body": "Onaylanmış ilk {{capacity}} hesap Diet9 Pro’yu ücretsiz alır – abonelik ve ödeme bilgisi olmadan.",
+      "create": "Ücretsiz hesap oluştur",
+      "check": "Kurucu yerini kontrol et",
+      "signedInHint": "Yerin, e-posta adresin onaylanır onaylanmaz verilir.",
+      "notEligible": "Bu hesaba kurucu yeri verilmedi. Lütfen önce e-posta adresini onayla veya birazdan tekrar dene."
+    }
   },
   "coach": {
     "title": "Yapay zekâ koçu",

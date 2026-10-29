@@ -130,6 +130,14 @@ Work through these in order with a fresh install.
 - [ ] Development build with RevenueCat sandbox: store prices are shown; buy, restore, cancel (Pro stays until the end of the period), and sign in on a second phone → Pro is there too.
 - [ ] With Pro and the AI key set up: scan a meal → editable results → save → Today shows the meal; the coach answers word by word.
 
+**Founders Edition** (after the founder migration and function deploy, see docs/LIVE_SETUP.md)
+- [ ] Your own account (already verified): Profile → Account shows "Pro · Founder seat #N" after "Sync Now" (or "Pro · Test access" while your id is in `PRO_TESTERS`, which takes precedence).
+- [ ] Pro screen: "Pro · Founder seat #N", no "Manage subscription", no price.
+- [ ] Sign out, open the paywall (Profile → Diet9 Pro): "X of 1,000 free Pro seats taken." with the same number as `select public.founder_seats_status();`, and "Create free account" instead of a subscription.
+- [ ] Create a second account with a real email: before entering the code there is no seat; after confirming the code the account shows "Pro · Founder seat #N+1" and the AI scanner works.
+- [ ] Airplane mode on the paywall: no counter is shown (no made-up numbers).
+- [ ] 3D avatar on Today and the AI scanner still work as before.
+
 **Pro test access and the real AI scanner** (needs the deployed Supabase project with `OPENAI_API_KEY`)
 - [ ] Profile → Account shows "Account ID". Tap "Share account ID" → copy it → `supabase secrets set PRO_TESTERS=<id>`.
 - [ ] Reopen the app (or tap "Sync now"): Account shows "Pro · Test access"; the Pro screen says it is test access, with no "Manage subscription" button.

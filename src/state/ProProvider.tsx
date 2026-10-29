@@ -14,14 +14,16 @@ interface ProValue {
   /** Status details for the account screen and paywall. */
   status: Entitlement['status'];
   expiresAt: string | null;
-  /** Where active Pro comes from: 'store' (subscription), 'test' (server allowlist) or 'intro' (launch phase). */
+  /** Where active Pro comes from (decided by the server; see ProSource). */
   access: ProSource | null;
+  /** Founder seat number for Founders Pro. */
+  founderSeat: number | null;
   /** Development builds only: open Pro screens without a subscription. Grants no AI access — the server decides. */
   devPreview: boolean;
   setDevPreview(v: boolean): void;
   canOpenPro: boolean;
-  /** Ask the server to re-check the subscription with RevenueCat (after purchase/restore). */
-  refresh(): Promise<void>;
+  /** Ask the server for the current entitlement (after purchase/restore, or to pick up a founder seat). */
+  refresh(): Promise<ServerEntitlement | null>;
   /** Apply the entitlement returned by a purchase or restore immediately. */
   setStoreEntitlement(e: Entitlement): void;
 }
@@ -54,9 +56,10 @@ export function ProProvider({ children }: { children: ReactNode }) {
 
   const refresh = useCallback(async () => {
     const sb = await getSupabase();
-    if (!sb || !userId) return;
+    if (!sb || !userId) return null;
     const { data } = await sb.functions.invoke<ServerEntitlement>('entitlement', { body: {} });
     if (data?.tier) setRefreshed({ uid: userId, e: data });
+    return data?.tier ? data : null;
   }, [userId]);
 
   const value = useMemo<ProValue>(() => {
@@ -69,6 +72,7 @@ export function ProProvider({ children }: { children: ReactNode }) {
       status: shown.status,
       expiresAt: shown.expiresAt ?? null,
       access: isProEntitlement(srv) ? (server?.source ?? 'store') : isProEntitlement(store) ? 'store' : null,
+      founderSeat: isProEntitlement(srv) && server?.source === 'founder' ? (server.founderSeat ?? null) : null,
       devPreview: preview,
       setDevPreview: (v) => setDevPreviewState(__DEV__ && v),
       canOpenPro: pro || preview,

@@ -117,7 +117,7 @@ export default function Account() {
       <Card style={styles.gap}>
         <AppText variant="bodyStrong">{t('common.pro')}</AppText>
         <AppText variant="caption" color="secondary">
-          {!pro.isPro ? t('profile.free') : pro.access === 'test' ? t('pro.sourceTest') : pro.access === 'intro' ? t('pro.sourceIntro') : t('profile.proActive')}
+          {!pro.isPro ? t('profile.free') : pro.access === 'test' ? t('pro.sourceTest') : pro.access === 'founder' ? (pro.founderSeat ? t('pro.sourceFounderSeat', { seat: pro.founderSeat }) : t('pro.sourceFounder')) : t('profile.proActive')}
         </AppText>
       </Card>
       <Card style={styles.gap}>

@@ -87,8 +87,10 @@ More: [`docs/BACKEND.md`](docs/BACKEND.md) (setup for accounts, AI and subscript
   `OPENAI_API_KEY` secret (OpenAI Responses API, default model `gpt-5.4-mini`; Anthropic remains
   as an alternative). The key never ships in the app. Without it, the app says the feature isn't
   set up. Scan results show confidence and are saved only after the user checks them.
-- **Subscriptions** (RevenueCat): €4.99 per month (provisional); launch phase and friend seat are
-  planned, see [`docs/SUBSCRIPTIONS.md`](docs/SUBSCRIPTIONS.md). Developer test access is a
+- **Founders Edition:** the first 1,000 verified accounts get Pro free for good (stored founder seat,
+  live counter on the paywall). **Subscriptions** (RevenueCat): Diet9 Duo €4.99 per month
+  (provisional) from account 1,001; the friend seat is planned. See
+  [`docs/SUBSCRIPTIONS.md`](docs/SUBSCRIPTIONS.md). Developer test access is a
   server-side allowlist (`PRO_TESTERS`). Pro on the server
   comes only from verified RevenueCat data. Purchases need a development or store build, not
   Expo Go. A developer-only "Pro preview" toggle exists in development builds; it grants no

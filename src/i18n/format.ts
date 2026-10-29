@@ -17,3 +17,5 @@ export const formatPercent = (ratio: number, locale: string): string => {
     return `${Math.round(ratio * 100)}%`;
   }
 };
+
+export const formatInteger = (n: number, locale: string): string => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(n);

@@ -80,7 +80,7 @@ mir die Ausgabe schicken.
 
 ```bash
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account --use-api
-supabase functions deploy revenuecat-webhook --no-verify-jwt --use-api
+supabase functions deploy revenuecat-webhook founders --no-verify-jwt --use-api
 ```
 
 Falls die App später trotz Anmeldung „Bitte anmelden“ meldet und die Function-Logs
@@ -155,6 +155,78 @@ Alternativ der budgetierte Testlauf mit 3 Fotos (bricht vor 0,20 USD ab):
 SUPABASE_URL=https://<REFERENCE ID>.supabase.co SUPABASE_ANON_KEY=<anon-Key> \
 TEST_EMAIL=<deine App-E-Mail> TEST_PASSWORD=<dein App-Passwort> \
 node scripts/ai/live-scan-test.mjs --confirm-paid essen1.jpg essen2.jpg essen3.jpg
+```
+
+## Update: Founders Edition (erste 1.000 bestätigte Konten = Pro kostenlos)
+
+Für ein Projekt, das schon läuft (Schritte 1–9 erledigt). Branch `claude/diet9-founders`.
+
+### A. Prüfen (nur lesen)
+
+```bash
+git fetch origin && git checkout claude/diet9-founders && git pull && npm ci
+bash scripts/supabase/check-live.sh
+```
+
+Im Abschnitt „dry run“ darf **nur** `20261030000000_founder_seats.sql` stehen.
+
+Im Supabase-Dashboard → SQL Editor (nur lesend):
+
+```sql
+select count(*) as konten,
+       count(*) filter (where email_confirmed_at is not null and not coalesce(is_anonymous, false)) as bestaetigt
+from auth.users;
+select to_regclass('public.founder_seats') as founder_tabelle;   -- muss leer (NULL) sein
+```
+
+„bestaetigt“ ist die Zahl der Konten, die beim Einspielen sofort einen Gründerplatz bekommen
+(in der Reihenfolge ihrer Bestätigung, höchstens 1.000).
+
+Dashboard → Authentication → Sign In / Providers → Email: **„Confirm email“ einschalten.** Sonst
+zählt jede Registrierung sofort als bestätigt. Dashboard → Database → Backups: Backup vorhanden?
+
+### B. ⚠️ Migration einspielen (produktive Änderung)
+
+```bash
+supabase db push
+```
+
+Kontrolle im SQL Editor:
+
+```sql
+select public.founder_seats_status();                         -- {"capacity":1000,"taken":<bestaetigt>}
+select seat_no, granted_at from public.founder_seats order by seat_no limit 5;
+```
+
+### C. ⚠️ Functions neu deployen (gemeinsamer Code hat sich geändert)
+
+```bash
+supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account --use-api
+supabase functions deploy revenuecat-webhook founders --no-verify-jwt --use-api
+curl -s https://<REFERENCE ID>.supabase.co/functions/v1/founders   # {"capacity":1000,"taken":…,"remaining":…}
+```
+
+Reihenfolge B vor C. Wenn C zuerst läuft, gibt es bis zur Migration nur keine Gründerplätze;
+sonst funktioniert alles weiter.
+
+### D. App
+
+```bash
+npx expo start --go --clear
+```
+
+Prüfpunkte: `docs/IPHONE_TESTING.md`, Abschnitt „Founders Edition“.
+
+### Founders Edition zurücknehmen (löscht alle vergebenen Plätze!)
+
+Nur nach Rücksprache. Im SQL Editor:
+
+```sql
+drop trigger if exists founder_seat_on_insert on auth.users;
+drop trigger if exists founder_seat_on_confirm on auth.users;
+drop function if exists public.founder_seat_on_verified(), public.founder_seats_status(), public.claim_founder_seat(uuid);
+drop table if exists public.founder_seats, public.founder_settings;
+delete from supabase_migrations.schema_migrations where version = '20261030000000';
 ```
 
 ## Rückgängig machen

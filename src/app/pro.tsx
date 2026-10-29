@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, Card, Icon, OptionCard, Screen, ToggleRow, useToast, type IconName } from '@/components/ui';
 import { PLACEHOLDER_PRICES } from '@/config/app';
+import { FounderCounter } from '@/features/founders/FounderCounter';
+import { useFounderStatus } from '@/features/founders/useFounderStatus';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
 import { loadPlans, manageSubscriptions, purchase, purchasesUnavailableReason, restore, type PlanId, type StorePlan } from '@/services/subscriptions/revenuecat';
@@ -30,6 +32,9 @@ export default function Paywall() {
   const [plans, setPlans] = useState<StorePlan[] | null>(null);
   const [busy, setBusy] = useState<null | 'buy' | 'restore'>(null);
   const unavailable = purchasesUnavailableReason();
+  const founders = useFounderStatus();
+  // While founder seats are left, new verified accounts get Pro free: no subscription is offered.
+  const seatsOpen = !!founders.status && founders.status.remaining > 0;
 
   useEffect(() => {
     if (!unavailable) void loadPlans(userId).then(setPlans);
@@ -67,13 +72,28 @@ export default function Paywall() {
     notify(t('pro.restore'), r.entitlement.tier === 'pro' ? t('pro.restored') : t('pro.nothingToRestore'));
   };
 
+  const checkSeat = async () => {
+    setBusy('buy');
+    const e = await pro.refresh();
+    await founders.reload();
+    setBusy(null);
+    if (!e) notify(t('pro.founders.title'), t('ai.offline'));
+    else if (e.tier !== 'pro') notify(t('pro.founders.title'), t('pro.founders.notEligible'));
+  };
+
   if (pro.isPro) {
     return (
       <Screen back="close" title={t('pro.isPro')} subtitle={t('pro.subtitle')}>
-        {pro.access === 'test' || pro.access === 'intro' ? (
+        {pro.access === 'founder' ? (
           <Card>
-            <AppText variant="bodyStrong">{pro.access === 'test' ? t('pro.sourceTest') : t('pro.sourceIntro')}</AppText>
-            <AppText variant="caption">{pro.access === 'test' ? t('pro.sourceTestBody') : t('pro.sourceIntroBody')}</AppText>
+            <AppText variant="bodyStrong">{pro.founderSeat ? t('pro.sourceFounderSeat', { seat: pro.founderSeat }) : t('pro.sourceFounder')}</AppText>
+            <AppText variant="caption">{t('pro.sourceFounderBody')}</AppText>
+          </Card>
+        ) : null}
+        {pro.access === 'test' ? (
+          <Card>
+            <AppText variant="bodyStrong">{t('pro.sourceTest')}</AppText>
+            <AppText variant="caption">{t('pro.sourceTestBody')}</AppText>
           </Card>
         ) : null}
         {pro.status === 'grace_period' ? (
@@ -100,11 +120,25 @@ export default function Paywall() {
       title={t('pro.title')}
       subtitle={t('pro.subtitle')}
       footer={
-        <>
-          <Button label={!userId && auth.configured && !unavailable ? t('auth.create') : t('pro.subscribe')} onPress={() => void buy()} loading={busy === 'buy'} />
-          <Button label={t('pro.restore')} variant="ghost" size="sm" onPress={() => void doRestore()} loading={busy === 'restore'} />
-        </>
+        seatsOpen ? (
+          userId ? (
+            <Button label={t('pro.founders.check')} onPress={() => void checkSeat()} loading={busy === 'buy'} />
+          ) : (
+            <Button label={t('pro.founders.create')} onPress={() => router.push('/auth/sign-up')} />
+          )
+        ) : (
+          <>
+            <Button label={!userId && auth.configured && !unavailable ? t('auth.create') : t('pro.subscribe')} onPress={() => void buy()} loading={busy === 'buy'} />
+            <Button label={t('pro.restore')} variant="ghost" size="sm" onPress={() => void doRestore()} loading={busy === 'restore'} />
+          </>
+        )
       }>
+      {founders.status ? <FounderCounter status={founders.status} /> : null}
+      {seatsOpen && userId ? (
+        <AppText variant="caption" color="secondary">
+          {t('pro.founders.signedInHint')}
+        </AppText>
+      ) : null}
       {BENEFITS.map((b) => (
         <View key={b.key} style={styles.benefit}>
           <View style={styles.icon}>
@@ -118,24 +152,28 @@ export default function Paywall() {
           </View>
         </View>
       ))}
-      <OptionCard title={t('pro.monthly')} subtitle={t('pro.perMonth', { price: price('monthly') })} selected={plan === 'monthly'} onPress={() => setPlan('monthly')} />
-      {/* A yearly plan is shown only once the store actually offers one. */}
-      {hasYearly ? <OptionCard title={t('pro.yearly')} subtitle={t('pro.perYear', { price: price('yearly') })} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} /> : null}
-      {pro.status === 'expired' || pro.status === 'billing_issue' ? (
-        <Card>
-          <AppText variant="body">{t('pro.expired')}</AppText>
-        </Card>
-      ) : null}
-      {unavailable || provisional || (!userId && auth.configured) ? (
-        <Card>
-          <AppText variant="caption">
-            {unavailable === 'not_supported' ? t('pro.storeUnavailable') : unavailable === 'not_configured' || provisional ? t('pro.notConfigured') : t('pro.signInFirst')}
+      {seatsOpen ? null : (
+        <>
+          <OptionCard title={t('pro.monthly')} subtitle={t('pro.perMonth', { price: price('monthly') })} selected={plan === 'monthly'} onPress={() => setPlan('monthly')} />
+          {/* A yearly plan is shown only once the store actually offers one. */}
+          {hasYearly ? <OptionCard title={t('pro.yearly')} subtitle={t('pro.perYear', { price: price('yearly') })} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} /> : null}
+          {pro.status === 'expired' || pro.status === 'billing_issue' ? (
+            <Card>
+              <AppText variant="body">{t('pro.expired')}</AppText>
+            </Card>
+          ) : null}
+          {unavailable || provisional || (!userId && auth.configured) ? (
+            <Card>
+              <AppText variant="caption">
+                {unavailable === 'not_supported' ? t('pro.storeUnavailable') : unavailable === 'not_configured' || provisional ? t('pro.notConfigured') : t('pro.signInFirst')}
+              </AppText>
+            </Card>
+          ) : null}
+          <AppText variant="caption" color="secondary">
+            {t('pro.cancelInfo')}
           </AppText>
-        </Card>
-      ) : null}
-      <AppText variant="caption" color="secondary">
-        {t('pro.cancelInfo')}
-      </AppText>
+        </>
+      )}
       <AppText variant="caption" color="secondary">
         {t('pro.noGuarantee')}
       </AppText>

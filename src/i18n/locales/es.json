@@ -782,8 +782,19 @@
     "renews": "Activa hasta el {{date}}",
     "sourceTest": "Pro · Acceso de prueba",
     "sourceTestBody": "Esta cuenta está habilitada como cuenta de prueba en el servidor. No es una suscripción y no se cobra nada.",
-    "sourceIntro": "Pro · Fase de lanzamiento",
-    "sourceIntroBody": "Durante la fase de lanzamiento, Pro es gratis para los primeros usuarios. No se cobra nada."
+    "sourceFounder": "Pro · Plaza de fundador",
+    "sourceFounderSeat": "Pro · Plaza de fundador n.º {{seat}}",
+    "sourceFounderBody": "Eres uno de los primeros fundadores de Diet9. Pro es gratis para ti – sin suscripción ni datos de pago – y lo seguirá siendo cuando se agoten las plazas.",
+    "founders": {
+      "title": "Founders Edition",
+      "counter": "{{taken}} de {{capacity}} plazas Pro gratuitas asignadas.",
+      "full": "Las {{capacity}} plazas de fundador gratuitas están asignadas.",
+      "body": "Las primeras {{capacity}} cuentas verificadas reciben Diet9 Pro gratis – sin suscripción ni datos de pago.",
+      "create": "Crear cuenta gratuita",
+      "check": "Comprobar plaza de fundador",
+      "signedInHint": "Tu plaza se asigna en cuanto confirmes tu dirección de correo.",
+      "notEligible": "No se ha asignado ninguna plaza de fundador a esta cuenta. Confirma primero tu correo o vuelve a intentarlo en un momento."
+    }
   },
   "coach": {
     "title": "Coach de IA",
