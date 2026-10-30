@@ -111,11 +111,31 @@ If the functions are deployed before the migration, founder checks simply find n
 "founder seat check failed"); nothing else breaks. Details and App Store notes:
 [`SUBSCRIPTIONS.md`](SUBSCRIPTIONS.md).
 
+### Sign-in methods and proven identities
+
+- **Email/password** and **Sign in with Apple** (native sheet, `expo-apple-authentication` →
+  `signInWithIdToken`; raw nonce to Supabase, its SHA-256 to Apple). Signed-in users can link Apple
+  to their account (`linkIdentity` with the ID token).
+- "Confirm email" is a Supabase Auth setting. With it off, Supabase marks new accounts confirmed at
+  once, so `email_confirmed_at` proves nothing. Migration `20261031000000_identity_proofs.sql`
+  therefore records real proofs in `public.identity_proofs`:
+  - `apple` – an Apple identity was created (trigger on `auth.identities`);
+  - `email_code` – a session started with an emailed code (`otp`, `recovery`, `magiclink`,
+    `email/signup` in `auth.mfa_amr_claims`), or a required confirmation was completed;
+  - `email_confirmed` – existing accounts that went through the confirmation (backfill).
+- **Founder seats** need a proof (`claim_founder_seat`). Password sign-ups alone get none.
+- **Link guard:** Supabase links an Apple ID automatically to an account with the same email. A
+  trigger refuses attaching any non-email identity to an email/password account whose email isn't
+  proven (`diet9_link_requires_verified_email`), so a stranger can't pre-register someone's address
+  and later receive their Apple login. The app asks for the email code first.
+- `entitlement` / `sync` return `identityVerified`; the app shows "Confirm email" only when needed.
+- The "Magic Link" email template must show `{{ .Token }}` (`supabase/templates/magiclink.html`).
+
 ## Deploy (owner, after approval)
 
 ```bash
 supabase link --project-ref <ref>
-supabase db push                                   # supabase/migrations/20261026000000_minus30_init.sql
+supabase db push                                   # all files in supabase/migrations, in order
 supabase secrets set OPENAI_API_KEY=… REVENUECAT_SECRET_KEY=… REVENUECAT_WEBHOOK_SECRET=…
 supabase secrets set PRO_TESTERS=<your account id>      # optional: your own Pro test access
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account

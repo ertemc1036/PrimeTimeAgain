@@ -783,11 +783,12 @@
       "title": "Founders Edition",
       "counter": "{{taken}} of {{capacity}} free Pro seats taken.",
       "full": "All {{capacity}} free founder seats are taken.",
-      "body": "The first {{capacity}} verified accounts get Diet9 Pro for free – no subscription, no payment details.",
+      "body": "The first {{capacity}} verified accounts get Diet9 Pro for free – no subscription, no payment details. Verified means: signed in with Apple or email confirmed with a code.",
       "create": "Create free account",
       "check": "Check founder seat",
-      "signedInHint": "Your seat is assigned as soon as your email address is confirmed.",
-      "notEligible": "No founder seat was assigned to this account. Please confirm your email address first or try again in a moment."
+      "signedInHint": "Confirm your email address with a code (or sign in with Apple) to secure your free founder seat.",
+      "notEligible": "No founder seat was assigned to this account. Please confirm your email address first or try again in a moment.",
+      "confirmCta": "Confirm email and secure seat"
     }
   },
   "coach": {
@@ -899,8 +900,31 @@
       "invalid_code": "That code is wrong or has expired. Request a new one.",
       "rate_limited": "Too many attempts. Please wait a moment and try again.",
       "offline": "You're offline. Please check your connection.",
-      "unknown": "Something went wrong. Please try again."
-    }
+      "unknown": "Something went wrong. Please try again.",
+      "cancelled": "Sign-in cancelled.",
+      "apple_unavailable": "Sign in with Apple isn’t available on this device.",
+      "apple_failed": "Signing in with Apple didn’t work. Please try again.",
+      "apple_linked_elsewhere": "This Apple ID already belongs to another Diet9 account. Sign in there with Apple.",
+      "apple_account_exists": "Signing in with Apple wasn’t possible. Do you already have a Diet9 account with this email? Then sign in with email, confirm it under Profile → Account and link Apple there. Otherwise please try again later."
+    },
+    "orEmail": "or with email",
+    "appleHint": "Already have a Diet9 account with email? Sign in with email and link Apple afterwards under Profile → Account. That keeps everything in one account.",
+    "appleNew": "New Diet9 account created with Apple.",
+    "confirmEmailTitle": "Confirm email",
+    "confirmEmailBody": "We’ll send a 6-digit code to {{email}}. It confirms that the address is yours, secures your founder seat and protects your account.",
+    "confirmEmailSent": "Code sent to {{email}}.",
+    "confirmEmailDone": "Email confirmed.",
+    "later": "Later",
+    "methodsTitle": "Sign-in methods",
+    "methodEmail": "Email and password",
+    "methodApple": "Apple",
+    "linked": "linked",
+    "linkApple": "Link Apple",
+    "appleLinked": "Apple is now linked to your account.",
+    "emailVerified": "Email confirmed",
+    "emailNotVerified": "Email not confirmed yet",
+    "confirmEmailCta": "Confirm email",
+    "linkNeedsEmail": "Confirm your email address first. Apple is linked right after."
   },
   "sync": {
     "title": "Cloud sync",

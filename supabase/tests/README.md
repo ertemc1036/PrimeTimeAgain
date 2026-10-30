@@ -21,6 +21,7 @@ psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/tests/bootstrap.sql
 psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261026000000_minus30_init.sql
 # after GoTrue has created auth.users (auth migrate):
 psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261030000000_founder_seats.sql
+psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261031000000_identity_proofs.sql
 
 # Keys: one HS256 secret; anon / service_role JWTs signed with it (role claim "anon" / "service_role")
 export JWT_SECRET=… ANON_KEY=… SERVICE_ROLE_KEY=…
@@ -36,6 +37,7 @@ GOTRUE_MAILER_AUTOCONFIRM=true          # false to test the email-code confirmat
 GOTRUE_SMTP_HOST=127.0.0.1  GOTRUE_SMTP_PORT=2500  GOTRUE_PASSWORD_MIN_LENGTH=8
 GOTRUE_MAILER_TEMPLATES_RECOVERY=http://127.0.0.1:54321/templates/recovery.html
 GOTRUE_MAILER_TEMPLATES_CONFIRMATION=http://127.0.0.1:54321/templates/confirmation.html
+GOTRUE_MAILER_TEMPLATES_MAGIC_LINK=http://127.0.0.1:54321/templates/magiclink.html
 ```
 
 Gateway (run from `supabase/functions` so `deno.json` applies):
@@ -78,6 +80,8 @@ M30_CLOUD_URL=http://127.0.0.1:54321 M30_CLOUD_ANON_KEY=… npx jest src/sync/cl
 - Founders Edition: verified vs. unverified/anonymous accounts, accounts 999/1000/1001, 25 parallel
   sign-ups and 60 simultaneous confirmations, double claims, table/function permissions for
   `anon`/`authenticated`, account deletion, the public counter, and the order Paid → Test → Founders;
+- proven identities: password sign-ups get no seat, email codes (login and reset) and Apple
+  identities do, and Apple can't be linked to an email account whose address isn't proven;
 - coach streaming;
 - storage folder isolation;
 - account deletion.

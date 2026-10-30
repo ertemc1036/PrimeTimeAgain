@@ -789,11 +789,12 @@
       "title": "Founders Edition",
       "counter": "{{taken}} de {{capacity}} plazas Pro gratuitas asignadas.",
       "full": "Las {{capacity}} plazas de fundador gratuitas están asignadas.",
-      "body": "Las primeras {{capacity}} cuentas verificadas reciben Diet9 Pro gratis – sin suscripción ni datos de pago.",
+      "body": "Las primeras {{capacity}} cuentas verificadas reciben Diet9 Pro gratis – sin suscripción ni datos de pago. Verificada significa: con Apple o con el correo confirmado mediante un código.",
       "create": "Crear cuenta gratuita",
       "check": "Comprobar plaza de fundador",
-      "signedInHint": "Tu plaza se asigna en cuanto confirmes tu dirección de correo.",
-      "notEligible": "No se ha asignado ninguna plaza de fundador a esta cuenta. Confirma primero tu correo o vuelve a intentarlo en un momento."
+      "signedInHint": "Confirma tu dirección de correo con un código (o inicia sesión con Apple) para asegurar tu plaza de fundador gratuita.",
+      "notEligible": "No se ha asignado ninguna plaza de fundador a esta cuenta. Confirma primero tu correo o vuelve a intentarlo en un momento.",
+      "confirmCta": "Confirmar correo y asegurar plaza"
     }
   },
   "coach": {
@@ -905,8 +906,31 @@
       "invalid_code": "El código no es correcto o ha caducado. Solicita uno nuevo.",
       "rate_limited": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
       "offline": "No tienes conexión. Comprueba tu conexión.",
-      "unknown": "Algo ha salido mal. Inténtalo de nuevo."
-    }
+      "unknown": "Algo ha salido mal. Inténtalo de nuevo.",
+      "cancelled": "Inicio de sesión cancelado.",
+      "apple_unavailable": "Iniciar sesión con Apple no está disponible en este dispositivo.",
+      "apple_failed": "No se pudo iniciar sesión con Apple. Inténtalo de nuevo.",
+      "apple_linked_elsewhere": "Este ID de Apple ya pertenece a otra cuenta de Diet9. Inicia sesión allí con Apple.",
+      "apple_account_exists": "No se pudo iniciar sesión con Apple. ¿Ya tienes una cuenta de Diet9 con este correo? Entonces inicia sesión con correo, confírmalo en Perfil → Cuenta y vincula Apple allí. Si no, inténtalo más tarde."
+    },
+    "orEmail": "o con correo",
+    "appleHint": "¿Ya tienes una cuenta de Diet9 con correo? Inicia sesión con correo y vincula Apple después en Perfil → Cuenta. Así todo queda en una sola cuenta.",
+    "appleNew": "Nueva cuenta de Diet9 creada con Apple.",
+    "confirmEmailTitle": "Confirmar correo",
+    "confirmEmailBody": "Enviaremos un código de 6 dígitos a {{email}}. Confirma que la dirección es tuya, asegura tu plaza de fundador y protege tu cuenta.",
+    "confirmEmailSent": "Código enviado a {{email}}.",
+    "confirmEmailDone": "Correo confirmado.",
+    "later": "Más tarde",
+    "methodsTitle": "Métodos de inicio de sesión",
+    "methodEmail": "Correo y contraseña",
+    "methodApple": "Apple",
+    "linked": "vinculado",
+    "linkApple": "Vincular Apple",
+    "appleLinked": "Apple ya está vinculado a tu cuenta.",
+    "emailVerified": "Correo confirmado",
+    "emailNotVerified": "Correo aún sin confirmar",
+    "confirmEmailCta": "Confirmar correo",
+    "linkNeedsEmail": "Confirma primero tu dirección de correo. Después se vincula Apple."
   },
   "sync": {
     "title": "Sincronización en la nube",

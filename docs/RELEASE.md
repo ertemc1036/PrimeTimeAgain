@@ -22,6 +22,7 @@ touches a live service, money or a store needs the owner's explicit go-ahead.
 | 11 | **Data retention jobs** | Schedule `select public.purge_ai_usage();` daily (pg_cron) in the Supabase project. | Usage-log retention (30 days) |
 | 12 | **Pro test accounts** | Keep `PRO_TESTERS` limited to your own and App Review test accounts. Test access is server-side only and shows as "Pro · Test access" in the app. | Testing Pro without purchases |
 | 13 | **Founders Edition and friend seat** | Apply the founder migration (`20261030000000_founder_seats.sql`, see [LIVE_SETUP.md](LIVE_SETUP.md)) and turn on "Confirm email" in Supabase Auth. Describe the free founder seats in the App Review notes. Decide the Duo friend-seat model and confirm it with App Review before building it ([SUBSCRIPTIONS.md](SUBSCRIPTIONS.md)). | Free Pro for the first 1,000 accounts |
+| 14 | **Sign in with Apple** | Enable the capability for `com.minus30.app`, set the Apple provider in Supabase (client ID `com.minus30.app`; remove `host.exp.Exponent` after Expo Go testing), Magic Link template with code. **Before the App Store release:** Apple requires apps with Sign in with Apple to revoke the user's Apple tokens when an account is deleted (REST API `auth/revoke`, needs a Sign in with Apple key). `delete-account` doesn't do that yet. | Apple login, App Review |
 
 ## Builds
 

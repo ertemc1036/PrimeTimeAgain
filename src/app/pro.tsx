@@ -122,7 +122,11 @@ export default function Paywall() {
       footer={
         seatsOpen ? (
           userId ? (
-            <Button label={t('pro.founders.check')} onPress={() => void checkSeat()} loading={busy === 'buy'} />
+            pro.identityVerified === false ? (
+              <Button label={t('pro.founders.confirmCta')} onPress={() => router.push('/auth/confirm-email')} />
+            ) : (
+              <Button label={t('pro.founders.check')} onPress={() => void checkSeat()} loading={busy === 'buy'} />
+            )
           ) : (
             <Button label={t('pro.founders.create')} onPress={() => router.push('/auth/sign-up')} />
           )

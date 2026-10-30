@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Card, AppText, Screen, TextField, useToast } from '@/components/ui';
+import { AppleSignIn } from '@/features/auth/AppleSignIn';
 import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
 import { authAvailable, signIn, validEmail, type AuthErrorCode } from '@/services/auth';
 
@@ -46,6 +47,7 @@ export default function SignIn() {
           <AppText variant="body">{t('auth.errors.not_configured')}</AppText>
         </Card>
       ) : null}
+      <AppleSignIn type="signIn" onError={setError} onSignedIn={closeAuth} />
       <TextField label={t('auth.email')} value={email} onChangeText={setEmail} autoCapitalize="none" autoComplete="email" keyboardType="email-address" textContentType="emailAddress" />
       <TextField label={t('auth.password')} value={password} onChangeText={setPassword} secureTextEntry autoComplete="current-password" textContentType="password" onSubmitEditing={() => void submit()} />
       <AuthError code={error} />

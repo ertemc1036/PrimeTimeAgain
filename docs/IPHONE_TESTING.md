@@ -130,6 +130,15 @@ Work through these in order with a fresh install.
 - [ ] Development build with RevenueCat sandbox: store prices are shown; buy, restore, cancel (Pro stays until the end of the period), and sign in on a second phone → Pro is there too.
 - [ ] With Pro and the AI key set up: scan a meal → editable results → save → Today shows the meal; the coach answers word by word.
 
+**Sign in with Apple** (after the setup in docs/LIVE_SETUP.md, "Sign in with Apple")
+- [ ] Signed out → Profile → Account → Sign In: "Sign in with Apple" button at the top. Tap → Face ID sheet → signed in; data syncs as with email.
+- [ ] Cancel the Face ID sheet: no error message, nothing changes.
+- [ ] New Apple ID with "Hide My Email": a new account is created ("New Diet9 account created with Apple"), Account shows the sign-in method Apple, and (while founder seats are left) "Pro · Founder seat #N".
+- [ ] Existing email account: sign in with email → Profile → Account → "Link Apple" (if the email isn't confirmed yet, the code screen comes first) → afterwards "Sign in with Apple" opens the same account with all data.
+- [ ] Apple ID already linked elsewhere → clear message, nothing changes.
+- [ ] With "Confirm email" off: sign up with email → you are signed in at once; the optional "Confirm email" screen appears while founder seats are left; "Later" keeps the account without a seat; confirming the code gives the seat.
+- [ ] 3D avatar, AI scanner and Pro work as before.
+
 **Founders Edition** (after the founder migration and function deploy, see docs/LIVE_SETUP.md)
 - [ ] Your own account (already verified): Profile → Account shows "Pro · Founder seat #N" after "Sync Now" (or "Pro · Test access" while your id is in `PRO_TESTERS`, which takes precedence).
 - [ ] Pro screen: "Pro · Founder seat #N", no "Manage subscription", no price.

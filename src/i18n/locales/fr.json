@@ -789,11 +789,12 @@
       "title": "Founders Edition",
       "counter": "{{taken}} places Pro gratuites attribuées sur {{capacity}}.",
       "full": "Les {{capacity}} places fondateur gratuites sont toutes attribuées.",
-      "body": "Les {{capacity}} premiers comptes vérifiés reçoivent Diet9 Pro gratuitement – sans abonnement ni coordonnées de paiement.",
+      "body": "Les {{capacity}} premiers comptes vérifiés reçoivent Diet9 Pro gratuitement – sans abonnement ni coordonnées de paiement. Vérifié signifie : connecté avec Apple ou e-mail confirmé par un code.",
       "create": "Créer un compte gratuit",
       "check": "Vérifier ma place fondateur",
-      "signedInHint": "Ta place est attribuée dès que ton adresse e-mail est confirmée.",
-      "notEligible": "Aucune place fondateur n'a été attribuée à ce compte. Confirme d'abord ton adresse e-mail ou réessaie dans un instant."
+      "signedInHint": "Confirme ton adresse e-mail avec un code (ou connecte-toi avec Apple) pour réserver ta place fondateur gratuite.",
+      "notEligible": "Aucune place fondateur n'a été attribuée à ce compte. Confirme d'abord ton adresse e-mail ou réessaie dans un instant.",
+      "confirmCta": "Confirmer l’e-mail et réserver ma place"
     }
   },
   "coach": {
@@ -905,8 +906,31 @@
       "invalid_code": "Ce code est incorrect ou a expiré. Demande-en un nouveau.",
       "rate_limited": "Trop de tentatives. Patiente un instant puis réessaie.",
       "offline": "Tu es hors ligne. Vérifie ta connexion.",
-      "unknown": "Un problème est survenu. Réessaie."
-    }
+      "unknown": "Un problème est survenu. Réessaie.",
+      "cancelled": "Connexion annulée.",
+      "apple_unavailable": "Se connecter avec Apple n’est pas disponible sur cet appareil.",
+      "apple_failed": "La connexion avec Apple n’a pas fonctionné. Réessaie.",
+      "apple_linked_elsewhere": "Cet identifiant Apple appartient déjà à un autre compte Diet9. Connecte-toi à ce compte avec Apple.",
+      "apple_account_exists": "La connexion avec Apple n’a pas été possible. Tu as déjà un compte Diet9 avec cet e-mail ? Connecte-toi alors avec l’e-mail, confirme-le dans Profil → Compte et associe Apple à cet endroit. Sinon, réessaie plus tard."
+    },
+    "orEmail": "ou avec l’e-mail",
+    "appleHint": "Tu as déjà un compte Diet9 avec e-mail ? Connecte-toi avec l’e-mail et associe Apple ensuite dans Profil → Compte. Tout reste ainsi dans un seul compte.",
+    "appleNew": "Nouveau compte Diet9 créé avec Apple.",
+    "confirmEmailTitle": "Confirmer l’e-mail",
+    "confirmEmailBody": "Nous envoyons un code à 6 chiffres à {{email}}. Il confirme que l’adresse t’appartient, garantit ta place fondateur et protège ton compte.",
+    "confirmEmailSent": "Code envoyé à {{email}}.",
+    "confirmEmailDone": "E-mail confirmé.",
+    "later": "Plus tard",
+    "methodsTitle": "Méthodes de connexion",
+    "methodEmail": "E-mail et mot de passe",
+    "methodApple": "Apple",
+    "linked": "associé",
+    "linkApple": "Associer Apple",
+    "appleLinked": "Apple est maintenant associé à ton compte.",
+    "emailVerified": "E-mail confirmé",
+    "emailNotVerified": "E-mail pas encore confirmé",
+    "confirmEmailCta": "Confirmer l’e-mail",
+    "linkNeedsEmail": "Confirme d’abord ton adresse e-mail. Apple est associé juste après."
   },
   "sync": {
     "title": "Synchronisation cloud",

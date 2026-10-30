@@ -1,6 +1,6 @@
 import { verifyUser } from '../_shared/auth.ts';
 import { asUser } from '../_shared/db.ts';
-import { currentEntitlement, publicEntitlement } from '../_shared/entitlement.ts';
+import { accountEntitlement } from '../_shared/entitlement.ts';
 import { error, json, preflight, readJson } from '../_shared/http.ts';
 import { applyChange, pull, type Change, type ChangeResult, type RemoteRecord } from '../_shared/records.ts';
 
@@ -38,7 +38,7 @@ export async function handler(req: Request): Promise<Response> {
       const next = page.records.length ? page.records[page.records.length - 1].seq : cursor;
       return { results, winners, records: page.records, cursor: next, more: page.more };
     });
-    const entitlement = publicEntitlement(await currentEntitlement(user.id));
+    const entitlement = await accountEntitlement(user.id);
     return json({ ...out, entitlement });
   } catch (e) {
     console.error('sync failed', (e as Error).message);

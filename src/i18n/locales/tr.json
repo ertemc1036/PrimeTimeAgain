@@ -783,11 +783,12 @@
       "title": "Founders Edition",
       "counter": "{{capacity}} ücretsiz Pro yerinden {{taken}} tanesi verildi.",
       "full": "{{capacity}} ücretsiz kurucu yerinin tamamı verildi.",
-      "body": "Onaylanmış ilk {{capacity}} hesap Diet9 Pro’yu ücretsiz alır – abonelik ve ödeme bilgisi olmadan.",
+      "body": "Onaylanmış ilk {{capacity}} hesap Diet9 Pro’yu ücretsiz alır – abonelik ve ödeme bilgisi olmadan. Onaylı demek: Apple ile giriş yapılmış ya da e-posta kodla onaylanmış.",
       "create": "Ücretsiz hesap oluştur",
       "check": "Kurucu yerini kontrol et",
-      "signedInHint": "Yerin, e-posta adresin onaylanır onaylanmaz verilir.",
-      "notEligible": "Bu hesaba kurucu yeri verilmedi. Lütfen önce e-posta adresini onayla veya birazdan tekrar dene."
+      "signedInHint": "Ücretsiz kurucu yerini almak için e-posta adresini bir kodla onayla (veya Apple ile giriş yap).",
+      "notEligible": "Bu hesaba kurucu yeri verilmedi. Lütfen önce e-posta adresini onayla veya birazdan tekrar dene.",
+      "confirmCta": "E-postayı onayla ve yerini al"
     }
   },
   "coach": {
@@ -899,8 +900,31 @@
       "invalid_code": "Kod yanlış veya süresi dolmuş. Yeni bir kod iste.",
       "rate_limited": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar dene.",
       "offline": "Çevrimdışısın. Lütfen bağlantını kontrol et.",
-      "unknown": "Bir şeyler ters gitti. Lütfen tekrar dene."
-    }
+      "unknown": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+      "cancelled": "Giriş iptal edildi.",
+      "apple_unavailable": "Apple ile Giriş bu cihazda kullanılamıyor.",
+      "apple_failed": "Apple ile giriş başarısız oldu. Lütfen tekrar dene.",
+      "apple_linked_elsewhere": "Bu Apple kimliği zaten başka bir Diet9 hesabına ait. Orada Apple ile giriş yap.",
+      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-postayla zaten bir Diet9 hesabın var mı? O zaman e-postayla giriş yap, Profil → Hesap altında onayla ve Apple’ı orada bağla. Aksi halde daha sonra tekrar dene."
+    },
+    "orEmail": "veya e-postayla",
+    "appleHint": "E-postayla zaten bir Diet9 hesabın var mı? E-postayla giriş yap ve Apple’ı sonra Profil → Hesap altında bağla. Böylece her şey tek hesapta kalır.",
+    "appleNew": "Apple ile yeni bir Diet9 hesabı oluşturuldu.",
+    "confirmEmailTitle": "E-postayı onayla",
+    "confirmEmailBody": "{{email}} adresine 6 haneli bir kod göndereceğiz. Adresin sana ait olduğunu onaylar, kurucu yerini güvenceye alır ve hesabını korur.",
+    "confirmEmailSent": "Kod {{email}} adresine gönderildi.",
+    "confirmEmailDone": "E-posta onaylandı.",
+    "later": "Daha sonra",
+    "methodsTitle": "Giriş yöntemleri",
+    "methodEmail": "E-posta ve şifre",
+    "methodApple": "Apple",
+    "linked": "bağlı",
+    "linkApple": "Apple’ı bağla",
+    "appleLinked": "Apple artık hesabına bağlı.",
+    "emailVerified": "E-posta onaylandı",
+    "emailNotVerified": "E-posta henüz onaylanmadı",
+    "confirmEmailCta": "E-postayı onayla",
+    "linkNeedsEmail": "Önce e-posta adresini onayla. Ardından Apple bağlanır."
   },
   "sync": {
     "title": "Bulut senkronizasyonu",

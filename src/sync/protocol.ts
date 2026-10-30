@@ -27,6 +27,8 @@ export interface ServerEntitlement {
   source?: ProSource | null;
   /** Founder seat number when Pro comes from the Founders Edition. */
   founderSeat?: number | null;
+  /** The account's identity is proven (Sign in with Apple, or email confirmed with a code). */
+  identityVerified?: boolean;
 }
 /**
  * store = Paid Pro (subscription), test = Test Pro (authorised developer account),

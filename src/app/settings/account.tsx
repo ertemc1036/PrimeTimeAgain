@@ -1,11 +1,13 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Share, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, Card, Icon, Screen, useToast } from '@/components/ui';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
+import { appleAvailable, linkApple } from '@/services/appleAuth';
+import { signInMethods } from '@/services/auth';
 import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
 import { useSync } from '@/state/SyncProvider';
@@ -19,7 +21,40 @@ export default function Account() {
   const auth = useAuth();
   const sync = useSync();
   const pro = usePro();
-  const [busy, setBusy] = useState<null | 'signout' | 'delete' | 'sync'>(null);
+  const [busy, setBusy] = useState<null | 'signout' | 'delete' | 'sync' | 'apple'>(null);
+  const [methods, setMethods] = useState<string[] | null>(null);
+  const [canApple, setCanApple] = useState(false);
+  const signedIn = auth.status === 'signedIn';
+
+  // Sign-in methods of this account (reloaded when coming back, e.g. after confirming the email).
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+      if (signedIn) {
+        void signInMethods().then((r) => active && r.ok && setMethods(r.value));
+        void appleAvailable().then((v) => active && setCanApple(v));
+      }
+      return () => {
+        active = false;
+      };
+    }, [signedIn]),
+  );
+
+  const addApple = async () => {
+    // Apple can only be attached to an email account whose address is proven (server rule).
+    if (methods?.includes('email') && pro.identityVerified === false) return router.push({ pathname: '/auth/confirm-email', params: { next: 'link-apple' } });
+    setBusy('apple');
+    const r = await linkApple();
+    setBusy(null);
+    if (!r.ok) {
+      if (r.error !== 'cancelled') notify(t('auth.linkApple'), t(`auth.errors.${r.error}`));
+      return;
+    }
+    toast(t('auth.appleLinked'), 'checkmark-circle-outline');
+    const m = await signInMethods();
+    if (m.ok) setMethods(m.value);
+    await pro.refresh();
+  };
 
   const signOut = async () => {
     if (!(await confirm({ title: t('account.signOutTitle'), message: t('account.signOutBody'), confirmLabel: t('account.signOut'), cancelLabel: t('common.cancel') }))) return;
@@ -120,6 +155,32 @@ export default function Account() {
           {!pro.isPro ? t('profile.free') : pro.access === 'test' ? t('pro.sourceTest') : pro.access === 'founder' ? (pro.founderSeat ? t('pro.sourceFounderSeat', { seat: pro.founderSeat }) : t('pro.sourceFounder')) : t('profile.proActive')}
         </AppText>
       </Card>
+      {methods ? (
+        <Card style={styles.gap}>
+          <AppText variant="bodyStrong">{t('auth.methodsTitle')}</AppText>
+          {methods.includes('email') ? (
+            <View style={styles.method}>
+              <AppText variant="body">{t('auth.methodEmail')}</AppText>
+              <AppText variant="caption" color="secondary">
+                {pro.identityVerified === false ? t('auth.emailNotVerified') : pro.identityVerified ? t('auth.emailVerified') : ''}
+              </AppText>
+            </View>
+          ) : null}
+          {methods.includes('email') && pro.identityVerified === false ? (
+            <Button label={t('auth.confirmEmailCta')} size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/auth/confirm-email')} />
+          ) : null}
+          {methods.includes('apple') ? (
+            <View style={styles.method}>
+              <AppText variant="body">{t('auth.methodApple')}</AppText>
+              <AppText variant="caption" color="secondary">
+                {t('auth.linked')}
+              </AppText>
+            </View>
+          ) : canApple ? (
+            <Button label={t('auth.linkApple')} size="sm" variant="secondary" fullWidth={false} icon="logo-apple" onPress={() => void addApple()} loading={busy === 'apple'} />
+          ) : null}
+        </Card>
+      ) : null}
       <Card style={styles.gap}>
         <AppText variant="bodyStrong">{t('account.id')}</AppText>
         <AppText variant="caption" selectable testID="account-id">
@@ -143,4 +204,5 @@ const styles = StyleSheet.create({
   gap: { gap: spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   flex: { flex: 1, gap: 2 },
+  method: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: spacing.sm },
 });

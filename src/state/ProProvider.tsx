@@ -18,6 +18,8 @@ interface ProValue {
   access: ProSource | null;
   /** Founder seat number for Founders Pro. */
   founderSeat: number | null;
+  /** Server view: is the account's identity proven? null = not known yet (offline, signed out). */
+  identityVerified: boolean | null;
   /** Development builds only: open Pro screens without a subscription. Grants no AI access — the server decides. */
   devPreview: boolean;
   setDevPreview(v: boolean): void;
@@ -73,6 +75,7 @@ export function ProProvider({ children }: { children: ReactNode }) {
       expiresAt: shown.expiresAt ?? null,
       access: isProEntitlement(srv) ? (server?.source ?? 'store') : isProEntitlement(store) ? 'store' : null,
       founderSeat: isProEntitlement(srv) && server?.source === 'founder' ? (server.founderSeat ?? null) : null,
+      identityVerified: typeof server?.identityVerified === 'boolean' ? server.identityVerified : null,
       devPreview: preview,
       setDevPreview: (v) => setDevPreviewState(__DEV__ && v),
       canOpenPro: pro || preview,

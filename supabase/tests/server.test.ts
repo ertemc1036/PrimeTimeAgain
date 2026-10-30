@@ -43,11 +43,44 @@ const founderCapacity = (n: number) => DB`update public.founder_settings set cap
 const seatOf = async (userId: string) => (await DB`select seat_no from public.founder_seats where user_id = ${userId}`)[0]?.seat_no ?? null;
 /** An account row created directly in the database (like Supabase Auth does), verified or not. */
 async function rawUser(tag: string, opts: { confirmed: boolean; anonymous?: boolean }) {
-  const [u] = await DB`insert into auth.users (instance_id, id, aud, role, email, email_confirmed_at, is_anonymous, created_at, updated_at)
+  // Unconfirmed = a confirmation email was sent and not confirmed yet.
+  const [u] = await DB`insert into auth.users (instance_id, id, aud, role, email, email_confirmed_at, confirmation_sent_at, is_anonymous, created_at, updated_at)
     values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', ${`${tag}-${crypto.randomUUID().slice(0, 8)}@raw.test`},
-      ${opts.confirmed ? new Date() : null}, ${opts.anonymous ?? false}, now(), now()) returning id`;
+      ${opts.confirmed ? new Date() : null}, ${opts.confirmed ? null : new Date()}, ${opts.anonymous ?? false}, now(), now()) returning id`;
   return u.id as string;
 }
+
+/** The 6-digit code of the newest email to this address (local mail catcher). */
+async function mailCode(email: string, after = 0): Promise<string> {
+  if (!MAIL_DIR) throw new Error('MAIL_DIR not set');
+  for (let i = 0; i < 60; i++) {
+    let best: { t: number; code: string } | null = null;
+    for (const f of Deno.readDirSync(MAIL_DIR)) {
+      if (!f.name.includes(email.replace('@', '_at_'))) continue;
+      const t = Number(f.name.split('_')[0]);
+      if (t <= after || (best && best.t > t)) continue;
+      const code = Deno.readTextFileSync(`${MAIL_DIR}/${f.name}`).replace(/=\r?\n/g, '').match(/>(\d{6})</)?.[1];
+      if (code) best = { t, code };
+    }
+    if (best) return best.code;
+    await new Promise((r) => setTimeout(r, 250));
+  }
+  throw new Error(`no code mailed to ${email}`);
+}
+/** Prove the account's email with an emailed login code, like the app's "confirm email" screen. */
+async function proveEmail(u: { email: string }) {
+  const c = client();
+  const sent = Date.now() - 1000;
+  const r = await c.auth.signInWithOtp({ email: u.email, options: { shouldCreateUser: false } });
+  if (r.error) throw r.error;
+  const v = await c.auth.verifyOtp({ email: u.email, token: await mailCode(u.email, sent), type: 'email' });
+  if (v.error) throw v.error;
+  return v.data.session!.access_token;
+}
+/** An extra sign-in identity, as Supabase Auth stores it after Sign in with Apple. */
+const addIdentity = (userId: string, provider: string) =>
+  DB`insert into auth.identities (provider_id, user_id, identity_data, provider, created_at, updated_at)
+    values (${crypto.randomUUID()}, ${userId}, ${DB.json({ sub: userId, email: `${provider}-${userId.slice(0, 8)}@privaterelay.appleid.com` })}, ${provider}, now(), now())`;
 
 Deno.test({ name: 'setup: no founder seats for the general tests', ...opts, async fn() {
   await founderCapacity(0);
@@ -337,8 +370,12 @@ Deno.test({ name: 'Founders: verified accounts get a stored free seat; unverifie
     await DB`update auth.users set email_confirmed_at = now() where id = ${pending}`;
     assertEquals(await seatOf(pending), 1, 'seat handed out when the email is confirmed');
 
-    const f = await newUser('founder'); // sign-up through Supabase Auth (auto-confirm locally)
-    assertEquals(await seatOf(f.id), 2);
+    const f = await newUser('founder'); // sign-up without email confirmation (like "Confirm email" off)
+    assertEquals(await seatOf(f.id), null, 'a password sign-up alone proves nothing');
+    assertEquals((await callJson('entitlement', f.token)).body.identityVerified, false);
+    await proveEmail(f);
+    assertEquals(await seatOf(f.id), 2, 'seat once the email is confirmed with a code');
+    assertEquals((await callJson('entitlement', f.token)).body.identityVerified, true);
     const ent = await callJson('entitlement', f.token);
     assertEquals([ent.body.tier, ent.body.source, ent.body.founderSeat], ['pro', 'founder', 2]);
     assertEquals((await callJson('sync', f.token)).body.entitlement.source, 'founder');
@@ -395,6 +432,7 @@ Deno.test({ name: 'Founders: accounts 999, 1000 and 1001; founders keep Pro once
     const u999 = await newUser('seat999');
     const u1000 = await newUser('seat1000');
     const u1001 = await newUser('seat1001');
+    for (const u of [u999, u1000, u1001]) await proveEmail(u);
     assertEquals(await seatOf(u999.id), 999);
     assertEquals(await seatOf(u1000.id), 1000);
     assertEquals(await seatOf(u1001.id), null, 'account 1001 gets no founder seat');
@@ -416,6 +454,8 @@ Deno.test({ name: 'Founders: parallel sign-ups never exceed the seats or double-
   await founderCapacity(1000);
   try {
     const users = await Promise.all(Array.from({ length: 25 }, (_, i) => newUser(`race${i}`)));
+    assertEquals((await Promise.all(users.map((u) => seatOf(u.id)))).filter((x) => x !== null).length, 0, 'mass sign-ups without proof get no seats');
+    await Promise.all(users.map((u) => proveEmail(u)));
     const seats = (await Promise.all(users.map((u) => seatOf(u.id)))).filter((s) => s !== null) as number[];
     assertEquals(seats.length, 10, `exactly the 10 remaining seats: ${seats}`);
     assertEquals(new Set(seats).size, 10);
@@ -444,6 +484,7 @@ Deno.test({ name: 'Founders: parallel sign-ups never exceed the seats or double-
     // A verification trigger that was missed is caught up by the entitlement check (same rules).
     await DB`delete from public.founder_seats where seat_no = 1000`;
     const late = await newUser('late');
+    await proveEmail(late);
     await DB`delete from public.founder_seats where user_id = ${late.id}`;
     assertEquals(await seatOf(late.id), null);
     const ent = await callJson('entitlement', late.token);
@@ -458,6 +499,7 @@ Deno.test({ name: 'Pro sources: paid before test before founder', ...opts, async
   await founderCapacity(1000);
   try {
     const u = await newUser('sources');
+    await proveEmail(u);
     assertEquals((await callJson('entitlement', u.token)).body.source, 'founder');
     await control({ testers: u.id });
     assertEquals((await callJson('entitlement', u.token)).body.source, 'test');
@@ -467,6 +509,60 @@ Deno.test({ name: 'Pro sources: paid before test before founder', ...opts, async
     assertEquals([paid.body.source, paid.body.founderSeat], ['store', null]);
   } finally {
     await control({ testers: '' });
+    await founderCapacity(0);
+  }
+}});
+
+Deno.test({ name: 'Identity: Apple sign-ups and code-confirmed emails are proven; linking needs a proven email', ...opts, async fn() {
+  await DB`delete from public.founder_seats`;
+  await founderCapacity(1000);
+  try {
+    // New account created by Sign in with Apple (no email identity): proven at once, seat.
+    const apple = await rawUser('apple', { confirmed: true });
+    await addIdentity(apple, 'apple');
+    assertEquals((await DB`select method from public.identity_proofs where user_id = ${apple}`)[0]?.method, 'apple');
+    assertEquals(await seatOf(apple), 1);
+
+    // Mass sign-ups with made-up addresses: no proof, no seat.
+    const bots = await Promise.all(Array.from({ length: 15 }, (_, i) => newUser(`bot${i}`)));
+    assertEquals((await DB`select count(*)::int as n from public.identity_proofs where user_id = any(${bots.map((b) => b.id)})`)[0].n, 0);
+    assertEquals((await DB`select count(*)::int as n from public.founder_seats`)[0].n, 1);
+
+    // Pre-registered email account (password only, never confirmed): Apple must not be linked to it.
+    const victim = await newUser('prehijack');
+    let blocked = '';
+    try {
+      await addIdentity(victim.id, 'apple');
+    } catch (e) {
+      blocked = (e as Error).message;
+    }
+    assert(blocked.includes('diet9_link_requires_verified_email'), `link blocked: ${blocked}`);
+    assertEquals((await DB`select count(*)::int as n from auth.identities where user_id = ${victim.id} and provider = 'apple'`)[0].n, 0);
+
+    // Once the email is confirmed with a code, linking works (and keeps the same account).
+    await proveEmail(victim);
+    await addIdentity(victim.id, 'apple');
+    assertEquals((await DB`select provider from auth.identities where user_id = ${victim.id} order by provider`).map((r) => r.provider), ['apple', 'email']);
+    assertEquals(await seatOf(victim.id), 2);
+
+    // A password reset code proves the email too.
+    const reset = await newUser('resetproof');
+    const sent = Date.now() - 1000;
+    await client().auth.resetPasswordForEmail(reset.email);
+    const v = await client().auth.verifyOtp({ email: reset.email, token: await mailCode(reset.email, sent), type: 'recovery' });
+    assertEquals(v.error, null);
+    assertEquals((await DB`select method from public.identity_proofs where user_id = ${reset.id}`)[0]?.method, 'email_code');
+
+    // Proof recording never blocks a login, even if the founder part fails.
+    const robust = await newUser('robust');
+    await DB`alter function public.claim_founder_seat(uuid) rename to claim_founder_seat_off`;
+    try {
+      await proveEmail(robust);
+    } finally {
+      await DB`alter function public.claim_founder_seat_off(uuid) rename to claim_founder_seat`;
+    }
+    assertEquals((await callJson('entitlement', robust.token)).body.source, 'founder', 'seat caught up by the next entitlement check');
+  } finally {
     await founderCapacity(0);
   }
 }});

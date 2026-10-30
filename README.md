@@ -78,8 +78,8 @@ More: [`docs/BACKEND.md`](docs/BACKEND.md) (setup for accounts, AI and subscript
 
 ## Accounts, sync and Pro
 
-- **Accounts and cloud sync** (Supabase): optional. Sign up, sign in, password reset with an
-  emailed code, backup and sync across devices (offline queue, deterministic conflicts, no
+- **Accounts and cloud sync** (Supabase): optional. Sign in with Apple (iOS) or email; sign up,
+  sign in, password reset with an emailed code, backup and sync across devices (offline queue, deterministic conflicts, no
   duplicates), merging local data on first sign-in, cloud export and account deletion. Needs a
   Supabase project with the migration and Edge Functions deployed. See
   [`docs/BACKEND.md`](docs/BACKEND.md).

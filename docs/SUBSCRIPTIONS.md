@@ -25,8 +25,9 @@ Paid Pro; the founder seat stays stored.
 
 ### Founders Edition rules
 
-- **Verified** = email confirmed and not an anonymous session. Turn on "Confirm email" in Supabase
-  Auth; without it every sign-up counts as verified immediately.
+- **Verified** = Sign in with Apple, or the email confirmed with an emailed code (not anonymous).
+  A password sign-up alone doesn't count, so the seats stay protected when "Confirm email" is
+  turned off (`public.identity_proofs`, migration `20261031000000_identity_proofs.sql`).
 - **Counter:** `founders` Edge Function (public, counts only) → the paywall shows
   "742 of 1,000 free Pro seats taken." straight from the database. When the server can't be
   reached, no number is shown.

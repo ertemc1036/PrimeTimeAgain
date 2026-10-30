@@ -5,8 +5,10 @@ import { env, isSupabaseConfigured } from '@/config/env';
 import { getSupabase } from './supabase/client';
 
 /**
- * Email/password accounts through Supabase Auth. Codes (6 digits) are used for email confirmation
- * and password reset, so no deep links are needed on the phone.
+ * Accounts through Supabase Auth: email/password and Sign in with Apple (services/appleAuth.ts).
+ * Codes (6 digits) are used for email confirmation and password reset, so no deep links are needed
+ * on the phone. Whether sign-up needs a confirmation code is a Supabase setting ("Confirm email");
+ * the app handles both.
  */
 export type AuthErrorCode =
   | 'not_configured'
@@ -18,6 +20,11 @@ export type AuthErrorCode =
   | 'invalid_code'
   | 'rate_limited'
   | 'offline'
+  | 'cancelled'
+  | 'apple_unavailable'
+  | 'apple_failed'
+  | 'apple_linked_elsewhere'
+  | 'apple_account_exists'
   | 'unknown';
 
 export type AuthResult<T = void> = { ok: true; value: T } | { ok: false; error: AuthErrorCode };
@@ -77,6 +84,24 @@ export const confirmSignUp = (email: string, code: string) =>
   run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'signup' })).data.session);
 
 export const resendSignUpCode = (email: string) => run(async (sb) => void check(await sb.auth.resend({ type: 'signup', email: email.trim().toLowerCase() })));
+
+/**
+ * Prove the signed-in account's email with an emailed 6-digit code (Supabase "Magic Link" email
+ * with {{ .Token }}). The server records the proof; it unlocks a founder seat and linking Apple.
+ */
+export const sendEmailCode = (email: string) =>
+  run(async (sb) => void check(await sb.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { shouldCreateUser: false } })));
+
+export const verifyEmailCode = (email: string, code: string) =>
+  run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'email' })).data.session);
+
+/** Sign-in methods of the signed-in account, e.g. ['email', 'apple']. */
+export const signInMethods = () =>
+  run(async (sb) => {
+    const { data, error } = await sb.auth.getUserIdentities();
+    if (error) throw error;
+    return (data?.identities ?? []).map((i) => i.provider);
+  });
 
 export const requestPasswordReset = (email: string) => run(async (sb) => void check(await sb.auth.resetPasswordForEmail(email.trim().toLowerCase())));
 

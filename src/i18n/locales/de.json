@@ -783,11 +783,12 @@
       "title": "Founders Edition",
       "counter": "{{taken}} von {{capacity}} kostenlosen Pro-Plätzen vergeben.",
       "full": "Alle {{capacity}} kostenlosen Gründerplätze sind vergeben.",
-      "body": "Die ersten {{capacity}} bestätigten Konten erhalten Diet9 Pro kostenlos – ohne Abo und ohne Zahlungsdaten.",
+      "body": "Die ersten {{capacity}} bestätigten Konten erhalten Diet9 Pro kostenlos – ohne Abo und ohne Zahlungsdaten. Bestätigt heißt: mit Apple angemeldet oder E-Mail per Code bestätigt.",
       "create": "Kostenloses Konto erstellen",
       "check": "Gründerplatz prüfen",
-      "signedInHint": "Dein Platz wird vergeben, sobald deine E-Mail-Adresse bestätigt ist.",
-      "notEligible": "Für dieses Konto wurde kein Gründerplatz vergeben. Bitte bestätige zuerst deine E-Mail-Adresse oder versuche es gleich noch einmal."
+      "signedInHint": "Bestätige deine E-Mail-Adresse mit einem Code (oder melde dich mit Apple an), um deinen kostenlosen Gründerplatz zu sichern.",
+      "notEligible": "Für dieses Konto wurde kein Gründerplatz vergeben. Bitte bestätige zuerst deine E-Mail-Adresse oder versuche es gleich noch einmal.",
+      "confirmCta": "E-Mail bestätigen und Platz sichern"
     }
   },
   "coach": {
@@ -899,8 +900,31 @@
       "invalid_code": "Der Code ist falsch oder abgelaufen. Fordere einen neuen an.",
       "rate_limited": "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
       "offline": "Du bist offline. Bitte prüfe deine Verbindung.",
-      "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
-    }
+      "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "cancelled": "Anmeldung abgebrochen.",
+      "apple_unavailable": "Sign in with Apple ist auf diesem Gerät nicht verfügbar.",
+      "apple_failed": "Die Anmeldung mit Apple hat nicht geklappt. Bitte versuche es erneut.",
+      "apple_linked_elsewhere": "Diese Apple-ID gehört bereits zu einem anderen Diet9-Konto. Melde dich dort mit Apple an.",
+      "apple_account_exists": "Die Anmeldung mit Apple war nicht möglich. Hast du schon ein Diet9-Konto mit dieser E-Mail? Dann melde dich mit E-Mail an, bestätige sie unter Profil → Konto und verknüpfe dort Apple. Sonst versuche es später erneut."
+    },
+    "orEmail": "oder mit E-Mail",
+    "appleHint": "Schon ein Diet9-Konto mit E-Mail? Melde dich mit E-Mail an und verknüpfe Apple danach unter Profil → Konto. So bleibt alles in einem Konto.",
+    "appleNew": "Neues Diet9-Konto mit Apple erstellt.",
+    "confirmEmailTitle": "E-Mail bestätigen",
+    "confirmEmailBody": "Wir senden einen 6-stelligen Code an {{email}}. Damit bestätigst du, dass die Adresse dir gehört. Das sichert deinen Gründerplatz und schützt dein Konto.",
+    "confirmEmailSent": "Code an {{email}} gesendet.",
+    "confirmEmailDone": "E-Mail bestätigt.",
+    "later": "Später",
+    "methodsTitle": "Anmeldemethoden",
+    "methodEmail": "E-Mail und Passwort",
+    "methodApple": "Apple",
+    "linked": "verknüpft",
+    "linkApple": "Mit Apple verknüpfen",
+    "appleLinked": "Apple ist jetzt mit deinem Konto verknüpft.",
+    "emailVerified": "E-Mail bestätigt",
+    "emailNotVerified": "E-Mail noch nicht bestätigt",
+    "confirmEmailCta": "E-Mail bestätigen",
+    "linkNeedsEmail": "Bestätige zuerst deine E-Mail-Adresse. Danach wird Apple verknüpft."
   },
   "sync": {
     "title": "Cloud-Synchronisierung",

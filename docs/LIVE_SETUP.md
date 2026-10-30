@@ -229,6 +229,84 @@ drop table if exists public.founder_seats, public.founder_settings;
 delete from supabase_migrations.schema_migrations where version = '20261030000000';
 ```
 
+## Update: Sign in with Apple und Registrierung ohne Bestätigungs-E-Mail
+
+Branch `claude/diet9-apple-signin`. Bundle ID der App (aus `app.json`): **`com.minus30.app`**.
+Reihenfolge einhalten: erst Migration und Functions, **zuletzt** „Confirm email“ ausschalten.
+
+### A. Prüfen (nur lesen)
+
+```bash
+git fetch origin && git checkout claude/diet9-apple-signin && git pull && npm ci
+bash scripts/supabase/check-live.sh
+```
+
+Im Probelauf stehen `20261031000000_identity_proofs.sql` (und, falls noch nicht eingespielt,
+`20261030000000_founder_seats.sql`).
+
+### B. ⚠️ Migration einspielen – solange „Confirm email“ noch AN ist
+
+```bash
+supabase db push
+```
+
+Bestehende Konten, die die bisherige Bestätigung durchlaufen haben, gelten danach als bestätigt;
+Gründerplätze bleiben unverändert. Kontrolle im SQL Editor:
+
+```sql
+select method, count(*) from public.identity_proofs group by method;
+select public.founder_seats_status();
+```
+
+### C. ⚠️ Functions neu deployen
+
+```bash
+supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account --use-api
+supabase functions deploy revenuecat-webhook founders --no-verify-jwt --use-api
+```
+
+### D. Apple Developer (developer.apple.com → Certificates, Identifiers & Profiles)
+
+1. **Identifiers** → App ID **`com.minus30.app`** öffnen (falls es fehlt: „+“ → App IDs → App →
+   Bundle ID explicit `com.minus30.app`).
+2. Unter **Capabilities** „**Sign In with Apple**“ anhaken → „Edit“ → „Enable as a primary App ID“
+   → Save.
+3. Für die native Anmeldung in der App ist **kein** Services ID und **kein** Schlüssel nötig
+   (die braucht nur eine Web-Anmeldung). EAS übernimmt die Capability beim nächsten Build
+   automatisch (`ios.usesAppleSignIn` ist gesetzt).
+
+### E. Supabase-Dashboard
+
+1. **Authentication → Sign In / Providers → Apple**: aktivieren.
+   **Client IDs**: `com.minus30.app,host.exp.Exponent`
+   - `com.minus30.app` = deine App (TestFlight / App Store).
+   - `host.exp.Exponent` = Expo Go. Apple stellt das Token in Expo Go für Expo Go aus, nicht für
+     deine Bundle ID (laut Expo-Dokumentation; die Doku war von hier aus nicht erreichbar). Zeigt die
+     Anmeldung „Unacceptable audience“, fehlt genau dieser Eintrag. Vor dem Release wieder entfernen.
+   - „Secret Key (for OAuth)“ bleibt leer: nur für die Web-Anmeldung nötig.
+2. **Authentication → Emails → Templates → Magic Link**: Inhalt ersetzen durch den Inhalt von
+   `supabase/templates/magiclink.html` (zeigt den 6-stelligen Code `{{ .Token }}`). Damit
+   funktioniert „E-Mail bestätigen“ in der App.
+3. **Authentication → Rate Limits**: Anmeldungen/Registrierungen pro IP niedrig halten
+   (Standardwerte sind ok). Für echte E-Mail-Mengen eigenen SMTP-Versand einrichten
+   (Authentication → Emails → SMTP), der eingebaute Versand ist stark begrenzt.
+4. **Erst jetzt**: **Authentication → Sign In / Providers → Email → „Confirm email“ ausschalten.**
+   Neue E-Mail-Konten sind dann sofort angemeldet. Gründerplätze gibt es weiterhin nur mit
+   Apple-Anmeldung oder per Code bestätigter E-Mail (Schutz vor Massenregistrierungen).
+
+### F. App testen (Expo Go)
+
+```bash
+npx expo start --go --clear
+```
+
+Prüfpunkte: `docs/IPHONE_TESTING.md`, Abschnitt „Sign in with Apple“.
+
+### Sign in with Apple zurücknehmen
+
+App: Branch wechseln. Supabase: Apple-Provider ausschalten, „Confirm email“ wieder einschalten.
+Die Identitäts-Migration kann bleiben (sie schadet ohne Apple nicht).
+
 ## Rückgängig machen
 
 - Testzugang beenden: `supabase secrets unset PRO_TESTERS`

@@ -162,3 +162,21 @@ export const publicEntitlement = (e: EntitlementRow) => ({
   /** Founder seat number (1..1000) when Pro comes from the Founders Edition. */
   founderSeat: isProActive(e) && e.store === 'founder' ? (e.founder_seat ?? null) : null,
 });
+
+/** Proven identity (Sign in with Apple, or email confirmed with a code); false if unknown. */
+export async function identityProven(userId: string): Promise<boolean> {
+  try {
+    const [row] = await sql()<{ proven: boolean }[]>`select public.identity_proven(${userId}::uuid) as proven`;
+    return row?.proven === true;
+  } catch (e) {
+    // e.g. the identity migration isn't applied yet
+    console.error('identity proof check failed', (e as Error).message);
+    return false;
+  }
+}
+
+/** What the app gets: the public entitlement plus whether the account's identity is proven. */
+export async function accountEntitlement(userId: string, opts: { force?: boolean } = {}) {
+  const [e, verified] = await Promise.all([currentEntitlement(userId, opts), identityProven(userId)]);
+  return { ...publicEntitlement(e), identityVerified: verified };
+}
