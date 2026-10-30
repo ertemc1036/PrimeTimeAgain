@@ -95,12 +95,15 @@ export const sendEmailCode = (email: string) =>
 export const verifyEmailCode = (email: string, code: string) =>
   run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'email' })).data.session);
 
-/** Sign-in methods of the signed-in account, e.g. ['email', 'apple']. */
+/**
+ * Sign-in methods of the signed-in account, e.g. ['email', 'apple'], from the stored session (no
+ * network call: a server check with an expired session would sign the user out as a side effect).
+ * Linking Apple stores an updated session, so the list stays current.
+ */
 export const signInMethods = () =>
   run(async (sb) => {
-    const { data, error } = await sb.auth.getUserIdentities();
-    if (error) throw error;
-    return (data?.identities ?? []).map((i) => i.provider);
+    const { data } = await sb.auth.getSession();
+    return (data.session?.user.identities ?? []).map((i) => i.provider);
   });
 
 export const requestPasswordReset = (email: string) => run(async (sb) => void check(await sb.auth.resetPasswordForEmail(email.trim().toLowerCase())));
