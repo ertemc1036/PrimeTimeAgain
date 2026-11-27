@@ -639,6 +639,27 @@ Deno.test({ name: 'Sync accepts water, Prime Memory and the action log, and vali
   assertEquals(pulled.body.records.filter((r: { collection: string }) => ['water', 'memory', 'primeAction'].includes(r.collection)).length, 0, 'other accounts never see them');
 }});
 
+Deno.test({ name: 'Order-safe deployment: a database without the PrimeMe migration rejects only the new rows, sync keeps working', ...opts, async fn() {
+  const u = await newUser('premigration');
+  const at = new Date().toISOString();
+  try {
+    // Old constraint for new rows only (rows from other tests may already use the new collections).
+    await DB`alter table public.user_records drop constraint user_records_collection_check`;
+    await DB.unsafe(`alter table public.user_records add constraint user_records_collection_check check (collection in ('profile','plan','food','foodDone','activity','rest','weight','photo','savedMeal','customFood','settings','achievement','coach')) not valid`);
+    await DB`alter function public.identity_proven(uuid) rename to identity_proven_off`;
+    const res = await callJson('sync', u.token, { cursor: 0, changes: [change('water', 'w1', { id: 'w1', date: '2026-11-27', ml: 250, at, source: 'manual', createdAt: at }, at), change('weight', 'k1', { id: 'k1', date: '2026-11-27', kg: 80, createdAt: at, updatedAt: at }, at)] });
+    assertEquals(res.status, 200, 'the sync itself keeps working');
+    assertEquals(res.body.results.map((r: { status: string }) => r.status), ['invalid', 'applied']);
+    assertEquals('identityVerified' in res.body.entitlement, false, 'unknown identity state is not reported as "not confirmed"');
+  } finally {
+    // restore the full schema (checked at the end of this test)
+    if ((await DB`select 1 from pg_proc where proname = 'identity_proven_off'`).length) await DB`alter function public.identity_proven_off(uuid) rename to identity_proven`;
+    await DB`alter table public.user_records drop constraint if exists user_records_collection_check`;
+    await DB.unsafe(`alter table public.user_records add constraint user_records_collection_check check (collection in ('profile','plan','food','foodDone','activity','rest','weight','photo','savedMeal','customFood','settings','achievement','coach','water','memory','primeAction'))`);
+  }
+  assertEquals((await DB`select proname from pg_proc where proname like 'identity_proven%'`).map((r) => r.proname), ['identity_proven'], 'schema restored');
+}});
+
 Deno.test({ name: 'coach streams replies and only sends consented context', ...opts, async fn() {
   const u = await newUser('coach');
   await proSubscriber(u.id, future(30));

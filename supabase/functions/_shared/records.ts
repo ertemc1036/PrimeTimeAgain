@@ -129,6 +129,9 @@ export async function applyChange(tx: Tx, userId: string, c: Change): Promise<{ 
     const [current] = await tx<Row[]>`select collection, id, data, deleted, updated_at, server_seq from public.user_records where user_id = ${userId} and collection = ${c.collection} and id = ${c.id}`;
     return { result: { collection: c.collection, id: c.id, status: 'stale' }, winner: current ? toRemote(current) : undefined };
   } catch (e) {
+    // The database refused the row (e.g. a collection a not yet migrated database doesn't allow):
+    // report this one change as invalid instead of failing the whole sync. The device keeps it.
+    if ((e as { code?: string }).code === '23514') return { result: { collection: c.collection, id: c.id, status: 'invalid', reason: 'rejected' } };
     if ((e as { code?: string }).code === '23505' && c.collection === 'activity' && c.data) {
       const d = c.data;
       const [existing] = await tx<Row[]>`
