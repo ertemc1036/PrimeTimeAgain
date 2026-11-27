@@ -1,4 +1,5 @@
 import { canEditCheckIns, canEditPlan } from './completion';
+import { consentRecord, hasHealthConsent, patchWithoutHealthData, withoutHealthData } from './consent';
 import { isDuplicateWorkout } from './validation';
 import type {
   ActivityLog,
@@ -52,6 +53,8 @@ export type Mutation =
   | { type: 'addCoachMessage'; message: CoachMessage }
   | { type: 'clearCoach' }
   | { type: 'setCoachConsent'; value: boolean }
+  /** Grant or refuse/withdraw the health-data consent; refusing deletes all health data. */
+  | { type: 'setHealthConsent'; granted: boolean; at: string }
   | { type: 'deleteAllFood' }
   | { type: 'deleteAllActivity' }
   /** Cloud copy of a photo was uploaded (metadata only; allowed for any date). */
@@ -69,7 +72,7 @@ export type Mutation =
   /** State of one suggested action inside a Prime message (pending → applied / dismissed / undone). */
   | { type: 'setMessageAction'; messageId: string; index: number; state: ProposedActionState };
 
-export type RejectReason = 'locked' | 'duplicate' | 'notFound' | 'empty';
+export type RejectReason = 'locked' | 'duplicate' | 'notFound' | 'empty' | 'consent';
 export class MutationRejected extends Error {
   constructor(public reason: RejectReason) {
     super(reason);
@@ -100,9 +103,19 @@ export function applyMutation(data: AppData, m: Mutation, today: ISODate): AppDa
     case 'replaceAll':
       return m.data;
     case 'completeOnboarding':
-      return { ...data, profile: m.profile, journey: m.journey, notifications: m.notifications };
-    case 'updateProfile':
-      return data.profile ? { ...data, profile: { ...data.profile, ...m.patch } } : data;
+      return { ...data, profile: hasHealthConsent(m.profile) ? m.profile : withoutHealthData(m.profile), journey: m.journey, notifications: m.notifications };
+    case 'updateProfile': {
+      if (!data.profile) return data;
+      const next = { ...data.profile, ...m.patch };
+      // Without a current health-data consent, health fields are never stored (data minimisation).
+      return { ...data, profile: hasHealthConsent(next) ? next : { ...data.profile, ...patchWithoutHealthData(m.patch) } };
+    }
+    case 'setHealthConsent': {
+      if (!data.profile) return data;
+      const record = consentRecord(m.granted, m.at);
+      if (m.granted) return { ...data, profile: { ...data.profile, healthConsent: record } };
+      return { ...data, profile: { ...withoutHealthData(data.profile), healthConsent: record }, weights: [] };
+    }
     case 'savePlan':
       if (!canEditPlan(m.plan.date, today)) throw new MutationRejected('locked');
       return { ...data, plans: { ...data.plans, [m.plan.date]: m.plan } };
@@ -141,6 +154,7 @@ export function applyMutation(data: AppData, m: Mutation, today: ISODate): AppDa
       requireCheckInWindow(m.date);
       return { ...data, recoveryLogs: omit(data.recoveryLogs, m.date) };
     case 'upsertWeight':
+      if (data.profile && !hasHealthConsent(data.profile)) throw new MutationRejected('consent');
       return { ...data, weights: upsertById(data.weights, m.entry).sort((a, b) => (a.date < b.date ? -1 : 1)) };
     case 'deleteWeight':
       return { ...data, weights: data.weights.filter((w) => w.id !== m.id) };

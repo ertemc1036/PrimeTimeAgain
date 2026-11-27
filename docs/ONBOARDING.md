@@ -8,6 +8,7 @@ Code: `src/features/onboarding/flow/`, eine Route: `src/app/(onboarding)/welcome
 | --- | --- | --- | --- |
 | 1 | Welcome | 01 | Echte PrimeMe-Screens im Phone-Mockup, als „Beispielansicht“ gekennzeichnet; Sprache, Anmelden |
 | 2 | Name | – | für Prime und das Profil (nötig) |
+| 2a | Einwilligung Gesundheitsdaten | – | gesondert, nicht vorausgewählt; „Ohne Gesundheitsangaben fortfahren“ überspringt alle Gesundheitsfragen (siehe [HEALTH_CONSENT.md](HEALTH_CONSENT.md)) |
 | 3 | Körperangabe für die Berechnung | 02 | weiblich / männlich / nicht angeben; erklärt, dass es nicht um Identität geht; ohne Angabe **kein** Kalorienrahmen |
 | 4 | Workouts pro Woche | 03 | bisherige Aktivität, keine Vorgabe |
 | 5 | Geburtsdatum | 04 | Wheel-Picker, Reihenfolge je Sprache; unter 18 → Hinweisseite; gespeichert wird nur das Geburtsjahr |

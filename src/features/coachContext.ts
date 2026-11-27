@@ -1,6 +1,7 @@
 import { dayChecks, journeyStats } from '@/domain/completion';
 import { addDays } from '@/domain/dates';
 import { journeyPosition, MONTH_KEYS } from '@/domain/journey';
+import { hasHealthConsent } from '@/domain/consent';
 import { totals } from '@/domain/nutrition';
 import type { AppData, ISODate } from '@/domain/types';
 
@@ -26,7 +27,7 @@ export function coachContext(data: AppData, today: ISODate): Record<string, unkn
     primaryGoal: p.primaryGoal,
     // A health reason was reported in the onboarding check (details stay on the device): Prime must
     // not suggest a calorie deficit or weight-loss targets.
-    noCalorieDeficit: (p.healthFlags ?? []).length > 0 || undefined,
+    noCalorieDeficit: (hasHealthConsent(p) && (p.healthFlags ?? []).length > 0) || undefined,
     workoutsPerWeek: p.workoutsPerWeek,
     challenges: p.challenges,
     motivations: p.motivations,
@@ -34,7 +35,10 @@ export function coachContext(data: AppData, today: ISODate): Record<string, unkn
     hasCoach: p.hasCoach,
     diet: p.diet,
     activityPreferences: p.activityPrefs,
-    food: { preferred: p.food.preferred, restrictions: p.food.restrictions, allergies: p.food.allergies, dislikes: p.food.dislikes },
+    // Allergies and special requirements are health data: only with the separate health-data consent.
+    food: hasHealthConsent(p)
+      ? { preferred: p.food.preferred, restrictions: p.food.restrictions, allergies: p.food.allergies, dislikes: p.food.dislikes }
+      : { preferred: p.food.preferred, dislikes: p.food.dislikes },
     planningTime: p.planningTime,
     todayStatus: dayChecks(data, today),
     todayPlan: plan(today),

@@ -7,6 +7,7 @@ import { AppText, Button, Card, Chip, Screen, Segmented, TextField, TimeField } 
 import { weightProgress } from '@/domain/bodyStats';
 import { parseTime } from '@/domain/dates';
 import { checkGoalWeight } from '@/domain/goals';
+import { hasHealthConsent } from '@/domain/consent';
 import { computePlan } from '@/domain/plan';
 import type { ActivityPreference, FoodPreferences, GoalType, Units } from '@/domain/types';
 import { BodyFields, type BodyInputs } from '@/features/BodyFields';
@@ -33,6 +34,7 @@ export default function Health() {
   const { data } = useAppState();
   const save = useSave();
   const p = data.profile!;
+  const consent = hasHealthConsent(p);
   const [name, setName] = useState(p.name);
   const [units, setUnits] = useState<Units>(p.units);
   const [body, setBody] = useState<BodyInputs>({ ...heightToInputs(p.heightCm), weight: weightToInput(p.startWeightKg, p.units) });
@@ -52,7 +54,7 @@ export default function Health() {
       : check && !check.ok && check.reason === 'underweight'
         ? t('onboarding.goals.underweight', { min: formatWeight(check.minHealthyKg ?? 0, units) })
         : undefined;
-  const valid = name.trim() && height !== null && weight !== null && !goalError && parseTime(planningTime) !== null;
+  const valid = name.trim() && (!consent || (height !== null && weight !== null && !goalError)) && parseTime(planningTime) !== null;
 
   const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 
@@ -113,13 +115,14 @@ export default function Health() {
               setUnits(u);
             }}
           />
-          <BodyFields
+          {!consent ? <ConsentGate /> : null}
+          {consent ? <BodyFields
             units={units}
             value={body}
             onChange={setBody}
             heightError={height === null ? t('onboarding.goals.invalid') : undefined}
             weightError={weight === null ? t('onboarding.goals.invalid') : undefined}
-          />
+          /> : null}
         </>
       ) : null}
       {show('goals') ? (
@@ -132,7 +135,7 @@ export default function Health() {
               ))}
             </View>
           </View>
-          {goals.includes('weight') ? (
+          {consent && goals.includes('weight') ? (
             <TextField
               label={t('onboarding.goals.goalWeight')}
               optional={t('common.optional')}
@@ -163,24 +166,39 @@ export default function Health() {
       {show('nutrition') ? (
         <>
           <TagInput label={t('onboarding.nutrition.preferred')} values={food.preferred} onChange={(preferred) => setFood({ ...food, preferred })} suggestions={FOOD_SUGGESTIONS.preferred} />
-          <TagInput
+          {!consent ? <ConsentGate /> : null}
+          {consent ? <TagInput
             label={t('onboarding.nutrition.restrictions')}
             values={food.restrictions}
             onChange={(restrictions) => setFood({ ...food, restrictions })}
             suggestions={FOOD_SUGGESTIONS.restrictions}
-          />
-          <TagInput
+          /> : null}
+          {consent ? <TagInput
             label={t('onboarding.nutrition.allergies')}
             values={food.allergies}
             onChange={(allergies) => setFood({ ...food, allergies })}
             suggestions={FOOD_SUGGESTIONS.allergies}
             hint={t('onboarding.nutrition.allergyNote')}
-          />
+          /> : null}
           <TagInput label={t('onboarding.nutrition.dislikes')} values={food.dislikes} onChange={(dislikes) => setFood({ ...food, dislikes })} />
         </>
       ) : null}
       {show('personal') ? <TimeField label={t('profile.planningTime')} value={planningTime} onChange={setPlanningTime} /> : null}
     </Screen>
+  );
+}
+
+/** Shown instead of health fields while the health-data consent is missing. */
+function ConsentGate() {
+  const { t } = useTranslation();
+  return (
+    <Card>
+      <AppText variant="bodyStrong">{t('consent.gateTitle')}</AppText>
+      <AppText variant="caption" color="secondary">
+        {t('consent.gateBody')}
+      </AppText>
+      <Button label={t('consent.gateCta')} size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/settings/health-consent')} />
+    </Card>
   );
 }
 

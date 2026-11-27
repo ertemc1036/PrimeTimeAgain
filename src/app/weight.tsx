@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, Screen, TextField } from '@/components/ui';
+import { hasHealthConsent } from '@/domain/consent';
 import { DaySwitch } from '@/features/DaySwitch';
 import { parseWeight, weightToInput, weightUnit } from '@/features/units';
 import { useSave } from '@/hooks/useSave';
@@ -37,6 +38,17 @@ export default function WeightEntryScreen() {
     await save({ type: 'deleteWeight', id: existing.id });
     router.back();
   };
+
+  // Weight is health data: without the separate consent nothing is recorded (the reducer enforces it too).
+  if (!hasHealthConsent(data.profile)) {
+    return (
+      <Screen back="close" title={t('consent.gateTitle')} subtitle={t('consent.gateBody')} footer={<Button label={t('consent.gateCta')} onPress={() => router.replace('/settings/health-consent')} />}>
+        <AppText variant="caption" color="secondary">
+          {t('consent.notGranted')}
+        </AppText>
+      </Screen>
+    );
+  }
 
   return (
     <Screen

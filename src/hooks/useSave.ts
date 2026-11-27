@@ -18,6 +18,7 @@ export function useSave() {
         const last = r.earned[r.earned.length - 1];
         if (last) toast(t('today.milestone', { name: t(`journey.milestone.${last.id}` as 'journey.milestone.first_day') }), 'trophy-outline');
       } else if (r.reason === 'locked') toast(t('states.locked'), 'lock-closed-outline');
+      else if (r.reason === 'consent') toast(t('consent.needed'), 'shield-checkmark-outline');
       else if (r.reason === 'save') toast(t('states.saveError'), 'alert-circle-outline');
       return r;
     },

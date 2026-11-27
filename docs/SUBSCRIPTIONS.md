@@ -27,7 +27,7 @@ Stand: 27.11.2026. Bundle ID `com.minus30.app` (unverändert), App-Name „Prime
 2. **Abo-Tester** (`SUBSCRIPTION_TESTERS`): Hier ist Schluss. Es gibt keine Beta, keinen Testzugang und keinen Founder-Platz, damit Käufe, Wiederherstellung, Verlängerung und Ablauf unverfälscht testbar sind.
 3. **`PRO_TESTERS`**: Testzugang ohne Kauf.
 4. **Beta** (`BETA_ALL_USERS_PRO=true`, optional mit Enddatum `BETA_PRO_UNTIL`).
-5. **Founder-Platz.**
+5. **Founder-Platz:** Seit 27.11.2026 geschlossen; nur die 3 vergebenen Plätze bestehen weiter.
 
 **Sandbox-Käufe** (TestFlight, Xcode, App Review; es wird nichts abgebucht):
 - Sie schalten PrimeMe+ nur für `SUBSCRIPTION_TESTERS` frei.

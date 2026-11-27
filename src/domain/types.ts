@@ -87,6 +87,8 @@ export interface Profile {
    * medication. Any of them → no calorie deficit is planned (see domain/plan.ts).
    */
   healthFlags?: string[];
+  /** Separate explicit consent to process health data (domain/consent.ts). */
+  healthConsent?: import('./consent').HealthConsent;
   /**
    * Program the user follows. Only 'weightLoss' exists in version 1; the others are reserved for
    * Prime Muscle / Mind / Performance / Maintenance.

@@ -1,3 +1,4 @@
+import { consentRecord } from '@/domain/consent';
 import { applyMutation } from '@/domain/mutations';
 import { emptyAppData, type Profile } from '@/domain/types';
 import { parseSse } from '@/services/ai/client';
@@ -8,6 +9,7 @@ const profile: Profile = {
   name: 'Sam', adultConfirmed: true, units: 'metric', goals: ['habits'], activityPrefs: ['gym'], startWeightKg: 90,
   food: { preferred: ['Fish'], restrictions: [], allergies: ['Peanuts'], dislikes: [] }, planningTime: '20:30',
   createdAt: '2026-10-20T08:00:00.000Z', onboardingCompletedAt: '2026-10-20T08:00:00.000Z',
+  healthConsent: consentRecord(true, '2026-10-20T08:00:00.000Z'),
 };
 
 describe('coach context', () => {
@@ -36,5 +38,13 @@ describe('coach stream parsing', () => {
     const b = parseSse(a.rest + ':"lo"}\n\ndata: {"t":"end"}\n\n');
     expect(b.events).toEqual([{ t: 'd', v: 'lo' }, { t: 'end' }]);
     expect(b.rest).toBe('');
+  });
+  it('leaves out allergies and special requirements after the health-data consent is withdrawn', () => {
+    const start = applyMutation(emptyAppData(), { type: 'completeOnboarding', profile, journey: { programEnabled: true, startDate: '2026-10-20', maintenance: false }, notifications: emptyAppData().notifications }, '2026-10-26');
+    let d = applyMutation(start, { type: 'setCoachConsent', value: true }, '2026-10-26');
+    d = applyMutation(d, { type: 'setHealthConsent', granted: false, at: 'x' }, '2026-10-26');
+    const food = coachContext(d, '2026-10-26')!.food as Record<string, unknown>;
+    expect(food.allergies).toBeUndefined();
+    expect(food.preferred).toEqual(['Fish']);
   });
 });

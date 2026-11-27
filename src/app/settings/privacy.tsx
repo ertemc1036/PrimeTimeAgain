@@ -9,6 +9,10 @@ import { useAuth } from '@/state/AuthProvider';
 import { deletePrivate } from '@/services/photos';
 import { useAppState } from '@/state/AppStateProvider';
 import { confirm } from '@/utils/confirm';
+import { nowISO } from '@/utils/id';
+import { hasHealthConsent } from '@/domain/consent';
+import { formatDate } from '@/i18n/format';
+import { useLocale } from '@/i18n/useLanguage';
 
 export default function PrivacyScreen() {
   const { t } = useTranslation();
@@ -16,6 +20,7 @@ export default function PrivacyScreen() {
   const save = useSave();
   const toast = useToast();
   const auth = useAuth();
+  const locale = useLocale();
   // Signed in: export the authoritative cloud copy (includes everything synced from all devices).
   const doExport = async () => {
     let ok: boolean;
@@ -24,6 +29,12 @@ export default function PrivacyScreen() {
       ok = r.ok ? await shareJson(r.value) : await exportData(data);
     } else ok = await exportData(data);
     if (!ok) toast(t('privacy.exportFailed'), 'alert-circle-outline');
+  };
+
+  const withdrawHealth = async () => {
+    if (!(await confirm({ title: t('consent.withdrawTitle'), message: t('consent.withdrawBody'), confirmLabel: t('consent.withdrawConfirm'), cancelLabel: t('common.cancel'), destructive: true }))) return;
+    const r = await save({ type: 'setHealthConsent', granted: false, at: nowISO() });
+    if (r.ok) toast(t('consent.withdrawn'), 'shield-checkmark-outline');
   };
 
   const ask = () => confirm({ title: t('privacy.confirmTitle'), message: t('privacy.confirmBody'), confirmLabel: t('common.delete'), cancelLabel: t('common.cancel'), destructive: true });
@@ -46,6 +57,19 @@ export default function PrivacyScreen() {
       </AppText>
       <Card variant="outline" padded={false}>
         <ListRow label={t('privacy.export')} hint={t('privacy.exportHint')} icon="download-outline" onPress={() => void doExport()} divider={false} />
+      </Card>
+      <Card variant="outline" padded={false}>
+        <ToggleRow
+          label={t('consent.toggle')}
+          hint={
+            hasHealthConsent(data.profile)
+              ? `${t('consent.toggleHint')} ${t('consent.grantedOn', { date: formatDate(data.profile!.healthConsent!.at.slice(0, 10), locale, { day: 'numeric', month: 'long', year: 'numeric' }) })}`
+              : `${t('consent.toggleHint')} ${t('consent.notGranted')}`
+          }
+          value={hasHealthConsent(data.profile)}
+          onChange={(value) => void (value ? router.push('/settings/health-consent') : withdrawHealth())}
+          divider={false}
+        />
       </Card>
       <Card variant="outline" padded={false}>
         <ToggleRow label={t('privacy.coachConsent')} hint={t('privacy.coachConsentHint')} value={data.coach.consentToContext} onChange={(value) => void save({ type: 'setCoachConsent', value })} divider={false} />

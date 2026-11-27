@@ -11,6 +11,9 @@ import { clearDraft, loadDraft, saveDraft } from './storage';
 export interface OnboardingDraft {
   step: StepId;
   name: string;
+  /** Separate health-data consent: true = given, false = continue without health data, undefined = not answered. */
+  healthConsent?: boolean;
+  healthConsentAt?: string;
   bodySex?: BodySex | 'skip';
   workouts?: WorkoutsPerWeek;
   birth?: { year: number; month: number; day: number };
@@ -40,6 +43,7 @@ export interface OnboardingDraft {
 export const STEPS = [
   'welcome',
   'name',
+  'consent',
   'body',
   'workouts',
   'birth',
@@ -81,7 +85,12 @@ export const NO_HEADER: readonly StepId[] = ['welcome', 'loading', 'done'];
  */
 export const BETA_SCREEN = process.env.EXPO_PUBLIC_BETA_ALL_USERS_PRO === '1';
 
+/** Steps that collect health data (need the health-data consent). */
+export const HEALTH_STEPS: readonly StepId[] = ['body', 'height', 'weight', 'health', 'goalWeight', 'pace', 'dietNeeds'];
+
 export function isVisible(id: StepId, d: OnboardingDraft, betaScreen = BETA_SCREEN): boolean {
+  // Health questions only with the separate consent (asked before the first one).
+  if (HEALTH_STEPS.includes(id) && d.healthConsent !== true) return false;
   if (id === 'health') return d.goal === 'lose';
   // With a health risk no weight-loss target or pace is planned.
   if (id === 'goalWeight' || id === 'pace') return d.goal === 'lose' && !healthRisk(d);

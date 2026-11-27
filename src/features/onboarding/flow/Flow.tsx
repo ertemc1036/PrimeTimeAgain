@@ -6,11 +6,13 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, type IconName } from '@/components/ui';
+import { consentRecord } from '@/domain/consent';
 import { checkGoalWeight, cmToFtIn, ftInToCm, kgToLb, lbToKg } from '@/domain/goals';
 import { ageOn, computePlan, type Plan } from '@/domain/plan';
 import { defaultNotifications, type Profile } from '@/domain/types';
 import { AppleSignIn } from '@/features/auth/AppleSignIn';
 import { AuthError } from '@/features/auth/AuthError';
+import { HealthConsentView } from '@/features/consent/HealthConsentView';
 import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
 import { useLocale } from '@/i18n/useLanguage';
 import { authAvailable, PASSWORD_MIN, signUp, validEmail, type AuthErrorCode } from '@/services/auth';
@@ -30,19 +32,22 @@ const YEAR = new Date().getFullYear();
 const num = (v: number, locale: string, digits = 1) => v.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
 
 /** Plan from the answers (same function the loading screen "runs"). */
-export const planFor = (d: OnboardingDraft): Plan =>
-  computePlan({
-    sex: d.bodySex === 'skip' ? undefined : d.bodySex,
+export const planFor = (d: OnboardingDraft): Plan => {
+  // Without the health-data consent no body data is used (the plan says so honestly).
+  const ok = d.healthConsent === true;
+  return computePlan({
+    sex: ok && d.bodySex !== 'skip' ? d.bodySex : undefined,
     birthYear: d.birth?.year,
-    heightCm: d.heightCm,
-    weightKg: d.weightKg,
-    goalWeightKg: d.goal === 'lose' && !healthRisk(d) ? d.goalWeightKg : undefined,
+    heightCm: ok ? d.heightCm : undefined,
+    weightKg: ok ? d.weightKg : undefined,
+    goalWeightKg: ok && d.goal === 'lose' && !healthRisk(d) ? d.goalWeightKg : undefined,
     workouts: d.workouts,
     goal: d.goal,
     pace: d.pace,
     healthRisk: healthRisk(d),
     year: YEAR,
   });
+};
 
 /** The whole onboarding: one full-screen step at a time, sliding left/right. */
 export function OnboardingFlow() {
@@ -69,6 +74,8 @@ function Step({ id }: { id: StepId }) {
       return <Welcome />;
     case 'name':
       return <NameStep header={header} />;
+    case 'consent':
+      return <ConsentStep header={header} />;
     case 'body':
       return <BodyStep header={header} />;
     case 'workouts':
@@ -187,6 +194,32 @@ function NameStep({ header }: { header: Header }) {
         style={styles.input}
         testID="ob-name"
       />
+    </OnboardingScreen>
+  );
+}
+
+// ---------- 01b Health-data consent (separate, explicit, before the first health question) ----------
+function ConsentStep({ header }: { header: Header }) {
+  const { t } = useTranslation();
+  const { draft, update, next } = useOnboardingFlow();
+  const [checked, setChecked] = useState(draft.healthConsent === true);
+  const answer = (granted: boolean) => {
+    update({ healthConsent: granted, healthConsentAt: nowISO() });
+    next();
+  };
+  return (
+    <OnboardingScreen
+      {...header}
+      title={t('consent.title')}
+      subtitle={t('consent.sub')}
+      scroll
+      footer={
+        <>
+          <PrimaryButton label={t('consent.agree')} onPress={() => answer(true)} disabled={!checked} testID="consent-agree" />
+          <TextButton label={t('consent.decline')} onPress={() => answer(false)} />
+        </>
+      }>
+      <HealthConsentView checked={checked} onToggle={() => setChecked((c) => !c)} />
     </OnboardingScreen>
   );
 }
@@ -832,9 +865,9 @@ function PlanStep({ header }: { header: Header }) {
   const w = (kg: number) => `${num(metric ? kg : kgToLb(kg), locale)} ${metric ? 'kg' : 'lbs'}`;
   const rows: [string, string][] = [
     [t('ob.plan.goal'), t(`ob.goal.${draft.goal ?? 'fitter'}`)],
-    [t('ob.plan.start'), w(draft.weightKg)],
   ];
-  if (draft.goal === 'lose' && draft.goalWeightKg && !healthRisk(draft)) rows.push([t('ob.plan.target'), w(draft.goalWeightKg)]);
+  if (draft.healthConsent) rows.push([t('ob.plan.start'), w(draft.weightKg)]);
+  if (draft.healthConsent && draft.goal === 'lose' && draft.goalWeightKg && !healthRisk(draft)) rows.push([t('ob.plan.target'), w(draft.goalWeightKg)]);
   if (plan.weeks) rows.push([t('ob.plan.orientation'), t('ob.plan.weeksRange', { min: plan.weeks.min, max: plan.weeks.max })]);
   return (
     <OnboardingScreen {...header} footer={<Next />} scroll>
@@ -918,7 +951,7 @@ function NutritionStep({ header }: { header: Header }) {
       ) : (
         <SoftCard>
           <OText variant="body">{t('ob.nutrition.missing')}</OText>
-          <TextButton label={t('ob.nutrition.complete')} onPress={() => goTo('body')} />
+          <TextButton label={t('ob.nutrition.complete')} onPress={() => goTo(draft.healthConsent ? 'body' : 'consent')} />
         </SoftCard>
       )}
       <View style={styles.planRow}>
@@ -1134,6 +1167,8 @@ function DoneStep() {
       hasCoach: draft.hasCoach,
       referral: draft.referral,
       healthFlags: draft.goal === 'lose' ? draft.healthFlags.filter((f) => f !== 'none') : undefined,
+      // Stored with version and time; without consent the reducer drops all health fields above.
+      healthConsent: draft.healthConsent === undefined ? undefined : consentRecord(draft.healthConsent, draft.healthConsentAt ?? now),
     };
     const r = await dispatch({
       type: 'completeOnboarding',
@@ -1142,7 +1177,7 @@ function DoneStep() {
       notifications: { ...defaultNotifications(), enabled: false },
     });
     if (r.ok) {
-      await dispatch({ type: 'upsertWeight', entry: { id: `w_${today}`, date: today, kg: draft.weightKg, createdAt: now, updatedAt: now } });
+      if (draft.healthConsent) await dispatch({ type: 'upsertWeight', entry: { id: `w_${today}`, date: today, kg: draft.weightKg, createdAt: now, updatedAt: now } });
       if (draft.coachConsent) await dispatch({ type: 'setCoachConsent', value: true });
       await clearDraft();
       // Beta (mode A) or Pro already (founder, restored purchase): straight to Today. Otherwise

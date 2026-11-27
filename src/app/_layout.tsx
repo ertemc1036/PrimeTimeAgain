@@ -10,12 +10,13 @@ import { useFonts } from 'expo-font';
 import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ErrorState, ToastProvider } from '@/components/ui';
 import { clearDraft } from '@/features/onboarding/flow/storage';
+import { healthConsentAnswered } from '@/domain/consent';
 import { ReminderSync } from '@/features/ReminderSync';
 import { AppStateProvider, useAppState } from '@/state/AppStateProvider';
 import { AuthProvider } from '@/state/AuthProvider';
@@ -70,6 +71,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
       <StatusBar style="dark" />
       {isOnboarded ? <ReminderSync /> : null}
       <SyncDecisionGate />
+      {isOnboarded ? <HealthConsentGate /> : null}
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="language" options={modal} />
@@ -113,6 +115,24 @@ function SyncDecisionGate() {
   useEffect(() => {
     if (decision) router.push('/auth/merge');
   }, [decision]);
+  return null;
+}
+
+/**
+ * Accounts that haven't answered the current health-data consent (created before it existed, or the
+ * text version changed) are asked once per app start. Until they answer, health data is treated as
+ * not consented (no new weight entries); refusing deletes it.
+ */
+function HealthConsentGate() {
+  const { data } = useAppState();
+  const { decision } = useSync();
+  const asked = useRef(false);
+  const needed = !!data.profile && !healthConsentAnswered(data.profile);
+  useEffect(() => {
+    if (!needed || asked.current || decision) return;
+    asked.current = true;
+    router.push({ pathname: '/settings/health-consent', params: { reason: 'update' } });
+  }, [needed, decision]);
   return null;
 }
 

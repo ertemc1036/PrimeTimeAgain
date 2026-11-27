@@ -62,7 +62,7 @@ Stand: 27.11.2026, Branch `claude/primeme-redesign`. Beta-Backend: Supabase `xbn
 3. Test auf einem echten iPhone.
 
 **Zusätzlich für den kommerziellen Launch (Modus C):**
-- Rechtsprüfung aller Texte. Insbesondere die **ausdrückliche Einwilligung in die Verarbeitung von Gesundheitsdaten** (Art. 9 DSGVO): Die App hat derzeit nur die Einwilligung zur KI-Datennutzung.
+- Rechtsprüfung aller Texte, einschließlich der neuen, gesonderten Einwilligung für Gesundheitsdaten ([HEALTH_CONSENT.md](HEALTH_CONSENT.md)).
 - Auftragsverarbeitungsverträge (Supabase, OpenAI, RevenueCat) und Grundlagen für Übermittlungen in die USA.
 - Fachliche Prüfung der Planwerte durch eine Ernährungsfachkraft.
 - Abos in App Store Connect plus RevenueCat, Sandbox-Test.
@@ -79,7 +79,8 @@ Stand: 27.11.2026, Branch `claude/primeme-redesign`. Beta-Backend: Supabase `xbn
 | RevenueCat | Code vollständig (SDK, Offerings, Kauf, Restore, CustomerInfo, Abo verwalten, Webhook, Server-Abgleich); Projekt/Schlüssel noch nicht angelegt |
 | Beta-Pro | aktiv für alle Konten ✓ |
 | Backend | 10 Edge Functions mit neuem Code deployt; Migrationen aktuell; RLS und private Buckets unverändert |
-| Founders | bestehende Plätze unverändert (3 von 1.000 vergeben); neue Plätze nur mit bewiesener Identität (Apple oder E-Mail-Code). Der Founders-Zähler wird nicht mehr auf der Paywall beworben. Ob das Programm zum Launch weiterlaufen soll, ist deine Entscheidung. |
+| Founders | geschlossen: keine neuen lebenslangen Plätze (Kapazität = 3, Migration `close_founder_seats`); die 3 bestehenden bleiben PrimeMe+ |
+| Gesundheitsdaten | gesonderte, versionierte, widerrufbare Einwilligung vor der ersten Gesundheitsfrage; ohne Einwilligung keine Speicherung (getestet) |
 | Rechtliche Seiten | Entwürfe in `website/` (Datenschutz, Nutzungsbedingungen, Abo-Bedingungen, Gesundheit, Impressum, Support), gelb markierte Lücken, `noindex` bis zur Freigabe |
 | iOS-Build | Export erfolgreich; EAS-Build steht aus (`eas init` fehlt) |
 
