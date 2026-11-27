@@ -41,7 +41,7 @@ export function PrimeCharacter({ variant, size, motion = 'enter', radius = radii
       accessible={!!accessibilityLabel}
       accessibilityRole={accessibilityLabel ? 'image' : undefined}
       accessibilityLabel={accessibilityLabel}
-      importantForAccessibility={accessibilityLabel ? 'yes' : 'no-hide-descendants'}>
+      aria-hidden={!accessibilityLabel}>
       <Animated.View style={[StyleSheet.absoluteFill, float]}>
         <Image source={pose.source} style={styles.image} resizeMode="contain" />
       </Animated.View>

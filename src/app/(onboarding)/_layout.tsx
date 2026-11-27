@@ -1,12 +1,12 @@
 import { Stack } from 'expo-router';
 
-import { OnboardingDraftProvider } from '@/features/onboarding/draft';
-import { colors } from '@/theme';
+import { OnboardingStateProvider } from '@/features/onboarding/flow/state';
+import { onboarding } from '@/theme';
 
 export default function OnboardingLayout() {
   return (
-    <OnboardingDraftProvider>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }} />
-    </OnboardingDraftProvider>
+    <OnboardingStateProvider>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: onboarding.background } }} />
+    </OnboardingStateProvider>
   );
 }

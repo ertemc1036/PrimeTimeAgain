@@ -23,6 +23,13 @@ export function coachContext(data: AppData, today: ISODate): Record<string, unkn
   return {
     today,
     goals: p.goals,
+    primaryGoal: p.primaryGoal,
+    workoutsPerWeek: p.workoutsPerWeek,
+    challenges: p.challenges,
+    motivations: p.motivations,
+    triedOtherApps: p.triedOtherApps,
+    hasCoach: p.hasCoach,
+    diet: p.diet,
     activityPreferences: p.activityPrefs,
     food: { preferred: p.food.preferred, restrictions: p.food.restrictions, allergies: p.food.allergies, dislikes: p.food.dislikes },
     planningTime: p.planningTime,

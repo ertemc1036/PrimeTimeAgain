@@ -15,6 +15,7 @@ import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ErrorState, ToastProvider } from '@/components/ui';
+import { clearDraft } from '@/features/onboarding/flow/storage';
 import { ReminderSync } from '@/features/ReminderSync';
 import { AppStateProvider, useAppState } from '@/state/AppStateProvider';
 import { AuthProvider } from '@/state/AuthProvider';
@@ -51,6 +52,10 @@ const modal = { presentation: 'modal' } as const;
 
 function RootNavigator({ ready }: { ready: boolean }) {
   const { status, isOnboarded, retryLoad } = useAppState();
+  // An onboarding draft is no longer needed once a profile exists (e.g. an existing account signed in).
+  useEffect(() => {
+    if (isOnboarded) void clearDraft();
+  }, [isOnboarded]);
   const visible = ready && status !== 'loading';
 
   useEffect(() => {

@@ -45,6 +45,21 @@ export const colors = {
   primeBackdrop: '#03010C',
 } as const;
 
+/** Onboarding (reference design: white, black type, one question per screen). */
+export const onboarding = {
+  background: '#FFFFFF',
+  text: '#111111',
+  secondary: '#86868B',
+  button: '#111111',
+  buttonDisabled: '#B5B5B7',
+  card: '#FFFFFF',
+  soft: '#F5F5F7',
+  border: '#E5E5EA',
+  selected: '#111111',
+  progress: '#111111',
+  gutter: 24,
+} as const;
+
 /** Dark, neutral stage of the optional 3D body view (disabled in this version, see src/config/features.ts). */
 export const stage = {
   background: '#0E0E10',

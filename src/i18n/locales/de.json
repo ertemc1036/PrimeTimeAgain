@@ -1231,5 +1231,250 @@
     "photos": "Fortschrittsfotos (privat)",
     "showWeight": "Gewicht anzeigen",
     "showWeightHint": "Gewicht, Ziel und Gewichtsverlauf auf Heute und in deinem Verlauf. Freiwillig – du kannst es jederzeit ausschalten."
+  },
+  "ob": {
+    "continue": "Weiter",
+    "yes": "Ja",
+    "no": "Nein",
+    "multi": "Mehrere Antworten möglich.",
+    "enterManually": "Wert eingeben",
+    "useWheel": "Auswahlrad verwenden",
+    "useScale": "Skala verwenden",
+    "welcome": {
+      "title": "Become your Prime.",
+      "subtitle": "Dein Fitnesscoach. Immer an deiner Seite.",
+      "cta": "Loslegen",
+      "have": "Hast du bereits ein Konto?",
+      "signIn": "Anmelden",
+      "sample": "Beispielansicht",
+      "previewA11y": "Vorschau der App",
+      "area": {
+        "today": "Heute",
+        "prime": "Prime Chat",
+        "kitchen": "Küche",
+        "gym": "Gym"
+      }
+    },
+    "name": {
+      "title": "Wie darf Prime dich nennen?",
+      "sub": "Dein Vorname reicht.",
+      "placeholder": "Dein Vorname"
+    },
+    "body": {
+      "title": "Welche Angabe sollen wir für deine Berechnung nutzen?",
+      "sub": "Der Energiebedarf wird je nach Körper unterschiedlich berechnet. Das ist keine Frage nach deiner Identität.",
+      "female": "Weiblicher Körper",
+      "male": "Männlicher Körper",
+      "skip": "Möchte ich nicht angeben",
+      "skipSub": "Dann zeigen wir keinen Kalorienrahmen an."
+    },
+    "workouts": {
+      "title": "Wie oft trainierst du pro Woche?",
+      "sub": "Deine bisherige Aktivität – keine Vorgabe.",
+      "none": "Noch gar nicht",
+      "noneSub": "Ganz normaler Alltag",
+      "few": "1–2 Workouts",
+      "fewSub": "Ab und zu",
+      "some": "3–5 Workouts",
+      "someSub": "Regelmäßig",
+      "many": "6 oder mehr",
+      "manySub": "Sehr aktiv"
+    },
+    "birth": {
+      "title": "Wann bist du geboren?",
+      "sub": "Für die Berechnung deines Energiebedarfs. PrimeMe AI ist für Erwachsene ab 18 Jahren.",
+      "day": "Tag",
+      "month": "Monat",
+      "year": "Jahr"
+    },
+    "referral": {
+      "title": "Wie hast du PrimeMe AI entdeckt?",
+      "sub": "Freiwillig. Hilft uns zu verstehen, wo man uns findet.",
+      "tiktok": "TikTok",
+      "instagram": "Instagram",
+      "youtube": "YouTube",
+      "appStore": "App Store",
+      "friends": "Freunde oder Familie",
+      "other": "Google oder Sonstiges"
+    },
+    "apps": {
+      "title": "Hast du schon andere Fitness- oder Ernährungs-Apps ausprobiert?"
+    },
+    "coach": {
+      "title": "Begleitet dich ein Trainer oder eine Ernährungsberatung?",
+      "sub": "Prime ergänzt professionelle Betreuung – er ersetzt sie nicht."
+    },
+    "intro": {
+      "title": "Fortschritt beginnt mit kleinen Schritten.",
+      "note": "Prime hilft dir, jeden Tag zwei einfache Dinge zu erledigen. Daraus wird eine Routine.",
+      "row1": "Mahlzeiten eintragen",
+      "row2": "Training oder Ruhetag",
+      "row3": "Tag abgeschlossen"
+    },
+    "height": {
+      "title": "Wie groß bist du?",
+      "sub": "Für die Berechnung deines Energiebedarfs."
+    },
+    "weight": {
+      "title": "Wie viel wiegst du aktuell?",
+      "sub": "Für die Berechnung deines Energiebedarfs.",
+      "current": "Aktuelles Gewicht"
+    },
+    "goal": {
+      "title": "Was möchtest du erreichen?",
+      "sub": "Damit Prime deinen Plan passend vorbereitet.",
+      "lose": "Abnehmen",
+      "maintain": "Gewicht halten",
+      "fitter": "Fitter werden"
+    },
+    "goalWeight": {
+      "title": "Was ist dein langfristiges Zielgewicht?",
+      "diff": "{{value}} weniger als heute",
+      "notLower": "Wähle ein Gewicht unter deinem aktuellen Gewicht."
+    },
+    "goalMessage": {
+      "title": "Dein Ziel beginnt mit einem Plan.",
+      "withKg": "{{value}} weniger – Schritt für Schritt.",
+      "sub": "Prime begleitet dich dabei, Schritt für Schritt eine Routine aufzubauen, die zu deinem Leben passt."
+    },
+    "pace": {
+      "title": "In welchem Tempo möchtest du dein Ziel angehen?",
+      "perWeekLabel": "Pro Woche etwa",
+      "gentle": "Behutsam",
+      "balanced": "Ausgewogen",
+      "custom": "Individuell angepasst",
+      "gentleText": "Ein sanfter Einstieg mit viel Spielraum.",
+      "balancedText": "Ein nachhaltiges Tempo, das für viele gut passt.",
+      "customText": "So zügig, wie es für dich sicher ist – unsere Schutzgrenzen passen das Tempo an.",
+      "limited": "Für deine Angaben haben wir das Tempo aus Sicherheitsgründen begrenzt.",
+      "orientation": "Orientierung: etwa {{min}}–{{max}} Wochen (Schätzung, kein Versprechen)",
+      "kcal": "Täglicher Rahmen: etwa {{value}} kcal",
+      "noBody": "Ohne Angaben zum Körper zeigen wir keine Kalorienwerte."
+    },
+    "companion": {
+      "title": "Dein Alltag. Dein persönlicher Coach.",
+      "f1": "Mahlzeiten fotografieren oder beschreiben",
+      "f2": "Training dokumentieren",
+      "f3": "Mit Prime sprechen",
+      "f4": "Fortschritte im Dashboard sehen"
+    },
+    "challenges": {
+      "title": "Was fällt dir bisher besonders schwer?",
+      "consistency": "Dranzubleiben",
+      "planning": "Mahlzeiten zu planen",
+      "support": "Unterstützung zu finden",
+      "time": "Zeit für Training zu finden",
+      "ideas": "Passende Essensideen zu finden"
+    },
+    "diet": {
+      "title": "Wie ernährst du dich am liebsten?",
+      "none": "Keine besondere Ernährungsform",
+      "mediterranean": "Mediterran",
+      "flexitarian": "Flexitarisch",
+      "pescatarian": "Pescetarisch",
+      "vegetarian": "Vegetarisch",
+      "vegan": "Vegan",
+      "other": "Andere Anforderungen"
+    },
+    "dietNeeds": {
+      "title": "Soll Prime auf etwas achten?",
+      "sub": "Freiwillig, mehrere möglich. Prüfe Allergene trotzdem immer selbst.",
+      "halal": "Halal",
+      "lactose": "Laktosefrei",
+      "gluten": "Glutenfrei",
+      "nuts": "Nussallergie"
+    },
+    "motivations": {
+      "title": "Was möchtest du persönlich erreichen?",
+      "healthier": "Gesünder leben",
+      "energy": "Mehr Energie im Alltag",
+      "training": "Regelmäßiger trainieren",
+      "comfortable": "Mich in meinem Körper wohler fühlen"
+    },
+    "milestones": {
+      "title": "Jeder kleine Schritt zählt.",
+      "m1": "Erste Mahlzeit dokumentiert",
+      "m2": "Erste Trainingswoche",
+      "m3": "Routine aufgebaut",
+      "note": "Illustration – keine Prognose deines Gewichts."
+    },
+    "thanks": {
+      "title": "Danke für dein Vertrauen!",
+      "sub": "Jetzt bereiten wir PrimeMe AI für dich vor.",
+      "cardTitle": "An deine Ziele angepasst",
+      "cardBody": "Dein Plan wird anhand deiner bestätigten Angaben und persönlichen Ziele angepasst.",
+      "privacy": "Deine Antworten bleiben verschlüsselt auf diesem Gerät, bis du ein Konto erstellst. Danach werden sie geschützt mit deinem Konto gespeichert und nie an Werbepartner weitergegeben.",
+      "consent": "Prime darf meine App-Daten nutzen, um mich persönlich zu beraten",
+      "consentHint": "Freiwillig. Jederzeit änderbar unter Profil → Datenschutz."
+    },
+    "loading": {
+      "title": "Wir richten alles für dich ein",
+      "s1": "Persönliche Angaben prüfen",
+      "s2": "Energiebedarf vorbereiten",
+      "s3": "Makronährstoffe berechnen",
+      "s4": "Trainingsroutine vorbereiten",
+      "s5": "Persönlichen Plan zusammenstellen"
+    },
+    "plan": {
+      "title": "Dein persönlicher Plan ist bereit.",
+      "goal": "Ziel",
+      "start": "Startgewicht",
+      "target": "Zielgewicht",
+      "orientation": "Orientierung",
+      "weeksRange": "etwa {{min}}–{{max}} Wochen",
+      "estimate": "Schätzung, kein Versprechen. Jeder Körper reagiert anders.",
+      "edit": "Angaben bearbeiten",
+      "chartStart": "Heute",
+      "chartGoal": "Ziel"
+    },
+    "nutrition": {
+      "title": "Deine tägliche Empfehlung",
+      "sub": "Richtwerte für den Start. Du kannst deine Angaben jederzeit im Profil ändern.",
+      "kcal": "Kalorien",
+      "water": "Wasser (Richtwert)",
+      "missing": "Für einen Kalorienrahmen brauchen wir Angaben zu deinem Körper. Du kannst sie ergänzen oder ohne Rahmen starten.",
+      "complete": "Angaben ergänzen",
+      "note": "Orientierungswerte, keine medizinische Empfehlung."
+    },
+    "routine": {
+      "title": "So sieht dein Alltag aus",
+      "training": "Training",
+      "diet": "Ernährung",
+      "daily": "Deine zwei täglichen Aufgaben",
+      "task1": "Ernährung dokumentieren und abschließen",
+      "task2": "Training oder Ruhetag eintragen",
+      "optional": "Den nächsten Tag zu planen ist freiwillig und zählt nicht zur Serie.",
+      "prime": "Prime hilft dir per Chat und Foto – du bestätigst jeden Eintrag."
+    },
+    "beta": {
+      "title": "Dein persönlicher Coach. Kostenlos während der Beta.",
+      "f1": "Prime KI-Coach",
+      "f2": "KI-Essensscanner",
+      "f3": "KI-Foto-Check-in fürs Training",
+      "f4": "Prime Memory",
+      "f5": "Ernährungs- und Trainingsplanung",
+      "f6": "Persönliche Fortschritte",
+      "c1": "Keine Zahlung erforderlich",
+      "c2": "Kein Abonnement notwendig",
+      "c3": "Keine automatische Abbuchung",
+      "cta": "Kostenlos loslegen"
+    },
+    "account": {
+      "title": "Speichere deinen persönlichen Plan.",
+      "sub": "Mit einem Konto sind deine Daten gesichert und Prime kann dich begleiten.",
+      "create": "Mit E-Mail registrieren",
+      "creating": "Konto wird erstellt …",
+      "have": "Bereits einen Account?",
+      "noAuth": "Konten sind in dieser Version nicht verfügbar.",
+      "continueWithout": "Ohne Konto fortfahren"
+    },
+    "done": {
+      "title": "Willkommen bei PrimeMe AI.",
+      "sub": "Dein persönlicher Weg beginnt jetzt.",
+      "saving": "Dein Konto wird eingerichtet …",
+      "existing": "Willkommen zurück!",
+      "beta": "PrimeMe+ Beta ist aktiv",
+      "cta": "Zu meinem Dashboard"
+    }
   }
 }

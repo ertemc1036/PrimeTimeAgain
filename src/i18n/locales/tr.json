@@ -1231,5 +1231,250 @@
     "photos": "İlerleme fotoğrafları (özel)",
     "showWeight": "Kiloyu göster",
     "showWeightHint": "Bugün ekranında ve geçmişinde kilo, hedef ve kilo geçmişi. İsteğe bağlı – istediğin zaman kapatabilirsin."
+  },
+  "ob": {
+    "continue": "Devam",
+    "yes": "Evet",
+    "no": "Hayır",
+    "multi": "Birden fazla seçebilirsin.",
+    "enterManually": "Değer gir",
+    "useWheel": "Çarkı kullan",
+    "useScale": "Ölçeği kullan",
+    "welcome": {
+      "title": "Become your Prime.",
+      "subtitle": "Fitness koçun. Her zaman yanında.",
+      "cta": "Başla",
+      "have": "Zaten hesabın var mı?",
+      "signIn": "Giriş yap",
+      "sample": "Örnek görünüm",
+      "previewA11y": "Uygulama önizlemesi",
+      "area": {
+        "today": "Bugün",
+        "prime": "Prime sohbet",
+        "kitchen": "Mutfak",
+        "gym": "Gym"
+      }
+    },
+    "name": {
+      "title": "Prime sana nasıl hitap etsin?",
+      "sub": "Adın yeterli.",
+      "placeholder": "Adın"
+    },
+    "body": {
+      "title": "Hesaplama için hangi bilgiyi kullanalım?",
+      "sub": "Enerji ihtiyacı vücuda göre farklı hesaplanır. Bu, kimliğinle ilgili bir soru değildir.",
+      "female": "Kadın vücudu",
+      "male": "Erkek vücudu",
+      "skip": "Belirtmek istemiyorum",
+      "skipSub": "O zaman kalori çerçevesi göstermeyiz."
+    },
+    "workouts": {
+      "title": "Haftada kaç kez antrenman yapıyorsun?",
+      "sub": "Mevcut aktiviten – bir hedef değil.",
+      "none": "Henüz hiç",
+      "noneSub": "Normal günlük hayat",
+      "few": "1–2 antrenman",
+      "fewSub": "Ara sıra",
+      "some": "3–5 antrenman",
+      "someSub": "Düzenli",
+      "many": "6 veya daha fazla",
+      "manySub": "Çok aktif"
+    },
+    "birth": {
+      "title": "Ne zaman doğdun?",
+      "sub": "Enerji ihtiyacını hesaplamak için. PrimeMe AI 18 yaş üstü yetişkinler içindir.",
+      "day": "Gün",
+      "month": "Ay",
+      "year": "Yıl"
+    },
+    "referral": {
+      "title": "PrimeMe AI’yi nasıl keşfettin?",
+      "sub": "İsteğe bağlı. Bizi nerede bulduğunuzu anlamamıza yardımcı olur.",
+      "tiktok": "TikTok",
+      "instagram": "Instagram",
+      "youtube": "YouTube",
+      "appStore": "App Store",
+      "friends": "Arkadaş veya aile",
+      "other": "Google veya diğer"
+    },
+    "apps": {
+      "title": "Daha önce başka fitness veya beslenme uygulamaları denedin mi?"
+    },
+    "coach": {
+      "title": "Bir antrenör veya beslenme danışmanıyla çalışıyor musun?",
+      "sub": "Prime profesyonel desteği tamamlar – yerini almaz."
+    },
+    "intro": {
+      "title": "İlerleme küçük adımlarla başlar.",
+      "note": "Prime her gün iki basit şeyi yapmana yardım eder. Rutin böyle oluşur.",
+      "row1": "Öğünleri kaydet",
+      "row2": "Antrenman veya dinlenme günü",
+      "row3": "Gün tamamlandı"
+    },
+    "height": {
+      "title": "Boyun kaç?",
+      "sub": "Enerji ihtiyacını hesaplamak için."
+    },
+    "weight": {
+      "title": "Şu anda kaç kilosun?",
+      "sub": "Enerji ihtiyacını hesaplamak için.",
+      "current": "Mevcut kilo"
+    },
+    "goal": {
+      "title": "Neyi başarmak istiyorsun?",
+      "sub": "Prime planını buna göre hazırlasın diye.",
+      "lose": "Kilo vermek",
+      "maintain": "Kiloyu korumak",
+      "fitter": "Daha fit olmak"
+    },
+    "goalWeight": {
+      "title": "Uzun vadeli hedef kilon nedir?",
+      "diff": "Bugünden {{value}} daha az",
+      "notLower": "Mevcut kilondan düşük bir değer seç."
+    },
+    "goalMessage": {
+      "title": "Hedefin bir planla başlar.",
+      "withKg": "{{value}} daha az – adım adım.",
+      "sub": "Prime, hayatına uyan bir rutini adım adım oluşturmana eşlik eder."
+    },
+    "pace": {
+      "title": "Hedefine hangi hızda ilerlemek istersin?",
+      "perWeekLabel": "Haftada yaklaşık",
+      "gentle": "Yavaş",
+      "balanced": "Dengeli",
+      "custom": "Kişiye uygun",
+      "gentleText": "Bolca esneklikle yumuşak bir başlangıç.",
+      "balancedText": "Birçok kişiye uyan sürdürülebilir bir tempo.",
+      "customText": "Senin için güvenli olduğu kadar hızlı – güvenlik sınırlarımız tempoyu ayarlar.",
+      "limited": "Bilgilerine göre tempoyu güvenlik nedeniyle sınırladık.",
+      "orientation": "Yön: yaklaşık {{min}}–{{max}} hafta (tahmin, söz değil)",
+      "kcal": "Günlük çerçeve: yaklaşık {{value}} kcal",
+      "noBody": "Vücut bilgisi olmadan kalori değeri göstermeyiz."
+    },
+    "companion": {
+      "title": "Senin günlük hayatın. Senin kişisel koçun.",
+      "f1": "Öğünlerini fotoğrafla veya anlat",
+      "f2": "Antrenmanlarını kaydet",
+      "f3": "Prime ile konuş",
+      "f4": "İlerlemeni panoda gör"
+    },
+    "challenges": {
+      "title": "Şimdiye kadar en çok neyi zor buldun?",
+      "consistency": "Devam etmeyi",
+      "planning": "Öğün planlamayı",
+      "support": "Destek bulmayı",
+      "time": "Antrenmana zaman bulmayı",
+      "ideas": "Uygun yemek fikirleri bulmayı"
+    },
+    "diet": {
+      "title": "En çok nasıl beslenmeyi seversin?",
+      "none": "Özel bir beslenme yok",
+      "mediterranean": "Akdeniz",
+      "flexitarian": "Fleksitaryen",
+      "pescatarian": "Peskataryen",
+      "vegetarian": "Vejetaryen",
+      "vegan": "Vegan",
+      "other": "Diğer gereksinimler"
+    },
+    "dietNeeds": {
+      "title": "Prime’ın dikkat etmesi gereken bir şey var mı?",
+      "sub": "İsteğe bağlı, birden fazla seçilebilir. Alerjenleri yine de her zaman kendin kontrol et.",
+      "halal": "Helal",
+      "lactose": "Laktozsuz",
+      "gluten": "Glutensiz",
+      "nuts": "Kuruyemiş alerjisi"
+    },
+    "motivations": {
+      "title": "Kişisel olarak neyi başarmak istiyorsun?",
+      "healthier": "Daha sağlıklı yaşamak",
+      "energy": "Günlük hayatta daha fazla enerji",
+      "training": "Daha düzenli antrenman",
+      "comfortable": "Vücudumda daha rahat hissetmek"
+    },
+    "milestones": {
+      "title": "Her küçük adım önemlidir.",
+      "m1": "İlk öğün kaydedildi",
+      "m2": "İlk antrenman haftası",
+      "m3": "Rutin oluştu",
+      "note": "Görsel örnektir – kilon için bir tahmin değildir."
+    },
+    "thanks": {
+      "title": "Güvenin için teşekkürler!",
+      "sub": "Şimdi PrimeMe AI’yi senin için hazırlıyoruz.",
+      "cardTitle": "Hedeflerine göre uyarlandı",
+      "cardBody": "Planın, onayladığın bilgilere ve kişisel hedeflerine göre uyarlanır.",
+      "privacy": "Yanıtların hesap oluşturana kadar bu cihazda şifreli kalır. Sonra hesabınla güvenli şekilde saklanır ve asla reklam ortaklarıyla paylaşılmaz.",
+      "consent": "Prime bana kişisel tavsiye vermek için uygulama verilerimi kullanabilir",
+      "consentHint": "İsteğe bağlı. Profil → Gizlilik bölümünden istediğin zaman değiştirebilirsin."
+    },
+    "loading": {
+      "title": "Her şeyi senin için hazırlıyoruz",
+      "s1": "Kişisel bilgiler kontrol ediliyor",
+      "s2": "Enerji ihtiyacı hazırlanıyor",
+      "s3": "Makrolar hesaplanıyor",
+      "s4": "Antrenman rutini hazırlanıyor",
+      "s5": "Kişisel plan oluşturuluyor"
+    },
+    "plan": {
+      "title": "Kişisel planın hazır.",
+      "goal": "Hedef",
+      "start": "Başlangıç kilosu",
+      "target": "Hedef kilo",
+      "orientation": "Yön",
+      "weeksRange": "yaklaşık {{min}}–{{max}} hafta",
+      "estimate": "Tahmindir, söz değildir. Her vücut farklı tepki verir.",
+      "edit": "Bilgileri düzenle",
+      "chartStart": "Bugün",
+      "chartGoal": "Hedef"
+    },
+    "nutrition": {
+      "title": "Günlük önerin",
+      "sub": "Başlangıç için yön değerleri. Bilgilerini Profil’den istediğin zaman değiştirebilirsin.",
+      "kcal": "Kalori",
+      "water": "Su (yön değeri)",
+      "missing": "Kalori çerçevesi için vücut bilgilerine ihtiyacımız var. Ekleyebilir veya çerçeve olmadan başlayabilirsin.",
+      "complete": "Bilgileri ekle",
+      "note": "Yön değerleridir, tıbbi tavsiye değildir."
+    },
+    "routine": {
+      "title": "Günlük rutinin böyle görünüyor",
+      "training": "Antrenman",
+      "diet": "Beslenme",
+      "daily": "İki günlük görevin",
+      "task1": "Beslenmeni kaydet ve tamamla",
+      "task2": "Antrenman veya dinlenme günü kaydet",
+      "optional": "Ertesi günü planlamak isteğe bağlıdır ve seriye sayılmaz.",
+      "prime": "Prime sohbet ve fotoğrafla yardım eder – her kaydı sen onaylarsın."
+    },
+    "beta": {
+      "title": "Kişisel koçun. Beta süresince ücretsiz.",
+      "f1": "Prime yapay zekâ koçu",
+      "f2": "Yapay zekâ yemek tarayıcısı",
+      "f3": "Antrenman için yapay zekâ fotoğraf kontrolü",
+      "f4": "Prime Memory",
+      "f5": "Beslenme ve antrenman planlama",
+      "f6": "Kişisel ilerleme",
+      "c1": "Ödeme gerekmez",
+      "c2": "Abonelik gerekmez",
+      "c3": "Otomatik ücret alınmaz",
+      "cta": "Ücretsiz başla"
+    },
+    "account": {
+      "title": "Kişisel planını kaydet.",
+      "sub": "Bir hesapla verilerin güvende olur ve Prime sana eşlik edebilir.",
+      "create": "E-posta ile kaydol",
+      "creating": "Hesap oluşturuluyor …",
+      "have": "Zaten hesabın var mı?",
+      "noAuth": "Bu sürümde hesaplar kullanılamıyor.",
+      "continueWithout": "Hesap olmadan devam et"
+    },
+    "done": {
+      "title": "PrimeMe AI’ye hoş geldin.",
+      "sub": "Kişisel yolculuğun şimdi başlıyor.",
+      "saving": "Hesabın hazırlanıyor …",
+      "existing": "Tekrar hoş geldin!",
+      "beta": "PrimeMe+ Beta etkin",
+      "cta": "Panoma git"
+    }
   }
 }

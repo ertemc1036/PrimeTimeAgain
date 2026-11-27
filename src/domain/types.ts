@@ -68,6 +68,20 @@ export interface Profile {
   targets?: NutritionTargets;
   /** Show weight numbers, weight charts and the body visualisation. Default true; the user can turn it off. */
   showWeight?: boolean;
+  /** Onboarding answers (all optional; used for the plan and, with consent, for Prime's coaching). */
+  /** Body sex for the energy formula only – not a gender identity; absent when skipped. */
+  bodySex?: 'female' | 'male';
+  birthYear?: number;
+  primaryGoal?: 'lose' | 'maintain' | 'fitter';
+  workoutsPerWeek?: '0' | '1-2' | '3-5' | '6+';
+  pace?: 'gentle' | 'balanced' | 'custom';
+  challenges?: string[];
+  motivations?: string[];
+  diet?: string;
+  triedOtherApps?: boolean;
+  hasCoach?: boolean;
+  /** Where the user heard of the app (our own channel statistics; never shared with ad networks). */
+  referral?: string;
   /**
    * Program the user follows. Only 'weightLoss' exists in version 1; the others are reserved for
    * Prime Muscle / Mind / Performance / Maintenance.

@@ -4,8 +4,10 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, Card, Chip, Screen, Segmented, TextField, TimeField } from '@/components/ui';
+import { weightProgress } from '@/domain/bodyStats';
 import { parseTime } from '@/domain/dates';
 import { checkGoalWeight } from '@/domain/goals';
+import { computePlan } from '@/domain/plan';
 import type { ActivityPreference, FoodPreferences, GoalType, Units } from '@/domain/types';
 import { BodyFields, type BodyInputs } from '@/features/BodyFields';
 import { useFoodSuggestions } from '@/features/foodSuggestions';
@@ -69,6 +71,23 @@ export default function Health() {
           activityPrefs: acts.length ? acts : p.activityPrefs,
           food,
           planningTime,
+          // Keep the daily nutrition frame in line with the edited details (same rules as the onboarding plan).
+          ...(p.targets || p.bodySex
+            ? {
+                targets:
+                  computePlan({
+                    sex: p.bodySex,
+                    birthYear: p.birthYear,
+                    heightCm: height ?? undefined,
+                    weightKg: weightProgress(data).currentKg ?? weight ?? undefined,
+                    goalWeightKg: goalKg ?? undefined,
+                    workouts: p.workoutsPerWeek,
+                    goal: goals.includes('weight') && goalKg ? 'lose' : p.primaryGoal === 'lose' ? 'maintain' : p.primaryGoal,
+                    pace: p.pace,
+                    year: new Date().getFullYear(),
+                  }).targets ?? undefined,
+              }
+            : {}),
         },
       },
       t('health.saved'),
