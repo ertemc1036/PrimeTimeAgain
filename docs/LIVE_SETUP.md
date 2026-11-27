@@ -81,6 +81,7 @@ mir die Ausgabe schicken.
 ```bash
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account --use-api
 supabase functions deploy revenuecat-webhook founders --no-verify-jwt --use-api
+supabase functions deploy prime --use-api
 ```
 
 Falls die App später trotz Anmeldung „Bitte anmelden“ meldet und die Function-Logs
@@ -203,6 +204,7 @@ select seat_no, granted_at from public.founder_seats order by seat_no limit 5;
 ```bash
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account --use-api
 supabase functions deploy revenuecat-webhook founders --no-verify-jwt --use-api
+supabase functions deploy prime --use-api
 curl -s https://<REFERENCE ID>.supabase.co/functions/v1/founders   # {"capacity":1000,"taken":…,"remaining":…}
 ```
 
@@ -263,6 +265,7 @@ select public.founder_seats_status();
 ```bash
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account --use-api
 supabase functions deploy revenuecat-webhook founders --no-verify-jwt --use-api
+supabase functions deploy prime --use-api
 ```
 
 ### D. Apple Developer (developer.apple.com → Certificates, Identifiers & Profiles)

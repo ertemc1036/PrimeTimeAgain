@@ -43,7 +43,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused }) =>
               tab.name === 'prime' ? (
                 <View style={[styles.prime, focused && styles.primeActive]}>
-                  <PrimeMascot size={44} />
+                  <PrimeMascot size={44} onDark />
                 </View>
               ) : (
                 <Ionicons name={focused ? tab.active : tab.icon} color={color as string} size={23} />

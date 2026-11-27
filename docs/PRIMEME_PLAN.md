@@ -50,9 +50,9 @@ Reihenfolge beim Veröffentlichen: Migration und Functions **vor** der neuen App
 | Phase | Inhalt | Status |
 | --- | --- | --- |
 | 0 | Analyse, Plan | erledigt |
-| 1 | Marke, Farben, Prime-Maskottchen, neue Navigation, Profil-Tab | in Arbeit |
-| 2 | Wassertracker + neue Sync-Sammlungen + Migration (vorbereitet) | in Arbeit |
-| 3 | Prime-Agent: Chat-Tab, Server-Function `prime`, validierte Aktionen, Bestätigen/Ändern/Rückgängig, Prime Memory, Nutzungsgrenzen Free/Plus | in Arbeit |
+| 1 | Marke, Farben, Prime-Maskottchen, neue Navigation, Profil-Tab | erledigt |
+| 2 | Wassertracker + neue Sync-Sammlungen + Migration (vorbereitet) | erledigt (Migration nicht live) |
+| 3 | Prime-Agent: Chat-Tab, Server-Function `prime`, validierte Aktionen, Bestätigen/Ändern/Rückgängig, Prime Memory, Nutzungsgrenzen Free/Plus | erledigt |
 | 4 | KI-Onboarding im Gespräch (nach Konto-Erstellung), Planvorschlag mit Bestätigung | offen |
 | 5 | Prime Voice: Aufnahme + Transkription, im Chat und Onboarding | offen |
 | 6 | Prime Vision: Rückfragen bei unklaren Fotos, Kühlschrank/Speisekarte | offen |
@@ -60,3 +60,19 @@ Reihenfolge beim Veröffentlichen: Migration und Functions **vor** der neuen App
 | 8 | Journey: Tagebuch, Check-ins, Wochen-/Monatsberichte | offen |
 | 9 | Proaktives Coaching (Morgenplanung, Wasser, Wochenrückblick, Wiedereinstieg) | offen |
 | 10 | Store-Vorbereitung: Name/Icon/Screenshots, Datenschutztexte, Review-Notizen, RevenueCat-Produkte „PrimeMe+“ | offen |
+
+## 5. Umgesetzt in Phase 1–3 (technisch)
+
+- **Prime-Function** `supabase/functions/prime`: Sitzung prüfen → Tarif serverseitig (PrimeMe+ = bestehendes Pro/Founders/Test) → Limit (Free 8/Tag, PrimeMe+ 80/Tag, plus globale Kostenbremse) → KI (OpenAI oder Claude über die bestehende Anbieter-Schicht, strukturierte Ausgabe) → Validierung mit demselben zod-Schema wie in der App → unvollständige Aktionen werden verworfen, „remember“ nur mit PrimeMe+.
+- **Aktionen** (`src/domain/primeActions.ts`): Wasser, Mahlzeit (Nährwerte als Schätzung markiert, unbekannte Werte bleiben leer), Training, Ruhetag, Gewicht, Erinnerung. Bestätigen speichert alles einer Aktion atomar (`batch`) plus Protokolleintrag; Rückgängig löscht genau diese Einträge. Bestehende Regeln (Bearbeitungsfenster, Doppel-Trainings) gelten auch für Prime.
+- **Datenschutz:** Prime sieht App-Daten nur mit Einwilligung (bestehender Schalter), keine Gewichtsdaten, keine Fotos; Gedächtnis nur mit Einwilligung und PrimeMe+.
+- **Sync:** neue Sammlungen `water`, `memory`, `primeAction`; Server validiert sie.
+
+## 6. Nächste Phasen im Detail
+
+- **Phase 4 – KI-Onboarding:** Nach „Los geht's“ und 18+-Bestätigung Konto anlegen (Apple/E-Mail), dann Gespräch mit Prime. Neue Function-Modus `onboarding` mit Schema „extrahierte Profilfelder + nächste Frage“; die App zeigt gesammelte Angaben als bearbeitbare Liste; Abschluss: Planvorschlag (Wasserziel, Mahlzeitenstruktur, Aktivität, Erinnerungszeiten) mit Bestätigung → bestehende `completeOnboarding`-Mutation. Ohne Konto/Cloud bleibt der bisherige Fragebogen.
+- **Phase 5 – Voice:** `expo-audio` (in Expo Go enthalten) für Aufnahme, neue Function `transcribe` (OpenAI-Transkription, Audio max. 60 s, nur PrimeMe+), Mikrofon-Taste im Prime-Chat und im Onboarding. App-Konfiguration: Mikrofon-Berechtigungstext (bisher bewusst deaktiviert).
+- **Phase 6 – Vision:** Rückfragen bei unklaren Fotos im Chat; Kühlschrank/Speisekarte → Mahlzeitenvorschläge.
+- **Phase 7 – Pläne:** Prime-Aktionen „Wochenplan erstellen“ (schreibt Tagespläne nach Bestätigung), Rezepte, Einkaufsliste (neue Sammlung `shopping`).
+- **Phase 8 – Journey:** Tagebucheinträge (Gedanken, Momente, Fotos privat), freiwilliger Check-in, Wochen-/Monatsbericht von Prime.
+- **Phase 9 – Proaktives Coaching:** Morgenplanung, Wasser, Wochenrückblick, Wiedereinstieg – auf Basis der bestehenden Erinnerungs-Engine, einzeln schaltbar.

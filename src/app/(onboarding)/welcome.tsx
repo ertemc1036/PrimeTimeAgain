@@ -26,7 +26,7 @@ export default function Welcome() {
         <IconButton icon="globe-outline" label={t('common.language')} onPress={() => router.push('/language')} variant="inverse" color={colors.white} />
       </View>
       <View style={styles.center}>
-        <PrimeMascot size={132} />
+        <PrimeMascot size={132} onDark />
         <Text style={styles.wordmark} accessibilityRole="header" maxFontSizeMultiplier={1.2}>
           {t('brand.name')}
         </Text>

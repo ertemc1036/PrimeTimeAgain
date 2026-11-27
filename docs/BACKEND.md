@@ -41,6 +41,7 @@ this repository deploys anything by itself; see [RELEASE.md](RELEASE.md) for the
 | `revenuecat-webhook` | Updates `entitlements` from RevenueCat events | `Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>` |
 | `delete-account` | Deletes the caller's photos, records and account | Signed in |
 | `founders` | Founders Edition counter: seats taken / total (counts only) | Public (`--no-verify-jwt`) |
+| `prime` | Prime agent: reply + suggested app actions (validated; saved only after the user confirms in the app) | Signed in; free 8/day, PrimeMe+ 80/day |
 
 The functions talk to Postgres directly (`SUPABASE_DB_URL`, provided by Supabase). Per request,
 they set the caller as `authenticated` with their JWT claims, so row-level security applies inside
@@ -140,6 +141,7 @@ supabase secrets set OPENAI_API_KEY=… REVENUECAT_SECRET_KEY=… REVENUECAT_WEB
 supabase secrets set PRO_TESTERS=<your account id>      # optional: your own Pro test access
 supabase functions deploy sync export entitlement food-scan workout-photo coach delete-account
 supabase functions deploy revenuecat-webhook founders --no-verify-jwt
+supabase functions deploy prime
 ```
 
 - **Auth → Email templates:** use `supabase/templates/confirmation.html` (Confirm signup) and
