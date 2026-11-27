@@ -176,7 +176,7 @@ export default function PrimeScreen() {
           <AppText variant="bodyStrong" accessibilityLiveRegion="polite">
             {errorText(prime.error)}
           </AppText>
-          {prime.error === 'free_limit' && !pro.isPro ? <Button label={t('prime.upgrade')} size="sm" fullWidth={false} onPress={() => router.push('/pro')} /> : null}
+          {prime.error === 'free_limit' && pro.showPaywalls ? <Button label={t('prime.upgrade')} size="sm" fullWidth={false} onPress={() => router.push('/pro')} /> : null}
           {prime.error !== 'free_limit' && prime.messages[prime.messages.length - 1]?.role === 'user' ? (
             <Button label={t('common.retry')} size="sm" variant="secondary" fullWidth={false} onPress={prime.retry} />
           ) : null}

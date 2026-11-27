@@ -47,7 +47,7 @@ export default function GymTab() {
 
       {/* Did I train today, what, and what was planned – Prime trains, celebrates or rests with you */}
       <PrimeHero
-        variant={day.rest ? 'recovery' : day.sessions > 0 ? 'success' : 'gym'}
+        variant={day.rest ? 'recovery' : day.sessions > 0 ? 'success' : plannedActivity && plannedActivity.type !== 'rest' ? 'workout' : 'gym'}
         eyebrow={date === today ? t('gym.today') : t('common.yesterday')}
         title={day.sessions ? t('gym.trained') : day.rest ? t('activity.rest') : t('gym.notYet')}
         subtitle={

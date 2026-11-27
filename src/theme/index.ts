@@ -3,7 +3,7 @@ import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 /**
  * PrimeMe AI design tokens: black, white, greys and silver – a calm, monochrome look in the spirit of
  * native iOS. Every colour in the app comes from here. Food photos keep their natural colours; the
- * interface itself stays monochrome. Prime's artwork (assets/prime) is the only illustration.
+ * interface itself stays monochrome. Prime's artwork (assets/images/prime) is the only illustration.
  */
 export const palette = {
   black: '#000000',

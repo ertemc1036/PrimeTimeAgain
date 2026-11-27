@@ -37,7 +37,6 @@
     "name": "PrimeMe AI",
     "slogan": "Become your Prime.",
     "secondary": "Dönüşüm yolculuğun.",
-    "routine": "Yarını planla. Bugünü tamamla.",
     "agent": "Prime",
     "plus": "PrimeMe+"
   },
@@ -71,7 +70,7 @@
     "step": "Adım {{current}} / {{total}}",
     "welcome": {
       "subtitle": "Dönüşümün bugün başlıyor.",
-      "loop": "Planla. Yap. Kaydet. Tamamla. Tekrarla.",
+      "loop": "Yemeğini kaydet. Aktif ol. Günü tamamla.",
       "cta": "Başlayalım",
       "adults": "18 yaş ve üzeri yetişkinler için."
     },
@@ -202,37 +201,7 @@
     "streakZero": "Serine bugün başla",
     "longest": "En uzun: {{count}}",
     "mission": "Bugünün görevi",
-    "progress": "{{done}} / 3 tamamlandı",
-    "food": {
-      "pending": "Yediklerini kaydet",
-      "done": "Beslenme kaydedildi",
-      "pendingHint": "Öğünlerini kaydet, ardından bugünün beslenme günlüğünü tamamla.",
-      "doneHint_one": "{{count}} öğün kaydedildi",
-      "doneHint_other": "{{count}} öğün kaydedildi"
-    },
-    "activity": {
-      "pending": "Aktiviteni tamamla",
-      "done": "Aktivite tamamlandı",
-      "rest": "Dinlenme günü kaydedildi",
-      "pendingHint": "Bir antrenman kaydet veya dinlenme günü seç."
-    },
-    "planning": {
-      "pending": "Yarını planla",
-      "done": "Yarın planlandı",
-      "pendingHint": "Yarının öğünlerini ve aktivitesini planla."
-    },
-    "complete": {
-      "title": "Günlük görev tamamlandı",
-      "body": "Bugün kendin için oradaydın."
-    },
     "calendar": "Seri takvimi",
-    "quick": {
-      "food": "Yemek kaydet",
-      "activity": "Aktivite kaydet",
-      "plan": "Yarını planla"
-    },
-    "planned": "Bugünün planı",
-    "noPlan": "Bugün için plan yok. Yine de yemek ve aktivite kaydedebilirsin.",
     "milestone": "Yeni kilometre taşı: {{name}}",
     "prime": {
       "open": "Prime’ı aç",
@@ -243,19 +212,10 @@
       "water": "Su",
       "training": "Antrenman"
     },
-    "kitchenCard": {
-      "open": "Hâlâ planlı: {{meals}}",
-      "allLogged": "Planlanan tüm öğünler kaydedildi",
-      "empty": "Henüz kayıt yok"
-    },
     "gymCard": {
       "trained": "Bugün antrenman yapıldı",
       "notYet": "Bugün henüz antrenman yok",
       "rest": "Dinlenme günü – toparlanma da sayılır"
-    },
-    "journey": {
-      "title": "İlerleme ve geçmiş",
-      "body": "Kilo, seriler, kilometre taşları ve fotoğraflar"
     },
     "week": {
       "prev": "Önceki hafta",
@@ -278,7 +238,7 @@
       "firstMeal": "Yemek yedikten sonra ilk öğününü kaydet.",
       "water": "Suyunu unutma.",
       "planTomorrow": "Yarını şimdiden hazırlamak ister misin?",
-      "dayComplete": "Günlük görevin tamam. Harika!",
+      "dayComplete": "Harika! Bugünü tamamladın. Yarın görüşürüz!",
       "prepareDay": "Gününü birlikte hazırlayalım."
     },
     "nutrition": {
@@ -314,10 +274,25 @@
       "milestones_one": "{{count}} kilometre taşı",
       "milestones_other": "{{count}} kilometre taşı"
     },
-    "checks": {
-      "food": "Yemek",
-      "activity": "Aktif",
-      "planning": "Yarın"
+    "missionPast": "Gün durumu",
+    "missionProgress": "{{total}} görevden {{done}} tamam",
+    "dayCompleteShort": "Gün tamamlandı",
+    "dayCompleteNote": "Beslenme ve aktivite tamam. Gerisi isteğe bağlı.",
+    "tasks": {
+      "food": "Beslenme",
+      "activity": "Aktivite"
+    },
+    "status": {
+      "open": "Henüz açık",
+      "inProgress": "Devam ediyor – günlüğünü tamamla",
+      "done": "Tamamlandı",
+      "trained": "Antrenman tamamlandı",
+      "rest": "Dinlenme günü kaydedildi"
+    },
+    "planOptional": {
+      "title": "Yarını planla",
+      "hint": "İsteğe bağlı – seriye sayılmaz.",
+      "done": "Yarın planlandı. İstersen düzenle."
     }
   },
   "calendar": {
@@ -340,8 +315,7 @@
     },
     "breakdown": {
       "food": "Beslenme",
-      "activity": "Antrenman / Dinlenme",
-      "planning": "Ertesi gün planlandı"
+      "activity": "Antrenman / Dinlenme"
     },
     "graceNote": "Dün için geç kayıtları bu gece yarısına kadar ekleyebilirsin."
   },
@@ -449,7 +423,12 @@
     "outsideWindow": "Bu öğün tercih ettiğin zaman aralığının dışında. Kaydın yapıldı.",
     "locked": "Bu gün düzenlemeye kapalı. Dün için geç kayıtları bu gece yarısına kadar ekleyebilirsin.",
     "eatingWindow": "Yemek aralığı {{start}}–{{end}}",
-    "dayYesterday": "Dün"
+    "dayYesterday": "Dün",
+    "short": {
+      "protein": "Protein",
+      "carbs": "Karb.",
+      "fat": "Yağ"
+    }
   },
   "foodEntry": {
     "title": "Yemek ekle",
@@ -776,7 +755,7 @@
         "body": "Hazır olduğunda yediklerini kaydet."
       },
       "planning": {
-        "title": "Yarın bu akşam başlar. Planlamaya hazır mısın?",
+        "title": "Yarını şimdiden hazırlamak ister misin? Tamamen isteğe bağlı.",
         "body": "Birkaç dakika yeterli."
       },
       "checkin": {
@@ -827,7 +806,7 @@
     "privacyBody": "PrimeMe AI profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Bir hesap oluşturursan bu veriler, geri yükleyebilmen ve diğer cihazlarda kullanabilmen için bulut veritabanımızda da saklanır; fotoğraflar yalnızca hesabının erişebildiği özel bir depolama alanında tutulur. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ve yalnızca izin verirsen son planlarının ve kayıtlarının kısa bir özeti, o isteği yanıtlamak için sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında saklanmaz. Abonelikler Apple veya Google ve abonelik sağlayıcımız RevenueCat üzerinden yürütülür. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman uygulamada dışa aktarabilir veya silebilir, hesabını silebilirsin.",
     "termsBody": "PrimeMe AI sağlıklı rutinleri destekler; tıbbi bir cihaz veya profesyonel tavsiyenin yerine geçen bir araç değildir. Besin değerleri ve yapay zekâ sonuçları tahmindir. Antrenman kayıtları kullanıcının kendi beyanına dayanır. Uygulama 18 yaş ve üzeri yetişkinler içindir. Abonelikler, App Store veya Google Play hesabının ayarlarından iptal edilene kadar otomatik olarak yenilenir.",
     "medical": "PrimeMe AI tıbbi tavsiye vermez. Bir sağlık sorunun varsa, hamileysen veya senin için neyin doğru olduğundan emin değilsen lütfen bir sağlık uzmanıyla konuş.",
-    "help": "Yarını Plan'da planla, öğünlerini Beslenme'de kaydet, Antrenman'da bir antrenman veya dinlenme günü kaydet. Üçü de tamamlandığında bugünün görevi tamamlanır.",
+    "help": "Mutfak bölümünde öğünlerini kaydet ve beslenme günlüğünü tamamla. Gym bölümünde bir antrenman veya dinlenme günü kaydet. İkisi de tamamsa günün tamamlanmıştır. Ertesi günü planlamak isteğe bağlıdır.",
     "contact": "İletişim",
     "noContact": "Yayından önce bir destek iletişim bilgisi eklenecek.",
     "licenses": "Lisanslar",
@@ -859,8 +838,6 @@
     "cancelInfo": "Abonelikler otomatik olarak yenilenir. Yenilemeden en az 24 saat önce App Store veya Google Play ayarlarından istediğin zaman iptal edebilirsin.",
     "noGuarantee": "Pro kolaylık ve destek sağlar. Kilo kaybını veya belirli bir sonucu garanti etmez.",
     "free": "Planlama, kayıt ve serin için ihtiyacın olan her şey ücretsiz kalır.",
-    "devPreview": "Geliştirici önizlemesi: Pro ekranlarını göster",
-    "devPreviewHint": "Yalnızca geliştirme sürümlerinde. Yapay zekâ erişimi vermez; sunucu aboneliğini yine kontrol eder.",
     "isPro": "PrimeMe+'ya sahipsin.",
     "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen PrimeMe AI uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
     "notConfigured": "Abonelikler bu sürümde henüz kurulmadı. Gösterilen fiyatlar ön fiyatlardır.",
@@ -889,7 +866,12 @@
       "signedInHint": "Ücretsiz kurucu yerini almak için e-posta adresini bir kodla onayla (veya Apple ile giriş yap).",
       "notEligible": "Bu hesaba kurucu yeri verilmedi. Lütfen önce e-posta adresini onayla veya birazdan tekrar dene.",
       "confirmCta": "E-postayı onayla ve yerini al"
-    }
+    },
+    "testMode": "Pro test modu",
+    "testModeHint": "Yalnızca test sürümlerinde. Tüm Pro alanlarını abonelik olmadan açar ve ödeme ekranlarını gizler. Yapay zekâ özelliklerini yalnızca sunucu açar.",
+    "testServerOn": "Sunucu: bu hesap için test erişimi etkin – tüm yapay zekâ özellikleri kullanılabilir.",
+    "testServerPro": "Sunucu: PrimeMe+ etkin.",
+    "testServerOff": "Sunucu: bu hesap test hesabı değil. Yapay zekâ özellikleri için PRO_TESTERS kaydı gerekir (Hesap → Hesap kimliği)."
   },
   "coach": {
     "title": "Prime",

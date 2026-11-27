@@ -37,7 +37,7 @@ export function NutritionCard({
             {t('today.nutrition.title')}
           </AppText>
           <View style={styles.kcalRow}>
-            <AppText style={styles.kcal}>{known ? fmt(totals.kcal) : '–'}</AppText>
+            {known ? <AppText style={styles.kcal}>{fmt(totals.kcal)}</AppText> : <AppText variant="heading">{t('items.noEstimate')}</AppText>}
             <AppText variant="bodyStrong" color="secondary">
               {targets ? t('today.nutrition.ofTarget', { kcal: fmt(targets.kcal) }) : 'kcal'}
             </AppText>
@@ -79,7 +79,7 @@ export function NutritionCard({
               {known ? `${Math.round(totals[k])} g` : '–'}
             </AppText>
             <AppText variant="caption" color="secondary" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
-              {targets ? `${t(`food.${k}`)} · ${targets[k]} g` : t(`food.${k}`)}
+              {targets ? `${t(`food.short.${k}`)} · ${targets[k]} g` : t(`food.short.${k}`)}
             </AppText>
           </View>
         ))}

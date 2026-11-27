@@ -72,7 +72,6 @@ export function StreakCalendar({ data, today }: { data: AppData; today: ISODate 
           <AppText variant="bodyStrong">{formatDate(selected, locale, { weekday: 'long', day: 'numeric', month: 'long' })}</AppText>
           <Check label={t('calendar.breakdown.food')} done={selectedChecks.food} />
           <Check label={t('calendar.breakdown.activity')} done={selectedChecks.activity} />
-          <Check label={t('calendar.breakdown.planning')} done={selectedChecks.planning} />
           {selected !== today && canEditCheckIns(selected, today) && !selectedChecks.complete ? (
             <AppText variant="caption" color="secondary">
               {t('calendar.graceNote')}

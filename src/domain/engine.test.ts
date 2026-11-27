@@ -1,4 +1,4 @@
-import { calendarStatus, canEditCheckIns, dayChecks, isPlanComplete, journeyStats, streakStats } from './completion';
+import { calendarStatus, canEditCheckIns, dayChecks, isNextDayPlanned, isPlanComplete, journeyStats, streakStats } from './completion';
 import { addDays, daysBetween, isWithinWindow } from './dates';
 import { applyMutation, MutationRejected, type Mutation } from './mutations';
 import { planReminders } from './reminders';
@@ -56,35 +56,74 @@ const plan = (date: string, over: Partial<DayPlan> = {}): DayPlan => ({
   ...over,
 });
 
-/** Build a fully complete day directly (bypassing the grace window, for history fixtures). */
+/** Build a complete day directly (food finished + a workout; no plan needed), bypassing the grace window. */
 const completeDay = (d: AppData, date: string): AppData => ({
   ...d,
   foodLogs: [...d.foodLogs, food(date)],
   foodCompletions: { ...d.foodCompletions, [date]: { date, completedAt: NOW } },
   activityLogs: [...d.activityLogs, workout(date)],
-  plans: { ...d.plans, [addDays(date, 1)]: plan(addDays(date, 1)) },
 });
 
 const run = (d: AppData, ...ms: Mutation[]) => ms.reduce((acc, m) => applyMutation(acc, m, TODAY), d);
 
-describe('daily requirements', () => {
-  it('needs all three categories', () => {
-    let d = base();
-    d = run(d, { type: 'upsertFood', log: food(TODAY) });
-    expect(dayChecks(d, TODAY)).toMatchObject({ food: false, done: 0 }); // logged but not finalised
-    d = run(d, { type: 'finishFoodLog', date: TODAY, at: NOW });
-    expect(dayChecks(d, TODAY)).toMatchObject({ food: true, activity: false, planning: false, done: 1, complete: false });
-    d = run(d, { type: 'upsertActivity', log: workout(TODAY) });
-    expect(dayChecks(d, TODAY)).toMatchObject({ done: 2, complete: false });
-    d = run(d, { type: 'savePlan', plan: plan(addDays(TODAY, 1)) });
-    expect(dayChecks(d, TODAY)).toMatchObject({ done: 3, complete: true });
+describe('daily requirements: food + activity (planning is optional)', () => {
+  const foodDone = (d: AppData) => run(d, { type: 'upsertFood', log: food(TODAY) }, { type: 'finishFoodLog', date: TODAY, at: NOW });
+
+  it('food finished, activity missing → not complete', () => {
+    expect(dayChecks(foodDone(base()), TODAY)).toMatchObject({ food: true, foodStatus: 'done', activity: false, activityStatus: 'open', done: 1, complete: false });
   });
 
-  it('counts activity alone or planning alone as partial only', () => {
-    const a = run(base(), { type: 'saveRestDay', date: TODAY, at: NOW });
-    expect(dayChecks(a, TODAY)).toMatchObject({ activity: true, done: 1, complete: false });
-    const p = run(base(), { type: 'savePlan', plan: plan(addDays(TODAY, 1)) });
-    expect(dayChecks(p, TODAY)).toMatchObject({ planning: true, done: 1 });
+  it('activity done, food missing → not complete', () => {
+    const d = run(base(), { type: 'upsertActivity', log: workout(TODAY) });
+    expect(dayChecks(d, TODAY)).toMatchObject({ food: false, foodStatus: 'open', activity: true, activityStatus: 'trained', done: 1, complete: false });
+  });
+
+  it('meals logged but the diary not finished → food in progress, not complete', () => {
+    const d = run(base(), { type: 'upsertFood', log: food(TODAY) }, { type: 'upsertActivity', log: workout(TODAY) });
+    expect(dayChecks(d, TODAY)).toMatchObject({ foodStatus: 'inProgress', food: false, done: 1, complete: false });
+  });
+
+  it('food + training → complete', () => {
+    const d = run(foodDone(base()), { type: 'upsertActivity', log: workout(TODAY) });
+    expect(dayChecks(d, TODAY)).toMatchObject({ done: 2, complete: true, activityStatus: 'trained' });
+  });
+
+  it('food + rest day → complete (a rest day counts like a training day)', () => {
+    const d = run(foodDone(base()), { type: 'saveRestDay', date: TODAY, at: NOW });
+    expect(dayChecks(d, TODAY)).toMatchObject({ done: 2, complete: true, activityStatus: 'rest' });
+  });
+
+  it('food + activity without planning tomorrow → complete', () => {
+    const d = run(foodDone(base()), { type: 'upsertActivity', log: workout(TODAY) });
+    expect(isNextDayPlanned(d, TODAY)).toBe(false);
+    expect(dayChecks(d, TODAY).complete).toBe(true);
+    expect(streakStats(d, TODAY)).toMatchObject({ current: 1, completedDays: 1 });
+  });
+
+  it('tomorrow planned but food and activity missing → not complete, nothing counted', () => {
+    const d = run(base(), { type: 'savePlan', plan: plan(addDays(TODAY, 1)) });
+    expect(isNextDayPlanned(d, TODAY)).toBe(true);
+    expect(dayChecks(d, TODAY)).toMatchObject({ done: 0, complete: false });
+    expect(streakStats(d, TODAY)).toMatchObject({ current: 0, completedDays: 0 });
+  });
+
+  it('a later correction updates the day (removing the only workout or meal reopens it)', () => {
+    const w = workout(TODAY, { id: 'w-only' });
+    let d = run(foodDone(base()), { type: 'upsertActivity', log: w });
+    expect(dayChecks(d, TODAY).complete).toBe(true);
+    d = run(d, { type: 'deleteActivity', id: 'w-only' });
+    expect(dayChecks(d, TODAY)).toMatchObject({ activity: false, complete: false });
+    d = run(d, { type: 'saveRestDay', date: TODAY, at: NOW });
+    expect(dayChecks(d, TODAY).complete).toBe(true);
+    d = run(d, { type: 'deleteFood', id: d.foodLogs[0].id });
+    expect(dayChecks(d, TODAY)).toMatchObject({ food: false, foodStatus: 'open', complete: false });
+  });
+
+  it('never counts a day twice (several workouts, a rest day and re-finishing still make one day)', () => {
+    let d = run(foodDone(base()), { type: 'upsertActivity', log: workout(TODAY) }, { type: 'upsertActivity', log: workout(TODAY, { type: 'outdoor_walk', startTime: '07:00' }) });
+    d = run(d, { type: 'saveRestDay', date: TODAY, at: NOW }, { type: 'finishFoodLog', date: TODAY, at: NOW });
+    expect(dayChecks(d, TODAY).done).toBe(2);
+    expect(streakStats(d, TODAY)).toEqual({ current: 1, longest: 1, completedDays: 1 });
   });
 
   it('accepts Rest Day as a complete activity, idempotently, and switching from a planned workout', () => {
@@ -192,6 +231,16 @@ describe('streaks and calendar', () => {
     expect(streakStats(d, TODAY).current).toBe(2);
   });
 
+  it('keeps historical days: a past day with food and activity but no plan now counts as complete', () => {
+    // Before this change, day 3 (planning) was required. Completion is derived from the saved entries,
+    // so the new rule applies to history automatically: days that were complete stay complete, days
+    // that only missed the plan become complete too, and nothing stored is lost.
+    let d = completeDay(base(), addDays(TODAY, -2));
+    d = completeDay(d, addDays(TODAY, -1));
+    expect(Object.keys(d.plans)).toHaveLength(0);
+    expect(streakStats(d, TODAY)).toEqual({ current: 2, longest: 2, completedDays: 2 });
+  });
+
   it('shows partial days', () => {
     const d = run(base(), { type: 'saveRestDay', date: addDays(TODAY, -1), at: NOW });
     expect(calendarStatus(d, addDays(TODAY, -1), TODAY, '2026-10-01')).toBe('partial');
@@ -199,7 +248,11 @@ describe('streaks and calendar', () => {
 
   it('is unaffected by DST and month/year boundaries (local dates)', () => {
     // 2026-03-29 and 2026-10-25 are DST changes in Europe; 2026-12-31 → 2027-01-01 crosses a year.
-    for (const [a, b] of [['2026-03-28', '2026-03-29'], ['2026-10-24', '2026-10-25'], ['2026-12-31', '2027-01-01']]) {
+    for (const [a, b] of [
+      ['2026-03-28', '2026-03-29'],
+      ['2026-10-24', '2026-10-25'],
+      ['2026-12-31', '2027-01-01'],
+    ]) {
       expect(addDays(a, 1)).toBe(b);
       expect(daysBetween(a, b)).toBe(1);
       let d = completeDay(completeDay(base(), a), b);
@@ -245,16 +298,31 @@ describe('reminders', () => {
 
   it('smart mode reminds about the planned activity until it is logged, and skips past times', () => {
     let d = run(withNotif('smart'), { type: 'savePlan', plan: plan(TODAY) });
-    const kinds = planReminders(d, TODAY, '07:00').filter((r) => r.date === TODAY).map((r) => r.kind);
+    const kinds = planReminders(d, TODAY, '07:00')
+      .filter((r) => r.date === TODAY)
+      .map((r) => r.kind);
     expect(kinds).toEqual(['morning', 'planning', 'activity']);
-    expect(planReminders(d, TODAY, '09:00').filter((r) => r.date === TODAY).map((r) => r.kind)).toEqual(['planning', 'activity']);
+    expect(
+      planReminders(d, TODAY, '09:00')
+        .filter((r) => r.date === TODAY)
+        .map((r) => r.kind),
+    ).toEqual(['planning', 'activity']);
     d = run(d, { type: 'saveRestDay', date: TODAY, at: NOW });
     expect(planReminders(d, TODAY, '07:00').some((r) => r.date === TODAY && r.kind === 'activity')).toBe(false);
   });
 
+  it('evening check-in stops once food and activity are done, even without planning tomorrow', () => {
+    let d = withNotif('focused');
+    expect(planReminders(d, TODAY, '07:00').some((r) => r.date === TODAY && r.kind === 'checkin')).toBe(true);
+    d = run(d, { type: 'upsertFood', log: food(TODAY) }, { type: 'finishFoodLog', date: TODAY, at: NOW }, { type: 'saveRestDay', date: TODAY, at: NOW });
+    expect(planReminders(d, TODAY, '07:00').some((r) => r.date === TODAY && r.kind === 'checkin')).toBe(false);
+  });
+
   it('hourly mode stays inside the range and outside quiet hours', () => {
     const d = { ...withNotif('hourly'), notifications: { ...withNotif('hourly').notifications, hourlyStart: '09:00', hourlyEnd: '23:00', quietStart: '22:00', quietEnd: '07:00' } };
-    const hourly = planReminders(d, TODAY, '00:00').filter((r) => r.kind === 'hourly' && r.date === TODAY).map((r) => r.time);
+    const hourly = planReminders(d, TODAY, '00:00')
+      .filter((r) => r.kind === 'hourly' && r.date === TODAY)
+      .map((r) => r.time);
     expect(hourly[0]).toBe('09:00');
     expect(hourly).not.toContain('22:00');
     expect(hourly).not.toContain('23:00');

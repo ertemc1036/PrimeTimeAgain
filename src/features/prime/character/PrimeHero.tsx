@@ -8,7 +8,7 @@ import type { PrimeVariant } from './assets';
 import { PrimeCharacter } from './PrimeCharacter';
 
 /**
- * Header card of a section (Gym, Kitchen): Prime in the matching pose on his studio black, with the
+ * Header card of a section (Gym, Kitchen): Prime's scene in a framed tile on dark, with the
  * section's key status next to him. Kept compact so the content below stays in focus.
  */
 export function PrimeHero({ variant, eyebrow, title, subtitle, children }: { variant: PrimeVariant; eyebrow: string; title: string; subtitle?: string; children?: ReactNode }) {
@@ -28,12 +28,13 @@ export function PrimeHero({ variant, eyebrow, title, subtitle, children }: { var
         ) : null}
         {children}
       </View>
-      <PrimeCharacter variant={variant} size={132} radius={0} motion="idle" />
+      <PrimeCharacter variant={variant} size={128} radius={radii.lg} motion="enter" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.primeBackdrop, borderRadius: radii.xl, overflow: 'hidden', paddingLeft: spacing.lg, minHeight: 148 },
-  text: { flex: 1, gap: 4, paddingVertical: spacing.lg },
+  // Dark card that frames Prime's scene (kitchen, gym) as a tile, so the image's own background reads as intended.
+  card: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, backgroundColor: colors.primeBackdrop, borderRadius: radii.xl, padding: spacing.sm, paddingLeft: spacing.lg },
+  text: { flex: 1, gap: 4, paddingVertical: spacing.sm },
 });

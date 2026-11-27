@@ -3,15 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Button, Icon, ProgressBar, Screen, useToast } from '@/components/ui';
+import { AppText, Icon, ProgressBar, Screen } from '@/components/ui';
 import { dailyBriefing } from '@/domain/briefing';
 import { weightProgress } from '@/domain/bodyStats';
-import { canEditCheckIns, dayChecks, streakStats } from '@/domain/completion';
+import { canEditCheckIns, dayChecks, isNextDayPlanned, streakStats } from '@/domain/completion';
 import { daysBetween } from '@/domain/dates';
 import { gymDay, hasEntries, kitchenDay, trainingWeek, waterDay, weeklyWeightChange } from '@/domain/daySummary';
 import { totals } from '@/domain/nutrition';
 import { MEAL_TYPES, type ISODate } from '@/domain/types';
 import { activityLabel, activitySummary, mealLabel } from '@/features/labels';
+import { DailyMission } from '@/features/today/DailyMission';
 import { DashboardCard } from '@/features/today/DashboardCard';
 import { NutritionCard } from '@/features/today/NutritionCard';
 import { PrimeBriefing } from '@/features/today/PrimeBriefing';
@@ -35,7 +36,6 @@ export default function Today() {
   const { t } = useTranslation();
   const locale = useLocale();
   const { data, today } = useAppState();
-  const toast = useToast();
   const [date, setDate] = useState<ISODate>(today);
   // Follow the calendar day while the app stays open over midnight.
   const lastToday = useRef(today);
@@ -52,20 +52,15 @@ export default function Today() {
   const profile = data.profile;
   const showWeight = profile?.showWeight !== false;
 
-  const checks = dayChecks(data, today);
+  // The day's status for the selected day (today or a past day) – one source: src/domain/completion.ts.
+  const checks = dayChecks(data, date);
+  const tomorrowPlanned = isNextDayPlanned(data, today);
   const kitchen = kitchenDay(data, date);
   const gym = gymDay(data, date);
   const water = waterDay(data, date);
   const plan = data.plans[date];
   const plannedNutrition = totals((plan?.meals ?? []).flatMap((m) => m.items));
   const logs = data.foodLogs.filter((f) => f.date === date);
-
-  // Celebrate once when the third daily task completes during this session.
-  const prevDone = useRef(checks.done);
-  useEffect(() => {
-    if (checks.complete && prevDone.current < 3) toast(t('today.complete.title'), 'trophy-outline');
-    prevDone.current = checks.done;
-  }, [checks.complete, checks.done, toast, t]);
 
   const hour = currentHour();
   const greetingKey = hour < 12 ? 'today.morning' : hour < 18 ? 'today.afternoon' : 'today.evening';
@@ -123,7 +118,10 @@ export default function Today() {
       ) : null}
 
       {/* 3. Prime daily briefing (today only) */}
-      {isToday ? <PrimeBriefing parts={dailyBriefing({ hour, kitchen, gym, water, checks })} /> : null}
+      {isToday ? <PrimeBriefing parts={dailyBriefing({ hour, kitchen, gym, water, checks, tomorrowPlanned })} /> : null}
+
+      {/* Daily mission: food + activity (planning tomorrow is optional and not part of it) */}
+      {!isFuture ? <DailyMission checks={checks} isToday={isToday} onFood={() => router.navigate('/kitchen')} onActivity={() => router.navigate('/gym')} /> : null}
 
       {/* 4 + 5. Nutrition and macros: logged, or planned for future days */}
       {isFuture ? (
@@ -248,29 +246,19 @@ export default function Today() {
         </View>
       </DashboardCard>
 
-      {/* 11. Planning routine: Plan Tomorrow. Complete Today. */}
-      <View style={styles.planning}>
-        <View style={styles.planningHead}>
-          <AppText variant="subheading" style={styles.flex}>
-            {t('brand.routine')}
-          </AppText>
-          <AppText variant="label" color="secondary">
-            {t('today.progress', { done: checks.done })}
-          </AppText>
-        </View>
-        <View style={styles.checks}>
-          <Check done={checks.food} icon="restaurant-outline" label={t('today.checks.food')} onPress={() => router.navigate('/kitchen')} />
-          <Check done={checks.activity} icon="barbell-outline" label={t('today.checks.activity')} onPress={() => router.navigate('/gym')} />
-          <Check done={checks.planning} icon="calendar-outline" label={t('today.checks.planning')} onPress={() => router.push('/plan')} />
-        </View>
-        <Button
-          label={checks.planning ? t('today.planning.done') : t('today.planning.pending')}
-          icon="calendar-outline"
-          variant={checks.planning ? 'secondary' : 'primary'}
-          size="sm"
-          onPress={() => router.push('/plan')}
-        />
-      </View>
+      {/* Optional: plan tomorrow. Never a task, never counted towards the day or the streak. */}
+      {isToday ? (
+        <Pressable onPress={() => router.push('/plan')} accessibilityRole="button" style={styles.planRow} testID="today-plan-optional">
+          <Icon name="calendar-outline" size={18} color={colors.textSecondary} />
+          <View style={styles.flex}>
+            <AppText variant="bodyStrong">{t('today.planOptional.title')}</AppText>
+            <AppText variant="caption" color="secondary">
+              {tomorrowPlanned ? t('today.planOptional.done') : t('today.planOptional.hint')}
+            </AppText>
+          </View>
+          <Icon name="chevron-forward" size={18} color={colors.textSecondary} />
+        </Pressable>
+      ) : null}
     </Screen>
   );
 }
@@ -304,22 +292,12 @@ function WeightPoint({ label, value, strong, align = 'left' }: { label: string; 
   );
 }
 
-function Check({ done, icon, label, onPress }: { done: boolean; icon: 'restaurant-outline' | 'barbell-outline' | 'calendar-outline'; label: string; onPress: () => void }) {
-  return (
-    <Pressable onPress={onPress} accessibilityRole="button" accessibilityState={{ checked: done }} accessibilityLabel={label} style={[styles.check, done && styles.checkDone]}>
-      <Icon name={done ? 'checkmark-circle' : icon} size={18} color={done ? colors.text : colors.textSecondary} />
-      <AppText variant="caption" numberOfLines={1} style={styles.flex}>
-        {label}
-      </AppText>
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   greeting: { fontFamily: fonts.bold, fontSize: 26, lineHeight: 32, letterSpacing: -0.6, color: colors.text },
   avatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.black, alignItems: 'center', justifyContent: 'center' },
   flex: { flex: 1 },
+  planRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.surface, borderRadius: radii.lg, padding: spacing.md },
   dayBanner: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, backgroundColor: colors.card, borderRadius: radii.md, paddingHorizontal: spacing.md, paddingVertical: 10 },
   inlineRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.surface, borderRadius: radii.lg, padding: spacing.md },
   cardAction: { flexDirection: 'row', justifyContent: 'flex-end' },
@@ -334,9 +312,4 @@ const styles = StyleSheet.create({
   weightBlock: { gap: spacing.xs, marginBottom: spacing.xs },
   weights: { flexDirection: 'row', alignItems: 'flex-end' },
   weightPoint: { flex: 1, gap: 2 },
-  planning: { backgroundColor: colors.surface, borderRadius: radii.xl, padding: spacing.lg, gap: spacing.sm },
-  planningHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  checks: { flexDirection: 'row', gap: spacing.xs },
-  check: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.card, borderRadius: radii.pill, paddingHorizontal: 10, minHeight: 40 },
-  checkDone: { backgroundColor: colors.card },
 });

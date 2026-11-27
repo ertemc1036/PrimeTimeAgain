@@ -23,13 +23,17 @@ export interface BriefingInput {
   kitchen: KitchenDay;
   gym: GymDay;
   water: WaterDay;
-  /** The three daily checks (food, activity, planning tomorrow). */
-  checks: { food: boolean; activity: boolean; planning: boolean; complete: boolean };
+  /** The two daily tasks (food, activity) – see src/domain/completion.ts. */
+  checks: { food: boolean; activity: boolean; complete: boolean };
+  /** Optional: tomorrow is already planned (only used to offer planning, never required). */
+  tomorrowPlanned: boolean;
 }
 
 /** Greeting plus at most two facts, most useful first. */
-export function dailyBriefing({ hour, kitchen, gym, water, checks }: BriefingInput): BriefingPart[] {
+export function dailyBriefing({ hour, kitchen, gym, water, checks, tomorrowPlanned }: BriefingInput): BriefingPart[] {
   const period = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
+  // A complete day gets Prime's closing note on its own (no greeting in front of it).
+  if (checks.complete) return [{ key: 'dayComplete' }];
   const parts: BriefingPart[] = [{ key: 'greeting', period }];
   const facts: BriefingPart[] = [];
 
@@ -42,8 +46,9 @@ export function dailyBriefing({ hour, kitchen, gym, water, checks }: BriefingInp
     if (kitchen.openMeals.length) facts.push({ key: 'mealsOpen', count: kitchen.openMeals.length });
     else if (!kitchen.mealsLogged && hour >= 10) facts.push({ key: 'firstMeal' });
 
-    if (hour >= 17 && !checks.planning) facts.push({ key: 'planTomorrow' });
     if (hour >= 13 && water.ml < water.goalMl / 3) facts.push({ key: 'water' });
+    // Optional, lowest priority: an offer to plan, never a task.
+    if (hour >= 17 && !tomorrowPlanned) facts.push({ key: 'planTomorrow' });
   }
   if (!facts.length) facts.push({ key: 'prepareDay' });
   return [...parts, ...facts.slice(0, 2)];

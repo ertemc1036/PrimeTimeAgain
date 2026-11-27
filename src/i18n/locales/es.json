@@ -38,7 +38,6 @@
     "name": "PrimeMe AI",
     "slogan": "Become your Prime.",
     "secondary": "Tu camino de transformación.",
-    "routine": "Planifica mañana. Cumple hoy.",
     "agent": "Prime",
     "plus": "PrimeMe+"
   },
@@ -72,7 +71,7 @@
     "step": "Paso {{current}} de {{total}}",
     "welcome": {
       "subtitle": "Tu transformación empieza hoy.",
-      "loop": "Planifica. Hazlo. Regístralo. Complétalo. Repite.",
+      "loop": "Registra tu comida. Mantente activo. Completa tu día.",
       "cta": "Empezar",
       "adults": "Para adultos a partir de 18 años."
     },
@@ -204,38 +203,7 @@
     "streakZero": "Empieza tu racha hoy",
     "longest": "Más larga: {{count}}",
     "mission": "Misión de hoy",
-    "progress": "{{done}} / 3 completadas",
-    "food": {
-      "pending": "Registra tu comida",
-      "done": "Comida registrada",
-      "pendingHint": "Registra tus comidas y después cierra el registro de comida de hoy.",
-      "doneHint_one": "{{count}} comida registrada",
-      "doneHint_many": "{{count}} comidas registradas",
-      "doneHint_other": "{{count}} comidas registradas"
-    },
-    "activity": {
-      "pending": "Completa tu actividad",
-      "done": "Actividad completada",
-      "rest": "Día de descanso guardado",
-      "pendingHint": "Registra un entrenamiento o elige un día de descanso."
-    },
-    "planning": {
-      "pending": "Planifica mañana",
-      "done": "Mañana planificado",
-      "pendingHint": "Planifica las comidas y la actividad de mañana."
-    },
-    "complete": {
-      "title": "Misión del día completada",
-      "body": "Hoy has estado ahí para ti."
-    },
     "calendar": "Calendario de racha",
-    "quick": {
-      "food": "Registrar comida",
-      "activity": "Registrar actividad",
-      "plan": "Planificar mañana"
-    },
-    "planned": "Plan de hoy",
-    "noPlan": "No hay plan para hoy. Aun así puedes registrar comida y actividad.",
     "milestone": "Nuevo logro: {{name}}",
     "prime": {
       "open": "Abrir Prime",
@@ -246,19 +214,10 @@
       "water": "Agua",
       "training": "Entreno"
     },
-    "kitchenCard": {
-      "open": "Aún planeado: {{meals}}",
-      "allLogged": "Todas las comidas planeadas registradas",
-      "empty": "Aún no hay registros"
-    },
     "gymCard": {
       "trained": "Hoy has entrenado",
       "notYet": "Hoy aún sin entreno",
       "rest": "Día de descanso: la recuperación cuenta"
-    },
-    "journey": {
-      "title": "Progreso e historial",
-      "body": "Peso, rachas, hitos y fotos"
     },
     "week": {
       "prev": "Semana anterior",
@@ -282,7 +241,7 @@
       "firstMeal": "Registra tu primera comida cuando hayas comido.",
       "water": "Acuérdate del agua.",
       "planTomorrow": "¿Quieres preparar ya el día de mañana?",
-      "dayComplete": "Misión del día cumplida. ¡Genial!",
+      "dayComplete": "¡Genial! Has completado el día de hoy. ¡Hasta mañana!",
       "prepareDay": "Preparemos juntos tu día."
     },
     "nutrition": {
@@ -319,10 +278,25 @@
       "milestones_many": "{{count}} hitos alcanzados",
       "milestones_other": "{{count}} hitos alcanzados"
     },
-    "checks": {
-      "food": "Comida",
-      "activity": "Activo",
-      "planning": "Mañana"
+    "missionPast": "Estado del día",
+    "missionProgress": "{{done}} de {{total}} hechas",
+    "dayCompleteShort": "Día completado",
+    "dayCompleteNote": "Alimentación y actividad hechas. Todo lo demás es opcional.",
+    "tasks": {
+      "food": "Alimentación",
+      "activity": "Actividad"
+    },
+    "status": {
+      "open": "Pendiente",
+      "inProgress": "En curso: cierra tu diario",
+      "done": "Completado",
+      "trained": "Entreno completado",
+      "rest": "Día de descanso registrado"
+    },
+    "planOptional": {
+      "title": "Planificar mañana",
+      "hint": "Opcional: no cuenta para tu racha.",
+      "done": "Mañana está planificado. Ajústalo si quieres."
     }
   },
   "calendar": {
@@ -345,8 +319,7 @@
     },
     "breakdown": {
       "food": "Comida",
-      "activity": "Ejercicio / Descanso",
-      "planning": "Día siguiente planificado"
+      "activity": "Ejercicio / Descanso"
     },
     "graceNote": "Puedes añadir registros de ayer hasta la medianoche de hoy."
   },
@@ -455,7 +428,12 @@
     "outsideWindow": "Esta comida está fuera de tu horario preferido. Tu registro se ha guardado.",
     "locked": "Este día ya no se puede editar. Puedes añadir registros de ayer hasta la medianoche de hoy.",
     "eatingWindow": "Ventana de alimentación {{start}}–{{end}}",
-    "dayYesterday": "Ayer"
+    "dayYesterday": "Ayer",
+    "short": {
+      "protein": "Proteína",
+      "carbs": "Carbohid.",
+      "fat": "Grasa"
+    }
   },
   "foodEntry": {
     "title": "Añadir comida",
@@ -784,7 +762,7 @@
         "body": "Registra lo que comas cuando te venga bien."
       },
       "planning": {
-        "title": "Mañana empieza esta noche. ¿Planificamos?",
+        "title": "¿Quieres preparar ya el día de mañana? Totalmente opcional.",
         "body": "Bastan unos minutos."
       },
       "checkin": {
@@ -835,7 +813,7 @@
     "privacyBody": "PrimeMe AI guarda en tu dispositivo tu perfil, tus planes, tus registros de comida y actividad, los registros de peso opcionales y las fotos opcionales. Si creas una cuenta, estos datos también se guardan en nuestra base de datos en la nube para que puedas restaurarlos y usarlos en otros dispositivos; las fotos se guardan en un almacenamiento privado al que solo accede tu cuenta. Si usas funciones de IA (Pro), la foto o el mensaje y, solo si lo permites, un breve resumen de tus planes y registros recientes se procesan en nuestro servidor y por un proveedor de IA para responder a esa solicitud; no se conservan después, salvo los resultados que guardes. Las suscripciones se gestionan a través de Apple o Google y de nuestro proveedor de suscripciones, RevenueCat. No vendemos tus datos ni los usamos para publicidad. Puedes exportar o eliminar tus datos y eliminar tu cuenta en cualquier momento desde la app.",
     "termsBody": "PrimeMe AI apoya rutinas saludables y no es un producto sanitario ni sustituye el consejo profesional. Los valores nutricionales y los resultados de la IA son estimaciones. Los registros de entrenamiento se basan en lo que indica el usuario. La app está pensada para adultos de 18 años o más. Las suscripciones se renuevan automáticamente hasta que se cancelen en la configuración de tu cuenta de App Store o Google Play.",
     "medical": "PrimeMe AI no ofrece consejo médico. Si tienes una enfermedad, estás embarazada o no sabes qué es lo adecuado para ti, consulta con un profesional sanitario.",
-    "help": "Planifica el día siguiente en Plan, registra tus comidas en Comida y registra un entrenamiento o un día de descanso en Ejercicio. Cuando las tres cosas estén hechas, la misión de hoy estará completada.",
+    "help": "Registra tus comidas en Cocina y cierra tu diario de alimentación. Registra un entreno o un día de descanso en Gym. Cuando ambas cosas estén hechas, tu día está completado. Planificar el día siguiente es opcional.",
     "contact": "Contacto",
     "noContact": "Se añadirá un contacto de soporte antes del lanzamiento.",
     "licenses": "Licencias",
@@ -867,8 +845,6 @@
     "cancelInfo": "Las suscripciones se renuevan automáticamente. Cancela cuando quieras en los ajustes de App Store o Google Play al menos 24 horas antes de la renovación.",
     "noGuarantee": "Pro añade comodidad y apoyo. No garantiza pérdida de peso ni ningún resultado concreto.",
     "free": "Todo lo que necesitas para planificar, registrar y mantener tu racha sigue siendo gratis.",
-    "devPreview": "Vista previa para desarrolladores: mostrar pantallas Pro",
-    "devPreviewHint": "Solo en versiones de desarrollo. No da acceso a la IA; el servidor sigue comprobando tu suscripción.",
     "isPro": "Tienes PrimeMe+.",
     "storeUnavailable": "Las suscripciones se pueden comprar en la app PrimeMe AI instalada desde App Store o Google Play. No están disponibles en esta vista previa.",
     "notConfigured": "Las suscripciones aún no están configuradas en esta versión. Los precios mostrados son provisionales.",
@@ -897,7 +873,12 @@
       "signedInHint": "Confirma tu dirección de correo con un código (o inicia sesión con Apple) para asegurar tu plaza de fundador gratuita.",
       "notEligible": "No se ha asignado ninguna plaza de fundador a esta cuenta. Confirma primero tu correo o vuelve a intentarlo en un momento.",
       "confirmCta": "Confirmar correo y asegurar plaza"
-    }
+    },
+    "testMode": "Modo de prueba Pro",
+    "testModeHint": "Solo en compilaciones de prueba. Abre todas las áreas Pro sin suscripción y oculta los muros de pago. Las funciones de IA solo las activa el servidor.",
+    "testServerOn": "Servidor: acceso de prueba activo para esta cuenta; todas las funciones de IA disponibles.",
+    "testServerPro": "Servidor: PrimeMe+ activo.",
+    "testServerOff": "Servidor: esta cuenta no es de prueba. Las funciones de IA requieren añadirla a PRO_TESTERS (ver Cuenta → ID de cuenta)."
   },
   "coach": {
     "title": "Prime",

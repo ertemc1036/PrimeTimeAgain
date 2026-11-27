@@ -6,6 +6,7 @@ import { AppText, Card, ListRow, ProBadge, Screen, type IconName } from '@/compo
 import { APP_VERSION } from '@/config/app';
 import { env } from '@/config/env';
 import { openLegal } from '@/features/legal';
+import { ProTestModeCard } from '@/features/profile/ProTestModeCard';
 import { getLanguage } from '@/i18n/languages';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useAppState } from '@/state/AppStateProvider';
@@ -113,6 +114,7 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
           </Card>
         </View>
       ))}
+      <ProTestModeCard />
       <AppText variant="caption" color="secondary" align="center">
         {t('brand.name')} · {t('profile.version', { version: APP_VERSION })}
       </AppText>

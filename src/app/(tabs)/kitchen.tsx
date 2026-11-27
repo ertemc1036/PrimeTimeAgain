@@ -55,9 +55,10 @@ export default function KitchenTab() {
 
       {/* My kitchen: Prime with today's estimated calories, eaten vs. still planned */}
       <PrimeHero
-        variant="kitchen"
+        // Shake = nutrition and planning before the first meal; snack = the food diary once meals are logged.
+        variant={logs.length ? 'kitchen' : 'nutrition'}
         eyebrow={t('kitchen.myKitchen')}
-        title={`${sum.estimated || !logs.length ? sum.kcal.toLocaleString() : '–'} kcal`}
+        title={sum.estimated || !logs.length ? `${sum.kcal.toLocaleString()} kcal` : t('items.noEstimate')}
         subtitle={[t('kitchen.eaten', { count: day.mealsLogged }), day.mealsPlanned ? t('kitchen.open', { count: day.openMeals.length }) : null].filter(Boolean).join(' · ')}
       />
 

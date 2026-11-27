@@ -1,4 +1,4 @@
-import { dayChecks } from './completion';
+import { dayChecks, isNextDayPlanned } from './completion';
 import { addDays, formatTime, isWithinWindow, parseTime } from './dates';
 import type { AppData, DisciplineMode, ISODate, LocalTime } from './types';
 
@@ -45,7 +45,8 @@ export function planReminders(data: AppData, today: ISODate, nowTime: LocalTime,
           if (!logged) add(meal.time, 'meal', `meal-${meal.id}`);
         }
       }
-      if (kinds.has('planning') && !checks.planning) add(data.profile.planningTime, 'planning');
+      // Optional planning reminder (the user's choice in the reminder mode); planning never affects the day.
+      if (kinds.has('planning') && !isNextDayPlanned(data, date)) add(data.profile.planningTime, 'planning');
       if (kinds.has('checkin') && !checks.complete) {
         const p = parseTime(data.profile.planningTime) ?? 20 * 60;
         add(formatTime(Math.min(p + 90, 23 * 60 + 30)), 'checkin');

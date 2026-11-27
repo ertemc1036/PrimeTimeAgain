@@ -47,7 +47,7 @@ export default function Memories() {
 
   return (
     <Screen back="back" title={t('prime.memory.title')} subtitle={t('prime.memory.subtitle')}>
-      {!pro.isPro ? (
+      {pro.showPaywalls ? (
         <Card>
           <AppText variant="caption">{t('prime.memory.plusOnly')}</AppText>
         </Card>

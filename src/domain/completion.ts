@@ -2,12 +2,18 @@ import { addDays, daysBetween } from './dates';
 import type { AppData, DayPlan, ISODate } from './types';
 
 /**
- * MINUS 30 daily routine rules — the one authoritative implementation.
+ * PrimeMe AI daily routine rules — the one authoritative implementation. Every screen, statistic,
+ * reminder, milestone and Prime summary reads the day status from here.
  *
- * A day D is COMPLETE when all three are true:
- *  1. Food:     the food log for D is finalised AND at least one meal is logged for D.
- *  2. Activity: a saved workout OR a saved Rest Day exists for D.
- *  3. Planning: the plan for D+1 is saved with meals (or "flexible") and an activity (or Rest Day).
+ * A day D is COMPLETE when both are true:
+ *  1. Food:     at least one meal is logged for D AND the food log for D is confirmed as finished.
+ *  2. Activity: a saved workout / activity (manual, via Prime or with a photo) OR a saved Rest Day.
+ *
+ * Planning the next day is optional: it never counts towards, blocks or lowers a day (see
+ * isPlanComplete for the optional "tomorrow planned" hint). Completion is derived from the saved
+ * entries every time – nothing is stored – so a corrected entry updates the day immediately, and a
+ * day can only be counted once. The rule judges the routine of documenting, never food quality,
+ * calories or weight.
  *
  * Late-entry grace: check-ins for D can be added or corrected on D and on D+1 (until 23:59 local).
  * Older days are read-only so the history (and achievements) stay accurate.
@@ -15,10 +21,20 @@ import type { AppData, DayPlan, ISODate } from './types';
  */
 export const GRACE_DAYS = 1;
 
+/** Number of daily tasks that make up a complete day. */
+export const DAILY_TASKS = 2;
+
+export type FoodStatus = 'open' | 'inProgress' | 'done';
+export type ActivityStatus = 'open' | 'trained' | 'rest';
+
 export interface DayChecks {
   food: boolean;
+  /** open = nothing logged · inProgress = meals logged, diary not finished yet · done. */
+  foodStatus: FoodStatus;
   activity: boolean;
-  planning: boolean;
+  /** open · trained (a workout or activity exists) · rest (a Rest Day, no workout). */
+  activityStatus: ActivityStatus;
+  /** Tasks done (0–2). */
   done: number;
   complete: boolean;
 }
@@ -42,15 +58,26 @@ export const canEditCheckIns = (date: ISODate, today: ISODate): boolean => {
 export const canEditPlan = (date: ISODate, today: ISODate): boolean => daysBetween(today, date) >= 0;
 
 export function dayChecks(data: AppData, date: ISODate): DayChecks {
-  const food = !!data.foodCompletions[date] && data.foodLogs.some((f) => f.date === date);
-  const activity = !!data.recoveryLogs[date] || data.activityLogs.some((a) => a.date === date);
-  const planning = isPlanComplete(data.plans[addDays(date, 1)]);
-  const done = Number(food) + Number(activity) + Number(planning);
-  return { food, activity, planning, done, complete: done === 3 };
+  const meals = data.foodLogs.some((f) => f.date === date);
+  const food = meals && !!data.foodCompletions[date];
+  const trained = data.activityLogs.some((a) => a.date === date);
+  const rest = !!data.recoveryLogs[date];
+  const activity = trained || rest;
+  const done = Number(food) + Number(activity);
+  return {
+    food,
+    foodStatus: food ? 'done' : meals ? 'inProgress' : 'open',
+    activity,
+    activityStatus: trained ? 'trained' : rest ? 'rest' : 'open',
+    done,
+    complete: done === DAILY_TASKS,
+  };
 }
 
-export const startDate = (data: AppData): ISODate | null =>
-  data.profile ? data.profile.onboardingCompletedAt.slice(0, 10) : null;
+/** Optional: the plan for the day after `date` is saved (shown as a hint only, never required). */
+export const isNextDayPlanned = (data: AppData, date: ISODate): boolean => isPlanComplete(data.plans[addDays(date, 1)]);
+
+export const startDate = (data: AppData): ISODate | null => (data.profile ? data.profile.onboardingCompletedAt.slice(0, 10) : null);
 
 export function calendarStatus(data: AppData, date: ISODate, today: ISODate, start: ISODate | null): CalendarStatus {
   if (daysBetween(today, date) > 0) return 'future';
@@ -73,13 +100,7 @@ export interface StreakStats {
  * days, totals and the longest streak are never erased.
  */
 export function streakStats(data: AppData, today: ISODate): StreakStats {
-  const dates = new Set<ISODate>([
-    ...data.foodLogs.map((f) => f.date),
-    ...Object.keys(data.foodCompletions),
-    ...data.activityLogs.map((a) => a.date),
-    ...Object.keys(data.recoveryLogs),
-    ...Object.keys(data.plans).map((d) => addDays(d, -1)),
-  ]);
+  const dates = new Set<ISODate>([...data.foodLogs.map((f) => f.date), ...Object.keys(data.foodCompletions), ...data.activityLogs.map((a) => a.date), ...Object.keys(data.recoveryLogs)]);
   const complete = [...dates].filter((d) => daysBetween(d, today) >= 0 && dayChecks(data, d).complete).sort();
 
   let longest = 0;

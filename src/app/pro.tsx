@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Button, Card, Icon, OptionCard, Screen, ToggleRow, useToast, type IconName } from '@/components/ui';
+import { AppText, Button, Card, Icon, OptionCard, Screen, useToast, type IconName } from '@/components/ui';
 import { PLACEHOLDER_PRICES } from '@/config/app';
 import { FounderCounter } from '@/features/founders/FounderCounter';
 import { useFounderStatus } from '@/features/founders/useFounderStatus';
 import { openLegal } from '@/features/legal';
+import { ProTestModeCard } from '@/features/profile/ProTestModeCard';
 import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
@@ -206,11 +207,7 @@ export default function Paywall() {
           {t('profile.privacyPolicy')}
         </AppText>
       </View>
-      {__DEV__ ? (
-        <Card variant="outline" padded={false}>
-          <ToggleRow label={t('pro.devPreview')} hint={t('pro.devPreviewHint')} value={pro.devPreview} onChange={pro.setDevPreview} divider={false} />
-        </Card>
-      ) : null}
+      {pro.testModeAllowed ? <ProTestModeCard /> : null}
     </Screen>
   );
 }

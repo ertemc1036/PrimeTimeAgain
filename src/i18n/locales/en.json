@@ -37,7 +37,6 @@
     "name": "PrimeMe AI",
     "slogan": "Become your Prime.",
     "secondary": "Your Transformation Journey.",
-    "routine": "Plan Tomorrow. Complete Today.",
     "agent": "Prime",
     "plus": "PrimeMe+"
   },
@@ -71,7 +70,7 @@
     "step": "Step {{current}} of {{total}}",
     "welcome": {
       "subtitle": "Your transformation starts today.",
-      "loop": "Plan. Do. Log. Complete. Repeat.",
+      "loop": "Log your food. Stay active. Complete your day.",
       "cta": "Get Started",
       "adults": "For adults 18 and over."
     },
@@ -202,37 +201,7 @@
     "streakZero": "Start your streak today",
     "longest": "Longest: {{count}}",
     "mission": "Today's Mission",
-    "progress": "{{done}} / 3 Completed",
-    "food": {
-      "pending": "Log Your Food",
-      "done": "Food Logged",
-      "pendingHint": "Log your meals, then finish today's food log.",
-      "doneHint_one": "{{count}} meal logged",
-      "doneHint_other": "{{count}} meals logged"
-    },
-    "activity": {
-      "pending": "Complete Your Activity",
-      "done": "Activity Completed",
-      "rest": "Rest Day Saved",
-      "pendingHint": "Log a workout or choose Rest Day."
-    },
-    "planning": {
-      "pending": "Plan Tomorrow",
-      "done": "Tomorrow Planned",
-      "pendingHint": "Plan tomorrow's meals and activity."
-    },
-    "complete": {
-      "title": "Daily Mission Complete",
-      "body": "You showed up for yourself today."
-    },
     "calendar": "Streak Calendar",
-    "quick": {
-      "food": "Log Food",
-      "activity": "Log Activity",
-      "plan": "Plan Tomorrow"
-    },
-    "planned": "Today's plan",
-    "noPlan": "No plan for today. You can still log food and activity.",
     "milestone": "New milestone: {{name}}",
     "prime": {
       "open": "Open Prime",
@@ -243,19 +212,10 @@
       "water": "Water",
       "training": "Training"
     },
-    "kitchenCard": {
-      "open": "Still planned: {{meals}}",
-      "allLogged": "All planned meals logged",
-      "empty": "Nothing logged yet"
-    },
     "gymCard": {
       "trained": "Trained today",
       "notYet": "No training yet today",
       "rest": "Rest day – recovery counts"
-    },
-    "journey": {
-      "title": "Progress & history",
-      "body": "Weight, streaks, milestones and photos"
     },
     "week": {
       "prev": "Previous week",
@@ -278,7 +238,7 @@
       "firstMeal": "Log your first meal once you’ve eaten.",
       "water": "Remember your water.",
       "planTomorrow": "Want to prepare tomorrow already?",
-      "dayComplete": "Your daily mission is done. Great work!",
+      "dayComplete": "Strong! You’ve completed today. See you tomorrow!",
       "prepareDay": "Let’s get your day ready together."
     },
     "nutrition": {
@@ -314,10 +274,25 @@
       "milestones_one": "{{count}} milestone reached",
       "milestones_other": "{{count}} milestones reached"
     },
-    "checks": {
+    "missionPast": "Day status",
+    "missionProgress": "{{done}} of {{total}} done",
+    "dayCompleteShort": "Day complete",
+    "dayCompleteNote": "Food and activity are done. Everything else is optional.",
+    "tasks": {
       "food": "Food",
-      "activity": "Active",
-      "planning": "Tomorrow"
+      "activity": "Activity"
+    },
+    "status": {
+      "open": "Still open",
+      "inProgress": "In progress – finish your diary",
+      "done": "Complete",
+      "trained": "Training done",
+      "rest": "Rest day logged"
+    },
+    "planOptional": {
+      "title": "Plan tomorrow",
+      "hint": "Optional – doesn’t count towards your streak.",
+      "done": "Tomorrow is planned. Adjust it if you like."
     }
   },
   "calendar": {
@@ -340,8 +315,7 @@
     },
     "breakdown": {
       "food": "Food",
-      "activity": "Workout / Rest",
-      "planning": "Next day planned"
+      "activity": "Workout / Rest"
     },
     "graceNote": "You can add late entries for yesterday until midnight tonight."
   },
@@ -449,7 +423,12 @@
     "outsideWindow": "This meal is outside your preferred schedule. Your entry has been saved.",
     "locked": "This day is closed for edits. You can add late entries for yesterday until midnight tonight.",
     "eatingWindow": "Eating window {{start}}–{{end}}",
-    "dayYesterday": "Yesterday"
+    "dayYesterday": "Yesterday",
+    "short": {
+      "protein": "Protein",
+      "carbs": "Carbs",
+      "fat": "Fat"
+    }
   },
   "foodEntry": {
     "title": "Add Food",
@@ -776,7 +755,7 @@
         "body": "Log what you eat when you're ready."
       },
       "planning": {
-        "title": "Tomorrow starts tonight. Ready to plan?",
+        "title": "Want to prepare tomorrow already? Completely optional.",
         "body": "A few minutes is enough."
       },
       "checkin": {
@@ -827,7 +806,7 @@
     "privacyBody": "PrimeMe AI stores your profile, plans, food and activity logs, optional weight entries and optional photos on your device. If you create an account, this data is also stored in our cloud database so you can restore it and use it on other devices; photos are kept in private storage that only your account can access. If you use AI features (Pro), the photo or message and, only if you allow it, a short summary of your recent plans and logs are processed by our server and an AI provider to answer that request; they are not kept afterwards except the results you save. Subscriptions are handled by Apple or Google and our subscription provider, RevenueCat. We don't sell your data or use it for advertising. You can export or delete your data, and delete your account, at any time in the app.",
     "termsBody": "PrimeMe AI supports healthy routines and is not a medical device or a substitute for professional advice. Nutrition values and AI results are estimates. Workout entries are self-reported. The app is intended for adults aged 18 and over. Subscriptions renew automatically until cancelled in your App Store or Google Play account settings.",
     "medical": "PrimeMe AI doesn't provide medical advice. If you have a health condition, are pregnant, or are unsure what's right for you, please talk to a healthcare professional.",
-    "help": "Plan tomorrow in Plan, log meals in Food, log a workout or Rest Day in Workout. When all three are done, today's mission is complete.",
+    "help": "Log your meals in Kitchen and finish your food diary. Log a workout or a rest day in Gym. When both are done, your day is complete. Planning the next day is optional.",
     "contact": "Contact",
     "noContact": "A support contact will be added before release.",
     "licenses": "Licenses",
@@ -859,8 +838,6 @@
     "cancelInfo": "Subscriptions renew automatically. Cancel anytime in your App Store or Google Play settings at least 24 hours before renewal.",
     "noGuarantee": "Pro adds convenience and support. It doesn't guarantee weight loss or any specific result.",
     "free": "Everything you need to plan, log and build your streak stays free.",
-    "devPreview": "Developer preview: show Pro screens",
-    "devPreviewHint": "Development builds only. Doesn't grant AI access; the server still checks your subscription.",
     "isPro": "You have PrimeMe+.",
     "storeUnavailable": "Subscriptions can be bought in the installed PrimeMe AI app from the App Store or Google Play. They aren't available in this preview.",
     "notConfigured": "Subscriptions aren't set up in this build yet. The prices shown are provisional.",
@@ -889,7 +866,12 @@
       "signedInHint": "Confirm your email address with a code (or sign in with Apple) to secure your free founder seat.",
       "notEligible": "No founder seat was assigned to this account. Please confirm your email address first or try again in a moment.",
       "confirmCta": "Confirm email and secure seat"
-    }
+    },
+    "testMode": "Pro test mode",
+    "testModeHint": "Test builds only. Opens every Pro area without a subscription and hides paywalls. AI features are unlocked by the server only.",
+    "testServerOn": "Server: test access active for this account – all AI features available.",
+    "testServerPro": "Server: PrimeMe+ active.",
+    "testServerOff": "Server: this account is not a test account. AI features need it in PRO_TESTERS (see Account → account ID)."
   },
   "coach": {
     "title": "Prime",

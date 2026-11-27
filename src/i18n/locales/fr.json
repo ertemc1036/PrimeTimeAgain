@@ -38,7 +38,6 @@
     "name": "PrimeMe AI",
     "slogan": "Become your Prime.",
     "secondary": "Ton parcours de transformation.",
-    "routine": "Planifie demain. Accomplis aujourd'hui.",
     "agent": "Prime",
     "plus": "PrimeMe+"
   },
@@ -72,7 +71,7 @@
     "step": "Étape {{current}} sur {{total}}",
     "welcome": {
       "subtitle": "Ta transformation commence aujourd'hui.",
-      "loop": "Planifie. Agis. Note. Valide. Recommence.",
+      "loop": "Note tes repas. Reste actif. Accomplis ta journée.",
       "cta": "Commencer",
       "adults": "Pour les adultes de 18 ans et plus."
     },
@@ -204,38 +203,7 @@
     "streakZero": "Commence ta série aujourd'hui",
     "longest": "Record : {{count}}",
     "mission": "Mission du jour",
-    "progress": "{{done}} / 3 accomplies",
-    "food": {
-      "pending": "Note tes repas",
-      "done": "Repas notés",
-      "pendingHint": "Note tes repas, puis clôture le journal alimentaire du jour.",
-      "doneHint_one": "{{count}} repas noté",
-      "doneHint_many": "{{count}} repas notés",
-      "doneHint_other": "{{count}} repas notés"
-    },
-    "activity": {
-      "pending": "Fais ton activité",
-      "done": "Activité accomplie",
-      "rest": "Jour de repos enregistré",
-      "pendingHint": "Note une séance ou choisis un jour de repos."
-    },
-    "planning": {
-      "pending": "Planifie demain",
-      "done": "Demain est planifié",
-      "pendingHint": "Planifie les repas et l'activité de demain."
-    },
-    "complete": {
-      "title": "Mission du jour accomplie",
-      "body": "Aujourd'hui, tu as été là pour toi."
-    },
     "calendar": "Calendrier de série",
-    "quick": {
-      "food": "Noter un repas",
-      "activity": "Noter une activité",
-      "plan": "Planifier demain"
-    },
-    "planned": "Plan du jour",
-    "noPlan": "Pas de plan pour aujourd'hui. Tu peux quand même noter tes repas et ton activité.",
     "milestone": "Nouvelle étape : {{name}}",
     "prime": {
       "open": "Ouvrir Prime",
@@ -246,19 +214,10 @@
       "water": "Eau",
       "training": "Entraînement"
     },
-    "kitchenCard": {
-      "open": "Encore prévu : {{meals}}",
-      "allLogged": "Tous les repas prévus sont notés",
-      "empty": "Rien de noté pour l’instant"
-    },
     "gymCard": {
       "trained": "Entraîné aujourd’hui",
       "notYet": "Pas encore d’entraînement aujourd’hui",
       "rest": "Jour de repos – la récupération compte"
-    },
-    "journey": {
-      "title": "Progrès et historique",
-      "body": "Poids, séries, étapes et photos"
     },
     "week": {
       "prev": "Semaine précédente",
@@ -282,7 +241,7 @@
       "firstMeal": "Note ton premier repas une fois que tu as mangé.",
       "water": "Pense à boire de l’eau.",
       "planTomorrow": "Tu veux déjà préparer demain ?",
-      "dayComplete": "Ta mission du jour est accomplie. Bravo !",
+      "dayComplete": "Bravo ! Tu as accompli ta journée. À demain !",
       "prepareDay": "Préparons ta journée ensemble."
     },
     "nutrition": {
@@ -319,10 +278,25 @@
       "milestones_many": "{{count}} étapes atteintes",
       "milestones_other": "{{count}} étapes atteintes"
     },
-    "checks": {
-      "food": "Repas",
-      "activity": "Actif",
-      "planning": "Demain"
+    "missionPast": "Statut du jour",
+    "missionProgress": "{{done}} sur {{total}} fait",
+    "dayCompleteShort": "Journée accomplie",
+    "dayCompleteNote": "Alimentation et activité sont faites. Le reste est facultatif.",
+    "tasks": {
+      "food": "Alimentation",
+      "activity": "Activité"
+    },
+    "status": {
+      "open": "À faire",
+      "inProgress": "En cours – clôture ton journal",
+      "done": "Terminé",
+      "trained": "Entraînement terminé",
+      "rest": "Jour de repos noté"
+    },
+    "planOptional": {
+      "title": "Planifier demain",
+      "hint": "Facultatif – ne compte pas pour ta série.",
+      "done": "Demain est planifié. Ajuste-le si tu veux."
     }
   },
   "calendar": {
@@ -345,8 +319,7 @@
     },
     "breakdown": {
       "food": "Repas",
-      "activity": "Séance / Repos",
-      "planning": "Lendemain planifié"
+      "activity": "Séance / Repos"
     },
     "graceNote": "Tu peux encore ajouter des entrées pour hier jusqu'à minuit ce soir."
   },
@@ -455,7 +428,12 @@
     "outsideWindow": "Ce repas est en dehors de tes horaires préférés. Ton entrée a été enregistrée.",
     "locked": "Ce jour n'est plus modifiable. Tu peux ajouter des entrées pour hier jusqu'à minuit ce soir.",
     "eatingWindow": "Fenêtre alimentaire {{start}}–{{end}}",
-    "dayYesterday": "Hier"
+    "dayYesterday": "Hier",
+    "short": {
+      "protein": "Protéines",
+      "carbs": "Glucides",
+      "fat": "Lipides"
+    }
   },
   "foodEntry": {
     "title": "Ajouter un repas",
@@ -784,7 +762,7 @@
         "body": "Note ce que tu manges quand tu veux."
       },
       "planning": {
-        "title": "Demain commence ce soir. Prêt à planifier ?",
+        "title": "Tu veux déjà préparer demain ? Entièrement facultatif.",
         "body": "Quelques minutes suffisent."
       },
       "checkin": {
@@ -835,7 +813,7 @@
     "privacyBody": "PrimeMe AI stocke sur ton appareil ton profil, tes plans, tes repas et activités, tes éventuelles mesures de poids et tes éventuelles photos. Si tu crées un compte, ces données sont aussi stockées dans notre base de données cloud pour que tu puisses les restaurer et les utiliser sur d'autres appareils ; les photos sont conservées dans un espace privé accessible uniquement à ton compte. Si tu utilises les fonctions IA (Pro), la photo ou le message et, seulement si tu l'autorises, un court résumé de tes plans et entrées récents sont traités par notre serveur et un fournisseur d'IA pour répondre à cette demande ; ils ne sont pas conservés ensuite, à l'exception des résultats que tu enregistres. Les abonnements sont gérés par Apple ou Google et par notre prestataire d'abonnements, RevenueCat. Nous ne vendons pas tes données et ne les utilisons pas à des fins publicitaires. Tu peux exporter ou supprimer tes données, et supprimer ton compte, à tout moment dans l'app.",
     "termsBody": "PrimeMe AI accompagne des routines saines et n'est ni un dispositif médical ni un substitut à un avis professionnel. Les valeurs nutritionnelles et les résultats de l'IA sont des estimations. Les séances sont déclarées par l'utilisateur. L'app est destinée aux adultes de 18 ans et plus. Les abonnements se renouvellent automatiquement jusqu'à leur résiliation dans les réglages de ton compte App Store ou Google Play.",
     "medical": "PrimeMe AI ne donne pas de conseils médicaux. Si tu as un problème de santé, es enceinte ou ne sais pas ce qui te convient, parles-en à un professionnel de santé.",
-    "help": "Planifie le lendemain dans Plan, note tes repas dans Repas et note une séance ou un jour de repos dans Sport. Quand les trois sont faits, la mission du jour est accomplie.",
+    "help": "Note tes repas dans Cuisine et clôture ton journal alimentaire. Note un entraînement ou un jour de repos dans Gym. Quand les deux sont faits, ta journée est accomplie. Planifier le jour suivant est facultatif.",
     "contact": "Contact",
     "noContact": "Un contact d'assistance sera ajouté avant la publication.",
     "licenses": "Licences",
@@ -867,8 +845,6 @@
     "cancelInfo": "Les abonnements se renouvellent automatiquement. Résilie à tout moment dans les réglages App Store ou Google Play, au moins 24 heures avant le renouvellement.",
     "noGuarantee": "Pro apporte du confort et du soutien. Il ne garantit ni perte de poids ni résultat particulier.",
     "free": "Tout ce dont tu as besoin pour planifier, noter et garder ta série reste gratuit.",
-    "devPreview": "Aperçu développeur : afficher les écrans Pro",
-    "devPreviewHint": "Uniquement dans les versions de développement. Ne donne pas accès à l'IA ; le serveur vérifie toujours ton abonnement.",
     "isPro": "Tu as PrimeMe+.",
     "storeUnavailable": "Les abonnements s'achètent dans l'app PrimeMe AI installée depuis l'App Store ou Google Play. Ils ne sont pas disponibles dans cet aperçu.",
     "notConfigured": "Les abonnements ne sont pas encore configurés dans cette version. Les prix affichés sont provisoires.",
@@ -897,7 +873,12 @@
       "signedInHint": "Confirme ton adresse e-mail avec un code (ou connecte-toi avec Apple) pour réserver ta place fondateur gratuite.",
       "notEligible": "Aucune place fondateur n'a été attribuée à ce compte. Confirme d'abord ton adresse e-mail ou réessaie dans un instant.",
       "confirmCta": "Confirmer l’e-mail et réserver ma place"
-    }
+    },
+    "testMode": "Mode test Pro",
+    "testModeHint": "Uniquement dans les versions de test. Ouvre toutes les zones Pro sans abonnement et masque les paywalls. Les fonctions IA ne sont activées que par le serveur.",
+    "testServerOn": "Serveur : accès test actif pour ce compte – toutes les fonctions IA disponibles.",
+    "testServerPro": "Serveur : PrimeMe+ actif.",
+    "testServerOff": "Serveur : ce compte n’est pas un compte test. Les fonctions IA nécessitent son ajout à PRO_TESTERS (voir Compte → identifiant du compte)."
   },
   "coach": {
     "title": "Prime",
