@@ -28,23 +28,28 @@
     "kcal": "{{value}} kcal",
     "grams": "{{value}} g",
     "seeAll": "Tout voir",
-    "pro": "PRO",
+    "pro": "PrimeMe+",
     "on": "Activé",
     "off": "Désactivé",
     "portion": "portion",
     "language": "Langue"
   },
   "brand": {
-    "name": "Diet9",
-    "slogan": "Planifie demain. Accomplis aujourd'hui.",
-    "secondary": "Ton parcours de transformation."
+    "name": "PrimeMe AI",
+    "slogan": "Become your Prime.",
+    "secondary": "Ton parcours de transformation.",
+    "routine": "Planifie demain. Accomplis aujourd'hui.",
+    "agent": "Prime",
+    "plus": "PrimeMe+"
   },
   "tabs": {
     "today": "Aujourd'hui",
     "plan": "Plan",
     "food": "Repas",
     "workout": "Sport",
-    "journey": "Parcours"
+    "journey": "Parcours",
+    "prime": "Prime",
+    "profile": "Profil"
   },
   "meals": {
     "breakfast": "Petit-déjeuner",
@@ -79,7 +84,7 @@
       "namePlaceholder": "Ton prénom",
       "nameError": "Saisis un prénom.",
       "adult": "Je confirme avoir 18 ans ou plus",
-      "adultHint": "Diet9 est conçu pour les adultes.",
+      "adultHint": "PrimeMe AI est conçu pour les adultes.",
       "units": "Unités",
       "metric": "Métrique (kg, cm)",
       "imperial": "Impérial (lb, ft)",
@@ -90,7 +95,7 @@
       "privacy": "Les données de santé sont facultatives et restent sur ton appareil."
     },
     "adultsOnly": {
-      "title": "Diet9 est réservé aux adultes",
+      "title": "PrimeMe AI est réservé aux adultes",
       "body": "Nos fonctions de nutrition et de gestion du poids sont conçues pour les personnes de 18 ans et plus. Si tu veux de l'aide pour adopter des habitudes saines, un médecin, l'infirmerie scolaire ou un adulte de confiance peut t'accompagner.",
       "back": "Revenir"
     },
@@ -172,7 +177,7 @@
       "subtitle": "Facultatif. Un petit rappel à ton heure de planification. Tu peux le modifier ou le désactiver à tout moment.",
       "enable": "Activer les rappels",
       "notNow": "Pas maintenant",
-      "denied": "Les notifications de Diet9 sont désactivées dans les réglages de ton téléphone. Tu peux tout de même utiliser toutes les fonctions.",
+      "denied": "Les notifications de PrimeMe AI sont désactivées dans les réglages de ton téléphone. Tu peux tout de même utiliser toutes les fonctions.",
       "web": "Les rappels fonctionnent dans l'app iOS et Android.",
       "enabled": "Les rappels sont activés."
     },
@@ -233,7 +238,11 @@
     },
     "planned": "Plan du jour",
     "noPlan": "Pas de plan pour aujourd'hui. Tu peux quand même noter tes repas et ton activité.",
-    "milestone": "Nouvelle étape : {{name}}"
+    "milestone": "Nouvelle étape : {{name}}",
+    "prime": {
+      "open": "Ouvrir Prime",
+      "prompt": "Raconte-moi comment se passe ta journée – je t’aide à l’enregistrer."
+    }
   },
   "calendar": {
     "previous": "Mois précédent",
@@ -572,7 +581,7 @@
   },
   "profile": {
     "title": "Profil",
-    "pro": "Diet9 Pro",
+    "pro": "PrimeMe+",
     "free": "Offre gratuite",
     "proActive": "Pro actif",
     "upgrade": "Passer à Pro",
@@ -598,7 +607,7 @@
   },
   "account": {
     "title": "Compte",
-    "localOnly": "Tu utilises Diet9 sans compte",
+    "localOnly": "Tu utilises PrimeMe AI sans compte",
     "localBody": "Tes données sont stockées sur cet appareil. Les comptes et la sauvegarde dans le cloud ne sont pas encore configurés dans cette version.",
     "notConfigured": "Les comptes cloud ne sont pas configurés dans cette version.",
     "email": "E-mail",
@@ -612,7 +621,7 @@
     "delete": "Supprimer le compte",
     "deleteBody": "Cela supprime définitivement ton compte et tes données cloud. Les données de cet appareil sont aussi supprimées.",
     "signedOutTitle": "Sauvegarde tes progrès",
-    "signedOutBody": "Crée un compte gratuit pour garder tes données en sécurité si tu perds ou changes de téléphone, et pour utiliser Diet9 sur plusieurs appareils.",
+    "signedOutBody": "Crée un compte gratuit pour garder tes données en sécurité si tu perds ou changes de téléphone, et pour utiliser PrimeMe AI sur plusieurs appareils.",
     "signOutTitle": "Se déconnecter ?",
     "signOutBody": "Tes données restent dans ton compte. Elles sont retirées de cet appareil jusqu'à ta prochaine connexion.",
     "unsyncedTitle": "Certaines modifications ne sont pas encore synchronisées",
@@ -666,12 +675,12 @@
     "nextUp_one": "{{count}} rappel prévu pour les deux prochains jours.",
     "nextUp_many": "{{count}} rappels prévus pour les deux prochains jours.",
     "nextUp_other": "{{count}} rappels prévus pour les deux prochains jours.",
-    "denied": "Les notifications de Diet9 sont désactivées dans les réglages de ton téléphone.",
+    "denied": "Les notifications de PrimeMe AI sont désactivées dans les réglages de ton téléphone.",
     "web": "Les rappels fonctionnent dans l'app iOS et Android.",
     "content": {
       "morning": {
         "title": "Ton plan du jour est prêt.",
-        "body": "Ouvre Diet9 pour voir les repas et l'activité du jour."
+        "body": "Ouvre PrimeMe AI pour voir les repas et l'activité du jour."
       },
       "activity": {
         "title": "C'est l'heure de ton activité prévue.",
@@ -730,17 +739,17 @@
     "privacyTitle": "Politique de confidentialité",
     "termsTitle": "Conditions d'utilisation",
     "draft": "Document juridique en attente de validation. Le document définitif sera publié ici avant la sortie. D'ici là, il ne s'agit que d'un résumé en langage simple, pas d'un document juridique.",
-    "privacyBody": "Diet9 stocke sur ton appareil ton profil, tes plans, tes repas et activités, tes éventuelles mesures de poids et tes éventuelles photos. Si tu crées un compte, ces données sont aussi stockées dans notre base de données cloud pour que tu puisses les restaurer et les utiliser sur d'autres appareils ; les photos sont conservées dans un espace privé accessible uniquement à ton compte. Si tu utilises les fonctions IA (Pro), la photo ou le message et, seulement si tu l'autorises, un court résumé de tes plans et entrées récents sont traités par notre serveur et un fournisseur d'IA pour répondre à cette demande ; ils ne sont pas conservés ensuite, à l'exception des résultats que tu enregistres. Les abonnements sont gérés par Apple ou Google et par notre prestataire d'abonnements, RevenueCat. Nous ne vendons pas tes données et ne les utilisons pas à des fins publicitaires. Tu peux exporter ou supprimer tes données, et supprimer ton compte, à tout moment dans l'app.",
-    "termsBody": "Diet9 accompagne des routines saines et n'est ni un dispositif médical ni un substitut à un avis professionnel. Les valeurs nutritionnelles et les résultats de l'IA sont des estimations. Les séances sont déclarées par l'utilisateur. L'app est destinée aux adultes de 18 ans et plus. Les abonnements se renouvellent automatiquement jusqu'à leur résiliation dans les réglages de ton compte App Store ou Google Play.",
-    "medical": "Diet9 ne donne pas de conseils médicaux. Si tu as un problème de santé, es enceinte ou ne sais pas ce qui te convient, parles-en à un professionnel de santé.",
+    "privacyBody": "PrimeMe AI stocke sur ton appareil ton profil, tes plans, tes repas et activités, tes éventuelles mesures de poids et tes éventuelles photos. Si tu crées un compte, ces données sont aussi stockées dans notre base de données cloud pour que tu puisses les restaurer et les utiliser sur d'autres appareils ; les photos sont conservées dans un espace privé accessible uniquement à ton compte. Si tu utilises les fonctions IA (Pro), la photo ou le message et, seulement si tu l'autorises, un court résumé de tes plans et entrées récents sont traités par notre serveur et un fournisseur d'IA pour répondre à cette demande ; ils ne sont pas conservés ensuite, à l'exception des résultats que tu enregistres. Les abonnements sont gérés par Apple ou Google et par notre prestataire d'abonnements, RevenueCat. Nous ne vendons pas tes données et ne les utilisons pas à des fins publicitaires. Tu peux exporter ou supprimer tes données, et supprimer ton compte, à tout moment dans l'app.",
+    "termsBody": "PrimeMe AI accompagne des routines saines et n'est ni un dispositif médical ni un substitut à un avis professionnel. Les valeurs nutritionnelles et les résultats de l'IA sont des estimations. Les séances sont déclarées par l'utilisateur. L'app est destinée aux adultes de 18 ans et plus. Les abonnements se renouvellent automatiquement jusqu'à leur résiliation dans les réglages de ton compte App Store ou Google Play.",
+    "medical": "PrimeMe AI ne donne pas de conseils médicaux. Si tu as un problème de santé, es enceinte ou ne sais pas ce qui te convient, parles-en à un professionnel de santé.",
     "help": "Planifie le lendemain dans Plan, note tes repas dans Repas et note une séance ou un jour de repos dans Sport. Quand les trois sont faits, la mission du jour est accomplie.",
     "contact": "Contact",
     "noContact": "Un contact d'assistance sera ajouté avant la publication.",
     "licenses": "Licences",
-    "licensesIntro": "Diet9 utilise ces œuvres de tiers. Les corps 3D ont été convertis et ont reçu un style propre à l'app."
+    "licensesIntro": "PrimeMe AI utilise ces œuvres de tiers. Les corps 3D ont été convertis et ont reçu un style propre à l'app."
   },
   "pro": {
-    "title": "Débloque Diet9 Pro",
+    "title": "Débloque PrimeMe+",
     "subtitle": "Un suivi plus malin. Moins d'efforts. Plus de soutien.",
     "b1": {
       "title": "Scanne tes repas avec l'IA",
@@ -767,11 +776,11 @@
     "free": "Tout ce dont tu as besoin pour planifier, noter et garder ta série reste gratuit.",
     "devPreview": "Aperçu développeur : afficher les écrans Pro",
     "devPreviewHint": "Uniquement dans les versions de développement. Ne donne pas accès à l'IA ; le serveur vérifie toujours ton abonnement.",
-    "isPro": "Tu as Diet9 Pro.",
-    "storeUnavailable": "Les abonnements s'achètent dans l'app Diet9 installée depuis l'App Store ou Google Play. Ils ne sont pas disponibles dans cet aperçu.",
+    "isPro": "Tu as PrimeMe+.",
+    "storeUnavailable": "Les abonnements s'achètent dans l'app PrimeMe AI installée depuis l'App Store ou Google Play. Ils ne sont pas disponibles dans cet aperçu.",
     "notConfigured": "Les abonnements ne sont pas encore configurés dans cette version. Les prix affichés sont provisoires.",
     "signInFirst": "Crée d'abord un compte gratuit pour que ton abonnement Pro fonctionne sur tous tes appareils.",
-    "welcome": "Bienvenue dans Diet9 Pro.",
+    "welcome": "Bienvenue dans PrimeMe+.",
     "pending": "Ton achat est en attente de validation. Pro sera activé dès sa confirmation.",
     "failed": "L'achat n'a pas abouti. Tu n'as pas été débité.",
     "restored": "Tes achats ont été restaurés.",
@@ -780,16 +789,16 @@
     "grace": "Il y a un problème avec ton paiement. Pro reste actif pour le moment. Mets à jour ton moyen de paiement dans ton compte App Store ou Google Play.",
     "expired": "Ton abonnement Pro a pris fin. Tout ce que tu as noté est toujours là.",
     "renews": "Actif jusqu'au {{date}}",
-    "sourceTest": "Pro · Accès test",
+    "sourceTest": "PrimeMe+ · Accès test",
     "sourceTestBody": "Ce compte est activé comme compte de test sur le serveur. Ce n'est pas un abonnement et rien n'est facturé.",
-    "sourceFounder": "Pro · Place fondateur",
-    "sourceFounderSeat": "Pro · Place fondateur n° {{seat}}",
-    "sourceFounderBody": "Tu fais partie des premiers fondateurs de Diet9. Pro est gratuit pour toi – sans abonnement ni coordonnées de paiement – et le reste une fois toutes les places attribuées.",
+    "sourceFounder": "PrimeMe+ · Place fondateur",
+    "sourceFounderSeat": "PrimeMe+ · Place fondateur n° {{seat}}",
+    "sourceFounderBody": "Tu fais partie des premiers fondateurs de PrimeMe AI. Pro est gratuit pour toi – sans abonnement ni coordonnées de paiement – et le reste une fois toutes les places attribuées.",
     "founders": {
       "title": "Founders Edition",
       "counter": "{{taken}} places Pro gratuites attribuées sur {{capacity}}.",
       "full": "Les {{capacity}} places fondateur gratuites sont toutes attribuées.",
-      "body": "Les {{capacity}} premiers comptes vérifiés reçoivent Diet9 Pro gratuitement – sans abonnement ni coordonnées de paiement. Vérifié signifie : connecté avec Apple ou e-mail confirmé par un code.",
+      "body": "Les {{capacity}} premiers comptes vérifiés reçoivent PrimeMe+ gratuitement – sans abonnement ni coordonnées de paiement. Vérifié signifie : connecté avec Apple ou e-mail confirmé par un code.",
       "create": "Créer un compte gratuit",
       "check": "Vérifier ma place fondateur",
       "signedInHint": "Confirme ton adresse e-mail avec un code (ou connecte-toi avec Apple) pour réserver ta place fondateur gratuite.",
@@ -798,7 +807,7 @@
     }
   },
   "coach": {
-    "title": "Coach IA",
+    "title": "Prime",
     "subtitle": "Un soutien concret pour tes repas, ton activité et tes routines.",
     "placeholder": "Pose une question sur ton plan",
     "send": "Envoyer",
@@ -808,9 +817,9 @@
       "J'ai manqué ma séance.",
       "Aide-moi à faire une liste de courses."
     ],
-    "unavailable": "Le coach IA n'est pas encore disponible dans cette version. Il nécessite la mise en place du service cloud Diet9.",
+    "unavailable": "Le coach IA n'est pas encore disponible dans cette version. Il nécessite la mise en place du service cloud PrimeMe AI.",
     "signedOut": "Connecte-toi pour utiliser le coach IA.",
-    "notPro": "Le coach IA fait partie de Diet9 Pro.",
+    "notPro": "Le coach IA fait partie de PrimeMe+.",
     "rateLimited": "Tu as atteint la limite de messages pour le moment. Réessaie plus tard.",
     "offline": "Tu es hors ligne. Le coach IA a besoin d'une connexion internet.",
     "failed": "Un problème est survenu. Réessaie.",
@@ -822,13 +831,14 @@
   "ai": {
     "not_configured": "Les fonctions IA ne sont pas encore disponibles dans cette version.",
     "signed_out": "Connecte-toi pour utiliser les fonctions IA.",
-    "not_pro": "Cette fonction fait partie de Diet9 Pro.",
+    "not_pro": "Cette fonction fait partie de PrimeMe+.",
     "rate_limited": "Tu as atteint la limite pour le moment. Réessaie plus tard.",
     "offline": "Tu es hors ligne. Les fonctions IA ont besoin d'une connexion internet.",
     "invalid_response": "Nous avons reçu un résultat inattendu. Réessaie ou note manuellement.",
     "provider_error": "Le service IA est indisponible pour le moment. Réessaie ou note manuellement.",
     "camera": "L'accès à l'appareil photo est nécessaire. Tu peux l'autoriser dans les réglages de ton téléphone ou noter manuellement.",
-    "timeout": "Cela a pris trop de temps. Réessaie ou note manuellement."
+    "timeout": "Cela a pris trop de temps. Réessaie ou note manuellement.",
+    "free_limit": "Tu as utilisé les demandes d’IA gratuites du jour. Réessaie demain ou passe à PrimeMe+."
   },
   "history": {
     "meals": "Historique des repas",
@@ -861,11 +871,11 @@
   },
   "language": {
     "title": "Langue",
-    "subtitle": "Choisis la langue de Diet9. Les entrées déjà enregistrées restent telles que tu les as écrites."
+    "subtitle": "Choisis la langue de PrimeMe AI. Les entrées déjà enregistrées restent telles que tu les as écrites."
   },
   "auth": {
     "signInTitle": "Se connecter",
-    "signInSubtitle": "Avec ton compte Diet9, tes données restent en sécurité et disponibles sur tous tes appareils.",
+    "signInSubtitle": "Avec ton compte PrimeMe AI, tes données restent en sécurité et disponibles sur tous tes appareils.",
     "email": "E-mail",
     "password": "Mot de passe",
     "passwordHint": "Au moins 8 caractères.",
@@ -891,7 +901,7 @@
     "signedIn": "Connecté.",
     "welcomeSignIn": "J'ai déjà un compte",
     "mergeTitle": "Cet appareil contient déjà des données",
-    "mergeBody": "Tu as utilisé Diet9 sur cet appareil avant de te connecter. Que faire de ces données ?",
+    "mergeBody": "Tu as utilisé PrimeMe AI sur cet appareil avant de te connecter. Que faire de ces données ?",
     "merge": "Les ajouter à mon compte",
     "mergeHint": "Recommandé. Les plans, repas et séances de cet appareil sont envoyés. Rien n'est supprimé.",
     "replace": "Utiliser uniquement les données de mon compte",
@@ -910,12 +920,12 @@
       "cancelled": "Connexion annulée.",
       "apple_unavailable": "Se connecter avec Apple n’est pas disponible sur cet appareil.",
       "apple_failed": "La connexion avec Apple n’a pas fonctionné. Réessaie.",
-      "apple_linked_elsewhere": "Cet identifiant Apple appartient déjà à un autre compte Diet9. Connecte-toi à ce compte avec Apple.",
-      "apple_account_exists": "La connexion avec Apple n’a pas été possible. Tu as déjà un compte Diet9 avec cet e-mail ? Connecte-toi alors avec l’e-mail, confirme-le dans Profil → Compte et associe Apple à cet endroit. Sinon, réessaie plus tard."
+      "apple_linked_elsewhere": "Cet identifiant Apple appartient déjà à un autre compte PrimeMe AI. Connecte-toi à ce compte avec Apple.",
+      "apple_account_exists": "La connexion avec Apple n’a pas été possible. Tu as déjà un compte PrimeMe AI avec cet e-mail ? Connecte-toi alors avec l’e-mail, confirme-le dans Profil → Compte et associe Apple à cet endroit. Sinon, réessaie plus tard."
     },
     "orEmail": "ou avec l’e-mail",
-    "appleHint": "Tu as déjà un compte Diet9 avec e-mail ? Connecte-toi avec l’e-mail et associe Apple ensuite dans Profil → Compte. Tout reste ainsi dans un seul compte.",
-    "appleNew": "Nouveau compte Diet9 créé avec Apple.",
+    "appleHint": "Tu as déjà un compte PrimeMe AI avec e-mail ? Connecte-toi avec l’e-mail et associe Apple ensuite dans Profil → Compte. Tout reste ainsi dans un seul compte.",
+    "appleNew": "Nouveau compte PrimeMe AI créé avec Apple.",
     "confirmEmailTitle": "Confirmer l’e-mail",
     "confirmEmailBody": "Nous envoyons un code à 6 chiffres à {{email}}. Il confirme que l’adresse t’appartient, garantit ta place fondateur et protège ton compte.",
     "confirmEmailSent": "Code envoyé à {{email}}.",
@@ -937,7 +947,7 @@
     "on": "Synchronisé",
     "syncing": "Synchronisation…",
     "offline": "Hors ligne. Les modifications sont enregistrées sur cet appareil et se synchroniseront automatiquement plus tard.",
-    "error": "Synchronisation en pause. Diet9 réessaiera automatiquement.",
+    "error": "Synchronisation en pause. PrimeMe AI réessaiera automatiquement.",
     "signedOut": "Ta session a expiré. Reconnecte-toi pour continuer à synchroniser.",
     "pending_one": "{{count}} modification en attente de synchronisation",
     "pending_many": "{{count}} modifications en attente de synchronisation",
@@ -952,7 +962,7 @@
     "discardFailed": "Masquer"
   },
   "avatar": {
-    "eyebrow": "DIET9 BODY SCAN",
+    "eyebrow": "PRIMEME AI BODY SCAN",
     "title": "Ta progression",
     "resetView": "Réinitialiser la vue",
     "chooseBody": "Choisir le corps de l'avatar",
@@ -980,7 +990,7 @@
       "female": "Féminin",
       "neutral": "Neutre"
     },
-    "bodyNote": "L'avatar est une figure symbolique. Diet9 ne calcule jamais une silhouette à partir de ton poids ou de ta taille.",
+    "bodyNote": "L'avatar est une figure symbolique. PrimeMe AI ne calcule jamais une silhouette à partir de ton poids ou de ta taille.",
     "a11yLabel": "Avatar 3D",
     "a11yHint": "Utilise les actions pour faire tourner ou zoomer l'avatar.",
     "rotateLeft": "Tourner à gauche",
@@ -1004,13 +1014,106 @@
       "cube": "Cube",
       "model": "Modèle du corps",
       "touch": "Tactile",
-      "full": "Style Diet9"
+      "full": "Style PrimeMe AI"
     },
     "hints": {
       "cube": "Un cube qui tourne. S'il tourne, la 3D fonctionne sur cet appareil.",
-      "model": "Charge un modèle du corps Diet9 (GLB, forme visée) avec un matériau gris simple et de la lumière. Il tourne lentement.",
+      "model": "Charge un modèle du corps PrimeMe AI (GLB, forme visée) avec un matériau gris simple et de la lumière. Il tourne lentement.",
       "touch": "Glisse sur le côté pour tourner, pince pour zoomer, touche deux fois pour réinitialiser. Les valeurs en haut à gauche doivent changer.",
       "full": "L'avatar complet d'Aujourd'hui avec matériau holographique, lumières et anneaux de scan."
     }
+  },
+  "prime": {
+    "subtitle": "Ton coach personnel. Dis-moi ce que tu as mangé, bu ou fait comme entraînement : je propose l’entrée, tu la confirmes.",
+    "unavailable": "Prime a besoin du service cloud PrimeMe AI, qui n’est pas configuré dans cette version.",
+    "signedOut": "Connecte-toi pour parler à Prime. Ton compte protège ta progression.",
+    "consent": {
+      "title": "Prime peut-il utiliser tes données ?",
+      "body": "Avec ton accord, Prime voit un court résumé de tes objectifs, plans, repas récents, entraînements et eau, ainsi que ta mémoire Prime. Aucune photo. Tu peux le désactiver à tout moment dans Profil → Confidentialité.",
+      "allow": "Autoriser"
+    },
+    "hello": "Salut {{name}}, je suis Prime. Raconte-moi ce que tu as mangé, bu ou fait comme sport, ou pose-moi une question sur ton plan. Je propose des entrées : rien n’est enregistré sans ta confirmation.",
+    "suggestions": [
+      "J’ai bu 500 ml d’eau.",
+      "J’ai mangé deux œufs et une tranche de pain au petit-déjeuner.",
+      "J’ai fait 45 minutes de salle aujourd’hui.",
+      "Je n’ai aucune motivation aujourd’hui.",
+      "Que dois-je acheter cette semaine ?",
+      "Comment s’est passée ma semaine ?"
+    ],
+    "older": "Afficher les messages précédents",
+    "thinking": "Prime réfléchit…",
+    "freeLimit": "Tu as utilisé les messages Prime gratuits du jour. Avec PrimeMe+, tu peux parler bien plus à Prime – ou reviens demain.",
+    "upgrade": "Passer à PrimeMe+",
+    "safety": "Prime apporte un soutien général, pas un avis médical. Les valeurs nutritionnelles sont des estimations.",
+    "placeholder": "Message à Prime",
+    "photo": "Scanner une photo de repas",
+    "clear": "Effacer la conversation",
+    "clearBody": "Supprime la conversation sur tous tes appareils. Tes entrées et ta mémoire Prime sont conservées.",
+    "planPrompt": "Aide-moi à planifier mes repas et mon activité pour demain.",
+    "action": {
+      "water": "{{ml}} ml d’eau",
+      "kcalApprox": "≈ {{kcal}} kcal",
+      "noEstimate": "pas d’estimation",
+      "totalApprox": "Total ≈ {{kcal}} kcal (estimation)",
+      "minutes_one": "{{count}} min",
+      "minutes_many": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "rest": "Jour de repos",
+      "weight": "Poids {{kg}} kg",
+      "remember": "Mémoriser",
+      "workoutDefault": "Enregistré avec Prime",
+      "saved": "Enregistré.",
+      "duplicate": "Cet entraînement est déjà enregistré.",
+      "undone": "Annulé.",
+      "undoLocked": "Cette entrée est plus ancienne que la période de modification et ne peut plus être annulée ici.",
+      "estimateNote": "Valeurs estimées : vérifie-les et corrige-les si besoin.",
+      "apply": "Enregistrer",
+      "edit": "Modifier",
+      "dismiss": "Ignorer",
+      "undo": "Annuler",
+      "status": {
+        "pending": "Suggestion",
+        "applied": "Enregistré",
+        "dismissed": "Ignoré",
+        "undone": "Annulé"
+      }
+    },
+    "memory": {
+      "title": "Mémoire Prime",
+      "subtitle": "Ce dont Prime se souvient à ton sujet. Uniquement ce que tu as confirmé ou ajouté – tout est modifiable et supprimable.",
+      "plusOnly": "Prime utilise ta mémoire avec PrimeMe+. Tu peux toujours la consulter, la modifier et la supprimer ici.",
+      "noConsent": "Prime n’utilise cette mémoire que si « Prime peut utiliser mes données » est activé (Profil → Confidentialité).",
+      "empty": "Rien d’enregistré pour l’instant. Quand tu confies à Prime quelque chose de durable (p. ex. « Je travaille de nuit »), Prime peut proposer de s’en souvenir.",
+      "category": {
+        "goal": "Objectifs",
+        "food": "Alimentation",
+        "routine": "Quotidien",
+        "training": "Entraînement",
+        "progress": "Progrès",
+        "challenge": "Difficultés",
+        "motivation": "Motivation",
+        "other": "Autre"
+      },
+      "text": "Souvenir",
+      "edit": "Modifier",
+      "delete": "Supprimer le souvenir",
+      "add": "Ajouter quelque chose",
+      "addButton": "Enregistrer dans la mémoire",
+      "deleteAll": "Supprimer tous les souvenirs",
+      "deleteAllBody": "Prime oublie tout ce qui est enregistré ici, sur tous tes appareils."
+    },
+    "log": {
+      "title": "Activité de Prime",
+      "subtitle": "Tout ce que Prime a enregistré après ta confirmation. « Annuler » supprime exactement ces entrées.",
+      "empty": "Rien n’a encore été enregistré avec Prime."
+    }
+  },
+  "water": {
+    "title": "Eau",
+    "progress": "{{total}} / {{goal}} l",
+    "addHint": "Ajoute {{ml}} ml",
+    "removeLast": "Retirer {{ml}} ml",
+    "goalNote": "Ton objectif est un repère personnel, pas un conseil médical."
   }
 }

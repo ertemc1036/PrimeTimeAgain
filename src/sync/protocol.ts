@@ -1,5 +1,5 @@
 /** Wire format shared with supabase/functions/sync (see supabase/functions/_shared/records.ts). */
-export const COLLECTIONS = ['profile', 'plan', 'food', 'foodDone', 'activity', 'rest', 'weight', 'photo', 'savedMeal', 'customFood', 'settings', 'achievement', 'coach'] as const;
+export const COLLECTIONS = ['profile', 'plan', 'food', 'foodDone', 'activity', 'rest', 'weight', 'photo', 'savedMeal', 'customFood', 'settings', 'achievement', 'coach', 'water', 'memory', 'primeAction'] as const;
 export type Collection = (typeof COLLECTIONS)[number];
 
 export interface Change {

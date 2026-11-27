@@ -6,7 +6,8 @@ import type { AppData, ISODate } from '@/domain/types';
 
 /**
  * The context the AI Coach may see — only when the user turned on consent in Privacy and data.
- * A compact summary of recent, relevant data; no photos, notes or weight history.
+ * A compact summary of recent, relevant data (last days of meals, workouts and water); no weight,
+ * photos, notes or chat history. Weight stays private (sensitive; possible eating-disorder risk).
  */
 export function coachContext(data: AppData, today: ISODate): Record<string, unknown> | null {
   if (!data.coach.consentToContext || !data.profile) return null;
@@ -36,5 +37,16 @@ export function coachContext(data: AppData, today: ISODate): Record<string, unkn
     streak: { current: stats.current, longest: stats.longest, completedDays: stats.completedDays },
     journey: pos ? { month: pos.month, theme: MONTH_KEYS[Math.min(pos.month, 7) - 1], finished: pos.finished, maintenance: j.maintenance } : { maintenance: j.maintenance },
     eatingWindow: data.eatingWindow.enabled ? { start: data.eatingWindow.start, end: data.eatingWindow.end } : null,
+    name: p.name,
+    program: p.program ?? 'weightLoss',
+    water: {
+      goalMl: p.waterGoalMl ?? 2000,
+      byDay: Object.fromEntries(
+        [0, 1, 2, 3, 4, 5, 6].map((n) => {
+          const d = since(n);
+          return [d, data.water.filter((w) => w.date === d).reduce((s, w) => s + w.ml, 0)];
+        }),
+      ),
+    },
   };
 }

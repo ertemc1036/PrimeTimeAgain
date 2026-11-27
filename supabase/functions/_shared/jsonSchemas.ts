@@ -48,3 +48,51 @@ export const COACH_JSON = {
   required: ['reply', 'safetyNotice'],
   properties: { reply: { type: 'string' }, safetyNotice: { type: 'boolean' } },
 };
+
+const nullable = (schema: Record<string, unknown>) => ({ anyOf: [schema, { type: 'null' }] });
+const PRIME_ACTION_PROPS = {
+  type: { type: 'string', enum: ['log_water', 'log_meal', 'log_workout', 'log_rest_day', 'log_weight', 'remember'] },
+  day: nullable({ type: 'string', enum: ['today', 'yesterday'] }),
+  ml: nullable({ type: 'integer' }),
+  mealType: nullable({ type: 'string', enum: ['breakfast', 'lunch', 'dinner', 'snack'] }),
+  title: nullable({ type: 'string' }),
+  time: nullable({ type: 'string' }),
+  items: nullable({
+    type: 'array',
+    items: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['name', 'quantity', 'unit', 'grams', 'kcal', 'protein', 'carbs', 'fat'],
+      properties: {
+        name: { type: 'string' },
+        quantity: { type: 'number' },
+        unit: { type: 'string' },
+        grams: nullable({ type: 'number' }),
+        kcal: nullable({ type: 'number' }),
+        protein: nullable({ type: 'number' }),
+        carbs: nullable({ type: 'number' }),
+        fat: nullable({ type: 'number' }),
+      },
+    },
+  }),
+  workoutType: nullable({ type: 'string', enum: ['gym', 'outdoor_walk', 'outdoor_run', 'home'] }),
+  durationMin: nullable({ type: 'integer' }),
+  description: nullable({ type: 'string' }),
+  kg: nullable({ type: 'number' }),
+  category: nullable({ type: 'string', enum: ['goal', 'food', 'routine', 'training', 'progress', 'challenge', 'motivation', 'other'] }),
+  text: nullable({ type: 'string' }),
+};
+
+/** Prime: a reply plus suggested actions (validated afterwards by primeReplySchema). */
+export const PRIME_JSON = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['reply', 'actions'],
+  properties: {
+    reply: { type: 'string' },
+    actions: {
+      type: 'array',
+      items: { type: 'object', additionalProperties: false, required: Object.keys(PRIME_ACTION_PROPS), properties: PRIME_ACTION_PROPS },
+    },
+  },
+};

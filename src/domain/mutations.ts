@@ -11,9 +11,13 @@ import type {
   ISODate,
   JourneySettings,
   NotificationPrefs,
+  PrimeActionLog,
+  PrimeMemory,
   Profile,
   ProgressPhoto,
+  ProposedActionState,
   SavedMeal,
+  WaterLog,
   WeightEntry,
 } from './types';
 
@@ -52,7 +56,18 @@ export type Mutation =
   | { type: 'deleteAllActivity' }
   /** Cloud copy of a photo was uploaded (metadata only; allowed for any date). */
   | { type: 'setPhotoStoragePath'; id: string; path: string }
-  | { type: 'setActivityPhotoPath'; id: string; path: string };
+  | { type: 'setActivityPhotoPath'; id: string; path: string }
+  /** Several changes applied together: all of them or none (used by Prime actions and their undo). */
+  | { type: 'batch'; mutations: Mutation[] }
+  | { type: 'addWater'; log: WaterLog }
+  | { type: 'deleteWater'; id: string }
+  | { type: 'upsertMemory'; memory: PrimeMemory }
+  | { type: 'deleteMemory'; id: string }
+  | { type: 'deleteAllMemories' }
+  | { type: 'addPrimeAction'; log: PrimeActionLog }
+  | { type: 'markPrimeActionUndone'; id: string; at: string }
+  /** State of one suggested action inside a Prime message (pending → applied / dismissed / undone). */
+  | { type: 'setMessageAction'; messageId: string; index: number; state: ProposedActionState };
 
 export type RejectReason = 'locked' | 'duplicate' | 'notFound' | 'empty';
 export class MutationRejected extends Error {
@@ -159,5 +174,31 @@ export function applyMutation(data: AppData, m: Mutation, today: ISODate): AppDa
       return { ...data, foodLogs: [], foodCompletions: {}, savedMeals: [] };
     case 'deleteAllActivity':
       return { ...data, activityLogs: [], recoveryLogs: {} };
+    case 'batch':
+      return m.mutations.reduce((d, inner) => applyMutation(d, inner, today), data);
+    case 'addWater':
+      requireCheckInWindow(m.log.date);
+      if (!(m.log.ml > 0 && m.log.ml <= 5000)) throw new MutationRejected('empty');
+      return { ...data, water: upsertById(data.water, m.log) };
+    case 'deleteWater':
+      requireCheckInWindow(dateOf(data.water, m.id));
+      return { ...data, water: data.water.filter((w) => w.id !== m.id) };
+    case 'upsertMemory':
+      if (!m.memory.text.trim()) throw new MutationRejected('empty');
+      return { ...data, memories: upsertById(data.memories, m.memory) };
+    case 'deleteMemory':
+      return { ...data, memories: data.memories.filter((x) => x.id !== m.id) };
+    case 'deleteAllMemories':
+      return { ...data, memories: [] };
+    case 'addPrimeAction':
+      return { ...data, primeActions: upsertById(data.primeActions, m.log) };
+    case 'markPrimeActionUndone':
+      return { ...data, primeActions: data.primeActions.map((a) => (a.id === m.id ? { ...a, undoneAt: m.at } : a)) };
+    case 'setMessageAction': {
+      const msg = data.coach.messages.find((x) => x.id === m.messageId);
+      if (!msg?.actions?.[m.index]) throw new MutationRejected('notFound');
+      const actions = msg.actions.map((a, i) => (i === m.index ? { ...a, ...m.state } : a));
+      return { ...data, coach: { ...data.coach, messages: data.coach.messages.map((x) => (x.id === m.messageId ? { ...x, actions } : x)) } };
+    }
   }
 }

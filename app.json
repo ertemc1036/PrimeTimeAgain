@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Diet9",
+    "name": "PrimeMe AI",
     "slug": "minus30",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -70,8 +70,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Diet9 uses your photo library only when you choose to add a meal, workout or private progress photo.",
-          "cameraPermission": "Diet9 uses the camera only when you choose to scan a meal or take a workout or progress photo.",
+          "photosPermission": "PrimeMe AI uses your photo library only when you choose to add a meal, workout or private progress photo.",
+          "cameraPermission": "PrimeMe AI uses the camera only when you choose to scan a meal or take a workout or progress photo.",
           "microphonePermission": false
         }
       ],

@@ -5,6 +5,9 @@ export const LIMITS: Record<string, { perMinute: number; perDay: number }> = {
   'food-scan': { perMinute: 6, perDay: 30 },
   'workout-photo': { perMinute: 6, perDay: 20 },
   coach: { perMinute: 10, perDay: 60 },
+  // Prime: PrimeMe+ and the limited free tier
+  prime: { perMinute: 10, perDay: 80 },
+  'prime-free': { perMinute: 5, perDay: 8 },
 };
 
 /**

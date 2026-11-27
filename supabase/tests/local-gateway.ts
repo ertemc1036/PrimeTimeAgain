@@ -15,12 +15,13 @@ import { handler as entitlement } from '../functions/entitlement/handler.ts';
 import { handler as exportData } from '../functions/export/handler.ts';
 import { handler as foodScan } from '../functions/food-scan/handler.ts';
 import { handler as founders } from '../functions/founders/handler.ts';
+import { handler as prime } from '../functions/prime/handler.ts';
 import { handler as webhook } from '../functions/revenuecat-webhook/handler.ts';
 import { handler as sync } from '../functions/sync/handler.ts';
 import { handler as workoutPhoto } from '../functions/workout-photo/handler.ts';
 
 const FUNCTIONS: Record<string, (req: Request) => Promise<Response>> = {
-  sync, export: exportData, entitlement, 'food-scan': foodScan, 'workout-photo': workoutPhoto, coach, 'revenuecat-webhook': webhook, 'delete-account': deleteAccount, founders,
+  sync, export: exportData, entitlement, 'food-scan': foodScan, 'workout-photo': workoutPhoto, coach, 'revenuecat-webhook': webhook, 'delete-account': deleteAccount, founders, prime,
 };
 const GOTRUE = Deno.env.get('GOTRUE_URL') ?? 'http://127.0.0.1:9999';
 const JWT_SECRET = Deno.env.get('JWT_SECRET') ?? '';
@@ -106,8 +107,10 @@ function anthropic(body: Record<string, unknown>): Response {
   const system = String(body.system ?? '');
   const isScan = system.includes('nutrition of a meal');
   const isPhoto = system.includes('setting of a photo');
+  const isPrime = system.startsWith('You are Prime');
   let text: string;
-  if (scenario === 'invalid') text = isScan || isPhoto ? '{"status":"ok","items":"not a list"}' : '';
+  if (isPrime) text = primeText();
+  else if (scenario === 'invalid') text = isScan || isPhoto ? '{"status":"ok","items":"not a list"}' : '';
   else if (isScan) text = JSON.stringify(SCAN_OK);
   else if (isPhoto) text = JSON.stringify({ environment: 'gym', confidence: 'high', summary: 'Indoor gym with weight machines.' });
   else text = 'Try a simple plan: oats for breakfast, a chicken salad for lunch and a 30-minute walk.';
@@ -127,6 +130,18 @@ function anthropic(body: Record<string, unknown>): Response {
 // --- OpenAI Responses stand-in ------------------------------------------------------------------
 let openaiCalls = 0;
 let lastOpenAI: Record<string, unknown> | null = null;
+// Prime: a full answer; one action is incomplete (water without amount) and must be dropped by the server.
+const A0 = { day: null, ml: null, mealType: null, title: null, time: null, items: null, workoutType: null, durationMin: null, description: null, kg: null, category: null, text: null };
+const PRIME_OK = {
+  reply: 'Great start! I suggest these entries – the meal values are estimates you can correct.',
+  actions: [
+    { ...A0, type: 'log_water', ml: 500 },
+    { ...A0, type: 'log_meal', mealType: 'breakfast', title: 'Eggs and bread', items: [{ name: 'Egg', quantity: 2, unit: 'pcs', grams: 100, kcal: 155, protein: 13, carbs: 1, fat: 11 }] },
+    { ...A0, type: 'log_water' },
+    { ...A0, type: 'remember', category: 'routine', text: 'Trains before work' },
+  ],
+};
+const primeText = () => (scenario === 'invalid' ? '{"reply":"","actions":"nope"}' : JSON.stringify(PRIME_OK));
 const SCAN_OK = { status: 'ok', mealTitle: 'Chicken with rice', confidence: 'medium', items: [{ name: 'Chicken breast', estimatedGrams: 150, kcal: 248, protein: 46, carbs: 0, fat: 5, confidence: 'high' }, { name: 'White rice', estimatedGrams: 180, kcal: 234, protein: 5, carbs: 51, fat: 0.5, confidence: 'medium' }], uncertaintyNotes: ['Cooking oil may not be visible.'] };
 function openai(body: Record<string, unknown>): Response {
   openaiCalls++;
@@ -137,8 +152,10 @@ function openai(body: Record<string, unknown>): Response {
   const format = (body.text as { format?: { name?: string } } | undefined)?.format?.name;
   const isScan = format === 'food_scan';
   const isPhoto = format === 'workout_photo';
+  const isPrime = format === 'prime_reply';
   let text: string;
-  if (scenario === 'invalid') text = isScan || isPhoto ? '{"status":"ok","items":"not a list"}' : '';
+  if (isPrime) text = primeText();
+  else if (scenario === 'invalid') text = isScan || isPhoto ? '{"status":"ok","items":"not a list"}' : '';
   else if (isScan && scenario === 'unclear') text = JSON.stringify({ ...SCAN_OK, status: 'unclear', confidence: 'low' }); // model wrongly adds items
   else if (isScan && scenario === 'not_food') text = JSON.stringify({ status: 'not_food', mealTitle: '', confidence: 'high', items: [], uncertaintyNotes: [] });
   else if (isScan) text = JSON.stringify(SCAN_OK);

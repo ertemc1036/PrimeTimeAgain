@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Button, Card, Chip, Icon, OptionCard, PressableScale, ProBadge, Screen, TextField, TimeField, ToggleRow } from '@/components/ui';
+import { AppText, Button, Card, Chip, Icon, OptionCard, PressableScale, Screen, TextField, TimeField, ToggleRow } from '@/components/ui';
 import { isPlanComplete } from '@/domain/completion';
 import { addDays, parseTime } from '@/domain/dates';
 import { totals } from '@/domain/nutrition';
@@ -15,7 +15,6 @@ import { useSave } from '@/hooks/useSave';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
 import { useAppState } from '@/state/AppStateProvider';
-import { usePro } from '@/state/ProProvider';
 import { colors, radii, spacing } from '@/theme';
 import { nowISO } from '@/utils/id';
 
@@ -32,7 +31,6 @@ function PlanEditor({ date, setDate }: { date: ISODate; setDate: (d: ISODate) =>
   const { t } = useTranslation();
   const locale = useLocale();
   const { data, today } = useAppState();
-  const { canOpenPro } = usePro();
   const save = useSave();
   const stored: DayPlan = data.plans[date] ?? emptyPlan(date);
   const isTomorrow = date === addDays(today, 1);
@@ -110,9 +108,8 @@ function PlanEditor({ date, setDate }: { date: ISODate; setDate: (d: ISODate) =>
               {t('plan.aiHint')}
             </AppText>
           </View>
-          <ProBadge label={t('common.pro')} />
         </View>
-        <Button label={t('plan.ai')} size="sm" variant="secondary" onPress={() => router.push(canOpenPro ? { pathname: '/coach', params: { topic: 'plan' } } : '/pro')} />
+        <Button label={t('plan.ai')} size="sm" variant="secondary" onPress={() => router.push({ pathname: '/prime', params: { topic: 'plan' } })} />
       </Card>
 
       <AppText variant="heading">{t('plan.meals')}</AppText>

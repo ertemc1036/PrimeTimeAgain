@@ -31,6 +31,9 @@ export function toRecords(data: AppData): Map<string, LocalRecord> {
   for (const c of data.customFoods) add('customFood', c.id, c);
   for (const a of data.achievements) add('achievement', a.id, a);
   for (const m of data.coach.messages) add('coach', m.id, m);
+  for (const w of data.water) add('water', w.id, w);
+  for (const m of data.memories) add('memory', m.id, m);
+  for (const a of data.primeActions) add('primeAction', a.id, a);
   add('settings', 'notifications', data.notifications);
   add('settings', 'eatingWindow', data.eatingWindow);
   add('settings', 'journey', data.journey);
@@ -124,6 +127,15 @@ export function applyRecords(data: AppData, records: RemoteRecord[]): AppData {
       case 'coach':
         d = { ...d, coach: { ...d.coach, messages: upsert(d.coach.messages, r.id, v).sort((x, y) => (x.createdAt < y.createdAt ? -1 : 1)) } };
         break;
+      case 'water':
+        d = { ...d, water: upsert(d.water, r.id, v).sort((x, y) => (x.at < y.at ? -1 : 1)) };
+        break;
+      case 'memory':
+        d = { ...d, memories: upsert(d.memories, r.id, v) };
+        break;
+      case 'primeAction':
+        d = { ...d, primeActions: upsert(d.primeActions, r.id, v) };
+        break;
       case 'settings':
         if (!v || !(SETTINGS_IDS as readonly string[]).includes(r.id)) break;
         if (r.id === 'coachConsent') d = { ...d, coach: { ...d.coach, consentToContext: !!(v as { value?: boolean }).value } };
@@ -136,4 +148,4 @@ export function applyRecords(data: AppData, records: RemoteRecord[]): AppData {
 
 /** True when the device holds anything worth keeping. */
 export const hasUserData = (d: AppData) =>
-  !!d.profile || d.foodLogs.length > 0 || d.activityLogs.length > 0 || Object.keys(d.plans).length > 0 || Object.keys(d.recoveryLogs).length > 0 || d.weights.length > 0;
+  !!d.profile || d.foodLogs.length > 0 || d.activityLogs.length > 0 || Object.keys(d.plans).length > 0 || Object.keys(d.recoveryLogs).length > 0 || d.weights.length > 0 || d.water.length > 0 || d.memories.length > 0;

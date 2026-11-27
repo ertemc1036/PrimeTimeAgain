@@ -27,23 +27,28 @@
     "kcal": "{{value}} kcal",
     "grams": "{{value}} g",
     "seeAll": "Tümünü gör",
-    "pro": "PRO",
+    "pro": "PrimeMe+",
     "on": "Açık",
     "off": "Kapalı",
     "portion": "porsiyon",
     "language": "Dil"
   },
   "brand": {
-    "name": "Diet9",
-    "slogan": "Yarını planla. Bugünü tamamla.",
-    "secondary": "Dönüşüm yolculuğun."
+    "name": "PrimeMe AI",
+    "slogan": "Become your Prime.",
+    "secondary": "Dönüşüm yolculuğun.",
+    "routine": "Yarını planla. Bugünü tamamla.",
+    "agent": "Prime",
+    "plus": "PrimeMe+"
   },
   "tabs": {
     "today": "Bugün",
     "plan": "Plan",
     "food": "Beslenme",
     "workout": "Antrenman",
-    "journey": "Yolculuk"
+    "journey": "Yolculuk",
+    "prime": "Prime",
+    "profile": "Profil"
   },
   "meals": {
     "breakfast": "Kahvaltı",
@@ -78,7 +83,7 @@
       "namePlaceholder": "Adın",
       "nameError": "Lütfen bir ad gir.",
       "adult": "18 yaşında veya daha büyük olduğumu onaylıyorum",
-      "adultHint": "Diet9 yetişkinler için tasarlandı.",
+      "adultHint": "PrimeMe AI yetişkinler için tasarlandı.",
       "units": "Birimler",
       "metric": "Metrik (kg, cm)",
       "imperial": "İngiliz (lb, ft)",
@@ -89,7 +94,7 @@
       "privacy": "Sağlık bilgileri isteğe bağlıdır ve cihazında kalır."
     },
     "adultsOnly": {
-      "title": "Diet9 yetişkinler içindir",
+      "title": "PrimeMe AI yetişkinler içindir",
       "body": "Beslenme ve kilo yönetimi özelliklerimiz 18 yaş ve üzeri kişiler için tasarlandı. Sağlıklı alışkanlıklar konusunda destek istersen bir doktor, okul hemşiresi veya güvendiğin bir yetişkin sana yardımcı olabilir.",
       "back": "Geri dön"
     },
@@ -171,7 +176,7 @@
       "subtitle": "İsteğe bağlı. Planlama saatinde nazik bir hatırlatma. İstediğin zaman değiştirebilir veya kapatabilirsin.",
       "enable": "Hatırlatmaları aç",
       "notNow": "Şimdi değil",
-      "denied": "Diet9 bildirimleri telefonunun ayarlarında kapalı. Yine de tüm özellikleri kullanabilirsin.",
+      "denied": "PrimeMe AI bildirimleri telefonunun ayarlarında kapalı. Yine de tüm özellikleri kullanabilirsin.",
       "web": "Hatırlatmalar iOS ve Android uygulamasında çalışır.",
       "enabled": "Hatırlatmalar açık."
     },
@@ -230,7 +235,11 @@
     },
     "planned": "Bugünün planı",
     "noPlan": "Bugün için plan yok. Yine de yemek ve aktivite kaydedebilirsin.",
-    "milestone": "Yeni kilometre taşı: {{name}}"
+    "milestone": "Yeni kilometre taşı: {{name}}",
+    "prime": {
+      "open": "Prime’ı aç",
+      "prompt": "Günün nasıl geçiyor anlat – kaydetmene yardım edeyim."
+    }
   },
   "calendar": {
     "previous": "Önceki ay",
@@ -568,7 +577,7 @@
   },
   "profile": {
     "title": "Profil",
-    "pro": "Diet9 Pro",
+    "pro": "PrimeMe+",
     "free": "Ücretsiz plan",
     "proActive": "Pro aktif",
     "upgrade": "Pro'ya geç",
@@ -594,7 +603,7 @@
   },
   "account": {
     "title": "Hesap",
-    "localOnly": "Diet9'u hesapsız kullanıyorsun",
+    "localOnly": "PrimeMe AI'u hesapsız kullanıyorsun",
     "localBody": "Verilerin bu cihazda saklanır. Hesaplar ve bulut yedekleme bu sürümde henüz kurulmadı.",
     "notConfigured": "Bulut hesapları bu sürümde yapılandırılmamış.",
     "email": "E-posta",
@@ -608,7 +617,7 @@
     "delete": "Hesabı sil",
     "deleteBody": "Bu işlem hesabını ve bulut verilerini kalıcı olarak siler. Bu cihazdaki veriler de silinir.",
     "signedOutTitle": "İlerlemeni yedekle",
-    "signedOutBody": "Telefonunu kaybedersen veya değiştirirsen verilerin güvende kalsın ve Diet9'u birden fazla cihazda kullanabilmek için ücretsiz bir hesap oluştur.",
+    "signedOutBody": "Telefonunu kaybedersen veya değiştirirsen verilerin güvende kalsın ve PrimeMe AI'u birden fazla cihazda kullanabilmek için ücretsiz bir hesap oluştur.",
     "signOutTitle": "Çıkış yapılsın mı?",
     "signOutBody": "Verilerin hesabında kalır. Tekrar giriş yapana kadar bu cihazdan kaldırılır.",
     "unsyncedTitle": "Bazı değişiklikler henüz senkronize edilmedi",
@@ -660,12 +669,12 @@
     "hourlyEnd": "Saatlik bitiş",
     "nextUp_one": "Önümüzdeki iki gün için {{count}} hatırlatma planlandı.",
     "nextUp_other": "Önümüzdeki iki gün için {{count}} hatırlatma planlandı.",
-    "denied": "Diet9 bildirimleri telefonunun ayarlarında kapalı.",
+    "denied": "PrimeMe AI bildirimleri telefonunun ayarlarında kapalı.",
     "web": "Hatırlatmalar iOS ve Android uygulamasında çalışır.",
     "content": {
       "morning": {
         "title": "Günlük planın hazır.",
-        "body": "Bugünün öğünlerini ve aktiviteni görmek için Diet9'u aç."
+        "body": "Bugünün öğünlerini ve aktiviteni görmek için PrimeMe AI'u aç."
       },
       "activity": {
         "title": "Planladığın aktivitenin zamanı.",
@@ -724,17 +733,17 @@
     "privacyTitle": "Gizlilik politikası",
     "termsTitle": "Kullanım koşulları",
     "draft": "Yasal belge onay bekliyor. Nihai belge yayından önce burada yayımlanacak. O zamana kadar bu yalnızca sade bir özettir, yasal bir belge değildir.",
-    "privacyBody": "Diet9 profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Bir hesap oluşturursan bu veriler, geri yükleyebilmen ve diğer cihazlarda kullanabilmen için bulut veritabanımızda da saklanır; fotoğraflar yalnızca hesabının erişebildiği özel bir depolama alanında tutulur. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ve yalnızca izin verirsen son planlarının ve kayıtlarının kısa bir özeti, o isteği yanıtlamak için sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında saklanmaz. Abonelikler Apple veya Google ve abonelik sağlayıcımız RevenueCat üzerinden yürütülür. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman uygulamada dışa aktarabilir veya silebilir, hesabını silebilirsin.",
-    "termsBody": "Diet9 sağlıklı rutinleri destekler; tıbbi bir cihaz veya profesyonel tavsiyenin yerine geçen bir araç değildir. Besin değerleri ve yapay zekâ sonuçları tahmindir. Antrenman kayıtları kullanıcının kendi beyanına dayanır. Uygulama 18 yaş ve üzeri yetişkinler içindir. Abonelikler, App Store veya Google Play hesabının ayarlarından iptal edilene kadar otomatik olarak yenilenir.",
-    "medical": "Diet9 tıbbi tavsiye vermez. Bir sağlık sorunun varsa, hamileysen veya senin için neyin doğru olduğundan emin değilsen lütfen bir sağlık uzmanıyla konuş.",
+    "privacyBody": "PrimeMe AI profilini, planlarını, yemek ve aktivite kayıtlarını, isteğe bağlı kilo kayıtlarını ve isteğe bağlı fotoğraflarını cihazında saklar. Bir hesap oluşturursan bu veriler, geri yükleyebilmen ve diğer cihazlarda kullanabilmen için bulut veritabanımızda da saklanır; fotoğraflar yalnızca hesabının erişebildiği özel bir depolama alanında tutulur. Yapay zekâ özelliklerini (Pro) kullanırsan fotoğraf veya mesaj ve yalnızca izin verirsen son planlarının ve kayıtlarının kısa bir özeti, o isteği yanıtlamak için sunucumuz ve bir yapay zekâ sağlayıcısı tarafından işlenir; kaydettiğin sonuçlar dışında saklanmaz. Abonelikler Apple veya Google ve abonelik sağlayıcımız RevenueCat üzerinden yürütülür. Verilerini satmıyor ve reklam için kullanmıyoruz. Verilerini istediğin zaman uygulamada dışa aktarabilir veya silebilir, hesabını silebilirsin.",
+    "termsBody": "PrimeMe AI sağlıklı rutinleri destekler; tıbbi bir cihaz veya profesyonel tavsiyenin yerine geçen bir araç değildir. Besin değerleri ve yapay zekâ sonuçları tahmindir. Antrenman kayıtları kullanıcının kendi beyanına dayanır. Uygulama 18 yaş ve üzeri yetişkinler içindir. Abonelikler, App Store veya Google Play hesabının ayarlarından iptal edilene kadar otomatik olarak yenilenir.",
+    "medical": "PrimeMe AI tıbbi tavsiye vermez. Bir sağlık sorunun varsa, hamileysen veya senin için neyin doğru olduğundan emin değilsen lütfen bir sağlık uzmanıyla konuş.",
     "help": "Yarını Plan'da planla, öğünlerini Beslenme'de kaydet, Antrenman'da bir antrenman veya dinlenme günü kaydet. Üçü de tamamlandığında bugünün görevi tamamlanır.",
     "contact": "İletişim",
     "noContact": "Yayından önce bir destek iletişim bilgisi eklenecek.",
     "licenses": "Lisanslar",
-    "licensesIntro": "Diet9 bu üçüncü taraf eserleri kullanır. 3D vücutlar uygulama için dönüştürüldü ve özel bir görünüm kazandı."
+    "licensesIntro": "PrimeMe AI bu üçüncü taraf eserleri kullanır. 3D vücutlar uygulama için dönüştürüldü ve özel bir görünüm kazandı."
   },
   "pro": {
-    "title": "Diet9 Pro'nun kilidini aç",
+    "title": "PrimeMe+'nun kilidini aç",
     "subtitle": "Daha akıllı takip. Daha az çaba. Daha fazla destek.",
     "b1": {
       "title": "Öğünleri yapay zekâ ile tara",
@@ -761,11 +770,11 @@
     "free": "Planlama, kayıt ve serin için ihtiyacın olan her şey ücretsiz kalır.",
     "devPreview": "Geliştirici önizlemesi: Pro ekranlarını göster",
     "devPreviewHint": "Yalnızca geliştirme sürümlerinde. Yapay zekâ erişimi vermez; sunucu aboneliğini yine kontrol eder.",
-    "isPro": "Diet9 Pro'ya sahipsin.",
-    "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen Diet9 uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
+    "isPro": "PrimeMe+'ya sahipsin.",
+    "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen PrimeMe AI uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
     "notConfigured": "Abonelikler bu sürümde henüz kurulmadı. Gösterilen fiyatlar ön fiyatlardır.",
     "signInFirst": "Pro aboneliğinin tüm cihazlarında çalışması için önce ücretsiz bir hesap oluştur.",
-    "welcome": "Diet9 Pro'ya hoş geldin.",
+    "welcome": "PrimeMe+'ya hoş geldin.",
     "pending": "Satın alman onay bekliyor. Onaylandığı anda Pro açılır.",
     "failed": "Satın alma tamamlanamadı. Senden ücret alınmadı.",
     "restored": "Satın alımların geri yüklendi.",
@@ -774,16 +783,16 @@
     "grace": "Ödemende bir sorun var. Pro şimdilik aktif kalıyor. Lütfen App Store veya Google Play hesabında ödeme yöntemini güncelle.",
     "expired": "Pro aboneliğin sona erdi. Kaydettiğin her şey hâlâ burada.",
     "renews": "{{date}} tarihine kadar aktif",
-    "sourceTest": "Pro · Test erişimi",
+    "sourceTest": "PrimeMe+ · Test erişimi",
     "sourceTestBody": "Bu hesap sunucuda test hesabı olarak açıldı. Bir abonelik değildir ve ücret alınmaz.",
-    "sourceFounder": "Pro · Kurucu yeri",
-    "sourceFounderSeat": "Pro · Kurucu yeri #{{seat}}",
-    "sourceFounderBody": "İlk Diet9 kurucularından birisin. Pro senin için ücretsiz – abonelik ve ödeme bilgisi yok – ve tüm yerler dolduktan sonra da öyle kalır.",
+    "sourceFounder": "PrimeMe+ · Kurucu yeri",
+    "sourceFounderSeat": "PrimeMe+ · Kurucu yeri #{{seat}}",
+    "sourceFounderBody": "İlk PrimeMe AI kurucularından birisin. Pro senin için ücretsiz – abonelik ve ödeme bilgisi yok – ve tüm yerler dolduktan sonra da öyle kalır.",
     "founders": {
       "title": "Founders Edition",
       "counter": "{{capacity}} ücretsiz Pro yerinden {{taken}} tanesi verildi.",
       "full": "{{capacity}} ücretsiz kurucu yerinin tamamı verildi.",
-      "body": "Onaylanmış ilk {{capacity}} hesap Diet9 Pro’yu ücretsiz alır – abonelik ve ödeme bilgisi olmadan. Onaylı demek: Apple ile giriş yapılmış ya da e-posta kodla onaylanmış.",
+      "body": "Onaylanmış ilk {{capacity}} hesap PrimeMe+’yu ücretsiz alır – abonelik ve ödeme bilgisi olmadan. Onaylı demek: Apple ile giriş yapılmış ya da e-posta kodla onaylanmış.",
       "create": "Ücretsiz hesap oluştur",
       "check": "Kurucu yerini kontrol et",
       "signedInHint": "Ücretsiz kurucu yerini almak için e-posta adresini bir kodla onayla (veya Apple ile giriş yap).",
@@ -792,7 +801,7 @@
     }
   },
   "coach": {
-    "title": "Yapay zekâ koçu",
+    "title": "Prime",
     "subtitle": "Öğünler, aktivite ve rutinler için pratik destek.",
     "placeholder": "Planınla ilgili her şeyi sor",
     "send": "Gönder",
@@ -802,9 +811,9 @@
       "Antrenmanımı kaçırdım.",
       "Alışveriş listesi hazırlamama yardım et."
     ],
-    "unavailable": "Yapay zekâ koçu bu sürümde henüz kullanılamıyor. Diet9 bulut hizmetinin kurulması gerekiyor.",
+    "unavailable": "Yapay zekâ koçu bu sürümde henüz kullanılamıyor. PrimeMe AI bulut hizmetinin kurulması gerekiyor.",
     "signedOut": "Yapay zekâ koçunu kullanmak için giriş yap.",
-    "notPro": "Yapay zekâ koçu Diet9 Pro'nun bir parçasıdır.",
+    "notPro": "Yapay zekâ koçu PrimeMe+'nun bir parçasıdır.",
     "rateLimited": "Şimdilik mesaj sınırına ulaştın. Lütfen daha sonra tekrar dene.",
     "offline": "Çevrimdışısın. Yapay zekâ koçu internet bağlantısı gerektirir.",
     "failed": "Bir şeyler ters gitti. Lütfen tekrar dene.",
@@ -816,13 +825,14 @@
   "ai": {
     "not_configured": "Yapay zekâ özellikleri bu sürümde henüz kullanılamıyor.",
     "signed_out": "Yapay zekâ özelliklerini kullanmak için giriş yap.",
-    "not_pro": "Bu özellik Diet9 Pro'nun bir parçasıdır.",
+    "not_pro": "Bu özellik PrimeMe+'nun bir parçasıdır.",
     "rate_limited": "Şimdilik sınıra ulaştın. Lütfen daha sonra tekrar dene.",
     "offline": "Çevrimdışısın. Yapay zekâ özellikleri internet bağlantısı gerektirir.",
     "invalid_response": "Beklenmedik bir sonuç aldık. Lütfen tekrar dene veya elle kaydet.",
     "provider_error": "Yapay zekâ hizmeti şu anda kullanılamıyor. Lütfen tekrar dene veya elle kaydet.",
     "camera": "Bunun için kamera erişimi gerekiyor. Telefonunun ayarlarından izin verebilir veya elle kaydedebilirsin.",
-    "timeout": "Bu çok uzun sürdü. Lütfen tekrar dene veya elle kaydet."
+    "timeout": "Bu çok uzun sürdü. Lütfen tekrar dene veya elle kaydet.",
+    "free_limit": "Bugünkü ücretsiz yapay zekâ isteklerini kullandın. Yarın tekrar dene ya da PrimeMe+ al."
   },
   "history": {
     "meals": "Öğün geçmişi",
@@ -855,11 +865,11 @@
   },
   "language": {
     "title": "Dil",
-    "subtitle": "Diet9'un dilini seç. Daha önce kaydettiğin girişler yazdığın gibi kalır."
+    "subtitle": "PrimeMe AI'un dilini seç. Daha önce kaydettiğin girişler yazdığın gibi kalır."
   },
   "auth": {
     "signInTitle": "Giriş yap",
-    "signInSubtitle": "Diet9 hesabınla verilerin güvende kalır ve tüm cihazlarında kullanılabilir.",
+    "signInSubtitle": "PrimeMe AI hesabınla verilerin güvende kalır ve tüm cihazlarında kullanılabilir.",
     "email": "E-posta",
     "password": "Şifre",
     "passwordHint": "En az 8 karakter.",
@@ -885,7 +895,7 @@
     "signedIn": "Giriş yapıldı.",
     "welcomeSignIn": "Zaten bir hesabım var",
     "mergeTitle": "Bu cihazda zaten veriler var",
-    "mergeBody": "Diet9'u bu cihazda giriş yapmadan önce kullandın. Bu verilere ne olsun?",
+    "mergeBody": "PrimeMe AI'u bu cihazda giriş yapmadan önce kullandın. Bu verilere ne olsun?",
     "merge": "Hesabıma ekle",
     "mergeHint": "Önerilen. Bu cihazdaki planlar, öğünler ve antrenmanlar yüklenir. Hiçbir şey silinmez.",
     "replace": "Yalnızca hesabımdaki verileri kullan",
@@ -904,12 +914,12 @@
       "cancelled": "Giriş iptal edildi.",
       "apple_unavailable": "Apple ile Giriş bu cihazda kullanılamıyor.",
       "apple_failed": "Apple ile giriş başarısız oldu. Lütfen tekrar dene.",
-      "apple_linked_elsewhere": "Bu Apple kimliği zaten başka bir Diet9 hesabına ait. Orada Apple ile giriş yap.",
-      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-postayla zaten bir Diet9 hesabın var mı? O zaman e-postayla giriş yap, Profil → Hesap altında onayla ve Apple’ı orada bağla. Aksi halde daha sonra tekrar dene."
+      "apple_linked_elsewhere": "Bu Apple kimliği zaten başka bir PrimeMe AI hesabına ait. Orada Apple ile giriş yap.",
+      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-postayla zaten bir PrimeMe AI hesabın var mı? O zaman e-postayla giriş yap, Profil → Hesap altında onayla ve Apple’ı orada bağla. Aksi halde daha sonra tekrar dene."
     },
     "orEmail": "veya e-postayla",
-    "appleHint": "E-postayla zaten bir Diet9 hesabın var mı? E-postayla giriş yap ve Apple’ı sonra Profil → Hesap altında bağla. Böylece her şey tek hesapta kalır.",
-    "appleNew": "Apple ile yeni bir Diet9 hesabı oluşturuldu.",
+    "appleHint": "E-postayla zaten bir PrimeMe AI hesabın var mı? E-postayla giriş yap ve Apple’ı sonra Profil → Hesap altında bağla. Böylece her şey tek hesapta kalır.",
+    "appleNew": "Apple ile yeni bir PrimeMe AI hesabı oluşturuldu.",
     "confirmEmailTitle": "E-postayı onayla",
     "confirmEmailBody": "{{email}} adresine 6 haneli bir kod göndereceğiz. Adresin sana ait olduğunu onaylar, kurucu yerini güvenceye alır ve hesabını korur.",
     "confirmEmailSent": "Kod {{email}} adresine gönderildi.",
@@ -931,7 +941,7 @@
     "on": "Senkronize edildi",
     "syncing": "Senkronize ediliyor…",
     "offline": "Çevrimdışı. Değişiklikler bu cihazda saklanır ve daha sonra otomatik olarak senkronize edilir.",
-    "error": "Senkronizasyon duraklatıldı. Diet9 otomatik olarak tekrar deneyecek.",
+    "error": "Senkronizasyon duraklatıldı. PrimeMe AI otomatik olarak tekrar deneyecek.",
     "signedOut": "Oturumun sona erdi. Senkronizasyona devam etmek için tekrar giriş yap.",
     "pending_one": "{{count}} değişiklik senkronizasyon bekliyor",
     "pending_other": "{{count}} değişiklik senkronizasyon bekliyor",
@@ -944,7 +954,7 @@
     "discardFailed": "Kapat"
   },
   "avatar": {
-    "eyebrow": "DIET9 VÜCUT TARAMASI",
+    "eyebrow": "PRIMEME AI VÜCUT TARAMASI",
     "title": "İlerlemen",
     "resetView": "Görünümü sıfırla",
     "chooseBody": "Avatar vücudunu seç",
@@ -971,7 +981,7 @@
       "female": "Kadın",
       "neutral": "Nötr"
     },
-    "bodyNote": "Avatar sembolik bir figürdür. Diet9 kilondan veya boyundan asla vücut şekli hesaplamaz.",
+    "bodyNote": "Avatar sembolik bir figürdür. PrimeMe AI kilondan veya boyundan asla vücut şekli hesaplamaz.",
     "a11yLabel": "3D avatar",
     "a11yHint": "Avatarı döndürmek veya yakınlaştırmak için eylemleri kullan.",
     "rotateLeft": "Sola döndür",
@@ -995,13 +1005,105 @@
       "cube": "Küp",
       "model": "Vücut modeli",
       "touch": "Dokunma",
-      "full": "Diet9 görünümü"
+      "full": "PrimeMe AI görünümü"
     },
     "hints": {
       "cube": "Dönen bir küp. Dönüyorsa bu cihazda 3D çalışıyor.",
-      "model": "Basit gri malzeme ve ışıkla bir Diet9 vücut modeli (GLB, hedef form) yükler. Yavaşça döner.",
+      "model": "Basit gri malzeme ve ışıkla bir PrimeMe AI vücut modeli (GLB, hedef form) yükler. Yavaşça döner.",
       "touch": "Döndürmek için yana sürükle, yakınlaştırmak için iki parmak, sıfırlamak için çift dokun. Sol üstteki değerler değişmeli.",
       "full": "Hologram malzemesi, ışık ve tarama halkalarıyla Bugün ekranındaki tam avatar."
     }
+  },
+  "prime": {
+    "subtitle": "Kişisel koçun. Ne yediğini, içtiğini ya da hangi antrenmanı yaptığını söyle – kaydı ben öneririm, sen onaylarsın.",
+    "unavailable": "Prime, bu sürümde kurulu olmayan PrimeMe AI bulut hizmetine ihtiyaç duyar.",
+    "signedOut": "Prime ile konuşmak için giriş yap. Hesabın ilerlemeni güvende tutar.",
+    "consent": {
+      "title": "Prime uygulama verilerini kullanabilir mi?",
+      "body": "İznin olursa Prime hedeflerinin, planlarının, son öğünlerinin, antrenmanlarının, su kayıtlarının kısa bir özetini ve Prime belleğini görür. Fotoğraf yok. Bunu istediğin zaman Profil → Gizlilik altında kapatabilirsin.",
+      "allow": "İzin ver"
+    },
+    "hello": "Merhaba {{name}}, ben Prime. Ne yediğini, içtiğini ya da hangi antrenmanı yaptığını anlat veya planınla ilgili bir şey sor. Kayıt öneririm – sen onaylamadan hiçbir şey kaydedilmez.",
+    "suggestions": [
+      "500 ml su içtim.",
+      "Kahvaltıda iki yumurta ve bir dilim ekmek yedim.",
+      "Bugün 45 dakika spor salonundaydım.",
+      "Bugün hiç motivasyonum yok.",
+      "Bu hafta ne almalıyım?",
+      "Haftam nasıl geçti?"
+    ],
+    "older": "Eski mesajları göster",
+    "thinking": "Prime düşünüyor…",
+    "freeLimit": "Bugünkü ücretsiz Prime mesajlarını kullandın. PrimeMe+ ile Prime ile çok daha fazla konuşabilirsin – ya da yarın devam et.",
+    "upgrade": "PrimeMe+ al",
+    "safety": "Prime genel destek sunar, tıbbi tavsiye vermez. Besin değerleri tahminidir.",
+    "placeholder": "Prime’a mesaj",
+    "photo": "Öğün fotoğrafı tara",
+    "clear": "Sohbeti sil",
+    "clearBody": "Sohbet tüm cihazlarında silinir. Kayıtların ve Prime belleğin kalır.",
+    "planPrompt": "Yarınki öğünlerimi ve hareketimi planlamama yardım et.",
+    "action": {
+      "water": "{{ml}} ml su",
+      "kcalApprox": "≈ {{kcal}} kcal",
+      "noEstimate": "tahmin yok",
+      "totalApprox": "Toplam ≈ {{kcal}} kcal (tahmini)",
+      "minutes_one": "{{count}} dk",
+      "minutes_other": "{{count}} dk",
+      "rest": "Dinlenme günü",
+      "weight": "Kilo {{kg}} kg",
+      "remember": "Hatırla",
+      "workoutDefault": "Prime ile kaydedildi",
+      "saved": "Kaydedildi.",
+      "duplicate": "Bu antrenman zaten kayıtlı.",
+      "undone": "Geri alındı.",
+      "undoLocked": "Bu kayıt düzenleme süresinden eski, burada artık geri alınamaz.",
+      "estimateNote": "Tahmini değerler – gerekirse kontrol edip düzelt.",
+      "apply": "Kaydet",
+      "edit": "Düzenle",
+      "dismiss": "Yok say",
+      "undo": "Geri al",
+      "status": {
+        "pending": "Öneri",
+        "applied": "Kaydedildi",
+        "dismissed": "Yok sayıldı",
+        "undone": "Geri alındı"
+      }
+    },
+    "memory": {
+      "title": "Prime belleği",
+      "subtitle": "Prime’ın senin hakkında hatırladıkları. Sadece onayladığın ya da eklediğin şeyler – hepsini düzenleyebilir veya silebilirsin.",
+      "plusOnly": "Prime belleğini PrimeMe+ ile kullanır. Burada her zaman görebilir, düzenleyebilir ve silebilirsin.",
+      "noConsent": "Prime bu belleği yalnızca “Prime uygulama verilerimi kullanabilir” açıkken kullanır (Profil → Gizlilik).",
+      "empty": "Henüz bir şey kaydedilmedi. Prime’a kalıcı bir şey anlattığında (ör. “Gece vardiyasında çalışıyorum”), Prime bunu hatırlamayı önerebilir.",
+      "category": {
+        "goal": "Hedefler",
+        "food": "Beslenme",
+        "routine": "Günlük düzen",
+        "training": "Antrenman",
+        "progress": "İlerleme",
+        "challenge": "Zorluklar",
+        "motivation": "Motivasyon",
+        "other": "Diğer"
+      },
+      "text": "Anı",
+      "edit": "Düzenle",
+      "delete": "Anıyı sil",
+      "add": "Bir şey ekle",
+      "addButton": "Belleğe kaydet",
+      "deleteAll": "Tüm anıları sil",
+      "deleteAllBody": "Prime burada kayıtlı her şeyi tüm cihazlarında unutur."
+    },
+    "log": {
+      "title": "Prime etkinlikleri",
+      "subtitle": "Prime’ın senin onayınla kaydettiği her şey. “Geri al” tam olarak bu kayıtları kaldırır.",
+      "empty": "Prime ile henüz bir şey kaydedilmedi."
+    }
+  },
+  "water": {
+    "title": "Su",
+    "progress": "{{total}} / {{goal}} l",
+    "addHint": "{{ml}} ml ekler",
+    "removeLast": "{{ml}} ml kaldır",
+    "goalNote": "Hedefin kişisel bir yol göstericidir, tıbbi tavsiye değildir."
   }
 }

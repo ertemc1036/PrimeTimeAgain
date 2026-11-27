@@ -567,6 +567,78 @@ Deno.test({ name: 'Identity: Apple sign-ups and code-confirmed emails are proven
   }
 }});
 
+Deno.test({ name: 'Prime: free and PrimeMe+ tiers, validated actions, memory only with PrimeMe+, both AI providers', ...opts, async fn() {
+  const msgs = [{ role: 'assistant', content: 'ignored lead' }, { role: 'user', content: 'I drank 500 ml and had two eggs. I always train before work.' }];
+  const body = (extra: Record<string, unknown> = {}) => ({ messages: msgs, now: { date: '2026-11-27', time: '08:15' }, language: 'de', ...extra });
+  assertEquals((await callJson('prime', null, body())).status, 401, 'sign-in required');
+
+  for (const provider of ['anthropic', 'openai']) {
+    await control({ provider, scenario: 'ok', reset: true });
+    const free = await newUser(`prime-free-${provider}`);
+    const r = await callJson('prime', free.token, body({ memories: [{ category: 'goal', text: 'SECRET-MEMORY' }], context: { goals: ['weight'] } }));
+    assertEquals(r.status, 200, `free account may use Prime (${provider})`);
+    assertEquals(r.body.plus, false);
+    assertEquals(r.body.actions.map((a: { type: string }) => a.type), ['log_water', 'log_meal'], 'incomplete action and memory dropped for free accounts');
+    assertEquals(r.body.actions[0], { type: 'log_water', day: 'today', ml: 500 });
+    const sent = await fetch(`${BASE}/mock/control`).then((x) => x.json());
+    const prompt = JSON.stringify(provider === 'openai' ? sent.lastOpenAI : sent.lastRequest);
+    assert(!prompt.includes('SECRET-MEMORY'), 'memories are not sent for free accounts');
+    assert(prompt.includes('<app_context>') && prompt.includes('2026-11-27 08:15'), 'consented context and local time are sent');
+    assert(!prompt.includes('ignored lead'), 'conversation starts with the user');
+    assert(prompt.includes('Never recommend very-low-calorie diets'), 'safety rules are part of every request');
+
+    const plus = await newUser(`prime-plus-${provider}`);
+    await proSubscriber(plus.id, future(30));
+    await callJson('entitlement', plus.token);
+    const p = await callJson('prime', plus.token, body({ memories: [{ category: 'goal', text: 'PLUS-MEMORY' }] }));
+    assertEquals(p.body.plus, true);
+    assertEquals(p.body.actions.map((a: { type: string }) => a.type), ['log_water', 'log_meal', 'remember']);
+    const sent2 = await fetch(`${BASE}/mock/control`).then((x) => x.json());
+    assert(JSON.stringify(provider === 'openai' ? sent2.lastOpenAI : sent2.lastRequest).includes('<prime_memory>'), 'memories are sent with PrimeMe+');
+  }
+
+  await control({ scenario: 'invalid' });
+  const bad = await newUser('prime-invalid');
+  assertEquals((await callJson('prime', bad.token, body())).body.error, 'invalid_response', 'malformed model output is rejected, never shown');
+  assertEquals((await callJson('prime', bad.token, { messages: [{ role: 'assistant', content: 'only me' }] })).status, 400);
+  await control({ provider: 'anthropic', scenario: 'ok' });
+}});
+
+Deno.test({ name: 'Prime: free accounts have a small daily allowance', ...opts, async fn() {
+  await control({ scenario: 'ok' });
+  const u = await newUser('prime-limit');
+  const statuses: number[] = [];
+  for (let i = 0; i < 9; i++) {
+    const r = await callJson('prime', u.token, { messages: [{ role: 'user', content: `Hi ${i}` }] });
+    statuses.push(r.status);
+    if (r.status === 429) assertEquals(r.body.error, 'free_limit');
+    if (i % 4 === 3) await DB`update public.ai_usage set created_at = created_at - interval '2 minutes' where user_id = ${u.id}`; // stay under the per-minute limit
+  }
+  assertEquals(statuses.filter((s) => s === 200).length, 8, `8 free messages per day: ${statuses}`);
+  assertEquals(statuses[8], 429);
+}});
+
+Deno.test({ name: 'Sync accepts water, Prime Memory and the action log, and validates them', ...opts, async fn() {
+  const u = await newUser('prime-sync');
+  const at = new Date().toISOString();
+  const res = await callJson('sync', u.token, {
+    cursor: 0,
+    changes: [
+      change('water', 'w1', { id: 'w1', date: '2026-11-27', ml: 500, at, source: 'prime', createdAt: at }, at),
+      change('memory', 'm1', { id: 'm1', category: 'routine', text: 'Trains before work', createdAt: at, updatedAt: at }, at),
+      change('primeAction', 'p1', { id: 'p1', summary: '500 ml water', created: [{ kind: 'water', id: 'w1' }], appliedAt: at }, at),
+      change('water', 'w2', { id: 'w2', date: '2026-11-27', ml: 0, at, source: 'manual', createdAt: at }, at),
+      change('memory', 'm2', { id: 'm2', category: 'diagnosis', text: 'x', createdAt: at, updatedAt: at }, at),
+      change('coach', 'c1', { id: 'c1', role: 'assistant', content: 'Hi', createdAt: at, actions: Array.from({ length: 6 }, () => ({ type: 'log_rest_day', day: 'today', status: 'pending' })) }, at),
+    ],
+  });
+  assertEquals(res.status, 200);
+  assertEquals(res.body.results.map((r: { status: string }) => r.status), ['applied', 'applied', 'applied', 'invalid', 'invalid', 'invalid']);
+  const other = await newUser('prime-sync-other');
+  const pulled = await callJson('sync', other.token, { cursor: 0, changes: [] });
+  assertEquals(pulled.body.records.filter((r: { collection: string }) => ['water', 'memory', 'primeAction'].includes(r.collection)).length, 0, 'other accounts never see them');
+}});
+
 Deno.test({ name: 'coach streams replies and only sends consented context', ...opts, async fn() {
   const u = await newUser('coach');
   await proSubscriber(u.id, future(30));

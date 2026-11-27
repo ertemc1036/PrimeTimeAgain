@@ -32,7 +32,7 @@ export default function WorkoutTab() {
     c === 'outdoor' ? (plannedActivity?.type === 'outdoor_run' ? 'outdoor_run' : 'outdoor_walk') : (c as WorkoutType);
 
   return (
-    <Screen inTabs title={date === today ? t('workout.title') : t('common.yesterday')} subtitle={t('workout.subtitle')}>
+    <Screen back="back" title={date === today ? t('workout.title') : t('common.yesterday')} subtitle={t('workout.subtitle')}>
       <DaySwitch today={today} value={date} onChange={setDate} />
 
       <Card>

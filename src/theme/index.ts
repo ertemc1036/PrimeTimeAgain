@@ -1,9 +1,9 @@
 import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 
 /**
- * MINUS 30 design tokens — strict monochrome.
- * Secondary text uses #6E6E6E instead of the brief's #777777: visually identical, but it meets
- * WCAG AA contrast (≥ 4.5:1) on white and on card backgrounds, where #777777 does not.
+ * PrimeMe AI design tokens: black, white and the Prime neon green.
+ * Neon (#C5F653) is an accent for fills and highlights, always with black content on top: as text
+ * colour on white it would fail contrast. Secondary text uses #6E6E6E (WCAG AA on white and cards).
  */
 export const colors = {
   black: '#000000',
@@ -16,6 +16,11 @@ export const colors = {
   border: '#E8E8E8',
   disabled: '#BDBDBD',
   overlay: 'rgba(0,0,0,0.4)',
+  /** Prime neon green (brand accent). Use with `onPrimary` content. */
+  primary: '#C5F653',
+  onPrimary: '#0B0B0B',
+  /** Soft neon tint for backgrounds of Prime content. */
+  primarySoft: '#F1FCD9',
 } as const;
 
 export const spacing = { xxs: 4, xs: 8, sm: 12, md: 16, lg: 20, xl: 24, xxl: 32, xxxl: 48 } as const;

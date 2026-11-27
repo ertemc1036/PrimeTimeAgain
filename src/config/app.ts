@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 
-export const APP_NAME = 'Diet9';
+export const APP_NAME = 'PrimeMe AI';
 export const APP_VERSION = Constants.expoConfig?.version ?? '0.0.0';
 
 /** Placeholder prices shown before the store provides real localised prices. */

@@ -17,6 +17,18 @@ export async function requirePro(req: Request, fn: string): Promise<{ userId: st
 }
 
 /**
+ * Gate for AI features that free accounts may use within smaller limits (Prime chat): valid session
+ * → server-verified tier → the tier's rate limit (`fn` for PrimeMe+, `fn-free` otherwise).
+ */
+export async function requireUserTier(req: Request, fn: string): Promise<{ userId: string; plus: boolean } | Response> {
+  const user = await verifyUser(req);
+  if (!user) return error(401, 'signed_out');
+  const plus = isProActive(await currentEntitlement(user.id));
+  if (!(await consumeQuota(user.id, plus ? fn : `${fn}-free`))) return error(429, plus ? 'rate_limited' : 'free_limit');
+  return { userId: user.id, plus };
+}
+
+/**
  * Base64 JPEG (re-encoded and scaled to 1024 px on the device, so no EXIF/GPS), at most ~2 MB.
  * Keeps request size and AI cost bounded.
  */

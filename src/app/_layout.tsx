@@ -76,6 +76,10 @@ function RootNavigator({ ready }: { ready: boolean }) {
         </Stack.Protected>
         <Stack.Protected guard={isOnboarded}>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="food" />
+          <Stack.Screen name="workout" />
+          <Stack.Screen name="memories" />
+          <Stack.Screen name="prime-log" />
           <Stack.Screen name="plan-meal" options={modal} />
           <Stack.Screen name="food-entry" options={modal} />
           <Stack.Screen name="custom-food" options={modal} />

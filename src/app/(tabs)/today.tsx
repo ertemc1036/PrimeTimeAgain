@@ -3,12 +3,14 @@ import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Card, Chip, Icon, IconButton, ProgressRing, Screen, useToast } from '@/components/ui';
+import { AppText, Card, Chip, Icon, PressableScale, ProgressRing, Screen, useToast } from '@/components/ui';
 import { dayChecks, streakStats } from '@/domain/completion';
 import { addDays } from '@/domain/dates';
 import { activitySummary } from '@/features/labels';
 import { BodyHero } from '@/features/avatar/BodyHero';
 import { MissionCard } from '@/features/MissionCard';
+import { PrimeMascot } from '@/features/prime/PrimeMascot';
+import { WaterCard } from '@/features/WaterCard';
 import { StreakCalendar } from '@/features/StreakCalendar';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
@@ -27,6 +29,7 @@ export default function Today() {
   const tomorrow = addDays(today, 1);
   const foodCount = data.foodLogs.filter((f) => f.date === today).length;
   const rest = !!data.recoveryLogs[today];
+  const lastPrime = [...data.coach.messages].reverse().find((m) => m.role === 'assistant')?.content;
 
   const hour = currentHour();
   const greetingKey = hour < 12 ? 'today.morning' : hour < 18 ? 'today.afternoon' : 'today.evening';
@@ -39,9 +42,7 @@ export default function Today() {
   }, [checks.complete, checks.done, toast, t]);
 
   return (
-    <Screen
-      inTabs
-      headerRight={<IconButton icon="person-circle-outline" label={t('today.profile')} onPress={() => router.push('/settings')} variant="plain" />}>
+    <Screen inTabs>
       <View style={styles.greeting}>
         <AppText variant="label" color="secondary">
           {formatDate(today, locale, { weekday: 'long', day: 'numeric', month: 'long' })}
@@ -53,6 +54,20 @@ export default function Today() {
           {t('today.subtitle')}
         </AppText>
       </View>
+
+      <PressableScale onPress={() => router.navigate('/prime')} accessibilityRole="button" accessibilityLabel={t('today.prime.open')}>
+        <View style={styles.prime} testID="prime-card">
+          <PrimeMascot size={52} />
+          <View style={styles.flex}>
+            <AppText variant="label" color={colors.onPrimary}>
+              {t('brand.agent')}
+            </AppText>
+            <AppText variant="bodyStrong" color={colors.onPrimary} numberOfLines={3}>
+              {lastPrime ?? t('today.prime.prompt')}
+            </AppText>
+          </View>
+        </View>
+      </PressableScale>
 
       <BodyHero data={data} streak={streak.current} />
 
@@ -107,6 +122,8 @@ export default function Today() {
         />
       </View>
 
+      <WaterCard />
+
       <View style={styles.section}>
         <AppText variant="heading">{t('today.calendar')}</AppText>
         <StreakCalendar data={data} today={today} />
@@ -123,6 +140,7 @@ export default function Today() {
 
 const styles = StyleSheet.create({
   greeting: { gap: 4 },
+  prime: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, backgroundColor: colors.primary, borderRadius: radii.lg, padding: spacing.md },
   flex: { flex: 1, gap: 2 },
   streak: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   flame: { width: 52, height: 52, borderRadius: radii.pill, borderWidth: 1.5, borderColor: '#3A3A3A', alignItems: 'center', justifyContent: 'center' },

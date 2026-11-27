@@ -5,7 +5,7 @@ import type { Tx } from './db.ts';
  * src/sync/protocol.ts). Conflicts resolve deterministically by (updatedAt, content hash), so
  * every device converges on the same winner.
  */
-export const COLLECTIONS = ['profile', 'plan', 'food', 'foodDone', 'activity', 'rest', 'weight', 'photo', 'savedMeal', 'customFood', 'settings', 'achievement', 'coach'] as const;
+export const COLLECTIONS = ['profile', 'plan', 'food', 'foodDone', 'activity', 'rest', 'weight', 'photo', 'savedMeal', 'customFood', 'settings', 'achievement', 'coach', 'water', 'memory', 'primeAction'] as const;
 export type Collection = (typeof COLLECTIONS)[number];
 
 export interface Change {
@@ -29,6 +29,7 @@ const ID = /^[A-Za-z0-9_:.-]{1,100}$/;
 const WORKOUTS = ['gym', 'outdoor_walk', 'outdoor_run', 'home'];
 const MEALS = ['breakfast', 'lunch', 'dinner', 'snack'];
 const SETTINGS = ['notifications', 'eatingWindow', 'journey', 'coachConsent'];
+const MEMORY = ['goal', 'food', 'routine', 'training', 'progress', 'challenge', 'motivation', 'other'];
 const str = (v: unknown, max: number, min = 0) => typeof v === 'string' && v.length >= min && v.length <= max;
 
 /** Returns a reason when the change must be rejected, else null. */
@@ -66,7 +67,13 @@ export function validateChange(c: Partial<Change>, now = Date.now()): string | n
     case 'settings':
       return SETTINGS.includes(c.id) ? null : 'settings';
     case 'coach':
-      return (d.role === 'user' || d.role === 'assistant') && str(d.content, 4000, 1) ? null : 'coach';
+      return (d.role === 'user' || d.role === 'assistant') && str(d.content, 4000, 1) && (d.actions === undefined || (Array.isArray(d.actions) && d.actions.length <= 5)) ? null : 'coach';
+    case 'water':
+      return DATE.test(String(d.date)) && Number.isInteger(d.ml) && (d.ml as number) >= 1 && (d.ml as number) <= 5000 ? null : 'water';
+    case 'memory':
+      return MEMORY.includes(d.category as string) && str(d.text, 300, 1) ? null : 'memory';
+    case 'primeAction':
+      return str(d.summary, 200, 1) && Array.isArray(d.created) && d.created.length <= 20 ? null : 'primeAction';
     default:
       return null;
   }

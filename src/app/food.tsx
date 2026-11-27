@@ -39,7 +39,7 @@ export default function FoodTab() {
   };
 
   return (
-    <Screen inTabs title={isToday ? t('food.title') : t('food.dayYesterday')} subtitle={t('food.subtitle')}>
+    <Screen back="back" title={isToday ? t('food.title') : t('food.dayYesterday')} subtitle={t('food.subtitle')}>
       <DaySwitch today={today} value={date} onChange={setDate} />
 
       <View style={styles.actions}>

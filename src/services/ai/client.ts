@@ -2,7 +2,8 @@ import { Platform } from 'react-native';
 import type { ZodType } from 'zod';
 
 import { env, isSupabaseConfigured } from '@/config/env';
-import { coachReplySchema, foodScanSchema, workoutPhotoSchema, type CoachReply, type FoodScanResult, type WorkoutPhotoResult } from '@/domain/aiSchemas';
+import { coachReplySchema, foodScanSchema, normalizePrimeActions, primeActionRawSchema, workoutPhotoSchema, type CoachReply, type FoodScanResult, type PrimeAction, type WorkoutPhotoResult } from '@/domain/aiSchemas';
+import { z } from 'zod';
 import type { WorkoutType } from '@/domain/types';
 import { currentLanguage } from '@/i18n';
 import { getSupabase } from '@/services/supabase/client';
@@ -12,7 +13,7 @@ import { getSupabase } from '@/services/supabase/client';
  * user's session and Pro entitlement server-side, rate-limit, and validate model output.
  * Every failure is reported as such; nothing is ever simulated.
  */
-export type AiError = 'not_configured' | 'signed_out' | 'not_pro' | 'rate_limited' | 'offline' | 'invalid_response' | 'provider_error' | 'timeout';
+export type AiError = 'not_configured' | 'signed_out' | 'not_pro' | 'rate_limited' | 'free_limit' | 'offline' | 'invalid_response' | 'provider_error' | 'timeout';
 export type AiResult<T> = { ok: true; data: T } | { ok: false; error: AiError };
 
 const TIMEOUT_MS = 60_000;
@@ -20,7 +21,7 @@ const TIMEOUT_MS = 60_000;
 export function mapStatus(status: number, code?: string): AiError {
   if (status === 401) return 'signed_out';
   if (status === 402 || status === 403) return 'not_pro';
-  if (status === 429) return 'rate_limited';
+  if (status === 429) return code === 'free_limit' ? 'free_limit' : 'rate_limited';
   if (status === 503 || code === 'not_configured') return 'not_configured';
   if (code === 'invalid_response') return 'invalid_response';
   return 'provider_error';
@@ -134,3 +135,24 @@ export async function streamCoach(messages: Turn[], context: unknown | null, onD
     clearTimeout(timer);
   }
 }
+
+/** Prime's answer: the reply plus validated, typed suggestions (checked again on the device). */
+const primeResponseSchema = z
+  .object({ reply: z.string().min(1).max(4000), actions: z.array(z.unknown()).max(5), plus: z.boolean() })
+  .transform((r) => ({
+    reply: r.reply,
+    plus: r.plus,
+    // The server already normalised; parse again so nothing malformed reaches the UI.
+    actions: r.actions.flatMap((a): PrimeAction[] => {
+      const raw = primeActionRawSchema.safeParse({ day: null, ml: null, mealType: null, title: null, time: null, items: null, workoutType: null, durationMin: null, description: null, kg: null, category: null, text: null, ...(a as object) });
+      return raw.success ? normalizePrimeActions([raw.data], r.plus) : [];
+    }),
+  }));
+export type PrimeResponse = z.output<typeof primeResponseSchema>;
+
+export const askPrime = (
+  messages: Turn[],
+  context: unknown | null,
+  memories: { category: string; text: string }[] | null,
+  now: { date: string; time: string },
+): Promise<AiResult<PrimeResponse>> => invoke('prime', { messages, context, memories, now }, primeResponseSchema as unknown as ZodType<PrimeResponse>);

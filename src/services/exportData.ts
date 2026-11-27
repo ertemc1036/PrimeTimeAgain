@@ -3,7 +3,7 @@ import { Platform, Share } from 'react-native';
 import type { AppData } from '@/domain/types';
 
 /** Share a JSON copy of all local data (photos are referenced by local path, not embedded). */
-export const exportData = (data: AppData) => shareJson({ exportedAt: new Date().toISOString(), app: 'Diet9', source: 'device', data });
+export const exportData = (data: AppData) => shareJson({ exportedAt: new Date().toISOString(), app: 'PrimeMe AI', source: 'device', data });
 
 /** Share any JSON document (used for the device copy and for the cloud export). */
 export async function shareJson(doc: unknown): Promise<boolean> {
@@ -19,7 +19,7 @@ export async function shareJson(doc: unknown): Promise<boolean> {
       URL.revokeObjectURL(url);
       return true;
     }
-    await Share.share({ message: json, title: 'Diet9 data export' });
+    await Share.share({ message: json, title: 'PrimeMe AI data export' });
     return true;
   } catch {
     return false;

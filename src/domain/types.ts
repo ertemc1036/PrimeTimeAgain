@@ -1,3 +1,5 @@
+import type { PrimeAction } from './aiSchemas';
+
 /** Local calendar date `YYYY-MM-DD` (the user's own day, never a UTC boundary). */
 export type ISODate = string;
 /** Local wall-clock time `HH:MM`. */
@@ -52,6 +54,13 @@ export interface Profile {
   goalWeightKg?: number;
   /** Optional body shown by the 3D avatar on Today. Symbolic only; never derived from weight or height. */
   avatarBody?: AvatarBody;
+  /** Daily water goal in ml (a personal orientation value, not medical advice). */
+  waterGoalMl?: number;
+  /**
+   * Program the user follows. Only 'weightLoss' exists in version 1; the others are reserved for
+   * Prime Muscle / Mind / Performance / Maintenance.
+   */
+  program?: 'weightLoss' | 'muscle' | 'mind' | 'performance' | 'maintenance';
   activityPrefs: ActivityPreference[];
   food: FoodPreferences;
   planningTime: LocalTime;
@@ -217,11 +226,55 @@ export interface Achievement {
   earnedAt: string;
 }
 
+export interface WaterLog {
+  id: string;
+  date: ISODate;
+  ml: number;
+  /** When it was logged (absolute). */
+  at: string;
+  /** Typed in by the user, or added by confirming a Prime suggestion. */
+  source: 'manual' | 'prime';
+  createdAt: string;
+}
+
+/** What Prime may remember about the user. Saved only after the user confirms; editable and deletable. */
+export type MemoryCategory = 'goal' | 'food' | 'routine' | 'training' | 'progress' | 'challenge' | 'motivation' | 'other';
+export const MEMORY_CATEGORIES: readonly MemoryCategory[] = ['goal', 'food', 'routine', 'training', 'progress', 'challenge', 'motivation', 'other'];
+export interface PrimeMemory {
+  id: string;
+  category: MemoryCategory;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Collections a Prime action can create records in (used to undo it). */
+export type PrimeRecordRef = { kind: 'food' | 'activity' | 'water' | 'weight' | 'memory' | 'rest'; id: string };
+
+/** An applied Prime action, kept so it can be reviewed and undone. */
+export interface PrimeActionLog {
+  id: string;
+  /** Short human summary, e.g. "500 ml water". */
+  summary: string;
+  created: PrimeRecordRef[];
+  appliedAt: string;
+  undoneAt?: string;
+}
+
+/** A change Prime suggests. Nothing is saved until the user confirms it. */
+export interface ProposedActionState {
+  status: 'pending' | 'applied' | 'dismissed' | 'undone';
+  /** Set once applied. */
+  logId?: string;
+}
+
 export interface CoachMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   createdAt: string;
+  /** Prime's suggested actions (validated) with their state. */
+  actions?: (PrimeAction & ProposedActionState)[];
 }
 
 export interface AppData {
@@ -241,6 +294,9 @@ export interface AppData {
   journey: JourneySettings;
   achievements: Achievement[];
   coach: { consentToContext: boolean; messages: CoachMessage[] };
+  water: WaterLog[];
+  memories: PrimeMemory[];
+  primeActions: PrimeActionLog[];
 }
 
 export const defaultNotifications = (): NotificationPrefs => ({
@@ -271,4 +327,7 @@ export const emptyAppData = (): AppData => ({
   journey: { programEnabled: false, maintenance: false },
   achievements: [],
   coach: { consentToContext: false, messages: [] },
+  water: [],
+  memories: [],
+  primeActions: [],
 });
