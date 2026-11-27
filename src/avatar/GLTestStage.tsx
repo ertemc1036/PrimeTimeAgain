@@ -4,6 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { GestureDetector, usePanGesture, usePinchGesture, useSimultaneousGestures, useTapGesture } from 'react-native-gesture-handler';
 import * as THREE from 'three';
 
+import { stage } from '@/theme';
+
 import { parseGlb, readBody } from './buildAvatar';
 import type { DiagLog } from './diagnostics';
 import { loadArrayBuffer } from './loadAssets';
@@ -32,7 +34,7 @@ export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male
     try {
       const renderer = log.step('Renderer', () => createRenderer(gl, log));
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color('#0A0C0D');
+      scene.background = new THREE.Color(stage.background);
       const camera = new THREE.PerspectiveCamera(mode === 'cube' ? 50 : 30, 1, 0.05, 50);
       const turntable = new THREE.Group();
       scene.add(turntable);
@@ -165,8 +167,8 @@ export function GLTestStage({ mode, body, log }: { mode: GLTestMode; body: 'male
 }
 
 const styles = StyleSheet.create({
-  root: { height: 360, borderRadius: 16, overflow: 'hidden', backgroundColor: '#0A0C0D' },
+  root: { height: 360, borderRadius: 16, overflow: 'hidden', backgroundColor: stage.background },
   fill: { flex: 1 },
-  badge: { position: 'absolute', top: 8, left: 8, backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
-  badgeText: { color: '#8EC5FF', fontSize: 12, fontFamily: 'Inter_600SemiBold', fontVariant: ['tabular-nums'] },
+  badge: { position: 'absolute', top: 8, left: 8, backgroundColor: `${stage.panel}99`, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
+  badgeText: { color: stage.accent, fontSize: 12, fontFamily: 'Inter_600SemiBold', fontVariant: ['tabular-nums'] },
 });

@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { stage } from '@/theme';
+
 import { CLOTH_GLSL, FIELD_RANGE, type ClothParams } from './cloth';
 
 /**
@@ -7,14 +9,14 @@ import { CLOTH_GLSL, FIELD_RANGE, type ClothParams } from './cloth';
  * (PrimeMe palette, see src/theme). The stage is the only dark area of Today.
  */
 export const HOLO = {
-  background: '#0B0B0F',
+  background: stage.background,
   /** Main light colour: rim light, scan band, rings (theme primary). */
-  accent: '#8EC5FF',
+  accent: stage.accent,
   /** Softer second light colour (theme primaryLight). */
-  glow: '#D9EEFF',
-  body: '#1C1D26',
-  cloth: '#0B0B0F',
-  hair: '#15161D',
+  glow: stage.glow,
+  body: stage.body,
+  cloth: stage.cloth,
+  hair: stage.hair,
 } as const;
 
 /** Uniforms shared by every hologram material, updated once per frame by the stage. */

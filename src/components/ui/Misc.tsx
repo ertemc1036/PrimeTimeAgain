@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { colors, radii, spacing } from '@/theme';
+import { colors, radii, shadows, spacing } from '@/theme';
 
 import { AppText } from './AppText';
 import { PressableScale } from './PressableScale';
@@ -39,7 +39,7 @@ export function Segmented<T extends string>({ value, options, onChange }: { valu
             accessibilityState={{ checked: selected }}
             accessibilityLabel={o.label}
             style={[styles.segment, selected && styles.segmentOn]}>
-            <AppText variant="label" color={selected ? colors.white : colors.text} align="center">
+            <AppText variant="label" color={colors.text} align="center">
               {o.label}
             </AppText>
           </PressableScale>
@@ -54,9 +54,9 @@ export function Divider() {
 }
 
 const styles = StyleSheet.create({
-  tile: { flex: 1, backgroundColor: colors.card, borderRadius: radii.lg, padding: spacing.md, gap: 2, minWidth: 100 },
+  tile: { flex: 1, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: radii.lg, padding: spacing.md, gap: 2, minWidth: 100 },
   badge: { alignSelf: 'flex-start', backgroundColor: colors.black, borderRadius: radii.pill, paddingHorizontal: 10, paddingVertical: 4 },
   segmented: { flexDirection: 'row', backgroundColor: colors.card, borderRadius: radii.pill, padding: 4, gap: 4 },
   segment: { flex: 1, minHeight: 40, borderRadius: radii.pill, alignItems: 'center', justifyContent: 'center', paddingHorizontal: spacing.xs },
-  segmentOn: { backgroundColor: colors.black },
+  segmentOn: { backgroundColor: colors.surface, ...shadows.soft },
 });

@@ -259,6 +259,70 @@
     "journey": {
       "title": "Progreso e historial",
       "body": "Peso, rachas, hitos y fotos"
+    },
+    "week": {
+      "prev": "Semana anterior",
+      "next": "Semana siguiente",
+      "planning": "para planificar"
+    },
+    "viewing": {
+      "past": "Repaso: {{date}}",
+      "future": "Planificación: {{date}}"
+    },
+    "briefing": {
+      "morning": "¡Buenos días!",
+      "afternoon": "¡Hola!",
+      "evening": "¡Buenas noches!",
+      "trainingPlanned": "Hoy toca: {{activity}}.",
+      "trainingDone": "Entreno hecho: {{minutes}} minutos.",
+      "restDay": "Hoy es día de descanso: la recuperación también cuenta.",
+      "mealsOpen_one": "Aún queda una comida planeada.",
+      "mealsOpen_many": "Aún quedan {{count}} comidas planeadas.",
+      "mealsOpen_other": "Aún quedan {{count}} comidas planeadas.",
+      "firstMeal": "Registra tu primera comida cuando hayas comido.",
+      "water": "Acuérdate del agua.",
+      "planTomorrow": "¿Quieres preparar ya el día de mañana?",
+      "dayComplete": "Misión del día cumplida. ¡Genial!",
+      "prepareDay": "Preparemos juntos tu día."
+    },
+    "nutrition": {
+      "title": "Nutrición",
+      "ofTarget": "de {{kcal}} kcal",
+      "left": "te quedan {{kcal}} kcal en tu marco",
+      "over": "{{kcal}} kcal por encima de tu marco",
+      "logged": "estimado a partir de tus registros",
+      "add": "Registrar comida",
+      "addLate": "Añadir después",
+      "plannedTitle": "Nutrición planeada",
+      "plannedKcal": "Planeado: unas {{kcal}} kcal"
+    },
+    "training": {
+      "title": "Entreno",
+      "toGym": "Ir a Gym",
+      "nothingPlanned": "No hay entreno planeado"
+    },
+    "meals": {
+      "title": "Comidas",
+      "eaten": "Comida",
+      "planned": "Planeada",
+      "none": "Aún no hay comidas planeadas ni registradas.",
+      "toKitchen": "Ir a Cocina",
+      "toPlan": "Planificar el día"
+    },
+    "progressCard": {
+      "title": "Tu progreso",
+      "weight": "Peso",
+      "weekChange": "{{value}} en 7 días",
+      "training": "Entreno",
+      "streak": "Racha",
+      "milestones_one": "{{count}} hito alcanzado",
+      "milestones_many": "{{count}} hitos alcanzados",
+      "milestones_other": "{{count}} hitos alcanzados"
+    },
+    "checks": {
+      "food": "Comida",
+      "activity": "Activo",
+      "planning": "Mañana"
     }
   },
   "calendar": {
@@ -980,7 +1044,7 @@
     "discardFailed": "Descartar aviso"
   },
   "avatar": {
-    "eyebrow": "PRIMEME AI BODY SCAN",
+    "eyebrow": "BODY JOURNEY",
     "title": "Tu progreso",
     "resetView": "Restablecer vista",
     "chooseBody": "Elegir cuerpo del avatar",
@@ -1176,5 +1240,15 @@
       "none": "Aún no hay nada planeado",
       "plan": "Planear comidas"
     }
+  },
+  "bodyJourney": {
+    "title": "Body Journey",
+    "subtitle": "Una ilustración de tu camino, no un escáner corporal.",
+    "preview": "Tu vista 3D ilustrativa, fotos e historial de peso",
+    "hiddenTitle": "Los datos de peso están ocultos",
+    "hiddenBody": "No se muestran el peso, su historial ni la ilustración corporal. Puedes volver a activarlo cuando quieras.",
+    "photos": "Fotos de progreso (privadas)",
+    "showWeight": "Mostrar peso e ilustración corporal",
+    "showWeightHint": "Se aplica a Hoy, Body Journey y tu historial."
   }
 }

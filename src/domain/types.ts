@@ -43,6 +43,14 @@ export interface FoodPreferences {
   dislikes: string[];
 }
 
+/** Daily nutrition frame (orientation values the user confirmed; never medical advice). */
+export interface NutritionTargets {
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
 export interface Profile {
   name: string;
   /** User confirmed they are 18 or older. Required to use the app. */
@@ -56,6 +64,10 @@ export interface Profile {
   avatarBody?: AvatarBody;
   /** Daily water goal in ml (a personal orientation value, not medical advice). */
   waterGoalMl?: number;
+  /** Confirmed daily nutrition frame. Absent = the dashboard shows logged values without targets. */
+  targets?: NutritionTargets;
+  /** Show weight numbers, weight charts and the body visualisation. Default true; the user can turn it off. */
+  showWeight?: boolean;
   /**
    * Program the user follows. Only 'weightLoss' exists in version 1; the others are reserved for
    * Prime Muscle / Mind / Performance / Maintenance.

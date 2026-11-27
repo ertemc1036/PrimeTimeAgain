@@ -78,14 +78,14 @@ export function createStage(): Stage {
   scene.add(turntable);
 
   // Lights: cool key, baby-blue rims from behind, low fill. Gives the dark body readable form.
-  scene.add(new THREE.HemisphereLight(0xd8e6ff, 0x050508, 0.55));
-  const key = new THREE.DirectionalLight(0xf0f5ff, 2.0);
+  scene.add(new THREE.HemisphereLight(0xdde9f7, 0x050507, 0.55));
+  const key = new THREE.DirectionalLight(0xf3f7fc, 2.0);
   key.position.set(1.4, 2.6, 2.6);
   const rimL = new THREE.DirectionalLight(HOLO.accent, 1.6);
   rimL.position.set(-2.4, 2.0, -2.2);
   const rimR = new THREE.DirectionalLight(HOLO.glow, 1.2);
   rimR.position.set(2.4, 1.4, -2.0);
-  const fill = new THREE.DirectionalLight(0xa9bcd8, 0.35);
+  const fill = new THREE.DirectionalLight(0xb4c4d8, 0.35);
   fill.position.set(-1.8, 0.8, 2.4);
   scene.add(key, rimL, rimR, fill);
 

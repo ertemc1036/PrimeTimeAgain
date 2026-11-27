@@ -1,11 +1,11 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, Card, Chip, Icon, OptionCard, PressableScale, Screen, TextField, TimeField, ToggleRow } from '@/components/ui';
-import { isPlanComplete } from '@/domain/completion';
-import { addDays, parseTime } from '@/domain/dates';
+import { canEditPlan, isPlanComplete } from '@/domain/completion';
+import { addDays, daysBetween, parseTime } from '@/domain/dates';
 import { totals } from '@/domain/nutrition';
 import { MEAL_TYPES, type DayPlan, type ISODate, type PlannedActivity, type PlannedActivityType } from '@/domain/types';
 import { ACTIVITY_ICONS, mealLabel } from '@/features/labels';
@@ -20,7 +20,10 @@ import { nowISO } from '@/utils/id';
 
 export default function PlanTab() {
   const { today } = useAppState();
-  const [date, setDate] = useState<ISODate>(addDays(today, 1));
+  // Optional ?date=YYYY-MM-DD (e.g. a future day picked on Today); otherwise tomorrow.
+  const { date: requested } = useLocalSearchParams<{ date?: string }>();
+  const initial = requested && /^\d{4}-\d{2}-\d{2}$/.test(requested) && canEditPlan(requested, today) && daysBetween(today, requested) <= 6 ? requested : addDays(today, 1);
+  const [date, setDate] = useState<ISODate>(initial);
   // Remount the editor per date so the local draft always belongs to the selected day.
   return <PlanEditor key={date} date={date} setDate={setDate} />;
 }

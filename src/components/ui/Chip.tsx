@@ -14,9 +14,9 @@ export function Chip({ label, selected, onPress, mode = 'checkbox', icon }: { la
       accessibilityRole={mode}
       accessibilityState={{ checked: selected }}
       accessibilityLabel={label}
-      style={[styles.chip, { backgroundColor: selected ? colors.black : colors.card }]}>
-      {icon ? <Icon name={icon} size={16} color={selected ? colors.white : colors.text} /> : null}
-      <AppText variant="label" color={selected ? colors.white : colors.text}>
+      style={[styles.chip, selected ? styles.on : styles.off]}>
+      {icon ? <Icon name={icon} size={16} color={colors.text} /> : null}
+      <AppText variant="label" color={colors.text}>
         {label}
       </AppText>
     </PressableScale>
@@ -24,5 +24,7 @@ export function Chip({ label, selected, onPress, mode = 'checkbox', icon }: { la
 }
 
 const styles = StyleSheet.create({
+  off: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  on: { backgroundColor: colors.primaryLight, borderWidth: 1, borderColor: colors.primaryDeep },
   chip: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 44, paddingHorizontal: spacing.md, borderRadius: radii.pill },
 });

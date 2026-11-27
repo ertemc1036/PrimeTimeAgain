@@ -80,3 +80,18 @@ export function trainingWeek(data: AppData, today: ISODate): TrainingWeek {
     perDay: days.map((date) => ({ date, minutes: logs.filter((a) => a.date === date).reduce((s, a) => s + a.durationMin, 0), rest: !!data.recoveryLogs[date] })),
   };
 }
+
+/** Change between the latest weight entry and the latest one at least 7 days before it (null if there is none). */
+export function weeklyWeightChange(data: Pick<AppData, 'weights'>): number | null {
+  if (data.weights.length < 2) return null;
+  const sorted = [...data.weights].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  const latest = sorted[sorted.length - 1];
+  const cutoff = addDays(latest.date, -7);
+  const before = [...sorted].reverse().find((w) => w.date <= cutoff);
+  return before ? Math.round((latest.kg - before.kg) * 10) / 10 : null;
+}
+
+/** Days of the week that have any saved activity (for the dots in the Today week strip). */
+export function hasEntries(data: AppData, date: ISODate): boolean {
+  return data.foodLogs.some((f) => f.date === date) || data.activityLogs.some((a) => a.date === date) || !!data.recoveryLogs[date] || data.water.some((w) => w.date === date);
+}

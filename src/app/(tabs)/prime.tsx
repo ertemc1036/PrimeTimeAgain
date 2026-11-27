@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText, Button, Card, Chip, IconButton, Screen } from '@/components/ui';
 import { toFoodItems } from '@/domain/primeActions';
 import { ActionCard } from '@/features/prime/ActionCard';
-import { PrimeBadge } from '@/features/prime/PrimeBadge';
+import { PrimeAvatar } from '@/features/prime/PrimeAvatar';
 import { usePrime } from '@/features/prime/usePrime';
 import { aiAvailable, type AiError } from '@/services/ai/client';
 import { useAppState } from '@/state/AppStateProvider';
@@ -73,7 +73,7 @@ export default function PrimeScreen() {
         </View>
       }>
       <View style={styles.hero}>
-        <PrimeBadge size={56} ring={prime.busy ? colors.primary : undefined} />
+        <PrimeAvatar size={52} busy={prime.busy} />
         <View style={styles.flex}>
           <AppText variant="title" accessibilityRole="header">
             {t('brand.agent')}

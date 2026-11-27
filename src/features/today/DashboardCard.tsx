@@ -38,7 +38,7 @@ export function MetricTile({ icon, label, value, sub, onPress }: { icon: IconNam
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.white, borderRadius: radii.xl, borderWidth: 1, borderColor: '#F0F0F5', padding: spacing.lg, gap: spacing.sm, ...shadows.card },
+  card: { backgroundColor: colors.surface, borderRadius: radii.xl, borderWidth: 1, borderColor: colors.border, padding: spacing.lg, gap: spacing.sm, ...shadows.card },
   head: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   icon: { width: 34, height: 34, borderRadius: 17, backgroundColor: colors.primaryLight, alignItems: 'center', justifyContent: 'center' },
   flex: { flex: 1 },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: radii.lg,
     borderWidth: 1,
-    borderColor: '#F0F0F5',
+    borderColor: colors.border,
     padding: spacing.md,
     gap: 2,
     justifyContent: 'flex-end',

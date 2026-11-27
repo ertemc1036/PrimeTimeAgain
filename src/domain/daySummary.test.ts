@@ -1,4 +1,4 @@
-import { gymDay, kitchenDay, trainingWeek, waterDay } from './daySummary';
+import { gymDay, kitchenDay, trainingWeek, waterDay, weeklyWeightChange } from './daySummary';
 import { emptyAppData, type ActivityLog, type AppData, type FoodLog } from './types';
 
 const food = (id: string, date: string, kcal: number | null, planMealId?: string) =>
@@ -68,5 +68,16 @@ describe('day summaries', () => {
     expect(w.perDay).toHaveLength(7);
     expect(w.perDay[6]).toEqual({ date: D, minutes: 90, rest: false });
     expect(w.perDay.find((d) => d.date === '2026-11-24')?.rest).toBe(true);
+  });
+});
+
+describe('weekly weight change', () => {
+  const w = (date: string, kg: number) => ({ id: date, date, kg, createdAt: 'x', updatedAt: 'x' });
+  it('compares the latest entry with the latest one at least 7 days earlier', () => {
+    expect(weeklyWeightChange({ weights: [w('2026-11-10', 92), w('2026-11-18', 91.4), w('2026-11-20', 91), w('2026-11-27', 90.2)] })).toBe(-0.8);
+  });
+  it('is unknown without an entry a week back', () => {
+    expect(weeklyWeightChange({ weights: [w('2026-11-25', 91), w('2026-11-27', 90)] })).toBeNull();
+    expect(weeklyWeightChange({ weights: [] })).toBeNull();
   });
 });

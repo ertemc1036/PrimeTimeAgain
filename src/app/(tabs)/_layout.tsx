@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import { PrimeBadge } from '@/features/prime/PrimeBadge';
+import { PrimeAvatar } from '@/features/prime/PrimeAvatar';
 import { colors, fonts, shadows } from '@/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
@@ -29,8 +29,8 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.black,
-        tabBarInactiveTintColor: '#8E8E98',
-        tabBarStyle: { backgroundColor: colors.white, borderTopColor: colors.border, height: barHeight, paddingTop: 8, paddingBottom: bottom },
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, height: barHeight, paddingTop: 8, paddingBottom: bottom },
         tabBarLabelStyle: { fontFamily: fonts.semibold, fontSize: 11, lineHeight: 15, marginTop: 2 },
         sceneStyle: { backgroundColor: colors.background },
       }}>
@@ -43,7 +43,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused }) =>
               tab.name === 'prime' ? (
                 <View style={styles.prime}>
-                  <PrimeBadge size={58} ring={focused ? colors.primary : colors.white} />
+                  <PrimeAvatar size={58} ring={focused ? colors.primary : colors.white} active={focused} />
                 </View>
               ) : (
                 <Ionicons name={focused ? tab.active : tab.icon} color={color as string} size={23} />

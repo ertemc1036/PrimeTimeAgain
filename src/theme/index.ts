@@ -1,39 +1,67 @@
 import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 
 /**
- * PrimeMe AI design tokens: white, near-black and baby blue, with quiet greys.
+ * PrimeMe AI design tokens. Every colour in the app comes from here (the 3D stage derives its colours
+ * from these too, see src/avatar/hologram.ts).
  *
- * Baby blue (#8EC5FF) is the accent for fills, highlights and selected states, always with dark
- * content on top. For thin strokes and small icons on white, `primaryDeep` keeps enough contrast.
- * Secondary text (#6E6E78) meets WCAG AA on white and on the card greys.
+ * Light grey app background with white cards, near-black type, and baby blue as a deliberate accent:
+ * selected states, progress, highlights – never whole screens. Baby blue is too light for text or thin
+ * icons on white, so `primaryDeep` is used there (WCAG AA on white).
  */
 export const palette = {
-  primary: '#8EC5FF',
-  primaryLight: '#D9EEFF',
-  primarySoft: '#F3F9FF',
-  primaryDeep: '#3E8EE6',
-  black: '#0B0B0F',
-  darkGray: '#1A1A22',
-  mediumGray: '#6E6E78',
-  lightGray: '#EAEAF0',
+  /** Primary Baby Blue: fills, rings, bars, selected states (always with dark content on top). */
+  primary: '#A8D8FF',
+  /** Soft Baby Blue: icon backgrounds, pills, selected cards. */
+  primaryLight: '#E1F1FF',
+  /** Light Blue Background: Prime hint cards, soft highlights. */
+  primarySoft: '#F2F8FD',
+  /** Accent for text and small icons on white (contrast 4.6:1). */
+  primaryDeep: '#2C74BE',
+  black: '#111111',
+  darkGray: '#1E1F24',
+  mediumGray: '#737780',
+  lightGray: '#E7EBF0',
   white: '#FFFFFF',
 } as const;
 
 export const colors = {
   ...palette,
-  text: palette.black,
+  /** Primary text. */
+  text: '#101114',
   textSecondary: palette.mediumGray,
-  background: palette.white,
-  backgroundAlt: '#F7F8FB',
-  card: '#F5F6FA',
+  /** App background behind cards. */
+  background: '#F7F9FC',
+  /** Cards and sheets. */
+  surface: palette.white,
+  /** Muted fill for inputs, chips, secondary buttons and list rows (on white and on the background). */
+  card: '#EEF2F6',
+  backgroundAlt: '#F3F6FA',
   border: palette.lightGray,
-  disabled: '#C3C3CC',
-  overlay: 'rgba(11,11,15,0.4)',
+  disabled: '#C5CAD3',
+  overlay: 'rgba(16,17,20,0.4)',
   /** Content on baby-blue fills. */
-  onPrimary: palette.black,
+  onPrimary: '#101114',
   /** Text on dark (black / dark grey) surfaces. */
   onDark: palette.white,
-  onDarkMuted: '#A7A7B2',
+  onDarkMuted: '#A9ADB6',
+} as const;
+
+/** Dark, neutral stage of the 3D Body Journey (the only large dark area in the app). */
+export const stage = {
+  background: '#0E0F12',
+  panel: '#17181D',
+  line: '#272932',
+  text: palette.white,
+  muted: colors.onDarkMuted,
+  faint: '#767A84',
+  /** Light colours of the model and rings: the app's baby blues. */
+  accent: palette.primary,
+  glow: palette.primaryLight,
+  body: '#1D1F26',
+  cloth: '#0E0F12',
+  hair: '#17181D',
+  ok: palette.primary,
+  fail: '#FF8A80',
 } as const;
 
 export const spacing = { xxs: 4, xs: 8, sm: 12, md: 16, lg: 20, xl: 24, xxl: 32, xxxl: 48 } as const;
@@ -43,7 +71,7 @@ export const layout = { screenPadding: 20, maxContentWidth: 600, minTouchTarget:
 const shadow = (y: number, blur: number, opacity: number, elevation: number): ViewStyle =>
   Platform.select<ViewStyle>({
     android: { elevation },
-    default: { shadowColor: '#0B0B2A', shadowOffset: { width: 0, height: y }, shadowRadius: blur, shadowOpacity: opacity },
+    default: { shadowColor: '#14213D', shadowOffset: { width: 0, height: y }, shadowRadius: blur, shadowOpacity: opacity },
   });
 export const shadows = { soft: shadow(2, 10, 0.05, 1), card: shadow(8, 24, 0.07, 3), float: shadow(12, 32, 0.12, 8) } as const;
 

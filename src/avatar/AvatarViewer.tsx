@@ -12,6 +12,8 @@ import { buildAvatar, type LoadedAvatar } from './buildAvatar';
 import type { BodyShape } from './models';
 import { DiagPanel } from './DiagPanel';
 import { createDiagLog, type DiagLog } from './diagnostics';
+import { stage } from '@/theme';
+
 import { HOLO } from './hologram';
 import { createRenderer, syncSize } from './renderer';
 import { createStage, frameCamera, type Stage } from './stage';
@@ -335,12 +337,12 @@ const styles = StyleSheet.create({
   root: { flex: 1, overflow: 'hidden', backgroundColor: HOLO.background },
   fill: { flex: 1 },
   loading: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', gap: 10 },
-  loadingText: { color: '#9AA39F', fontSize: 13, letterSpacing: 0.5, fontFamily: 'Inter_500Medium' },
+  loadingText: { color: stage.muted, fontSize: 13, letterSpacing: 0.5, fontFamily: 'Inter_500Medium' },
   fallback: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', gap: 14, padding: 16 },
   actions: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 10 },
   diag: { padding: 8 },
   fixed: { height: 440 },
-  fallbackText: { color: '#C9D1CD', fontSize: 14, textAlign: 'center', fontFamily: 'Inter_500Medium' },
+  fallbackText: { color: stage.text, fontSize: 14, textAlign: 'center', fontFamily: 'Inter_500Medium' },
   retry: { paddingHorizontal: 18, paddingVertical: 10, borderRadius: 999, borderWidth: 1, borderColor: HOLO.accent },
   retryText: { color: HOLO.accent, fontSize: 14, fontFamily: 'Inter_700Bold' },
 });

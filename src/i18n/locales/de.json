@@ -256,6 +256,68 @@
     "journey": {
       "title": "Fortschritt & Verlauf",
       "body": "Gewicht, Serien, Meilensteine und Fotos"
+    },
+    "week": {
+      "prev": "Vorherige Woche",
+      "next": "Nächste Woche",
+      "planning": "zum Planen"
+    },
+    "viewing": {
+      "past": "Rückblick: {{date}}",
+      "future": "Planung: {{date}}"
+    },
+    "briefing": {
+      "morning": "Guten Morgen!",
+      "afternoon": "Hallo!",
+      "evening": "Guten Abend!",
+      "trainingPlanned": "Heute steht {{activity}} an.",
+      "trainingDone": "Dein Training ist erledigt – {{minutes}} Minuten.",
+      "restDay": "Heute ist Ruhetag – Erholung gehört dazu.",
+      "mealsOpen_one": "Eine geplante Mahlzeit ist noch offen.",
+      "mealsOpen_other": "{{count}} geplante Mahlzeiten sind noch offen.",
+      "firstMeal": "Trag deine erste Mahlzeit ein, sobald du gegessen hast.",
+      "water": "Denk an dein Wasser.",
+      "planTomorrow": "Magst du morgen schon vorbereiten?",
+      "dayComplete": "Deine Tagesmission ist geschafft. Stark!",
+      "prepareDay": "Lass uns deinen Tag gemeinsam vorbereiten."
+    },
+    "nutrition": {
+      "title": "Ernährung",
+      "ofTarget": "von {{kcal}} kcal",
+      "left": "noch {{kcal}} kcal in deinem Rahmen",
+      "over": "{{kcal}} kcal über deinem Rahmen",
+      "logged": "geschätzt aus deinen Einträgen",
+      "add": "Mahlzeit eintragen",
+      "addLate": "Nachtragen",
+      "plannedTitle": "Geplante Ernährung",
+      "plannedKcal": "Geplant: etwa {{kcal}} kcal"
+    },
+    "training": {
+      "title": "Training",
+      "toGym": "Zum Gym",
+      "nothingPlanned": "Kein Training geplant"
+    },
+    "meals": {
+      "title": "Mahlzeiten",
+      "eaten": "Gegessen",
+      "planned": "Geplant",
+      "none": "Noch keine Mahlzeiten geplant oder eingetragen.",
+      "toKitchen": "Zur Küche",
+      "toPlan": "Tag planen"
+    },
+    "progressCard": {
+      "title": "Dein Fortschritt",
+      "weight": "Gewicht",
+      "weekChange": "{{value}} in 7 Tagen",
+      "training": "Training",
+      "streak": "Serie",
+      "milestones_one": "{{count}} Meilenstein erreicht",
+      "milestones_other": "{{count}} Meilensteine erreicht"
+    },
+    "checks": {
+      "food": "Essen",
+      "activity": "Aktiv",
+      "planning": "Morgen"
     }
   },
   "calendar": {
@@ -972,7 +1034,7 @@
     "discardFailed": "Ausblenden"
   },
   "avatar": {
-    "eyebrow": "PRIMEME AI BODY SCAN",
+    "eyebrow": "BODY JOURNEY",
     "title": "Dein Fortschritt",
     "resetView": "Ansicht zurücksetzen",
     "chooseBody": "Avatar-Körper wählen",
@@ -1161,5 +1223,15 @@
       "none": "Noch nichts geplant",
       "plan": "Mahlzeiten planen"
     }
+  },
+  "bodyJourney": {
+    "title": "Body Journey",
+    "subtitle": "Eine illustrative Darstellung deines Wegs – kein Körperscan.",
+    "preview": "Deine illustrative 3D-Ansicht, Fotos und Gewichtsverlauf",
+    "hiddenTitle": "Gewichtsanzeigen sind ausgeblendet",
+    "hiddenBody": "Gewicht, Gewichtsverlauf und die Körperdarstellung werden nicht angezeigt. Du kannst das jederzeit wieder einschalten.",
+    "photos": "Fortschrittsfotos (privat)",
+    "showWeight": "Gewicht und Körperdarstellung anzeigen",
+    "showWeightHint": "Gilt für Heute, Body Journey und deinen Verlauf."
   }
 }

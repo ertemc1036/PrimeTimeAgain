@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, IconButton } from '@/components/ui';
-import { PrimeBadge } from '@/features/prime/PrimeBadge';
+import { PrimeAvatar } from '@/features/prime/PrimeAvatar';
 import { authAvailable } from '@/services/auth';
 import { colors, fonts, layout, spacing } from '@/theme';
 
@@ -26,7 +26,7 @@ export default function Welcome() {
         <IconButton icon="globe-outline" label={t('common.language')} onPress={() => router.push('/language')} variant="inverse" color={colors.white} />
       </View>
       <View style={styles.center}>
-        <PrimeBadge size={88} ring={colors.primary} />
+        <PrimeAvatar size={88} ring={colors.primary} />
         <Text style={styles.wordmark} accessibilityRole="header" maxFontSizeMultiplier={1.2}>
           {t('brand.name')}
         </Text>

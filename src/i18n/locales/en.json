@@ -256,6 +256,68 @@
     "journey": {
       "title": "Progress & history",
       "body": "Weight, streaks, milestones and photos"
+    },
+    "week": {
+      "prev": "Previous week",
+      "next": "Next week",
+      "planning": "for planning"
+    },
+    "viewing": {
+      "past": "Looking back: {{date}}",
+      "future": "Planning: {{date}}"
+    },
+    "briefing": {
+      "morning": "Good morning!",
+      "afternoon": "Hi!",
+      "evening": "Good evening!",
+      "trainingPlanned": "Today: {{activity}}.",
+      "trainingDone": "Training done – {{minutes}} minutes.",
+      "restDay": "Rest day today – recovery is part of it.",
+      "mealsOpen_one": "One planned meal is still open.",
+      "mealsOpen_other": "{{count}} planned meals are still open.",
+      "firstMeal": "Log your first meal once you’ve eaten.",
+      "water": "Remember your water.",
+      "planTomorrow": "Want to prepare tomorrow already?",
+      "dayComplete": "Your daily mission is done. Great work!",
+      "prepareDay": "Let’s get your day ready together."
+    },
+    "nutrition": {
+      "title": "Nutrition",
+      "ofTarget": "of {{kcal}} kcal",
+      "left": "{{kcal}} kcal left in your frame",
+      "over": "{{kcal}} kcal above your frame",
+      "logged": "estimated from your entries",
+      "add": "Log a meal",
+      "addLate": "Add later",
+      "plannedTitle": "Planned nutrition",
+      "plannedKcal": "Planned: about {{kcal}} kcal"
+    },
+    "training": {
+      "title": "Training",
+      "toGym": "Go to Gym",
+      "nothingPlanned": "No training planned"
+    },
+    "meals": {
+      "title": "Meals",
+      "eaten": "Eaten",
+      "planned": "Planned",
+      "none": "No meals planned or logged yet.",
+      "toKitchen": "Go to Kitchen",
+      "toPlan": "Plan the day"
+    },
+    "progressCard": {
+      "title": "Your progress",
+      "weight": "Weight",
+      "weekChange": "{{value}} in 7 days",
+      "training": "Training",
+      "streak": "Streak",
+      "milestones_one": "{{count}} milestone reached",
+      "milestones_other": "{{count}} milestones reached"
+    },
+    "checks": {
+      "food": "Food",
+      "activity": "Active",
+      "planning": "Tomorrow"
     }
   },
   "calendar": {
@@ -972,7 +1034,7 @@
     "discardFailed": "Dismiss"
   },
   "avatar": {
-    "eyebrow": "PRIMEME AI BODY SCAN",
+    "eyebrow": "BODY JOURNEY",
     "title": "Your progress",
     "resetView": "Reset view",
     "chooseBody": "Choose avatar body",
@@ -1161,5 +1223,15 @@
       "none": "Nothing planned yet",
       "plan": "Plan meals"
     }
+  },
+  "bodyJourney": {
+    "title": "Body Journey",
+    "subtitle": "An illustration of your journey – not a body scan.",
+    "preview": "Your illustrative 3D view, photos and weight history",
+    "hiddenTitle": "Weight displays are hidden",
+    "hiddenBody": "Weight, weight history and the body illustration are not shown. You can turn this back on at any time.",
+    "photos": "Progress photos (private)",
+    "showWeight": "Show weight and body illustration",
+    "showWeightHint": "Applies to Today, Body Journey and your history."
   }
 }

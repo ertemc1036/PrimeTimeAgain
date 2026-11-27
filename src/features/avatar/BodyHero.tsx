@@ -6,10 +6,10 @@ import { useReducedMotion } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, ProgressRing } from '@/components/ui';
-import { HOLO } from '@/avatar/hologram';
 import { bodyScanFor, fullnessFor, type BodyView } from '@/domain/bodyScan';
 import { weightProgress } from '@/domain/bodyStats';
 import type { AppData } from '@/domain/types';
+import { stage } from '@/theme';
 import { formatWeight } from '@/features/units';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
@@ -17,15 +17,7 @@ import { useLocale } from '@/i18n/useLanguage';
 // Three.js is loaded only when the card is shown, so app start stays fast.
 const AvatarViewer = lazy(() => import('@/avatar/AvatarViewer').then((m) => ({ default: m.AvatarViewer })));
 
-const C = {
-  bg: HOLO.background,
-  panel: '#16171F',
-  line: '#262733',
-  text: '#FFFFFF',
-  muted: '#A7A7B2',
-  faint: '#73737F',
-  accent: HOLO.accent,
-};
+const C = { bg: stage.background, panel: stage.panel, line: stage.line, text: stage.text, muted: stage.muted, faint: stage.faint, accent: stage.accent };
 
 const VIEWS: BodyView[] = ['start', 'current', 'goal'];
 const VIEW_LABEL = { start: 'avatar.shapeStart', current: 'avatar.shapeCurrent', goal: 'avatar.shapeGoal' } as const;
@@ -208,7 +200,7 @@ const styles = StyleSheet.create({
   stage: { height: 400 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   overlay: { ...StyleSheet.absoluteFill, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: 14 },
-  floatCard: { backgroundColor: 'rgba(22,23,31,0.82)', borderColor: C.line, borderWidth: 1, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, minWidth: 96 },
+  floatCard: { backgroundColor: '`${stage.panel}D1`', borderColor: C.line, borderWidth: 1, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, minWidth: 96 },
   floatRight: { alignItems: 'flex-end' },
   floatValue: { color: C.text, fontFamily: 'Inter_700Bold', fontSize: 18, lineHeight: 23, fontVariant: ['tabular-nums'] },
   hint: { position: 'absolute', bottom: 8, left: 16, right: 16, textAlign: 'center', color: C.faint, fontFamily: 'Inter_500Medium', fontSize: 11, lineHeight: 15, letterSpacing: 0.2 },

@@ -80,6 +80,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
           <Stack.Screen name="workout" />
           <Stack.Screen name="plan" />
           <Stack.Screen name="journey" />
+          <Stack.Screen name="body-journey" />
           <Stack.Screen name="memories" />
           <Stack.Screen name="prime-log" />
           <Stack.Screen name="plan-meal" options={modal} />

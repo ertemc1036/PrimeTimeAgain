@@ -256,6 +256,68 @@
     "journey": {
       "title": "İlerleme ve geçmiş",
       "body": "Kilo, seriler, kilometre taşları ve fotoğraflar"
+    },
+    "week": {
+      "prev": "Önceki hafta",
+      "next": "Sonraki hafta",
+      "planning": "planlama için"
+    },
+    "viewing": {
+      "past": "Geriye bakış: {{date}}",
+      "future": "Planlama: {{date}}"
+    },
+    "briefing": {
+      "morning": "Günaydın!",
+      "afternoon": "Merhaba!",
+      "evening": "İyi akşamlar!",
+      "trainingPlanned": "Bugün: {{activity}}.",
+      "trainingDone": "Antrenman tamam – {{minutes}} dakika.",
+      "restDay": "Bugün dinlenme günü – toparlanma da bunun parçası.",
+      "mealsOpen_one": "Planlanan bir öğün hâlâ açık.",
+      "mealsOpen_other": "Planlanan {{count}} öğün hâlâ açık.",
+      "firstMeal": "Yemek yedikten sonra ilk öğününü kaydet.",
+      "water": "Suyunu unutma.",
+      "planTomorrow": "Yarını şimdiden hazırlamak ister misin?",
+      "dayComplete": "Günlük görevin tamam. Harika!",
+      "prepareDay": "Gününü birlikte hazırlayalım."
+    },
+    "nutrition": {
+      "title": "Beslenme",
+      "ofTarget": "/ {{kcal}} kcal",
+      "left": "Çerçevende {{kcal}} kcal kaldı",
+      "over": "Çerçevenin {{kcal}} kcal üzerinde",
+      "logged": "kayıtlarından tahmin edildi",
+      "add": "Öğün kaydet",
+      "addLate": "Sonradan ekle",
+      "plannedTitle": "Planlanan beslenme",
+      "plannedKcal": "Planlanan: yaklaşık {{kcal}} kcal"
+    },
+    "training": {
+      "title": "Antrenman",
+      "toGym": "Gym’e git",
+      "nothingPlanned": "Planlanmış antrenman yok"
+    },
+    "meals": {
+      "title": "Öğünler",
+      "eaten": "Yendi",
+      "planned": "Planlı",
+      "none": "Henüz planlanan veya kaydedilen öğün yok.",
+      "toKitchen": "Mutfağa git",
+      "toPlan": "Günü planla"
+    },
+    "progressCard": {
+      "title": "İlerlemen",
+      "weight": "Kilo",
+      "weekChange": "7 günde {{value}}",
+      "training": "Antrenman",
+      "streak": "Seri",
+      "milestones_one": "{{count}} kilometre taşı",
+      "milestones_other": "{{count}} kilometre taşı"
+    },
+    "checks": {
+      "food": "Yemek",
+      "activity": "Aktif",
+      "planning": "Yarın"
     }
   },
   "calendar": {
@@ -972,7 +1034,7 @@
     "discardFailed": "Kapat"
   },
   "avatar": {
-    "eyebrow": "PRIMEME AI VÜCUT TARAMASI",
+    "eyebrow": "BODY JOURNEY",
     "title": "İlerlemen",
     "resetView": "Görünümü sıfırla",
     "chooseBody": "Avatar vücudunu seç",
@@ -1161,5 +1223,15 @@
       "none": "Henüz bir şey planlanmadı",
       "plan": "Öğün planla"
     }
+  },
+  "bodyJourney": {
+    "title": "Body Journey",
+    "subtitle": "Yolculuğunun temsili bir görünümü – vücut taraması değildir.",
+    "preview": "Temsili 3D görünümün, fotoğrafların ve kilo geçmişin",
+    "hiddenTitle": "Kilo gösterimleri gizli",
+    "hiddenBody": "Kilo, kilo geçmişi ve vücut görseli gösterilmiyor. Bunu istediğin zaman tekrar açabilirsin.",
+    "photos": "İlerleme fotoğrafları (özel)",
+    "showWeight": "Kiloyu ve vücut görselini göster",
+    "showWeightHint": "Bugün, Body Journey ve geçmişin için geçerlidir."
   }
 }

@@ -8,6 +8,7 @@ import { MILESTONES } from '@/domain/achievements';
 import { journeyStats } from '@/domain/completion';
 import { addDays } from '@/domain/dates';
 import { journeyPosition, MONTH_KEYS } from '@/domain/journey';
+import { StreakCalendar } from '@/features/StreakCalendar';
 import { WeightChart } from '@/features/WeightChart';
 import { formatWeight } from '@/features/units';
 import { useSave } from '@/hooks/useSave';
@@ -26,6 +27,7 @@ export default function JourneyTab() {
   const [range, setRange] = useState<Range>('month');
   const stats = journeyStats(data, today);
   const units = data.profile?.units ?? 'metric';
+  const showWeight = data.profile?.showWeight !== false;
   const fmt = (kg: number) => formatWeight(kg, units);
 
   const since = range === 'week' ? addDays(today, -6) : range === 'month' ? addDays(today, -29) : '0000-00-00';
@@ -58,55 +60,62 @@ export default function JourneyTab() {
         <ProgressBar progress={(stats.foodConsistency ?? 0) / 100} />
       </Card>
 
-      <View style={styles.between}>
-        <AppText variant="heading">{t('journey.weight')}</AppText>
-        <Button label={t('journey.addWeight')} icon="add" size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/weight')} />
-      </View>
-      {data.weights.length === 0 ? (
-        <Card>
-          <AppText variant="body" color="secondary">
-            {t('journey.noWeight')}
-          </AppText>
-        </Card>
-      ) : (
-        <Card style={styles.gap}>
+      <AppText variant="heading">{t('today.calendar')}</AppText>
+      <StreakCalendar data={data} today={today} />
+
+      {showWeight ? (
+        <>
           <View style={styles.between}>
-            <AppText variant="stat">{fmt(last.kg)}</AppText>
-            {change !== null ? (
-              <AppText variant="label" color="secondary">
-                {t('journey.weightChange', { value: `${change > 0 ? '+' : change < 0 ? '−' : ''}${fmt(Math.abs(change))}` })}
+            <AppText variant="heading">{t('journey.weight')}</AppText>
+            <Button label={t('journey.addWeight')} icon="add" size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/weight')} />
+          </View>
+          {data.weights.length === 0 ? (
+            <Card>
+              <AppText variant="body" color="secondary">
+                {t('journey.noWeight')}
               </AppText>
-            ) : null}
-          </View>
-          <Segmented
-            value={range}
-            options={[
-              { value: 'week', label: t('journey.week') },
-              { value: 'month', label: t('journey.month') },
-              { value: 'all', label: t('journey.all') },
-            ]}
-            onChange={setRange}
-          />
-          <WeightChart entries={weights} format={fmt} today={today} label={t('journey.weight')} />
-          <AppText variant="caption" color="secondary">
-            {t('journey.weightNote')}
-          </AppText>
-          <View>
-            {[...data.weights]
-              .reverse()
-              .slice(0, 5)
-              .map((w, i, arr) => (
-                <ListRow
-                  key={w.id}
-                  label={formatDate(w.date, locale, { day: 'numeric', month: 'short', year: 'numeric' })}
-                  value={fmt(w.kg)}
-                  onPress={() => router.push({ pathname: '/weight', params: { id: w.id } })}
-                  divider={i < arr.length - 1}
-                />
-              ))}
-          </View>
-        </Card>
-      )}
+            </Card>
+          ) : (
+            <Card style={styles.gap}>
+              <View style={styles.between}>
+                <AppText variant="stat">{fmt(last.kg)}</AppText>
+                {change !== null ? (
+                  <AppText variant="label" color="secondary">
+                    {t('journey.weightChange', { value: `${change > 0 ? '+' : change < 0 ? '−' : ''}${fmt(Math.abs(change))}` })}
+                  </AppText>
+                ) : null}
+              </View>
+              <Segmented
+                value={range}
+                options={[
+                  { value: 'week', label: t('journey.week') },
+                  { value: 'month', label: t('journey.month') },
+                  { value: 'all', label: t('journey.all') },
+                ]}
+                onChange={setRange}
+              />
+              <WeightChart entries={weights} format={fmt} today={today} label={t('journey.weight')} />
+              <AppText variant="caption" color="secondary">
+                {t('journey.weightNote')}
+              </AppText>
+              <View>
+                {[...data.weights]
+                  .reverse()
+                  .slice(0, 5)
+                  .map((w, i, arr) => (
+                    <ListRow
+                      key={w.id}
+                      label={formatDate(w.date, locale, { day: 'numeric', month: 'short', year: 'numeric' })}
+                      value={fmt(w.kg)}
+                      onPress={() => router.push({ pathname: '/weight', params: { id: w.id } })}
+                      divider={i < arr.length - 1}
+                    />
+                  ))}
+              </View>
+            </Card>
+          )}
+        </>
+      ) : null}
 
       <AppText variant="heading">{t('journey.program')}</AppText>
       {pos ? (
