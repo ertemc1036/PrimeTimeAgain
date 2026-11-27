@@ -13,7 +13,7 @@ export function ProTestModeCard() {
   const { t } = useTranslation();
   const pro = usePro();
   if (!pro.testModeAllowed) return null;
-  const serverStatus = pro.access === 'test' ? t('pro.testServerOn') : pro.isPro ? t('pro.testServerPro') : t('pro.testServerOff');
+  const serverStatus = pro.access === 'test' ? t('pro.testServerOn') : pro.access === 'beta' ? t('pro.testServerBeta') : pro.isPro ? t('pro.testServerPro') : t('pro.testServerOff');
   return (
     <Card padded={false} style={styles.card} testID="pro-test-mode">
       <ToggleRow label={t('pro.testMode')} hint={t('pro.testModeHint')} value={pro.testMode} onChange={pro.setTestMode} divider={false} />

@@ -12,6 +12,7 @@ import { getSupabase } from './supabase/client';
  */
 export type AuthErrorCode =
   | 'not_configured'
+  | 'server_config'
   | 'invalid_credentials'
   | 'email_not_confirmed'
   | 'user_exists'
@@ -31,17 +32,21 @@ export type AuthResult<T = void> = { ok: true; value: T } | { ok: false; error: 
 
 export const authAvailable = () => isSupabaseConfigured();
 
-function mapError(e: unknown): AuthErrorCode {
+export function mapError(e: unknown): AuthErrorCode {
   const err = e as { code?: string; status?: number; message?: string; name?: string };
   const code = err?.code ?? '';
   const msg = (err?.message ?? '').toLowerCase();
   if (err?.name === 'AuthRetryableFetchError' || msg.includes('network request failed') || msg.includes('failed to fetch')) return 'offline';
+  // The server refused the app's API key (wrong project or an outdated key in this build). Not the
+  // user's fault and not fixable by retrying – say so instead of "wrong code".
+  if (msg.includes('invalid api key') || msg.includes('no api key') || (err?.status === 401 && !code)) return 'server_config';
   if (code === 'invalid_credentials' || msg.includes('invalid login')) return 'invalid_credentials';
   if (code === 'email_not_confirmed') return 'email_not_confirmed';
   if (code === 'user_already_exists' || code === 'email_exists' || msg.includes('already registered')) return 'user_exists';
   if (code === 'weak_password' || msg.includes('password should')) return 'weak_password';
   if (code === 'email_address_invalid' || code === 'validation_failed') return 'invalid_email';
-  if (code === 'otp_expired' || msg.includes('token has expired') || msg.includes('invalid')) return 'invalid_code';
+  if (code === 'otp_expired' || code === 'otp_disabled' || msg.includes('token has expired') || (msg.includes('invalid') && (msg.includes('token') || msg.includes('otp') || msg.includes('code'))))
+    return 'invalid_code';
   if (err?.status === 429 || code.startsWith('over_')) return 'rate_limited';
   return 'unknown';
 }
@@ -70,8 +75,7 @@ export function onAuthChange(fn: (session: Session | null, event: string) => voi
   });
 }
 
-export const signIn = (email: string, password: string) =>
-  run(async (sb) => check(await sb.auth.signInWithPassword({ email: email.trim().toLowerCase(), password })).data.session);
+export const signIn = (email: string, password: string) => run(async (sb) => check(await sb.auth.signInWithPassword({ email: email.trim().toLowerCase(), password })).data.session);
 
 /** Returns `needsCode: true` when the project requires email confirmation (enter the emailed code next). */
 export const signUp = (email: string, password: string) =>
@@ -80,8 +84,7 @@ export const signUp = (email: string, password: string) =>
     return { needsCode: !r.data.session };
   });
 
-export const confirmSignUp = (email: string, code: string) =>
-  run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'signup' })).data.session);
+export const confirmSignUp = (email: string, code: string) => run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'signup' })).data.session);
 
 export const resendSignUpCode = (email: string) => run(async (sb) => void check(await sb.auth.resend({ type: 'signup', email: email.trim().toLowerCase() })));
 
@@ -89,8 +92,7 @@ export const resendSignUpCode = (email: string) => run(async (sb) => void check(
  * Prove the signed-in account's email with an emailed 6-digit code (Supabase "Magic Link" email
  * with {{ .Token }}). The server records the proof; it unlocks a founder seat and linking Apple.
  */
-export const sendEmailCode = (email: string) =>
-  run(async (sb) => void check(await sb.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { shouldCreateUser: false } })));
+export const sendEmailCode = (email: string) => run(async (sb) => void check(await sb.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { shouldCreateUser: false } })));
 
 export const verifyEmailCode = (email: string, code: string) =>
   run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'email' })).data.session);

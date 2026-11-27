@@ -119,6 +119,24 @@ export function isTester(userId: string): boolean {
 }
 
 /**
+ * Beta: every signed-in account gets PrimeMe+ for free while the backend runs the beta.
+ * Server-side only, controlled by Edge Function secrets – no app build, client switch or fake store
+ * purchase is involved, and AI rate limits (quota.ts) still apply per user and globally.
+ *   BETA_ALL_USERS_PRO=true          turns the beta on for this Supabase project
+ *   BETA_PRO_UNTIL=2027-03-31        optional end date (UTC, inclusive); after it the beta ends by itself
+ * Remove the secret (or set it to anything but "true") to return to the normal Free/Pro model.
+ */
+export function betaAllUsersPro(now = new Date(), env: (k: string) => string | undefined = (k) => Deno.env.get(k)): boolean {
+  if ((env('BETA_ALL_USERS_PRO') ?? '').trim().toLowerCase() !== 'true') return false;
+  const until = (env('BETA_PRO_UNTIL') ?? '').trim();
+  if (!until) return true;
+  const end = new Date(`${until.slice(0, 10)}T23:59:59.999Z`);
+  return Number.isNaN(end.getTime()) ? false : now.getTime() <= end.getTime();
+}
+
+const BETA: EntitlementRow = { tier: 'pro', status: 'active', product_id: null, store: 'beta', expires_at: null };
+
+/**
  * Founders Edition: the first verified accounts (capacity in public.founder_settings, 1,000) own a
  * permanent, free founder seat in public.founder_seats. The database hands seats out when an account
  * is verified; this call also claims one if that trigger was missed (idempotent, same rules).
@@ -138,19 +156,21 @@ const FOUNDER = (seat: number): EntitlementRow => ({ tier: 'pro', status: 'activ
 
 /**
  * Current entitlement, decided on the server only. Order: Paid Pro (RevenueCat-verified store
- * subscription) → Test Pro (PRO_TESTERS secret) → Founders Pro (stored founder seat). Duo Guest
+ * subscription) → Test Pro (PRO_TESTERS secret) → Beta Pro (BETA_ALL_USERS_PRO secret, every account)
+ * → Founders Pro (stored founder seat). Duo Guest
  * (a friend seat of a paying subscriber) is planned and not granted anywhere yet.
  */
 export async function currentEntitlement(userId: string, opts: { force?: boolean; maxAgeMs?: number } = {}): Promise<EntitlementRow> {
   const paid = await storeEntitlement(userId, opts);
   if (isProActive(paid)) return paid;
   if (isTester(userId)) return { tier: 'pro', status: 'active', product_id: null, store: 'test', expires_at: null };
+  if (betaAllUsersPro()) return BETA;
   const seat = await founderSeat(userId);
   return seat ? FOUNDER(seat) : paid;
 }
 
 /** Where Pro comes from. 'duo_guest' is reserved for the planned friend seat. */
-export type ProSource = 'store' | 'test' | 'founder' | 'duo_guest';
+export type ProSource = 'store' | 'test' | 'beta' | 'founder' | 'duo_guest';
 
 export const publicEntitlement = (e: EntitlementRow) => ({
   tier: isProActive(e) ? 'pro' : 'free',
@@ -158,7 +178,7 @@ export const publicEntitlement = (e: EntitlementRow) => ({
   expiresAt: e.expires_at,
   productId: e.product_id,
   /** Where Pro comes from: store subscription (Paid Pro), developer test access or a founder seat. */
-  source: (!isProActive(e) ? null : e.store === 'test' ? 'test' : e.store === 'founder' ? 'founder' : 'store') as ProSource | null,
+  source: (!isProActive(e) ? null : e.store === 'test' ? 'test' : e.store === 'beta' ? 'beta' : e.store === 'founder' ? 'founder' : 'store') as ProSource | null,
   /** Founder seat number (1..1000) when Pro comes from the Founders Edition. */
   founderSeat: isProActive(e) && e.store === 'founder' ? (e.founder_seat ?? null) : null,
 });

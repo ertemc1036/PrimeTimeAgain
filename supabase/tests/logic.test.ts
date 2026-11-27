@@ -2,7 +2,7 @@
 import { assert, assertEquals } from 'jsr:@std/assert@1';
 
 import { buildMessages } from '../functions/coach/handler.ts';
-import { fromSubscriber, isProActive, isTester, type RcSubscriber } from '../functions/_shared/entitlement.ts';
+import { betaAllUsersPro, fromSubscriber, isProActive, isTester, type RcSubscriber } from '../functions/_shared/entitlement.ts';
 import { sanitizeScan } from '../functions/food-scan/handler.ts';
 import { canonical, validateChange } from '../functions/_shared/records.ts';
 import { fromEvent } from '../functions/revenuecat-webhook/handler.ts';
@@ -84,4 +84,17 @@ Deno.test('Pro test access: only valid UUIDs from the PRO_TESTERS secret', () =>
   Deno.env.set('PRO_TESTERS', '*');
   assertEquals(isTester(id), false, 'no wildcard');
   Deno.env.delete('PRO_TESTERS');
+});
+
+Deno.test('beta: every account gets PrimeMe+ only while BETA_ALL_USERS_PRO=true (and before BETA_PRO_UNTIL)', () => {
+  const env = (vars: Record<string, string>) => (k: string) => vars[k];
+  const now = new Date('2026-12-01T12:00:00Z');
+  assertEquals(betaAllUsersPro(now, env({})), false, 'off without the secret');
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'false' })), false);
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: '1' })), false, 'only the exact value true');
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true' })), true);
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: ' TRUE ' })), true);
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true', BETA_PRO_UNTIL: '2026-12-01' })), true, 'end date is inclusive');
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true', BETA_PRO_UNTIL: '2026-11-30' })), false, 'ends by itself');
+  assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true', BETA_PRO_UNTIL: 'soon' })), false, 'an invalid date fails closed');
 });

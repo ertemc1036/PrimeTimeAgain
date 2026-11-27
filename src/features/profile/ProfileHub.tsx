@@ -56,7 +56,7 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
     {
       title: t('brand.plus'),
       rows: [
-        { label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'star-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'founder' ? t('pro.sourceFounder') : undefined },
+        { label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'star-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'beta' ? t('pro.sourceBeta') : access === 'founder' ? t('pro.sourceFounder') : undefined },
         { label: t('pro.restore'), icon: 'refresh-outline', href: { pathname: '/pro', params: { restore: '1' } } },
       ],
     },

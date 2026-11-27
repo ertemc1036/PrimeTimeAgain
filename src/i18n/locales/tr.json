@@ -871,7 +871,10 @@
     "testModeHint": "Yalnızca test sürümlerinde. Tüm Pro alanlarını abonelik olmadan açar ve ödeme ekranlarını gizler. Yapay zekâ özelliklerini yalnızca sunucu açar.",
     "testServerOn": "Sunucu: bu hesap için test erişimi etkin – tüm yapay zekâ özellikleri kullanılabilir.",
     "testServerPro": "Sunucu: PrimeMe+ etkin.",
-    "testServerOff": "Sunucu: bu hesap test hesabı değil. Yapay zekâ özellikleri için PRO_TESTERS kaydı gerekir (Hesap → Hesap kimliği)."
+    "testServerOff": "Sunucu: bu hesap test hesabı değil. Yapay zekâ özellikleri için PRO_TESTERS kaydı gerekir (Hesap → Hesap kimliği).",
+    "sourceBeta": "PrimeMe+ Beta",
+    "sourceBetaBody": "Beta süresince tüm PrimeMe+ özellikleri ücretsiz açık. Hiçbir ücret alınmaz.",
+    "testServerBeta": "Sunucu: beta etkin – tüm PrimeMe+ özellikleri her hesap için açık."
   },
   "coach": {
     "title": "Prime",
@@ -988,7 +991,8 @@
       "apple_unavailable": "Apple ile Giriş bu cihazda kullanılamıyor.",
       "apple_failed": "Apple ile giriş başarısız oldu. Lütfen tekrar dene.",
       "apple_linked_elsewhere": "Bu Apple kimliği zaten başka bir PrimeMe AI hesabına ait. Orada Apple ile giriş yap.",
-      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-postayla zaten bir PrimeMe AI hesabın var mı? O zaman e-postayla giriş yap, Profil → Hesap altında onayla ve Apple’ı orada bağla. Aksi halde daha sonra tekrar dene."
+      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-postayla zaten bir PrimeMe AI hesabın var mı? O zaman e-postayla giriş yap, Profil → Hesap altında onayla ve Apple’ı orada bağla. Aksi halde daha sonra tekrar dene.",
+      "server_config": "Uygulama şu anda sunucuya bağlanamıyor (uygulama yapılandırması). Lütfen PrimeMe AI’nin en yeni sürümünü yükle."
     },
     "orEmail": "veya e-postayla",
     "appleHint": "E-postayla zaten bir PrimeMe AI hesabın var mı? E-postayla giriş yap ve Apple’ı sonra Profil → Hesap altında bağla. Böylece her şey tek hesapta kalır.",

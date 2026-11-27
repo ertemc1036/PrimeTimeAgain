@@ -64,7 +64,8 @@
     "test": "jest",
     "start:tunnel": "expo start --tunnel",
     "release-check": "node scripts/release-check.mjs",
-    "test:server": "echo \"See supabase/tests/README.md (needs Postgres, Supabase Auth and Deno)\""
+    "test:server": "echo \"See supabase/tests/README.md (needs Postgres, Supabase Auth and Deno)\"",
+    "env:beta": "node scripts/write-env-local.mjs"
   },
   "private": true,
   "jest": {

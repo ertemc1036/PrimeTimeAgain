@@ -34,7 +34,7 @@ export interface ServerEntitlement {
  * store = Paid Pro (subscription), test = Test Pro (authorised developer account),
  * founder = Founders Pro (free founder seat), duo_guest = Duo Guest (planned friend seat).
  */
-export type ProSource = 'store' | 'test' | 'founder' | 'duo_guest';
+export type ProSource = 'store' | 'test' | 'beta' | 'founder' | 'duo_guest';
 
 export interface SyncRequest {
   cursor: number;

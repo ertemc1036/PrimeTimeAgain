@@ -169,7 +169,7 @@ git fetch origin && git checkout claude/diet9-founders && git pull && npm ci
 bash scripts/supabase/check-live.sh
 ```
 
-Im Abschnitt „dry run“ darf **nur** `20261030000000_founder_seats.sql` stehen.
+Im Abschnitt „dry run“ darf **nur** `20261127091832_founder_seats.sql` stehen.
 
 Im Supabase-Dashboard → SQL Editor (nur lesend):
 
@@ -228,7 +228,7 @@ drop trigger if exists founder_seat_on_insert on auth.users;
 drop trigger if exists founder_seat_on_confirm on auth.users;
 drop function if exists public.founder_seat_on_verified(), public.founder_seats_status(), public.claim_founder_seat(uuid);
 drop table if exists public.founder_seats, public.founder_settings;
-delete from supabase_migrations.schema_migrations where version = '20261030000000';
+delete from supabase_migrations.schema_migrations where version = '20261127091832';
 ```
 
 ## Update: Sign in with Apple und Registrierung ohne Bestätigungs-E-Mail
@@ -243,8 +243,8 @@ git fetch origin && git checkout claude/diet9-apple-signin && git pull && npm ci
 bash scripts/supabase/check-live.sh
 ```
 
-Im Probelauf stehen `20261031000000_identity_proofs.sql` (und, falls noch nicht eingespielt,
-`20261030000000_founder_seats.sql`).
+Im Probelauf stehen `20261127091945_identity_proofs.sql` (und, falls noch nicht eingespielt,
+`20261127091832_founder_seats.sql`).
 
 ### B. ⚠️ Migration einspielen – solange „Confirm email“ noch AN ist
 

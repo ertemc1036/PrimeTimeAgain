@@ -20,8 +20,8 @@ initdb -D <dir> -U postgres && pg_ctl -D <dir> -o "-p 54322 -k /tmp" start
 psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/tests/bootstrap.sql
 psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261026000000_minus30_init.sql
 # after GoTrue has created auth.users (auth migrate):
-psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261030000000_founder_seats.sql
-psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261031000000_identity_proofs.sql
+psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261127091832_founder_seats.sql
+psql -h 127.0.0.1 -p 54322 -U postgres -f supabase/migrations/20261127091945_identity_proofs.sql
 
 # Keys: one HS256 secret; anon / service_role JWTs signed with it (role claim "anon" / "service_role")
 export JWT_SECRET=… ANON_KEY=… SERVICE_ROLE_KEY=…

@@ -878,7 +878,10 @@
     "testModeHint": "Solo en compilaciones de prueba. Abre todas las áreas Pro sin suscripción y oculta los muros de pago. Las funciones de IA solo las activa el servidor.",
     "testServerOn": "Servidor: acceso de prueba activo para esta cuenta; todas las funciones de IA disponibles.",
     "testServerPro": "Servidor: PrimeMe+ activo.",
-    "testServerOff": "Servidor: esta cuenta no es de prueba. Las funciones de IA requieren añadirla a PRO_TESTERS (ver Cuenta → ID de cuenta)."
+    "testServerOff": "Servidor: esta cuenta no es de prueba. Las funciones de IA requieren añadirla a PRO_TESTERS (ver Cuenta → ID de cuenta).",
+    "sourceBeta": "PrimeMe+ Beta",
+    "sourceBetaBody": "Durante la beta, todas las funciones de PrimeMe+ están desbloqueadas gratis. No se te cobrará nada.",
+    "testServerBeta": "Servidor: beta activa; todas las funciones de PrimeMe+ desbloqueadas para cada cuenta."
   },
   "coach": {
     "title": "Prime",
@@ -995,7 +998,8 @@
       "apple_unavailable": "Iniciar sesión con Apple no está disponible en este dispositivo.",
       "apple_failed": "No se pudo iniciar sesión con Apple. Inténtalo de nuevo.",
       "apple_linked_elsewhere": "Este ID de Apple ya pertenece a otra cuenta de PrimeMe AI. Inicia sesión allí con Apple.",
-      "apple_account_exists": "No se pudo iniciar sesión con Apple. ¿Ya tienes una cuenta de PrimeMe AI con este correo? Entonces inicia sesión con correo, confírmalo en Perfil → Cuenta y vincula Apple allí. Si no, inténtalo más tarde."
+      "apple_account_exists": "No se pudo iniciar sesión con Apple. ¿Ya tienes una cuenta de PrimeMe AI con este correo? Entonces inicia sesión con correo, confírmalo en Perfil → Cuenta y vincula Apple allí. Si no, inténtalo más tarde.",
+      "server_config": "La app no puede conectarse ahora con el servidor (configuración de la app). Instala la última versión de PrimeMe AI."
     },
     "orEmail": "o con correo",
     "appleHint": "¿Ya tienes una cuenta de PrimeMe AI con correo? Inicia sesión con correo y vincula Apple después en Perfil → Cuenta. Así todo queda en una sola cuenta.",

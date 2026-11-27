@@ -2,7 +2,8 @@
 /**
  * Release gate: lists everything that must be configured before a store release and exits with 1
  * while anything release-blocking is missing. Run: npm run release-check
- * Reads EXPO_PUBLIC_* from the environment and from .env / .env.production if present.
+ * Reads EXPO_PUBLIC_* from the environment, from .env / .env.production if present, and from the
+ * "production" profile in eas.json (what the store / TestFlight build actually embeds).
  */
 import { existsSync, readFileSync } from 'node:fs';
 
@@ -16,10 +17,29 @@ for (const f of ['.env', '.env.production']) {
 }
 const app = JSON.parse(readFileSync('app.json', 'utf8')).expo;
 const eas = existsSync('eas.json') ? JSON.parse(readFileSync('eas.json', 'utf8')) : null;
+for (const [k, v] of Object.entries(eas?.build?.production?.env ?? {})) if (!env[k]) env[k] = String(v);
+
+// The anon key must belong to the configured project: a key from another (or a recreated) project is
+// rejected with "401 Invalid API key" on every sign-up and sign-in.
+const projectRef = (env.EXPO_PUBLIC_SUPABASE_URL ?? '').match(/^https:\/\/([a-z0-9]+)\.supabase\.co/)?.[1];
+const keyRef = (() => {
+  const key = env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
+  if (key.startsWith('sb_publishable_')) return projectRef; // new-style keys carry no project claim
+  try {
+    return JSON.parse(Buffer.from(key.split('.')[1], 'base64url').toString('utf8')).ref;
+  } catch {
+    return undefined;
+  }
+})();
 
 const checks = [
   ['Supabase URL (EXPO_PUBLIC_SUPABASE_URL)', !!env.EXPO_PUBLIC_SUPABASE_URL?.startsWith('https://')],
   ['Supabase anon key (EXPO_PUBLIC_SUPABASE_ANON_KEY)', !!env.EXPO_PUBLIC_SUPABASE_ANON_KEY],
+  ['Supabase anon key belongs to the configured project', !!projectRef && keyRef === projectRef],
+  [
+    'Production build has no Pro test mode (EXPO_PUBLIC_PRO_TEST_MODE unset, EXPO_PUBLIC_APP_ENV=production)',
+    eas?.build?.production?.env?.EXPO_PUBLIC_PRO_TEST_MODE !== '1' && eas?.build?.production?.env?.EXPO_PUBLIC_APP_ENV === 'production',
+  ],
   ['RevenueCat iOS public key (EXPO_PUBLIC_REVENUECAT_IOS_KEY)', !!env.EXPO_PUBLIC_REVENUECAT_IOS_KEY?.startsWith('appl_')],
   ['RevenueCat Android public key (EXPO_PUBLIC_REVENUECAT_ANDROID_KEY)', !!env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY?.startsWith('goog_')],
   ['Approved privacy policy URL (EXPO_PUBLIC_PRIVACY_URL)', !!env.EXPO_PUBLIC_PRIVACY_URL?.startsWith('https://')],
@@ -36,7 +56,9 @@ for (const [label, ok] of checks) {
   console.log(`${ok ? '✓' : '✗'} ${label}`);
   if (!ok) blocking++;
 }
-console.log('\nAlso required outside this repository (see docs/RELEASE.md): legal review, App Store Connect / Play Console products and agreements, Supabase deployment and secrets, RevenueCat webhook, real-device QA.');
+console.log(
+  '\nAlso required outside this repository (see docs/RELEASE.md): legal review, App Store Connect / Play Console products and agreements, Supabase deployment and secrets, RevenueCat webhook, real-device QA.',
+);
 if (blocking) {
   console.log(`\n${blocking} release-blocking item(s) missing.`);
   process.exit(1);

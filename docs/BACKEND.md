@@ -95,7 +95,7 @@ hidden gesture in the app, and other accounts are unaffected (server test:
 
 ### Founders Edition
 
-Migration `20261030000000_founder_seats.sql` (needs approval before `supabase db push`):
+Migration `20261127091832_founder_seats.sql` (needs approval before `supabase db push`):
 
 - `public.founder_settings` (capacity 1,000) and `public.founder_seats` (seat number, account, time).
   Users can read only their own seat; nobody but the server can write.
@@ -118,7 +118,7 @@ If the functions are deployed before the migration, founder checks simply find n
   `signInWithIdToken`; raw nonce to Supabase, its SHA-256 to Apple). Signed-in users can link Apple
   to their account (`linkIdentity` with the ID token).
 - "Confirm email" is a Supabase Auth setting. With it off, Supabase marks new accounts confirmed at
-  once, so `email_confirmed_at` proves nothing. Migration `20261031000000_identity_proofs.sql`
+  once, so `email_confirmed_at` proves nothing. Migration `20261127091945_identity_proofs.sql`
   therefore records real proofs in `public.identity_proofs`:
   - `apple` – an Apple identity was created (trigger on `auth.identities`);
   - `email_code` – a session started with an emailed code (`otp`, `recovery`, `magiclink`,

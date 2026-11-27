@@ -871,7 +871,10 @@
     "testModeHint": "Test builds only. Opens every Pro area without a subscription and hides paywalls. AI features are unlocked by the server only.",
     "testServerOn": "Server: test access active for this account – all AI features available.",
     "testServerPro": "Server: PrimeMe+ active.",
-    "testServerOff": "Server: this account is not a test account. AI features need it in PRO_TESTERS (see Account → account ID)."
+    "testServerOff": "Server: this account is not a test account. AI features need it in PRO_TESTERS (see Account → account ID).",
+    "sourceBeta": "PrimeMe+ Beta",
+    "sourceBetaBody": "During the beta, all PrimeMe+ features are unlocked for free. You won’t be charged.",
+    "testServerBeta": "Server: beta active – all PrimeMe+ features unlocked for every account."
   },
   "coach": {
     "title": "Prime",
@@ -988,7 +991,8 @@
       "apple_unavailable": "Sign in with Apple isn’t available on this device.",
       "apple_failed": "Signing in with Apple didn’t work. Please try again.",
       "apple_linked_elsewhere": "This Apple ID already belongs to another PrimeMe AI account. Sign in there with Apple.",
-      "apple_account_exists": "Signing in with Apple wasn’t possible. Do you already have a PrimeMe AI account with this email? Then sign in with email, confirm it under Profile → Account and link Apple there. Otherwise please try again later."
+      "apple_account_exists": "Signing in with Apple wasn’t possible. Do you already have a PrimeMe AI account with this email? Then sign in with email, confirm it under Profile → Account and link Apple there. Otherwise please try again later.",
+      "server_config": "The app can’t connect to the server right now (app configuration). Please install the latest version of PrimeMe AI."
     },
     "orEmail": "or with email",
     "appleHint": "Already have a PrimeMe AI account with email? Sign in with email and link Apple afterwards under Profile → Account. That keeps everything in one account.",

@@ -42,7 +42,7 @@ Branch `claude/primeme-ai` (Basis: `claude/diet9-apple-signin`). Stand: 27.11.20
 ## 3. Datenbank
 
 Neue Datensammlungen im bestehenden Sync (`user_records`): `water`, `memory`, `primeAction` (Aktionsprotokoll für Rückgängig) und später `journal`, `checkin`, `shopping`.
-Die Datenbank erlaubt bisher nur feste Sammlungsnamen. Deshalb ist eine **kleine, nicht-destruktive Migration** nötig: `20261127000000_primeme_collections.sql` erweitert nur die erlaubte Liste, es werden keine Daten verändert.
+Die Datenbank erlaubt bisher nur feste Sammlungsnamen. Deshalb ist eine **kleine, nicht-destruktive Migration** nötig: `20261127092029_primeme_collections.sql` erweitert nur die erlaubte Liste, es werden keine Daten verändert.
 Reihenfolge beim Veröffentlichen: Migration und Functions **vor** der neuen App-Version (alte Server würden neue Sammlungen ablehnen; die App zeigt dann „nicht synchronisiert“, verliert aber nichts).
 
 ## 4. Phasen

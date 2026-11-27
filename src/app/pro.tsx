@@ -103,6 +103,12 @@ export default function Paywall() {
             <AppText variant="caption">{t('pro.sourceFounderBody')}</AppText>
           </Card>
         ) : null}
+        {pro.access === 'beta' ? (
+          <Card variant="accent">
+            <AppText variant="bodyStrong">{t('pro.sourceBeta')}</AppText>
+            <AppText variant="caption">{t('pro.sourceBetaBody')}</AppText>
+          </Card>
+        ) : null}
         {pro.access === 'test' ? (
           <Card variant="accent">
             <AppText variant="bodyStrong">{t('pro.sourceTest')}</AppText>

@@ -1,6 +1,6 @@
 # Diet9 Pro — business model (Founders Edition live in code, purchases not live)
 
-Status: the Founders Edition is implemented (migration `20261030000000_founder_seats.sql`, not yet
+Status: the Founders Edition is implemented (migration `20261127091832_founder_seats.sql`, not yet
 applied to the production project). Real purchases and friend invitations are not active.
 
 ## Plan
@@ -27,7 +27,7 @@ Paid Pro; the founder seat stays stored.
 
 - **Verified** = Sign in with Apple, or the email confirmed with an emailed code (not anonymous).
   A password sign-up alone doesn't count, so the seats stay protected when "Confirm email" is
-  turned off (`public.identity_proofs`, migration `20261031000000_identity_proofs.sql`).
+  turned off (`public.identity_proofs`, migration `20261127091945_identity_proofs.sql`).
 - **Counter:** `founders` Edge Function (public, counts only) → the paywall shows
   "742 of 1,000 free Pro seats taken." straight from the database. When the server can't be
   reached, no number is shown.
