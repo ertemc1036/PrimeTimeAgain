@@ -38,39 +38,39 @@ Stand: 27.11.2026. Supabase-Projekt `xbnzjpaqhdnlharchlis` ist die **Beta-Umgebu
   - Für die spätere öffentliche Version: Secret löschen oder `false` setzen, oder ein separates Produktionsprojekt ohne Secret verwenden.
 - **Test:** `supabase/tests/logic.test.ts` prüft an/aus, Enddatum und ungültige Werte.
 
-## 3. Status Supabase (geprüft per Supabase-Verbindung)
+## 3. Status Supabase (live geprüft am 27.11.2026)
 
 | Bereich | Status |
 | --- | --- |
-| Migrationen | **erledigt:** `founder_seats`, `identity_proofs`, `primeme_collections`, `harden_bump_server_seq` sind eingespielt. Die Dateien sind auf die Live-Versionsnummern umbenannt, damit `supabase db push` nichts doppelt ausführt. |
-| RLS | aktiv auf allen Tabellen. Hinweis „RLS ohne Policy“ ist gewollt: diese Tabellen sind nur für den Server. |
-| Storage | private Buckets `progress-photos` und `workout-photos` vorhanden |
-| Edge Functions | **offen:** live ist noch die alte Version 4. `prime` und `founders` fehlen ganz (die App ruft `founders` → 404). Siehe Schritt A. |
-| Secret `BETA_ALL_USERS_PRO` | **offen**, siehe Schritt A |
-| Secret `OPENAI_API_KEY` | konnte nicht geprüft werden (kein gültiger Zugriffstoken), siehe Schritt A |
-| E-Mail-Bestätigung | aus (`mailer_autoconfirm: true`): Registrierung braucht keine E-Mail |
-| Passwort-zurücksetzen | braucht E-Mail-Versand. Der eingebaute Supabase-Mailer schickt nur an Mitglieder deines Supabase-Teams, maximal etwa 2 pro Stunde. Siehe Schritt C. |
+| Migrationen | alle eingespielt (`founder_seats`, `identity_proofs`, `primeme_collections`, `harden_bump_server_seq`) |
+| Edge Functions | alle 10 deployt mit aktuellem Code: `sync`, `export`, `entitlement`, `food-scan`, `workout-photo`, `coach`, `delete-account`, `prime` mit JWT-Prüfung, `revenuecat-webhook` und `founders` ohne |
+| Secrets | `BETA_ALL_USERS_PRO=true` gesetzt; `OPENAI_API_KEY` vorhanden und funktioniert (echte KI-Antworten); `PRO_TESTERS` bleibt für Einzeltests |
+| RLS / Storage | RLS auf allen Tabellen; private Foto-Buckets |
+| KI-Limits | aktiv: Nutzung wird pro Konto gezählt (`ai_usage`) |
+| E-Mail-Bestätigung | aus: Registrierung ohne E-Mail. „Passwort vergessen“ braucht eigenen SMTP-Versand (Schritt C). |
 
-## Schritt A – Functions deployen und Beta einschalten (auf deinem Mac, ca. 5 Minuten)
+**Live-Test mit einem neuen Konto (danach gelöscht):**
+- Registrierung funktioniert, das Konto bekommt automatisch PrimeMe+ (`source: beta`).
+- Sync: Profil, Wasser und Memory lassen sich hochladen und wieder herunterladen; der Sync liefert PrimeMe+ an die App.
+- Prime-Chat mit echter KI:
+  - schlägt Wasser, Mahlzeit und Training als Aktionen vor;
+  - beantwortet Kochfragen;
+  - sagt jetzt „zum Bestätigen vorbereitet“ statt „erfasst“. Das war vorher fälschlich formuliert und ist korrigiert.
+- KI-Essensscanner: erkennt Hähnchen, Brokkoli, Quinoa, Süßkartoffel und Mandeln mit Schätzwerten.
+- Ebenfalls erfolgreich: Foto-Check-in, Datenexport, Founders-Zähler, Coach-Function.
+- Konto-Löschung: Danach ist keine Anmeldung mehr möglich. Es bleiben keine Testdaten zurück.
 
-Im Projektordner, auf dem Branch `claude/primeme-redesign`:
+## Schritt A – erledigt
+
+Functions sind deployt, die Secrets sind gesetzt. Wenn du später selbst neu deployen musst:
 
 ```bash
-git pull
-npx supabase@2 login        # öffnet den Browser, mit deinem Supabase-Konto bestätigen
+npx supabase@2 login
 npx supabase@2 functions deploy sync export entitlement food-scan workout-photo coach delete-account prime --project-ref xbnzjpaqhdnlharchlis --use-api
 npx supabase@2 functions deploy revenuecat-webhook founders --no-verify-jwt --project-ref xbnzjpaqhdnlharchlis --use-api
-npx supabase@2 secrets set BETA_ALL_USERS_PRO=true --project-ref xbnzjpaqhdnlharchlis
-npx supabase@2 secrets list --project-ref xbnzjpaqhdnlharchlis
 ```
 
-In der letzten Liste muss **`OPENAI_API_KEY`** stehen.
-- **Fehlt er:** Schlüssel bei platform.openai.com → API keys erzeugen und mit `npx supabase@2 secrets set OPENAI_API_KEY=sk-… --project-ref xbnzjpaqhdnlharchlis` setzen.
-- **Nicht** in die App oder ins Repo eintragen.
-
-**Alternative:** Gib mir einen gültigen Supabase-Zugriffstoken, dann erledige ich das.
-- Wo du ihn findest: Supabase → Avatar unten links → Account preferences → Access Tokens → Generate new token.
-- Er beginnt mit **`sbp_`**. Der zuletzt eingegebene Wert war kein solcher Token.
+**Beta beenden:** `npx supabase@2 secrets unset BETA_ALL_USERS_PRO --project-ref xbnzjpaqhdnlharchlis`
 
 ## Schritt B – Lokal in Expo Go testen
 
@@ -124,11 +124,9 @@ npx eas-cli@latest submit --platform ios --latest
 
 ## Release-Blocker (Stand jetzt)
 
-1. **Edge Functions und Beta-Secret** sind nicht live (Schritt A).
-2. **`OPENAI_API_KEY`:** nicht verifiziert.
-3. **Datenschutzrichtlinie als öffentlich erreichbare URL** fehlt. Apple verlangt sie in App Store Connect. Die Texte in der App sind nur ein Entwurf und vorher rechtlich zu prüfen.
-4. **EAS-Projekt** nicht verknüpft (`eas init`).
-5. **Test auf einem echten iPhone mit dem neuen Build:** Registrierung, Anmeldung, KI-Funktionen. Von hier aus nicht möglich.
+1. **Datenschutzrichtlinie als öffentlich erreichbare URL** fehlt. Apple verlangt sie in App Store Connect. Die Texte in der App sind nur ein Entwurf und vorher rechtlich zu prüfen.
+2. **EAS-Projekt** nicht verknüpft (`eas init`).
+3. **Test auf einem echten iPhone mit dem neuen Build:** Registrierung, Anmeldung, KI-Funktionen. Von hier aus nicht möglich.
 
 **Nicht blockierend für TestFlight:**
 - RevenueCat-Schlüssel: Käufe sind in der Beta nicht nötig.
