@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText, Button, Card, Chip, IconButton, Screen } from '@/components/ui';
 import { toFoodItems } from '@/domain/primeActions';
 import { ActionCard } from '@/features/prime/ActionCard';
+import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
 import { PrimeAvatar } from '@/features/prime/PrimeAvatar';
 import { usePrime } from '@/features/prime/usePrime';
 import { aiAvailable, type AiError } from '@/services/ai/client';
@@ -48,6 +49,7 @@ export default function PrimeScreen() {
   return (
     <Screen
       inTabs
+      background={colors.surface}
       headerRight={
         <View style={styles.headerButtons}>
           <IconButton icon="bookmark-outline" label={t('prime.memory.title')} onPress={() => router.push('/memories')} variant="plain" />
@@ -72,31 +74,44 @@ export default function PrimeScreen() {
           <IconButton icon="arrow-up" label={t('coach.send')} onPress={send} variant="inverse" />
         </View>
       }>
-      <View style={styles.hero}>
-        <PrimeAvatar size={52} busy={prime.busy} />
-        <View style={styles.flex}>
-          <AppText variant="title" accessibilityRole="header">
+      {/* Empty chat: Prime greets you large; during a conversation he steps back so the chat leads. */}
+      {prime.messages.length === 0 ? (
+        <View style={styles.welcome}>
+          <PrimeCharacter variant="chat" size={168} motion="idle" accessibilityLabel={t('brand.agent')} />
+          <AppText variant="heading" align="center" accessibilityRole="header">
             {t('brand.agent')}
           </AppText>
-          <AppText variant="caption" color="secondary">
+          <AppText variant="caption" color="secondary" align="center">
             {t('prime.subtitle')}
           </AppText>
         </View>
-      </View>
+      ) : (
+        <View style={styles.hero}>
+          <PrimeAvatar size={36} busy={prime.busy} />
+          <View style={styles.flex}>
+            <AppText variant="subheading" accessibilityRole="header">
+              {t('brand.agent')}
+            </AppText>
+            <AppText variant="caption" color="secondary" numberOfLines={1}>
+              {t('prime.subtitle')}
+            </AppText>
+          </View>
+        </View>
+      )}
 
       {!aiAvailable() ? (
-        <Card>
+        <Card variant="accent">
           <AppText variant="bodyStrong">{t('prime.unavailable')}</AppText>
         </Card>
       ) : signedOut ? (
-        <Card style={styles.gap}>
+        <Card variant="accent" style={styles.gap}>
           <AppText variant="bodyStrong">{t('prime.signedOut')}</AppText>
           <Button label={t('auth.signIn')} size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/auth/sign-in')} />
         </Card>
       ) : null}
 
       {!data.coach.consentToContext ? (
-        <Card style={styles.gap}>
+        <Card variant="accent" style={styles.gap}>
           <AppText variant="bodyStrong">{t('prime.consent.title')}</AppText>
           <AppText variant="caption">{t('prime.consent.body')}</AppText>
           <Button label={t('prime.consent.allow')} size="sm" fullWidth={false} onPress={() => void dispatch({ type: 'setCoachConsent', value: true })} />
@@ -146,15 +161,18 @@ export default function PrimeScreen() {
       ))}
 
       {prime.busy ? (
-        <View style={[styles.bubble, styles.assistant]} accessibilityLiveRegion="polite">
-          <AppText variant="body" color="secondary">
-            {t('prime.thinking')}
-          </AppText>
+        <View style={styles.thinking} accessibilityLiveRegion="polite">
+          <PrimeCharacter variant="thinking" size={44} radius={12} motion="enter" />
+          <View style={[styles.bubble, styles.assistant]}>
+            <AppText variant="body" color="secondary">
+              {t('prime.thinking')}
+            </AppText>
+          </View>
         </View>
       ) : null}
 
       {prime.error ? (
-        <Card style={styles.gap}>
+        <Card variant="accent" style={styles.gap}>
           <AppText variant="bodyStrong" accessibilityLiveRegion="polite">
             {errorText(prime.error)}
           </AppText>
@@ -173,14 +191,27 @@ export default function PrimeScreen() {
 }
 
 const styles = StyleSheet.create({
-  hero: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  hero: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  welcome: { alignItems: 'center', gap: spacing.xs, paddingVertical: spacing.md },
+  thinking: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.xs },
   flex: { flex: 1, gap: 2 },
   headerButtons: { flexDirection: 'row' },
   inputRow: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.xs },
-  input: { flex: 1, minHeight: 48, maxHeight: 120, borderRadius: radii.lg, backgroundColor: colors.card, paddingHorizontal: spacing.md, paddingVertical: 12, fontFamily: fonts.regular, fontSize: 16, color: colors.text },
+  input: {
+    flex: 1,
+    minHeight: 48,
+    maxHeight: 120,
+    borderRadius: radii.lg,
+    backgroundColor: colors.card,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 12,
+    fontFamily: fonts.regular,
+    fontSize: 16,
+    color: colors.text,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   bubble: { maxWidth: '86%', borderRadius: radii.lg, paddingHorizontal: spacing.md, paddingVertical: spacing.sm },
-  user: { alignSelf: 'flex-end', backgroundColor: colors.black },
-  assistant: { alignSelf: 'flex-start', backgroundColor: colors.primarySoft },
+  user: { alignSelf: 'flex-end', backgroundColor: colors.black, borderBottomRightRadius: 6 },
+  assistant: { alignSelf: 'flex-start', backgroundColor: colors.card, borderBottomLeftRadius: 6 },
   gap: { gap: spacing.sm },
 });

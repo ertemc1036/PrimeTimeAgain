@@ -1,5 +1,5 @@
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -7,6 +7,8 @@ import { AppText, Button, Card, Icon, OptionCard, Screen, ToggleRow, useToast, t
 import { PLACEHOLDER_PRICES } from '@/config/app';
 import { FounderCounter } from '@/features/founders/FounderCounter';
 import { useFounderStatus } from '@/features/founders/useFounderStatus';
+import { openLegal } from '@/features/legal';
+import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
 import { formatDate } from '@/i18n/format';
 import { useLocale } from '@/i18n/useLanguage';
 import { loadPlans, manageSubscriptions, purchase, purchasesUnavailableReason, restore, type PlanId, type StorePlan } from '@/services/subscriptions/revenuecat';
@@ -72,6 +74,16 @@ export default function Paywall() {
     notify(t('pro.restore'), r.entitlement.tier === 'pro' ? t('pro.restored') : t('pro.nothingToRestore'));
   };
 
+  // "Restore purchases" in Profile opens this screen with ?restore=1 and starts the restore once.
+  const { restore: restoreParam } = useLocalSearchParams<{ restore?: string }>();
+  const restoreStarted = useRef(false);
+  useEffect(() => {
+    if (restoreParam !== '1' || restoreStarted.current || pro.isPro) return;
+    restoreStarted.current = true;
+    void doRestore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once for this visit
+  }, [restoreParam, pro.isPro]);
+
   const checkSeat = async () => {
     setBusy('buy');
     const e = await pro.refresh();
@@ -85,19 +97,19 @@ export default function Paywall() {
     return (
       <Screen back="close" title={t('pro.isPro')} subtitle={t('pro.subtitle')}>
         {pro.access === 'founder' ? (
-          <Card>
+          <Card variant="accent">
             <AppText variant="bodyStrong">{pro.founderSeat ? t('pro.sourceFounderSeat', { seat: pro.founderSeat }) : t('pro.sourceFounder')}</AppText>
             <AppText variant="caption">{t('pro.sourceFounderBody')}</AppText>
           </Card>
         ) : null}
         {pro.access === 'test' ? (
-          <Card>
+          <Card variant="accent">
             <AppText variant="bodyStrong">{t('pro.sourceTest')}</AppText>
             <AppText variant="caption">{t('pro.sourceTestBody')}</AppText>
           </Card>
         ) : null}
         {pro.status === 'grace_period' ? (
-          <Card>
+          <Card variant="accent">
             <AppText variant="body">{t('pro.grace')}</AppText>
           </Card>
         ) : null}
@@ -117,6 +129,7 @@ export default function Paywall() {
   return (
     <Screen
       back="close"
+      background={colors.surface}
       title={t('pro.title')}
       subtitle={t('pro.subtitle')}
       footer={
@@ -137,6 +150,7 @@ export default function Paywall() {
           </>
         )
       }>
+      <PrimeCharacter variant="motivation" size={112} radius={radii.lg} style={styles.prime} />
       {founders.status ? <FounderCounter status={founders.status} /> : null}
       {seatsOpen && userId ? (
         <AppText variant="caption" color="secondary">
@@ -162,12 +176,12 @@ export default function Paywall() {
           {/* A yearly plan is shown only once the store actually offers one. */}
           {hasYearly ? <OptionCard title={t('pro.yearly')} subtitle={t('pro.perYear', { price: price('yearly') })} selected={plan === 'yearly'} onPress={() => setPlan('yearly')} /> : null}
           {pro.status === 'expired' || pro.status === 'billing_issue' ? (
-            <Card>
+            <Card variant="accent">
               <AppText variant="body">{t('pro.expired')}</AppText>
             </Card>
           ) : null}
           {unavailable || provisional || (!userId && auth.configured) ? (
-            <Card>
+            <Card variant="accent">
               <AppText variant="caption">
                 {unavailable === 'not_supported' ? t('pro.storeUnavailable') : unavailable === 'not_configured' || provisional ? t('pro.notConfigured') : t('pro.signInFirst')}
               </AppText>
@@ -184,6 +198,14 @@ export default function Paywall() {
       <AppText variant="caption" color="secondary">
         {t('pro.free')}
       </AppText>
+      <View style={styles.legal}>
+        <AppText variant="caption" color={colors.text} onPress={() => openLegal('terms')} accessibilityRole="link" style={styles.link}>
+          {t('profile.terms')}
+        </AppText>
+        <AppText variant="caption" color={colors.text} onPress={() => openLegal('privacy')} accessibilityRole="link" style={styles.link}>
+          {t('profile.privacyPolicy')}
+        </AppText>
+      </View>
       {__DEV__ ? (
         <Card variant="outline" padded={false}>
           <ToggleRow label={t('pro.devPreview')} hint={t('pro.devPreviewHint')} value={pro.devPreview} onChange={pro.setDevPreview} divider={false} />
@@ -197,4 +219,7 @@ const styles = StyleSheet.create({
   benefit: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   icon: { width: 44, height: 44, borderRadius: radii.sm, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   flex: { flex: 1, gap: 2 },
+  prime: { alignSelf: 'center' },
+  legal: { flexDirection: 'row', justifyContent: 'center', gap: spacing.lg },
+  link: { textDecorationLine: 'underline', paddingVertical: spacing.xs },
 });

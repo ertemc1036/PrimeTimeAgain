@@ -10,6 +10,7 @@ import { kitchenDay } from '@/domain/daySummary';
 import { totals } from '@/domain/nutrition';
 import { MEAL_TYPES, type ISODate } from '@/domain/types';
 import { DaySwitch } from '@/features/DaySwitch';
+import { PrimeHero } from '@/features/prime/character/PrimeHero';
 import { mealLabel } from '@/features/labels';
 import { NutritionSummary } from '@/features/NutritionSummary';
 import { useSave } from '@/hooks/useSave';
@@ -52,34 +53,13 @@ export default function KitchenTab() {
     <Screen inTabs title={isToday ? t('kitchen.title') : t('food.dayYesterday')} subtitle={t('kitchen.subtitle')}>
       <DaySwitch today={today} value={date} onChange={setDate} />
 
-      {/* Day overview: eaten vs. still planned, estimated calories */}
-      <Card variant="elevated" style={styles.overview}>
-        <View style={styles.flex}>
-          <AppText variant="label" color="secondary">
-            {t('food.kcal')}
-          </AppText>
-          <View style={styles.kcalRow}>
-            <AppText variant="display" style={styles.tabular}>
-              {sum.estimated || !logs.length ? sum.kcal : '–'}
-            </AppText>
-            <AppText variant="bodyStrong" color="secondary">
-              kcal
-            </AppText>
-          </View>
-        </View>
-        <View style={styles.counts}>
-          <View style={styles.countPill}>
-            <Icon name="checkmark-circle" size={14} color={colors.black} />
-            <AppText variant="label">{t('kitchen.eaten', { count: day.mealsLogged })}</AppText>
-          </View>
-          {day.mealsPlanned ? (
-            <View style={[styles.countPill, styles.countOpen]}>
-              <Icon name="time-outline" size={14} color={colors.primaryDeep} />
-              <AppText variant="label">{t('kitchen.open', { count: day.openMeals.length })}</AppText>
-            </View>
-          ) : null}
-        </View>
-      </Card>
+      {/* My kitchen: Prime with today's estimated calories, eaten vs. still planned */}
+      <PrimeHero
+        variant="kitchen"
+        eyebrow={t('kitchen.myKitchen')}
+        title={`${sum.estimated || !logs.length ? sum.kcal.toLocaleString() : '–'} kcal`}
+        subtitle={[t('kitchen.eaten', { count: day.mealsLogged }), day.mealsPlanned ? t('kitchen.open', { count: day.openMeals.length }) : null].filter(Boolean).join(' · ')}
+      />
 
       <View style={styles.actions}>
         <View style={styles.flex}>
@@ -189,14 +169,14 @@ export default function KitchenTab() {
 
       {/* Meal planning for tomorrow (Plan Tomorrow routine) */}
       <PressableScale style={styles.tomorrow} accessibilityRole="button" onPress={() => router.push('/plan')}>
-        <Icon name="calendar-outline" size={20} color={colors.primaryDeep} />
+        <Icon name="calendar-outline" size={20} color={colors.text} />
         <View style={styles.flex}>
           <AppText variant="label" color="secondary">
             {t('kitchen.tomorrow.title')}
           </AppText>
           <AppText variant="bodyStrong">{tomorrowText}</AppText>
         </View>
-        <AppText variant="label" color={colors.primaryDeep}>
+        <AppText variant="label" color={colors.text}>
           {t('kitchen.tomorrow.plan')}
         </AppText>
       </PressableScale>
@@ -216,30 +196,20 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     minHeight: 52,
     borderRadius: radii.pill,
-    borderWidth: 1,
-    borderColor: colors.border,
     backgroundColor: colors.white,
   },
   section: { gap: spacing.sm },
   plannedCard: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, padding: spacing.md },
   logged: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   group: { gap: spacing.xs },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.backgroundAlt, borderRadius: radii.md, padding: spacing.md },
+  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.card, borderRadius: radii.md, padding: spacing.md },
   finished: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  overview: { gap: spacing.sm },
-  kcalRow: { flexDirection: 'row', alignItems: 'baseline', gap: 6 },
-  tabular: { fontVariant: ['tabular-nums'] },
-  counts: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
-  countPill: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.primaryLight, borderRadius: radii.pill, paddingHorizontal: 12, paddingVertical: 6 },
-  countOpen: { backgroundColor: colors.primarySoft },
   tomorrow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    backgroundColor: colors.primarySoft,
+    backgroundColor: colors.card,
     borderRadius: radii.lg,
     padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.primaryLight,
   },
 });

@@ -679,7 +679,18 @@
     "workoutHistory": "Workout history",
     "language": "Language",
     "instagram": "Instagram",
-    "progress": "Progress & history"
+    "progress": "Progress & history",
+    "groups": {
+      "me": "Me",
+      "general": "General",
+      "support": "Help & legal"
+    },
+    "sections": {
+      "personal": "Personal details",
+      "goals": "My goals",
+      "nutrition": "Food preferences",
+      "training": "Training preferences"
+    }
   },
   "account": {
     "title": "Account",
@@ -1222,7 +1233,8 @@
       "flexible": "Flexible, no fixed meals",
       "none": "Nothing planned yet",
       "plan": "Plan meals"
-    }
+    },
+    "myKitchen": "My kitchen"
   },
   "bodyJourney": {
     "title": "Body Journey",
@@ -1231,7 +1243,7 @@
     "hiddenTitle": "Weight displays are hidden",
     "hiddenBody": "Weight, weight history and the body illustration are not shown. You can turn this back on at any time.",
     "photos": "Progress photos (private)",
-    "showWeight": "Show weight and body illustration",
-    "showWeightHint": "Applies to Today, Body Journey and your history."
+    "showWeight": "Show weight",
+    "showWeightHint": "Weight, goal and weight history on Today and in your history. Optional – you can turn it off at any time."
   }
 }

@@ -28,10 +28,10 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.black,
+        tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: colors.textSecondary,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, height: barHeight, paddingTop: 8, paddingBottom: bottom },
-        tabBarLabelStyle: { fontFamily: fonts.semibold, fontSize: 11, lineHeight: 15, marginTop: 2 },
+        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, borderTopWidth: StyleSheet.hairlineWidth, elevation: 0, shadowOpacity: 0, height: barHeight, paddingTop: 8, paddingBottom: bottom },
+        tabBarLabelStyle: { fontFamily: fonts.medium, fontSize: 10.5, lineHeight: 14, marginTop: 2, letterSpacing: 0.1 },
         sceneStyle: { backgroundColor: colors.background },
       }}>
       {TABS.map((tab) => (
@@ -43,10 +43,10 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused }) =>
               tab.name === 'prime' ? (
                 <View style={styles.prime}>
-                  <PrimeAvatar size={58} ring={focused ? colors.primary : colors.white} active={focused} />
+                  <PrimeAvatar size={54} ring={colors.white} active={focused} />
                 </View>
               ) : (
-                <Ionicons name={focused ? tab.active : tab.icon} color={color as string} size={23} />
+                <Ionicons name={focused ? tab.active : tab.icon} color={color as string} size={22} />
               ),
           }}
         />
@@ -56,5 +56,5 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  prime: { marginTop: -26, borderRadius: 29, ...shadows.float },
+  prime: { marginTop: -22, borderRadius: 27, ...shadows.card },
 });

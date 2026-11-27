@@ -1,67 +1,65 @@
 import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 
 /**
- * PrimeMe AI design tokens. Every colour in the app comes from here (the 3D stage derives its colours
- * from these too, see src/avatar/hologram.ts).
- *
- * Light grey app background with white cards, near-black type, and baby blue as a deliberate accent:
- * selected states, progress, highlights – never whole screens. Baby blue is too light for text or thin
- * icons on white, so `primaryDeep` is used there (WCAG AA on white).
+ * PrimeMe AI design tokens: black, white, greys and silver – a calm, monochrome look in the spirit of
+ * native iOS. Every colour in the app comes from here. Food photos keep their natural colours; the
+ * interface itself stays monochrome. Prime's artwork (assets/prime) is the only illustration.
  */
 export const palette = {
-  /** Primary Baby Blue: fills, rings, bars, selected states (always with dark content on top). */
-  primary: '#A8D8FF',
-  /** Soft Baby Blue: icon backgrounds, pills, selected cards. */
-  primaryLight: '#E1F1FF',
-  /** Light Blue Background: Prime hint cards, soft highlights. */
-  primarySoft: '#F2F8FD',
-  /** Accent for text and small icons on white (contrast 4.6:1). */
-  primaryDeep: '#2C74BE',
-  black: '#111111',
-  darkGray: '#1E1F24',
-  mediumGray: '#737780',
-  lightGray: '#E7EBF0',
+  black: '#000000',
+  /** Primary text. */
+  ink: '#1D1D1F',
+  /** Secondary text. */
+  mediumGray: '#86868B',
+  graphite: '#2C2C2E',
+  gray: '#AEAEB2',
+  silver: '#E5E5EA',
+  softBackground: '#F5F5F7',
   white: '#FFFFFF',
 } as const;
 
 export const colors = {
   ...palette,
-  /** Primary text. */
-  text: '#101114',
+  text: palette.ink,
   textSecondary: palette.mediumGray,
+  textTertiary: palette.gray,
   /** App background behind cards. */
-  background: '#F7F9FC',
-  /** Cards and sheets. */
+  background: palette.softBackground,
+  /** Cards, sheets, the tab bar. */
   surface: palette.white,
-  /** Muted fill for inputs, chips, secondary buttons and list rows (on white and on the background). */
-  card: '#EEF2F6',
-  backgroundAlt: '#F3F6FA',
-  border: palette.lightGray,
-  disabled: '#C5CAD3',
-  overlay: 'rgba(16,17,20,0.4)',
-  /** Content on baby-blue fills. */
-  onPrimary: '#101114',
-  /** Text on dark (black / dark grey) surfaces. */
+  /** Translucent grey fill (like iOS system fills): secondary buttons, chips, inputs, icon circles. Works on white and on the background. */
+  card: 'rgba(118,118,128,0.12)',
+  /** Slightly stronger fill for selected options. */
+  selected: 'rgba(118,118,128,0.2)',
+  /** Progress rings and bars, switches: monochrome accent. */
+  accent: palette.ink,
+  /** Track behind rings and bars. */
+  track: palette.silver,
+  border: palette.silver,
+  disabled: '#C7C7CC',
+  overlay: 'rgba(0,0,0,0.4)',
+  /** Text on dark (black / graphite) surfaces. */
   onDark: palette.white,
-  onDarkMuted: '#A9ADB6',
+  onDarkMuted: palette.gray,
+  /** Background of Prime's artwork (the renders sit on near-black). */
+  primeBackdrop: '#03010C',
 } as const;
 
-/** Dark, neutral stage of the 3D Body Journey (the only large dark area in the app). */
+/** Dark, neutral stage of the optional 3D body view (disabled in this version, see src/config/features.ts). */
 export const stage = {
-  background: '#0E0F12',
-  panel: '#17181D',
-  line: '#272932',
+  background: '#0E0E10',
+  panel: '#1C1C1E',
+  line: palette.graphite,
   text: palette.white,
-  muted: colors.onDarkMuted,
-  faint: '#767A84',
-  /** Light colours of the model and rings: the app's baby blues. */
-  accent: palette.primary,
-  glow: palette.primaryLight,
-  body: '#1D1F26',
-  cloth: '#0E0F12',
-  hair: '#17181D',
-  ok: palette.primary,
-  fail: '#FF8A80',
+  muted: palette.gray,
+  faint: '#8E8E93',
+  accent: palette.silver,
+  glow: palette.white,
+  body: '#1C1C1E',
+  cloth: '#0E0E10',
+  hair: '#1C1C1E',
+  ok: palette.silver,
+  fail: '#FF6961',
 } as const;
 
 export const spacing = { xxs: 4, xs: 8, sm: 12, md: 16, lg: 20, xl: 24, xxl: 32, xxxl: 48 } as const;
@@ -71,9 +69,9 @@ export const layout = { screenPadding: 20, maxContentWidth: 600, minTouchTarget:
 const shadow = (y: number, blur: number, opacity: number, elevation: number): ViewStyle =>
   Platform.select<ViewStyle>({
     android: { elevation },
-    default: { shadowColor: '#14213D', shadowOffset: { width: 0, height: y }, shadowRadius: blur, shadowOpacity: opacity },
+    default: { shadowColor: '#000000', shadowOffset: { width: 0, height: y }, shadowRadius: blur, shadowOpacity: opacity },
   });
-export const shadows = { soft: shadow(2, 10, 0.05, 1), card: shadow(8, 24, 0.07, 3), float: shadow(12, 32, 0.12, 8) } as const;
+export const shadows = { soft: shadow(1, 6, 0.04, 1), card: shadow(4, 16, 0.05, 2), float: shadow(8, 24, 0.12, 6) } as const;
 
 /** Inter (SIL Open Font License — free for commercial use), one family per weight. */
 export const fonts = {

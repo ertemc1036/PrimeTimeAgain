@@ -1,8 +1,9 @@
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Card, ListRow, Screen, ToggleRow } from '@/components/ui';
+import { FEATURES } from '@/config/features';
 import { streakStats } from '@/domain/completion';
 import { BodyHero } from '@/features/avatar/BodyHero';
 import { useSave } from '@/hooks/useSave';
@@ -14,6 +15,12 @@ import { spacing } from '@/theme';
  * weight log, private progress photos and the avatar body. Weight displays can be switched off here.
  */
 export default function BodyJourneyScreen() {
+  // The 3D body is switched off in this version: the progress overview takes its place.
+  if (!FEATURES.bodyVisualizer3D) return <Redirect href="/journey" />;
+  return <BodyJourney3D />;
+}
+
+function BodyJourney3D() {
   const { t } = useTranslation();
   const { data, today } = useAppState();
   const save = useSave();

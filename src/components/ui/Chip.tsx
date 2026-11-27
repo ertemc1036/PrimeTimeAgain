@@ -25,6 +25,6 @@ export function Chip({ label, selected, onPress, mode = 'checkbox', icon }: { la
 
 const styles = StyleSheet.create({
   off: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
-  on: { backgroundColor: colors.primaryLight, borderWidth: 1, borderColor: colors.primaryDeep },
+  on: { backgroundColor: colors.selected, borderWidth: 1, borderColor: colors.text },
   chip: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 44, paddingHorizontal: spacing.md, borderRadius: radii.pill },
 });

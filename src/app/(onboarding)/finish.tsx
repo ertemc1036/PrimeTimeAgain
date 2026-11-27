@@ -50,7 +50,7 @@ export default function FinishStep() {
   };
 
   return (
-    <OnboardingStep step={7} title={t('onboarding.finish.title')} subtitle={t('onboarding.finish.subtitle')} continueLabel={t('onboarding.finish.cta')} onContinue={() => void start()} disabled={busy}>
+    <OnboardingStep step={7} title={t('onboarding.finish.title')} subtitle={t('onboarding.finish.subtitle')} continueLabel={t('onboarding.finish.cta')} onContinue={() => void start()} disabled={busy} prime="success">
       <Card variant="outline" padded={false}>
         <ListRow label={t('onboarding.finish.name')} value={draft.name} />
         <ListRow label={t('onboarding.finish.goals')} value={draft.goals.map((g) => t(`onboarding.goals.${g}`)).join(', ')} />

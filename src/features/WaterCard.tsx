@@ -45,7 +45,7 @@ export function WaterCard() {
 const styles = StyleSheet.create({
   card: { gap: spacing.sm },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  track: { height: 10, borderRadius: radii.pill, backgroundColor: colors.primarySoft, overflow: 'hidden' },
-  fill: { height: 10, borderRadius: radii.pill, backgroundColor: colors.primary },
+  track: { height: 10, borderRadius: radii.pill, backgroundColor: colors.card, overflow: 'hidden' },
+  fill: { height: 10, borderRadius: radii.pill, backgroundColor: colors.accent },
   buttons: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
 });

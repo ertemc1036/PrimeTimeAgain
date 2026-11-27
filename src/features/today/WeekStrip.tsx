@@ -13,7 +13,7 @@ import { colors, radii, spacing } from '@/theme';
 export const MAX_PLAN_DAYS = 6;
 
 /**
- * Horizontal week (Monday–Sunday) with dates. Today is baby blue, the selected day is outlined,
+ * Horizontal week (Monday–Sunday) with dates. Today is black, the selected day is outlined,
  * past days with entries get a dot, future days are marked as planning days (never as done).
  */
 export function WeekStrip({ today, selected, onSelect, hasEntries }: { today: ISODate; selected: ISODate; onSelect: (d: ISODate) => void; hasEntries: (d: ISODate) => boolean }) {
@@ -47,10 +47,10 @@ export function WeekStrip({ today, selected, onSelect, hasEntries }: { today: IS
             accessibilityState={{ selected: isSelected, disabled }}
             accessibilityLabel={ahead > 0 ? `${label}, ${t('today.week.planning')}` : label}
             style={[styles.day, isToday && styles.today, isSelected && !isToday && styles.selected, disabled && styles.disabled]}>
-            <AppText variant="caption" color={isToday ? colors.text : 'secondary'}>
+            <AppText variant="caption" color={isToday ? colors.onDarkMuted : 'secondary'}>
               {formatDate(d, locale, { weekday: 'narrow' })}
             </AppText>
-            <AppText variant="bodyStrong" color={ahead > 0 ? colors.textSecondary : colors.text} style={styles.num}>
+            <AppText variant="bodyStrong" color={isToday ? colors.white : ahead > 0 ? colors.textSecondary : colors.text} style={styles.num}>
               {formatDate(d, locale, { day: 'numeric' })}
             </AppText>
             <View style={[styles.dot, ahead < 0 && hasEntries(d) ? styles.dotOn : ahead > 0 ? styles.dotPlan : null]} />
@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   arrow: { width: 24, height: 64, alignItems: 'center', justifyContent: 'center' },
   day: { flex: 1, minHeight: 64, borderRadius: radii.md, alignItems: 'center', justifyContent: 'center', gap: 2, paddingVertical: spacing.xs, borderWidth: 1.5, borderColor: 'transparent' },
-  today: { backgroundColor: colors.primary },
+  today: { backgroundColor: colors.black },
   selected: { backgroundColor: colors.surface, borderColor: colors.text },
   disabled: { opacity: 0.35 },
   num: { fontVariant: ['tabular-nums'] },
   dot: { width: 5, height: 5, borderRadius: 3 },
-  dotOn: { backgroundColor: colors.primaryDeep },
+  dotOn: { backgroundColor: colors.text },
   dotPlan: { borderWidth: 1, borderColor: colors.disabled },
 });

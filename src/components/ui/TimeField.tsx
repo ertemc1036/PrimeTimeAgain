@@ -28,7 +28,7 @@ export function TimeField({ label, value, onChange, error, step = 15 }: { label:
     <View style={styles.wrap}>
       <AppText variant="label">{label}</AppText>
       <View
-        style={[styles.row, { borderColor: error ? colors.black : colors.card }]}
+        style={[styles.row, { borderColor: error ? colors.text : 'transparent' }]}
         accessibilityRole="adjustable"
         accessibilityLabel={label}
         accessibilityValue={{ text: value || t('common.notSet') }}

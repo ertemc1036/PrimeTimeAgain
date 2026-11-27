@@ -40,9 +40,10 @@ export default function NotificationsStep() {
                 router.push('/finish');
               },
             }
-      }>
+      }
+      prime="motivation">
       <Card>
-        <Icon name="notifications-outline" size={28} />
+        <Icon name="notifications-outline" size={22} />
         <AppText variant="body" style={{ marginTop: 8 }}>
           {t('notifications.content.planning.title')}
         </AppText>

@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { AppText, Icon, PressableScale } from '@/components/ui';
 import type { BriefingPart } from '@/domain/briefing';
 import { activitySummary } from '@/features/labels';
-import { PrimeAvatar } from '@/features/prime/PrimeAvatar';
-import { colors, radii, spacing } from '@/theme';
+import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
+import { colors, radii, shadows, spacing } from '@/theme';
 
 /** Prime's short note for today, built from saved data (src/domain/briefing.ts). Tapping opens the chat. */
 export function PrimeBriefing({ parts }: { parts: BriefingPart[] }) {
@@ -36,9 +36,9 @@ export function PrimeBriefing({ parts }: { parts: BriefingPart[] }) {
       accessibilityHint={t('today.prime.open')}
       style={styles.card}
       testID="prime-card">
-      <PrimeAvatar size={40} />
+      <PrimeCharacter variant="today" size={72} radius={radii.md} motion="enter" />
       <View style={styles.flex}>
-        <AppText variant="label" color={colors.primaryDeep}>
+        <AppText variant="caption" color="secondary">
           {t('brand.agent')}
         </AppText>
         <AppText variant="body">{text}</AppText>
@@ -49,15 +49,6 @@ export function PrimeBriefing({ parts }: { parts: BriefingPart[] }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    backgroundColor: colors.primarySoft,
-    borderColor: colors.primaryLight,
-    borderWidth: 1,
-    borderRadius: radii.xl,
-    padding: spacing.md,
-  },
+  card: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, backgroundColor: colors.surface, borderRadius: radii.xl, padding: spacing.sm, paddingRight: spacing.md, ...shadows.card },
   flex: { flex: 1, gap: 2 },
 });

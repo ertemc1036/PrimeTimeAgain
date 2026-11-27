@@ -8,7 +8,7 @@ import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
 import { PressableScale } from './PressableScale';
 
-/** Large selectable card (activity type, goals, options). Selected = baby blue with a dark outline. */
+/** Large selectable card (activity type, goals, options). Selected = grey fill with a dark outline. */
 export function OptionCard({
   title,
   subtitle,
@@ -43,7 +43,7 @@ export function OptionCard({
       accessibilityLabel={[title, subtitle].filter(Boolean).join(', ')}
       style={[layout === 'tile' ? styles.tile : styles.row, selected ? styles.on : styles.off, disabled && styles.disabled]}>
       {icon ? (
-        <View style={[styles.icon, { backgroundColor: selected ? colors.primary : colors.backgroundAlt }]}>
+        <View style={[styles.icon, { backgroundColor: selected ? colors.surface : colors.card }]}>
           <Icon name={icon} size={22} color={fg} />
         </View>
       ) : null}
@@ -78,5 +78,5 @@ const styles = StyleSheet.create({
   disabled: { opacity: 0.45 },
   // Same border width in both states so the content doesn't shift when selecting.
   off: { backgroundColor: colors.surface, borderWidth: 1.5, borderColor: colors.border },
-  on: { backgroundColor: colors.primaryLight, borderWidth: 1.5, borderColor: colors.primaryDeep },
+  on: { backgroundColor: colors.selected, borderWidth: 1.5, borderColor: colors.text },
 });

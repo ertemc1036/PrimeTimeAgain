@@ -679,7 +679,18 @@
     "workoutHistory": "Trainingsverlauf",
     "language": "Sprache",
     "instagram": "Instagram",
-    "progress": "Fortschritt & Verlauf"
+    "progress": "Fortschritt & Verlauf",
+    "groups": {
+      "me": "Ich",
+      "general": "Allgemein",
+      "support": "Hilfe & Rechtliches"
+    },
+    "sections": {
+      "personal": "Persönliche Daten",
+      "goals": "Meine Ziele",
+      "nutrition": "Ernährungspräferenzen",
+      "training": "Trainingspräferenzen"
+    }
   },
   "account": {
     "title": "Konto",
@@ -1222,7 +1233,8 @@
       "flexible": "Flexibel, ohne feste Mahlzeiten",
       "none": "Noch nichts geplant",
       "plan": "Mahlzeiten planen"
-    }
+    },
+    "myKitchen": "Meine Küche"
   },
   "bodyJourney": {
     "title": "Body Journey",
@@ -1231,7 +1243,7 @@
     "hiddenTitle": "Gewichtsanzeigen sind ausgeblendet",
     "hiddenBody": "Gewicht, Gewichtsverlauf und die Körperdarstellung werden nicht angezeigt. Du kannst das jederzeit wieder einschalten.",
     "photos": "Fortschrittsfotos (privat)",
-    "showWeight": "Gewicht und Körperdarstellung anzeigen",
-    "showWeightHint": "Gilt für Heute, Body Journey und deinen Verlauf."
+    "showWeight": "Gewicht anzeigen",
+    "showWeightHint": "Gewicht, Ziel und Gewichtsverlauf auf Heute und in deinem Verlauf. Freiwillig – du kannst es jederzeit ausschalten."
   }
 }

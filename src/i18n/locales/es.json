@@ -685,7 +685,18 @@
     "workoutHistory": "Historial de entrenamientos",
     "language": "Idioma",
     "instagram": "Instagram",
-    "progress": "Progreso e historial"
+    "progress": "Progreso e historial",
+    "groups": {
+      "me": "Yo",
+      "general": "General",
+      "support": "Ayuda y aspectos legales"
+    },
+    "sections": {
+      "personal": "Datos personales",
+      "goals": "Mis objetivos",
+      "nutrition": "Preferencias de alimentación",
+      "training": "Preferencias de entrenamiento"
+    }
   },
   "account": {
     "title": "Cuenta",
@@ -1239,7 +1250,8 @@
       "flexible": "Flexible, sin comidas fijas",
       "none": "Aún no hay nada planeado",
       "plan": "Planear comidas"
-    }
+    },
+    "myKitchen": "Mi cocina"
   },
   "bodyJourney": {
     "title": "Body Journey",
@@ -1248,7 +1260,7 @@
     "hiddenTitle": "Los datos de peso están ocultos",
     "hiddenBody": "No se muestran el peso, su historial ni la ilustración corporal. Puedes volver a activarlo cuando quieras.",
     "photos": "Fotos de progreso (privadas)",
-    "showWeight": "Mostrar peso e ilustración corporal",
-    "showWeightHint": "Se aplica a Hoy, Body Journey y tu historial."
+    "showWeight": "Mostrar peso",
+    "showWeightHint": "Peso, objetivo e historial de peso en Hoy y en tu historial. Opcional: puedes desactivarlo cuando quieras."
   }
 }

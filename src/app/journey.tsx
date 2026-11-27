@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Button, Card, Icon, ListRow, ProgressBar, Screen, Segmented, StatTile } from '@/components/ui';
+import { AppText, Button, Card, Icon, ListRow, ProgressBar, Screen, Segmented, StatTile, ToggleRow } from '@/components/ui';
 import { MILESTONES } from '@/domain/achievements';
+import { weightProgress } from '@/domain/bodyStats';
 import { journeyStats } from '@/domain/completion';
 import { addDays } from '@/domain/dates';
 import { journeyPosition, MONTH_KEYS } from '@/domain/journey';
@@ -28,6 +29,7 @@ export default function JourneyTab() {
   const stats = journeyStats(data, today);
   const units = data.profile?.units ?? 'metric';
   const showWeight = data.profile?.showWeight !== false;
+  const wp = weightProgress(data);
   const fmt = (kg: number) => formatWeight(kg, units);
 
   const since = range === 'week' ? addDays(today, -6) : range === 'month' ? addDays(today, -29) : '0000-00-00';
@@ -77,6 +79,21 @@ export default function JourneyTab() {
             </Card>
           ) : (
             <Card style={styles.gap}>
+              <View style={styles.grid}>
+                <View style={styles.flex}>
+                  <AppText variant="caption" color="secondary">
+                    {t('avatar.start')}
+                  </AppText>
+                  <AppText variant="bodyStrong">{wp.startKg === null ? '—' : fmt(wp.startKg)}</AppText>
+                </View>
+                <View style={styles.flex}>
+                  <AppText variant="caption" color="secondary">
+                    {t('avatar.goal')}
+                  </AppText>
+                  <AppText variant="bodyStrong">{wp.goalKg === null ? '—' : fmt(wp.goalKg)}</AppText>
+                </View>
+              </View>
+              {wp.progress !== null ? <ProgressBar progress={wp.progress} height={6} /> : null}
               <View style={styles.between}>
                 <AppText variant="stat">{fmt(last.kg)}</AppText>
                 {change !== null ? (
@@ -173,7 +190,7 @@ export default function JourneyTab() {
       ) : null}
 
       <AppText variant="heading">{t('journey.milestones')}</AppText>
-      <Card variant="outline" padded={false}>
+      <Card padded={false}>
         {MILESTONES.map((m, i) => (
           <View key={m.id} style={[styles.milestone, i < MILESTONES.length - 1 && styles.divider]}>
             <Icon name={earned.has(m.id) ? 'trophy' : 'trophy-outline'} size={20} color={earned.has(m.id) ? colors.black : colors.disabled} />
@@ -184,8 +201,18 @@ export default function JourneyTab() {
         ))}
       </Card>
 
-      <Card variant="outline" padded={false}>
+      <Card padded={false}>
         <ListRow icon="images-outline" label={t('journey.photos')} hint={t('journey.photosHint')} onPress={() => router.push('/photos')} divider={false} />
+      </Card>
+
+      <Card padded={false} style={styles.toggle}>
+        <ToggleRow
+          label={t('bodyJourney.showWeight')}
+          hint={t('bodyJourney.showWeightHint')}
+          value={showWeight}
+          onChange={(v) => void save({ type: 'updateProfile', patch: { showWeight: v } })}
+          divider={false}
+        />
       </Card>
     </Screen>
   );
@@ -194,6 +221,8 @@ export default function JourneyTab() {
 const styles = StyleSheet.create({
   grid: { flexDirection: 'row', gap: spacing.sm },
   gap: { gap: spacing.sm },
+  flex: { flex: 1, gap: 2 },
+  toggle: { paddingHorizontal: spacing.md },
   between: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
   months: { flexDirection: 'row', gap: 6 },
   month: { flex: 1, height: 32, borderRadius: 8, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white },

@@ -20,7 +20,7 @@ export function ToggleRow({ label, hint, value, onChange, disabled, divider = tr
         onValueChange={onChange}
         disabled={disabled}
         accessibilityLabel={label}
-        trackColor={{ false: colors.border, true: colors.primary }}
+        trackColor={{ false: colors.border, true: colors.accent }}
         thumbColor={colors.white}
         ios_backgroundColor={colors.border}
         {...({ activeThumbColor: colors.white } as object)}

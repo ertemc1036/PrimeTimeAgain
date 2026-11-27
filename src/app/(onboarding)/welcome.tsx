@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, IconButton } from '@/components/ui';
-import { PrimeAvatar } from '@/features/prime/PrimeAvatar';
+import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
 import { authAvailable } from '@/services/auth';
 import { colors, fonts, layout, spacing } from '@/theme';
 
@@ -26,14 +26,14 @@ export default function Welcome() {
         <IconButton icon="globe-outline" label={t('common.language')} onPress={() => router.push('/language')} variant="inverse" color={colors.white} />
       </View>
       <View style={styles.center}>
-        <PrimeAvatar size={88} ring={colors.primary} />
+        <PrimeCharacter variant="welcome" size={260} radius={0} motion="idle" accessibilityLabel={t('brand.agent')} />
         <Text style={styles.wordmark} accessibilityRole="header" maxFontSizeMultiplier={1.2}>
           {t('brand.name')}
         </Text>
-        <AppText variant="heading" color={colors.white} align="center">
+        <AppText variant="body" color={colors.white} align="center">
           {t('onboarding.welcome.subtitle')}
         </AppText>
-        <AppText variant="subheading" color={colors.primary} align="center">
+        <AppText variant="subheading" color={colors.onDarkMuted} align="center">
           {t('brand.slogan')}
         </AppText>
       </View>
@@ -65,9 +65,10 @@ function PrimaryInverse({ label, onPress }: { label: string; onPress: () => void
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: colors.black, paddingHorizontal: layout.screenPadding },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md },
-  wordmark: { color: colors.white, fontFamily: fonts.extrabold, fontSize: 64, lineHeight: 72, letterSpacing: -2.5, marginBottom: spacing.md },
+  // Same near-black as Prime's studio renders, so the character blends into the screen.
+  root: { flex: 1, backgroundColor: colors.primeBackdrop, paddingHorizontal: layout.screenPadding },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
+  wordmark: { color: colors.white, fontFamily: fonts.bold, fontSize: 40, lineHeight: 46, letterSpacing: -1.2 },
   lang: { position: 'absolute', right: layout.screenPadding, zIndex: 1 },
   bottom: { gap: spacing.md, width: '100%', maxWidth: layout.maxContentWidth, alignSelf: 'center' },
   cta: { width: '100%' },

@@ -8,6 +8,7 @@ import { addDays } from '@/domain/dates';
 import { gymDay, trainingWeek } from '@/domain/daySummary';
 import type { ISODate, WorkoutType } from '@/domain/types';
 import { DaySwitch } from '@/features/DaySwitch';
+import { PrimeHero } from '@/features/prime/character/PrimeHero';
 import { ACTIVITY_ICONS, activityLabel, activitySummary } from '@/features/labels';
 import { useSave } from '@/hooks/useSave';
 import { useAppState } from '@/state/AppStateProvider';
@@ -44,30 +45,26 @@ export default function GymTab() {
     <Screen inTabs title={date === today ? t('gym.title') : t('common.yesterday')} subtitle={t('gym.subtitle')}>
       <DaySwitch today={today} value={date} onChange={setDate} />
 
-      {/* Did I train today, what, and what was planned */}
-      <Card variant="elevated" style={styles.status}>
-        <View style={[styles.statusIcon, (day.sessions > 0 || day.rest) && styles.statusIconDone]}>
-          <Icon name={day.rest ? 'moon-outline' : day.sessions ? 'checkmark' : 'barbell-outline'} size={22} color={colors.black} />
-        </View>
-        <View style={styles.flex}>
-          <AppText variant="subheading">{day.sessions ? t('gym.trained') : day.rest ? t('activity.rest') : t('gym.notYet')}</AppText>
-          {day.sessions ? (
-            <AppText variant="caption" color="secondary">
-              {[day.types.map((ty) => activityLabel(t, ty)).join(', '), t('common.min', { count: day.minutes })].join(' · ')}
-            </AppText>
-          ) : null}
-          {plannedActivity || !(day.sessions > 0 || day.rest) ? (
-            <AppText variant="caption" color="secondary">
-              {plannedActivity ? t('workout.planned', { summary: activitySummary(t, plannedActivity) }) : t('workout.noPlan')}
-            </AppText>
-          ) : null}
-          {plannedActivity?.notes ? (
-            <AppText variant="caption" color="secondary">
-              {plannedActivity.notes}
-            </AppText>
-          ) : null}
-        </View>
-      </Card>
+      {/* Did I train today, what, and what was planned – Prime trains, celebrates or rests with you */}
+      <PrimeHero
+        variant={day.rest ? 'recovery' : day.sessions > 0 ? 'success' : 'gym'}
+        eyebrow={date === today ? t('gym.today') : t('common.yesterday')}
+        title={day.sessions ? t('gym.trained') : day.rest ? t('activity.rest') : t('gym.notYet')}
+        subtitle={
+          day.sessions
+            ? [day.types.map((ty) => activityLabel(t, ty)).join(', '), t('common.min', { count: day.minutes })].join(' · ')
+            : plannedActivity
+              ? t('workout.planned', { summary: activitySummary(t, plannedActivity) })
+              : day.rest
+                ? t('workout.restBody')
+                : t('workout.noPlan')
+        }
+      />
+      {plannedActivity?.notes ? (
+        <AppText variant="caption" color="secondary">
+          {plannedActivity.notes}
+        </AppText>
+      ) : null}
 
       <AppText variant="heading">{t('workout.choose')}</AppText>
       <View style={styles.tiles}>
@@ -194,14 +191,14 @@ export default function GymTab() {
 
       {/* Tomorrow's training (planned in the Plan Tomorrow routine) */}
       <PressableScale style={styles.tomorrow} accessibilityRole="button" onPress={() => router.push('/plan')}>
-        <Icon name="calendar-outline" size={20} color={colors.primaryDeep} />
+        <Icon name="calendar-outline" size={20} color={colors.text} />
         <View style={styles.flex}>
           <AppText variant="label" color="secondary">
             {t('gym.tomorrow.title')}
           </AppText>
           <AppText variant="bodyStrong">{tomorrowPlan ? activitySummary(t, tomorrowPlan) : t('gym.tomorrow.none')}</AppText>
         </View>
-        <AppText variant="label" color={colors.primaryDeep}>
+        <AppText variant="label" color={colors.text}>
           {t('gym.tomorrow.plan')}
         </AppText>
       </PressableScale>
@@ -223,28 +220,21 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     minHeight: 52,
     borderRadius: radii.pill,
-    borderWidth: 1,
-    borderColor: colors.border,
     backgroundColor: colors.white,
   },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.backgroundAlt, borderRadius: radii.md, padding: spacing.md },
+  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.card, borderRadius: radii.md, padding: spacing.md },
   flex: { flex: 1, gap: 2 },
-  status: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  statusIcon: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.backgroundAlt, alignItems: 'center', justifyContent: 'center' },
-  statusIconDone: { backgroundColor: colors.primary },
   bars: { flexDirection: 'row', gap: spacing.xs, height: 96, marginTop: spacing.xs },
   barCol: { flex: 1, alignItems: 'center', gap: 4 },
-  barTrack: { flex: 1, width: '100%', maxWidth: 28, borderRadius: 8, backgroundColor: colors.primarySoft, justifyContent: 'flex-end', alignItems: 'center', overflow: 'hidden', paddingBottom: 0 },
-  bar: { width: '100%', borderRadius: 8, backgroundColor: colors.primary },
+  barTrack: { flex: 1, width: '100%', maxWidth: 28, borderRadius: 8, backgroundColor: colors.card, justifyContent: 'flex-end', alignItems: 'center', overflow: 'hidden', paddingBottom: 0 },
+  bar: { width: '100%', borderRadius: 8, backgroundColor: colors.accent },
   typeRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, paddingVertical: 4 },
   tomorrow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    backgroundColor: colors.primarySoft,
+    backgroundColor: colors.card,
     borderRadius: radii.lg,
     padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.primaryLight,
   },
 });

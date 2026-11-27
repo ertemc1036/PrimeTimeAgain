@@ -58,11 +58,11 @@ export function NutritionCard({
         </View>
         {targets ? (
           <ProgressRing progress={known ? totals.kcal / targets.kcal : 0} size={92} stroke={9}>
-            <Icon name="flame-outline" size={24} color={colors.primaryDeep} />
+            <Icon name="flame-outline" size={24} color={colors.text} />
           </ProgressRing>
         ) : (
           <View style={styles.flame}>
-            <Icon name="flame-outline" size={26} color={colors.primaryDeep} />
+            <Icon name="flame-outline" size={26} color={colors.text} />
           </View>
         )}
       </View>
@@ -78,7 +78,7 @@ export function NutritionCard({
             <AppText variant="subheading" style={styles.tabular}>
               {known ? `${Math.round(totals[k])} g` : '–'}
             </AppText>
-            <AppText variant="caption" color="secondary">
+            <AppText variant="caption" color="secondary" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
               {targets ? `${t(`food.${k}`)} · ${targets[k]} g` : t(`food.${k}`)}
             </AppText>
           </View>
@@ -96,8 +96,6 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     backgroundColor: colors.surface,
     borderRadius: radii.xl,
-    borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing.lg,
     ...shadows.card,
   },
@@ -105,8 +103,8 @@ const styles = StyleSheet.create({
   kcalRow: { flexDirection: 'row', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' },
   kcal: { fontFamily: fonts.extrabold, fontSize: 40, lineHeight: 46, letterSpacing: -1.2, color: colors.text, fontVariant: ['tabular-nums'] },
   action: { marginTop: spacing.sm, alignSelf: 'flex-start' },
-  flame: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.primaryLight, alignItems: 'center', justifyContent: 'center' },
+  flame: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   macros: { flexDirection: 'row', gap: spacing.sm },
-  macro: { flex: 1, backgroundColor: colors.surface, borderRadius: radii.lg, borderWidth: 1, borderColor: colors.border, padding: spacing.md, gap: 4, ...shadows.soft },
+  macro: { flex: 1, backgroundColor: colors.surface, borderRadius: radii.lg, paddingVertical: spacing.md, paddingHorizontal: spacing.sm, gap: 4, ...shadows.soft },
   tabular: { fontVariant: ['tabular-nums'] },
 });

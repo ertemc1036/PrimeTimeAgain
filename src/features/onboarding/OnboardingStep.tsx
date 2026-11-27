@@ -3,7 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button, ProgressBar, Screen } from '@/components/ui';
-import { spacing } from '@/theme';
+import { PrimeCharacter } from '@/features/prime/character/PrimeCharacter';
+import type { PrimeVariant } from '@/features/prime/character/assets';
+import { radii, spacing } from '@/theme';
 
 import { ONBOARDING_STEPS } from './draft';
 
@@ -16,6 +18,7 @@ export function OnboardingStep({
   continueLabel,
   disabled,
   secondary,
+  prime,
 }: {
   step: number;
   title: string;
@@ -25,6 +28,8 @@ export function OnboardingStep({
   continueLabel?: string;
   disabled?: boolean;
   secondary?: { label: string; onPress: () => void };
+  /** Optional small Prime pose above the content (kept small so the question stays in focus). */
+  prime?: PrimeVariant;
 }) {
   const { t } = useTranslation();
   return (
@@ -42,6 +47,7 @@ export function OnboardingStep({
       <View style={styles.progress}>
         <ProgressBar progress={step / ONBOARDING_STEPS} height={4} />
       </View>
+      {prime ? <PrimeCharacter variant={prime} size={88} radius={radii.lg} /> : null}
       {children}
     </Screen>
   );

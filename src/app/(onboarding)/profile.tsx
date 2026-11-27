@@ -35,7 +35,7 @@ export default function ProfileStep() {
   };
 
   return (
-    <OnboardingStep step={1} title={t('onboarding.profile.title')} onContinue={onContinue}>
+    <OnboardingStep step={1} title={t('onboarding.profile.title')} onContinue={onContinue} prime="welcome">
       <TextField label={t('onboarding.profile.name')} placeholder={t('onboarding.profile.namePlaceholder')} value={name} onChangeText={setName} autoCapitalize="words" textContentType="givenName" error={nameError} maxLength={40} />
       <OptionCard title={t('onboarding.profile.adult')} subtitle={t('onboarding.profile.adultHint')} selected={adult} onPress={() => setAdult(!adult)} mode="checkbox" />
       <View style={styles.group}>

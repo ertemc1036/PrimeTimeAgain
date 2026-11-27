@@ -12,19 +12,7 @@ import { describeAction } from './describe';
  * One change Prime suggests. Pending: confirm, edit (meals) or dismiss. Applied: can be undone.
  * Estimated nutrition is always marked as an estimate.
  */
-export function ActionCard({
-  action,
-  onApply,
-  onEdit,
-  onDismiss,
-  onUndo,
-}: {
-  action: PrimeAction & ProposedActionState;
-  onApply(): void;
-  onEdit?: () => void;
-  onDismiss(): void;
-  onUndo(): void;
-}) {
+export function ActionCard({ action, onApply, onEdit, onDismiss, onUndo }: { action: PrimeAction & ProposedActionState; onApply(): void; onEdit?: () => void; onDismiss(): void; onUndo(): void }) {
   const { t } = useTranslation();
   const d = describeAction(action, t);
   const pending = action.status === 'pending';
@@ -32,7 +20,7 @@ export function ActionCard({
     <View style={[styles.card, pending && styles.pending]} accessibilityLabel={d.title}>
       <View style={styles.head}>
         <View style={[styles.icon, action.status === 'applied' && styles.iconDone]}>
-          <Icon name={action.status === 'applied' ? 'checkmark' : d.icon} size={18} color={colors.onPrimary} />
+          <Icon name={action.status === 'applied' ? 'checkmark' : d.icon} size={18} color={colors.white} />
         </View>
         <View style={styles.flex}>
           <AppText variant="bodyStrong">{d.title}</AppText>
@@ -68,10 +56,10 @@ export function ActionCard({
 
 const styles = StyleSheet.create({
   card: { borderRadius: radii.lg, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white, padding: spacing.md, gap: spacing.sm },
-  pending: { borderColor: colors.primary, borderWidth: 2 },
+  pending: { borderColor: colors.accent, borderWidth: 2 },
   head: { flexDirection: 'row', gap: spacing.sm, alignItems: 'flex-start' },
-  icon: { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-  iconDone: { backgroundColor: colors.primary },
+  icon: { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.accent, alignItems: 'center', justifyContent: 'center' },
+  iconDone: { backgroundColor: colors.accent },
   flex: { flex: 1, gap: 2 },
   buttons: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.xs },
 });

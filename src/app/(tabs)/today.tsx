@@ -110,12 +110,12 @@ export default function Today() {
 
       {!isToday ? (
         <View style={styles.dayBanner}>
-          <Icon name={isFuture ? 'calendar-outline' : 'time-outline'} size={16} color={colors.primaryDeep} />
+          <Icon name={isFuture ? 'calendar-outline' : 'time-outline'} size={16} color={colors.text} />
           <AppText variant="label" style={styles.flex}>
             {isFuture ? t('today.viewing.future', { date: dayLabel }) : t('today.viewing.past', { date: dayLabel })}
           </AppText>
           <Pressable onPress={() => setDate(today)} accessibilityRole="button" hitSlop={8}>
-            <AppText variant="label" color={colors.primaryDeep}>
+            <AppText variant="label" color={colors.text}>
               {t('common.today')}
             </AppText>
           </Pressable>
@@ -155,7 +155,7 @@ export default function Today() {
         <WaterCard />
       ) : !isFuture ? (
         <View style={styles.inlineRow}>
-          <Icon name="water-outline" size={18} color={colors.primaryDeep} />
+          <Icon name="water-outline" size={18} color={colors.text} />
           <AppText variant="bodyStrong" style={styles.flex}>
             {t('water.title')}
           </AppText>
@@ -186,7 +186,7 @@ export default function Today() {
           </AppText>
         ) : null}
         <View style={styles.cardAction}>
-          <AppText variant="label" color={colors.primaryDeep}>
+          <AppText variant="label" color={colors.text}>
             {t('today.training.toGym')}
           </AppText>
         </View>
@@ -218,52 +218,34 @@ export default function Today() {
           </AppText>
         )}
         <View style={styles.cardAction}>
-          <AppText variant="label" color={colors.primaryDeep}>
+          <AppText variant="label" color={colors.text}>
             {isFuture ? t('today.meals.toPlan') : t('today.meals.toKitchen')}
           </AppText>
         </View>
       </DashboardCard>
 
-      {/* 9. Progress (Journey) */}
-      <DashboardCard icon="trending-up-outline" title={t('today.progressCard.title')} onPress={() => router.push('/journey')}>
+      {/* 9. Progress: start, current, goal (optional), training, streak, milestones */}
+      <DashboardCard icon="trending-up-outline" title={t('today.progressCard.title')} onPress={() => router.push('/journey')} testID="today-progress">
+        {showWeight && w.currentKg !== null ? (
+          <View style={styles.weightBlock}>
+            <View style={styles.weights}>
+              <WeightPoint label={t('avatar.start')} value={w.startKg === null ? '—' : formatWeight(w.startKg, units)} />
+              <WeightPoint label={t('avatar.current')} value={formatWeight(w.currentKg, units)} strong align="center" />
+              <WeightPoint label={t('avatar.goal')} value={w.goalKg === null ? '—' : formatWeight(w.goalKg, units)} align="right" />
+            </View>
+            {w.progress !== null ? <ProgressBar progress={w.progress} height={6} /> : null}
+            {weekChange !== null ? (
+              <AppText variant="caption" color="secondary">
+                {t('today.progressCard.weekChange', { value: signed(weekChange) })}
+              </AppText>
+            ) : null}
+          </View>
+        ) : null}
         <View style={styles.stats}>
-          {showWeight && w.currentKg !== null ? (
-            <Stat
-              label={t('today.progressCard.weight')}
-              value={formatWeight(w.currentKg, units)}
-              sub={weekChange === null ? undefined : t('today.progressCard.weekChange', { value: signed(weekChange) })}
-            />
-          ) : null}
           <Stat label={t('today.progressCard.training')} value={t('gym.week.sessions', { count: week.sessions })} sub={t('gym.week.title')} />
           <Stat label={t('today.progressCard.streak')} value={t('avatar.days', { count: streak.current })} sub={t('today.longest', { count: streak.longest })} />
+          {data.achievements.length ? <Stat label={t('journey.milestones')} value={String(data.achievements.length)} /> : null}
         </View>
-        {data.achievements.length ? (
-          <AppText variant="caption" color="secondary">
-            {t('today.progressCard.milestones', { count: data.achievements.length })}
-          </AppText>
-        ) : null}
-      </DashboardCard>
-
-      {/* 10. Body Journey: compact preview, details on its own screen */}
-      <DashboardCard icon="body-outline" title={t('bodyJourney.title')} onPress={() => router.push('/body-journey')} testID="today-body">
-        {showWeight && w.currentKg !== null ? (
-          <>
-            <View style={styles.weights}>
-              <AppText variant="caption" color="secondary">
-                {t('avatar.start')} {w.startKg === null ? '—' : formatWeight(w.startKg, units)}
-              </AppText>
-              <AppText variant="bodyStrong">{formatWeight(w.currentKg, units)}</AppText>
-              <AppText variant="caption" color="secondary">
-                {t('avatar.goal')} {w.goalKg === null ? '—' : formatWeight(w.goalKg, units)}
-              </AppText>
-            </View>
-            {w.progress !== null ? <ProgressBar progress={w.progress} /> : null}
-          </>
-        ) : (
-          <AppText variant="caption" color="secondary">
-            {t('bodyJourney.preview')}
-          </AppText>
-        )}
       </DashboardCard>
 
       {/* 11. Planning routine: Plan Tomorrow. Complete Today. */}
@@ -311,6 +293,17 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
   );
 }
 
+function WeightPoint({ label, value, strong, align = 'left' }: { label: string; value: string; strong?: boolean; align?: 'left' | 'center' | 'right' }) {
+  return (
+    <View style={[styles.weightPoint, { alignItems: align === 'left' ? 'flex-start' : align === 'right' ? 'flex-end' : 'center' }]}>
+      <AppText variant="caption" color="secondary">
+        {label}
+      </AppText>
+      <AppText variant={strong ? 'subheading' : 'body'}>{value}</AppText>
+    </View>
+  );
+}
+
 function Check({ done, icon, label, onPress }: { done: boolean; icon: 'restaurant-outline' | 'barbell-outline' | 'calendar-outline'; label: string; onPress: () => void }) {
   return (
     <Pressable onPress={onPress} accessibilityRole="button" accessibilityState={{ checked: done }} accessibilityLabel={label} style={[styles.check, done && styles.checkDone]}>
@@ -327,21 +320,23 @@ const styles = StyleSheet.create({
   greeting: { fontFamily: fonts.bold, fontSize: 26, lineHeight: 32, letterSpacing: -0.6, color: colors.text },
   avatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.black, alignItems: 'center', justifyContent: 'center' },
   flex: { flex: 1 },
-  dayBanner: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, backgroundColor: colors.primarySoft, borderRadius: radii.md, paddingHorizontal: spacing.md, paddingVertical: 10 },
-  inlineRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.surface, borderRadius: radii.lg, borderWidth: 1, borderColor: colors.border, padding: spacing.md },
+  dayBanner: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, backgroundColor: colors.card, borderRadius: radii.md, paddingHorizontal: spacing.md, paddingVertical: 10 },
+  inlineRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.surface, borderRadius: radii.lg, padding: spacing.md },
   cardAction: { flexDirection: 'row', justifyContent: 'flex-end' },
   mealRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, minHeight: 32 },
   mealType: { width: 88 },
   pill: { borderRadius: radii.pill, paddingHorizontal: 10, paddingVertical: 3 },
-  pillEaten: { backgroundColor: colors.primaryLight },
+  pillEaten: { backgroundColor: colors.card },
   pillPlanned: { backgroundColor: colors.card },
   stats: { gap: 2 },
   stat: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, minHeight: 44, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
   statValue: { alignItems: 'flex-end' },
-  weights: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
-  planning: { backgroundColor: colors.surface, borderRadius: radii.xl, borderWidth: 1, borderColor: colors.border, padding: spacing.lg, gap: spacing.sm },
+  weightBlock: { gap: spacing.xs, marginBottom: spacing.xs },
+  weights: { flexDirection: 'row', alignItems: 'flex-end' },
+  weightPoint: { flex: 1, gap: 2 },
+  planning: { backgroundColor: colors.surface, borderRadius: radii.xl, padding: spacing.lg, gap: spacing.sm },
   planningHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   checks: { flexDirection: 'row', gap: spacing.xs },
-  check: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.backgroundAlt, borderRadius: radii.pill, paddingHorizontal: 10, minHeight: 40 },
-  checkDone: { backgroundColor: colors.primaryLight },
+  check: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.card, borderRadius: radii.pill, paddingHorizontal: 10, minHeight: 40 },
+  checkDone: { backgroundColor: colors.card },
 });

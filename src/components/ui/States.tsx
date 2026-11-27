@@ -48,7 +48,7 @@ export function LoadingState({ label }: { label?: string }) {
   const { t } = useTranslation();
   return (
     <View style={styles.center} accessibilityLabel={label ?? t('common.loading')} accessibilityLiveRegion="polite">
-      <ActivityIndicator color={colors.primaryDeep} />
+      <ActivityIndicator color={colors.textSecondary} />
       {label ? (
         <AppText variant="caption" color="secondary">
           {label}

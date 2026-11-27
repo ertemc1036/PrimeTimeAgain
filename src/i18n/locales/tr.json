@@ -679,7 +679,18 @@
     "workoutHistory": "Antrenman geçmişi",
     "language": "Dil",
     "instagram": "Instagram",
-    "progress": "İlerleme ve geçmiş"
+    "progress": "İlerleme ve geçmiş",
+    "groups": {
+      "me": "Ben",
+      "general": "Genel",
+      "support": "Yardım ve yasal"
+    },
+    "sections": {
+      "personal": "Kişisel bilgiler",
+      "goals": "Hedeflerim",
+      "nutrition": "Beslenme tercihleri",
+      "training": "Antrenman tercihleri"
+    }
   },
   "account": {
     "title": "Hesap",
@@ -1222,7 +1233,8 @@
       "flexible": "Esnek, sabit öğün yok",
       "none": "Henüz bir şey planlanmadı",
       "plan": "Öğün planla"
-    }
+    },
+    "myKitchen": "Mutfağım"
   },
   "bodyJourney": {
     "title": "Body Journey",
@@ -1231,7 +1243,7 @@
     "hiddenTitle": "Kilo gösterimleri gizli",
     "hiddenBody": "Kilo, kilo geçmişi ve vücut görseli gösterilmiyor. Bunu istediğin zaman tekrar açabilirsin.",
     "photos": "İlerleme fotoğrafları (özel)",
-    "showWeight": "Kiloyu ve vücut görselini göster",
-    "showWeightHint": "Bugün, Body Journey ve geçmişin için geçerlidir."
+    "showWeight": "Kiloyu göster",
+    "showWeightHint": "Bugün ekranında ve geçmişinde kilo, hedef ve kilo geçmişi. İsteğe bağlı – istediğin zaman kapatabilirsin."
   }
 }

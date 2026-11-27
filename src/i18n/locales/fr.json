@@ -685,7 +685,18 @@
     "workoutHistory": "Historique des séances",
     "language": "Langue",
     "instagram": "Instagram",
-    "progress": "Progrès et historique"
+    "progress": "Progrès et historique",
+    "groups": {
+      "me": "Moi",
+      "general": "Général",
+      "support": "Aide et mentions légales"
+    },
+    "sections": {
+      "personal": "Données personnelles",
+      "goals": "Mes objectifs",
+      "nutrition": "Préférences alimentaires",
+      "training": "Préférences d’entraînement"
+    }
   },
   "account": {
     "title": "Compte",
@@ -1239,7 +1250,8 @@
       "flexible": "Flexible, sans repas fixes",
       "none": "Rien de prévu pour l’instant",
       "plan": "Prévoir les repas"
-    }
+    },
+    "myKitchen": "Ma cuisine"
   },
   "bodyJourney": {
     "title": "Body Journey",
@@ -1248,7 +1260,7 @@
     "hiddenTitle": "Les affichages de poids sont masqués",
     "hiddenBody": "Le poids, son historique et l’illustration du corps ne sont pas affichés. Tu peux le réactiver à tout moment.",
     "photos": "Photos de progrès (privées)",
-    "showWeight": "Afficher le poids et l’illustration du corps",
-    "showWeightHint": "S’applique à Aujourd’hui, Body Journey et ton historique."
+    "showWeight": "Afficher le poids",
+    "showWeightHint": "Poids, objectif et historique du poids sur Aujourd’hui et dans ton historique. Facultatif – tu peux le désactiver à tout moment."
   }
 }

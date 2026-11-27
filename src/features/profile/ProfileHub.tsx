@@ -3,8 +3,9 @@ import { Linking, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Card, ListRow, ProBadge, Screen, type IconName } from '@/components/ui';
-import { APP_VERSION, INSTAGRAM_HANDLE, INSTAGRAM_URL } from '@/config/app';
+import { APP_VERSION } from '@/config/app';
 import { env } from '@/config/env';
+import { openLegal } from '@/features/legal';
 import { getLanguage } from '@/i18n/languages';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useAppState } from '@/state/AppStateProvider';
@@ -26,56 +27,67 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
 
   const sections: { title: string; rows: Row[] }[] = [
     {
-      title: t('profile.account'),
+      title: t('profile.groups.me'),
       rows: [
-        { label: t('account.title'), icon: 'person-outline', href: '/settings/account', value: auth.configured ? (auth.user?.email ?? t('account.notSignedIn')) : undefined },
-        { label: t('profile.language'), icon: 'globe-outline', href: '/language', value: getLanguage(lang).nativeName },
-      ],
-    },
-    {
-      title: t('profile.health'),
-      rows: [
-        { label: t('profile.progress'), icon: 'trending-down-outline', href: '/journey' },
-        { label: t('health.title'), icon: 'heart-outline', href: '/settings/health' },
-        { label: t('avatar.bodyTitle'), icon: 'body-outline', href: '/avatar-body', value: t(`avatar.body.${p?.avatarBody ?? 'neutral'}`) },
-      ],
-    },
-    {
-      title: t('profile.routine'),
-      rows: [
-        { label: t('profile.discipline'), icon: 'notifications-outline', href: '/settings/notifications', value: n.enabled ? t(`notifications.modes.${n.mode}.title`) : t('common.off') },
+        { label: t('profile.sections.personal'), icon: 'person-outline', href: { pathname: '/settings/health', params: { section: 'personal' } } },
+        { label: t('profile.sections.goals'), icon: 'flag-outline', href: { pathname: '/settings/health', params: { section: 'goals' } } },
+        { label: t('profile.sections.nutrition'), icon: 'restaurant-outline', href: { pathname: '/settings/health', params: { section: 'nutrition' } } },
         { label: t('profile.eatingWindow'), icon: 'time-outline', href: '/settings/eating-window', value: data.eatingWindow.enabled ? `${data.eatingWindow.start}–${data.eatingWindow.end}` : t('common.off') },
-        { label: t('profile.planningTime'), icon: 'calendar-outline', href: '/settings/health', value: p?.planningTime },
-        { label: t('profile.mealHistory'), icon: 'restaurant-outline', href: '/history/meals' },
-        { label: t('profile.workoutHistory'), icon: 'barbell-outline', href: '/history/workouts' },
+        { label: t('profile.sections.training'), icon: 'barbell-outline', href: { pathname: '/settings/health', params: { section: 'training' } } },
+        { label: t('profile.progress'), icon: 'trending-up-outline', href: '/journey' },
       ],
     },
     {
       title: t('brand.agent'),
       rows: [
         { label: t('prime.memory.title'), icon: 'bookmark-outline', href: '/memories', value: String(data.memories.length) },
-        { label: t('prime.log.title'), icon: 'time-outline', href: '/prime-log' },
+        { label: t('prime.log.title'), icon: 'list-outline', href: '/prime-log' },
       ],
     },
-    { title: t('profile.premium'), rows: [{ label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'sparkles-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'founder' ? t('pro.sourceFounder') : undefined }] },
-    { title: t('profile.privacy'), rows: [{ label: t('privacy.title'), icon: 'shield-checkmark-outline', href: '/settings/privacy' }] },
     {
-      title: t('profile.info'),
+      title: t('profile.groups.general'),
       rows: [
-        { label: t('profile.privacyPolicy'), icon: 'document-text-outline', onPress: () => (env.privacyPolicyUrl ? void Linking.openURL(env.privacyPolicyUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'privacy' } })) },
-        { label: t('profile.terms'), icon: 'document-outline', onPress: () => (env.termsUrl ? void Linking.openURL(env.termsUrl) : router.push({ pathname: '/settings/legal', params: { doc: 'terms' } })) },
-        ...(__DEV__ ? [{ label: t('test3d.title'), icon: 'cube-outline' as const, href: '/3d-test' as const }] : []),
-        { label: t('about.licenses'), icon: 'ribbon-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'licenses' } }) },
-        { label: t('profile.instagram'), icon: 'logo-instagram', value: INSTAGRAM_HANDLE, onPress: () => void Linking.openURL(INSTAGRAM_URL) },
+        { label: t('profile.notifications'), icon: 'notifications-outline', href: '/settings/notifications', value: n.enabled ? t(`notifications.modes.${n.mode}.title`) : t('common.off') },
+        { label: t('profile.language'), icon: 'globe-outline', href: '/language', value: getLanguage(lang).nativeName },
+        { label: t('onboarding.profile.units'), icon: 'resize-outline', href: { pathname: '/settings/health', params: { section: 'personal' } }, value: p?.units === 'imperial' ? 'lb, ft' : 'kg, cm' },
+      ],
+    },
+    {
+      title: t('brand.plus'),
+      rows: [
+        { label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'star-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'founder' ? t('pro.sourceFounder') : undefined },
+        { label: t('pro.restore'), icon: 'refresh-outline', href: { pathname: '/pro', params: { restore: '1' } } },
+      ],
+    },
+    {
+      title: t('profile.groups.support'),
+      rows: [
         { label: t('profile.help'), icon: 'help-circle-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'help' } }) },
         { label: t('profile.contact'), icon: 'mail-outline', onPress: () => (env.supportEmail ? void Linking.openURL(`mailto:${env.supportEmail}`) : router.push({ pathname: '/settings/legal', params: { doc: 'contact' } })) },
+        { label: t('privacy.title'), icon: 'shield-checkmark-outline', href: '/settings/privacy' },
+        { label: t('profile.privacyPolicy'), icon: 'document-text-outline', onPress: () => openLegal('privacy') },
+        { label: t('profile.terms'), icon: 'document-outline', onPress: () => openLegal('terms') },
+        { label: t('about.licenses'), icon: 'ribbon-outline', onPress: () => router.push({ pathname: '/settings/legal', params: { doc: 'licenses' } }) },
+      ],
+    },
+    {
+      title: t('profile.account'),
+      rows: [
+        { label: t('account.title'), icon: 'person-circle-outline', href: '/settings/account', value: auth.configured ? (auth.user?.email ?? t('account.notSignedIn')) : undefined },
+        { label: t('privacy.export'), icon: 'download-outline', href: '/settings/privacy' },
+        ...(auth.status === 'signedIn'
+          ? [
+              { label: t('account.signOut'), icon: 'log-out-outline' as const, href: '/settings/account' as const },
+              { label: t('account.delete'), icon: 'trash-outline' as const, href: '/settings/account' as const },
+            ]
+          : []),
       ],
     },
   ];
 
   return (
     <Screen back={inTabs ? undefined : 'back'} inTabs={inTabs} title={t('profile.title')}>
-      <Card variant="accent" style={styles.header}>
+      <Card style={styles.header}>
         <View style={styles.initial} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <AppText variant="heading" color={colors.white} style={styles.initialText}>
             {(p?.name?.trim()[0] ?? '·').toUpperCase()}
@@ -94,7 +106,7 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
           <AppText variant="overline" color="secondary">
             {s.title}
           </AppText>
-          <Card variant="elevated" padded={false}>
+          <Card padded={false}>
             {s.rows.map((r, i) => (
               <ListRow key={r.label} label={r.label} icon={r.icon} value={r.value} onPress={r.onPress ?? (() => r.href && router.push(r.href))} divider={i < s.rows.length - 1} />
             ))}

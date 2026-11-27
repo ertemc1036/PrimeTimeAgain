@@ -21,8 +21,8 @@ export function ProgressRing({
   progress,
   size = 120,
   stroke = 10,
-  color = colors.primary,
-  track = colors.primaryLight,
+  color = colors.accent,
+  track = colors.track,
   children,
 }: {
   progress: number;
@@ -47,7 +47,7 @@ export function ProgressRing({
   );
 }
 
-export function ProgressBar({ progress, height = 8, track = colors.primaryLight }: { progress: number; height?: number; track?: string }) {
+export function ProgressBar({ progress, height = 8, track = colors.track }: { progress: number; height?: number; track?: string }) {
   const value = useProgress(progress, 600);
   const fill = useAnimatedStyle(() => ({ width: `${value.get() * 100}%` }));
   return (
@@ -60,5 +60,5 @@ export function ProgressBar({ progress, height = 8, track = colors.primaryLight 
 const styles = StyleSheet.create({
   center: { alignItems: 'center', justifyContent: 'center' },
   track: { width: '100%', borderRadius: radii.pill, overflow: 'hidden' },
-  fill: { height: '100%', borderRadius: radii.pill, backgroundColor: colors.primary },
+  fill: { height: '100%', borderRadius: radii.pill, backgroundColor: colors.accent },
 });

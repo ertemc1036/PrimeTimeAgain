@@ -26,7 +26,7 @@ export function DashboardCard({ icon, title, onPress, children, testID }: { icon
 export function MetricTile({ icon, label, value, sub, onPress }: { icon: IconName; label: string; value: string; sub?: string; onPress?: () => void }) {
   return (
     <PressableScale onPress={onPress} disabled={!onPress} accessibilityRole={onPress ? 'button' : undefined} accessibilityLabel={`${label}: ${value}${sub ? ` ${sub}` : ''}`} style={styles.tile}>
-      <Icon name={icon} size={18} color={colors.primaryDeep} />
+      <Icon name={icon} size={18} color={colors.text} />
       <AppText variant="heading" numberOfLines={1} adjustsFontSizeToFit style={styles.tabular}>
         {value}
       </AppText>
@@ -38,17 +38,15 @@ export function MetricTile({ icon, label, value, sub, onPress }: { icon: IconNam
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: radii.xl, borderWidth: 1, borderColor: colors.border, padding: spacing.lg, gap: spacing.sm, ...shadows.card },
+  card: { backgroundColor: colors.surface, borderRadius: radii.xl, padding: spacing.lg, gap: spacing.sm, ...shadows.card },
   head: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  icon: { width: 34, height: 34, borderRadius: 17, backgroundColor: colors.primaryLight, alignItems: 'center', justifyContent: 'center' },
+  icon: { width: 34, height: 34, borderRadius: 17, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   flex: { flex: 1 },
   tile: {
     flex: 1,
     minHeight: 96,
     backgroundColor: colors.white,
     borderRadius: radii.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing.md,
     gap: 2,
     justifyContent: 'flex-end',

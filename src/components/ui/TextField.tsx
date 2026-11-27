@@ -27,7 +27,7 @@ export function TextField({ label, hint, error, optional, suffix, style, multili
           </AppText>
         ) : null}
       </View>
-      <View style={[styles.box, { borderColor: error ? colors.black : focused ? colors.primaryDeep : colors.card }, multiline && styles.multiBox]}>
+      <View style={[styles.box, { borderColor: error || focused ? colors.text : 'transparent' }, multiline && styles.multiBox]}>
         <TextInput
           accessibilityLabel={label}
           accessibilityHint={error ?? hint}
