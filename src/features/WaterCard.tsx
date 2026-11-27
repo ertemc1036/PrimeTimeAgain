@@ -6,7 +6,7 @@ import { useAppState } from '@/state/AppStateProvider';
 import { colors, radii, spacing } from '@/theme';
 import { newId, nowISO } from '@/utils/id';
 
-export const DEFAULT_WATER_GOAL_ML = 2000;
+import { DEFAULT_WATER_GOAL_ML } from '@/domain/daySummary';
 
 /** Today's water: quick add, remove the last entry, progress towards the personal guide value. */
 export function WaterCard() {
@@ -20,7 +20,7 @@ export function WaterCard() {
   const add = (ml: number) => void dispatch({ type: 'addWater', log: { id: newId('water'), date: today, ml, at: nowISO(), source: 'manual', createdAt: nowISO() } });
 
   return (
-    <Card style={styles.card} testID="water-card">
+    <Card variant="elevated" style={styles.card} testID="water-card">
       <View style={styles.head}>
         <AppText variant="subheading">{t('water.title')}</AppText>
         <AppText variant="bodyStrong" accessibilityLiveRegion="polite">
@@ -45,7 +45,7 @@ export function WaterCard() {
 const styles = StyleSheet.create({
   card: { gap: spacing.sm },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  track: { height: 10, borderRadius: radii.pill, backgroundColor: colors.border, overflow: 'hidden' },
+  track: { height: 10, borderRadius: radii.pill, backgroundColor: colors.primarySoft, overflow: 'hidden' },
   fill: { height: 10, borderRadius: radii.pill, backgroundColor: colors.primary },
   buttons: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
 });

@@ -1,26 +1,39 @@
 import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 
 /**
- * PrimeMe AI design tokens: black, white and the Prime neon green.
- * Neon (#C5F653) is an accent for fills and highlights, always with black content on top: as text
- * colour on white it would fail contrast. Secondary text uses #6E6E6E (WCAG AA on white and cards).
+ * PrimeMe AI design tokens: white, near-black and baby blue, with quiet greys.
+ *
+ * Baby blue (#8EC5FF) is the accent for fills, highlights and selected states, always with dark
+ * content on top. For thin strokes and small icons on white, `primaryDeep` keeps enough contrast.
+ * Secondary text (#6E6E78) meets WCAG AA on white and on the card greys.
  */
-export const colors = {
-  black: '#000000',
+export const palette = {
+  primary: '#8EC5FF',
+  primaryLight: '#D9EEFF',
+  primarySoft: '#F3F9FF',
+  primaryDeep: '#3E8EE6',
+  black: '#0B0B0F',
+  darkGray: '#1A1A22',
+  mediumGray: '#6E6E78',
+  lightGray: '#EAEAF0',
   white: '#FFFFFF',
-  text: '#111111',
-  textSecondary: '#6E6E6E',
-  background: '#FFFFFF',
-  backgroundAlt: '#F7F7F7',
-  card: '#F5F5F5',
-  border: '#E8E8E8',
-  disabled: '#BDBDBD',
-  overlay: 'rgba(0,0,0,0.4)',
-  /** Prime neon green (brand accent). Use with `onPrimary` content. */
-  primary: '#C5F653',
-  onPrimary: '#0B0B0B',
-  /** Soft neon tint for backgrounds of Prime content. */
-  primarySoft: '#F1FCD9',
+} as const;
+
+export const colors = {
+  ...palette,
+  text: palette.black,
+  textSecondary: palette.mediumGray,
+  background: palette.white,
+  backgroundAlt: '#F7F8FB',
+  card: '#F5F6FA',
+  border: palette.lightGray,
+  disabled: '#C3C3CC',
+  overlay: 'rgba(11,11,15,0.4)',
+  /** Content on baby-blue fills. */
+  onPrimary: palette.black,
+  /** Text on dark (black / dark grey) surfaces. */
+  onDark: palette.white,
+  onDarkMuted: '#A7A7B2',
 } as const;
 
 export const spacing = { xxs: 4, xs: 8, sm: 12, md: 16, lg: 20, xl: 24, xxl: 32, xxxl: 48 } as const;
@@ -30,9 +43,9 @@ export const layout = { screenPadding: 20, maxContentWidth: 600, minTouchTarget:
 const shadow = (y: number, blur: number, opacity: number, elevation: number): ViewStyle =>
   Platform.select<ViewStyle>({
     android: { elevation },
-    default: { shadowColor: '#000000', shadowOffset: { width: 0, height: y }, shadowRadius: blur, shadowOpacity: opacity },
+    default: { shadowColor: '#0B0B2A', shadowOffset: { width: 0, height: y }, shadowRadius: blur, shadowOpacity: opacity },
   });
-export const shadows = { soft: shadow(2, 8, 0.05, 1), card: shadow(6, 20, 0.07, 3), float: shadow(10, 30, 0.12, 8) } as const;
+export const shadows = { soft: shadow(2, 10, 0.05, 1), card: shadow(8, 24, 0.07, 3), float: shadow(12, 32, 0.12, 8) } as const;
 
 /** Inter (SIL Open Font License — free for commercial use), one family per weight. */
 export const fonts = {

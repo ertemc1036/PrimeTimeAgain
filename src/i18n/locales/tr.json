@@ -43,12 +43,10 @@
   },
   "tabs": {
     "today": "Bugün",
-    "plan": "Plan",
-    "food": "Beslenme",
-    "workout": "Antrenman",
-    "journey": "Yolculuk",
     "prime": "Prime",
-    "profile": "Profil"
+    "profile": "Profil",
+    "gym": "Gym",
+    "kitchen": "Mutfak"
   },
   "meals": {
     "breakfast": "Kahvaltı",
@@ -239,6 +237,25 @@
     "prime": {
       "open": "Prime’ı aç",
       "prompt": "Günün nasıl geçiyor anlat – kaydetmene yardım edeyim."
+    },
+    "stats": {
+      "kcal": "Kalori",
+      "water": "Su",
+      "training": "Antrenman"
+    },
+    "kitchenCard": {
+      "open": "Hâlâ planlı: {{meals}}",
+      "allLogged": "Planlanan tüm öğünler kaydedildi",
+      "empty": "Henüz kayıt yok"
+    },
+    "gymCard": {
+      "trained": "Bugün antrenman yapıldı",
+      "notYet": "Bugün henüz antrenman yok",
+      "rest": "Dinlenme günü – toparlanma da sayılır"
+    },
+    "journey": {
+      "title": "İlerleme ve geçmiş",
+      "body": "Kilo, seriler, kilometre taşları ve fotoğraflar"
     }
   },
   "calendar": {
@@ -599,7 +616,8 @@
     "mealHistory": "Öğün geçmişi",
     "workoutHistory": "Antrenman geçmişi",
     "language": "Dil",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "progress": "İlerleme ve geçmiş"
   },
   "account": {
     "title": "Hesap",
@@ -973,7 +991,7 @@
     "startToday": "bugün başla",
     "addWeight": "Kilonu ekle",
     "gestureHint": "Döndürmek için sürükle · Yakınlaştırmak için iki parmak · Sıfırlamak için çift dokun",
-    "symbolic": "Sembolik avatar: Başlangıç ve hedef formu örnek figürlerdir. Gerçek vücut şeklini, yağ oranını veya kas kütleni göstermez; bunlar kilodan çıkarılamaz.",
+    "symbolic": "Sembolik avatar: “Şimdi”, son kilona göre örnek başlangıç ve hedef figürleri arasında yer alır (daha fazla kilo daha dolgun görünür). Gerçek vücut şeklini, yağ oranını veya kas kütleni göstermez; bunlar kilodan çıkarılamaz.",
     "bodyTitle": "Avatar vücudu",
     "bodySubtitle": "Bugün ekranındaki 3D avatarın görünümünü seç. İsteğe bağlıdır.",
     "body": {
@@ -993,8 +1011,9 @@
     "details": "Ayrıntılar",
     "shareDiagnostics": "Tanılamayı paylaş",
     "diagnostics": "3D tanılama",
-    "shapeStart": "Başlangıç formu",
-    "shapeGoal": "Hedef form",
+    "shapeStart": "Başlangıç",
+    "shapeCurrent": "Şimdi",
+    "shapeGoal": "Hedef",
     "shapeLabel": "Gösterilen vücut formu"
   },
   "test3d": {
@@ -1105,5 +1124,42 @@
     "addHint": "{{ml}} ml ekler",
     "removeLast": "{{ml}} ml kaldır",
     "goalNote": "Hedefin kişisel bir yol göstericidir, tıbbi tavsiye değildir."
+  },
+  "gym": {
+    "title": "Gym",
+    "subtitle": "Planlanan, yapılan ve geçmişin.",
+    "today": "Bugün",
+    "trained": "Antrenman yapıldı",
+    "notYet": "Henüz antrenman yok",
+    "week": {
+      "title": "Son 7 gün",
+      "days_one": "{{count}} aktif gün",
+      "days_other": "{{count}} aktif gün",
+      "sessions_one": "{{count}} antrenman",
+      "sessions_other": "{{count}} antrenman",
+      "empty": "Son 7 günde henüz antrenman kaydı yok."
+    },
+    "tomorrow": {
+      "title": "Yarın",
+      "none": "Henüz antrenman planlanmadı",
+      "plan": "Antrenman planla"
+    }
+  },
+  "kitchen": {
+    "title": "Mutfak",
+    "subtitle": "Bugün ne yediğin ve neyin hâlâ planlı olduğu.",
+    "overview": "Bugün",
+    "eaten_one": "{{count}} öğün yendi",
+    "eaten_other": "{{count}} öğün yendi",
+    "open_one": "{{count}} hâlâ planlı",
+    "open_other": "{{count}} hâlâ planlı",
+    "tomorrow": {
+      "title": "Yarın",
+      "meals_one": "{{count}} öğün planlandı",
+      "meals_other": "{{count}} öğün planlandı",
+      "flexible": "Esnek, sabit öğün yok",
+      "none": "Henüz bir şey planlanmadı",
+      "plan": "Öğün planla"
+    }
   }
 }

@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Icon, ProgressRing } from '@/components/ui';
 import { HOLO } from '@/avatar/hologram';
-import type { BodyShape } from '@/avatar/models';
+import { bodyScanFor, fullnessFor, type BodyView } from '@/domain/bodyScan';
 import { weightProgress } from '@/domain/bodyStats';
 import type { AppData } from '@/domain/types';
 import { formatWeight } from '@/features/units';
@@ -19,12 +19,16 @@ const AvatarViewer = lazy(() => import('@/avatar/AvatarViewer').then((m) => ({ d
 
 const C = {
   bg: HOLO.background,
-  panel: '#13171A',
-  line: '#232A2C',
-  text: '#F2F5F3',
-  muted: '#9AA39F',
-  neon: HOLO.neon,
+  panel: '#16171F',
+  line: '#262733',
+  text: '#FFFFFF',
+  muted: '#A7A7B2',
+  faint: '#73737F',
+  accent: HOLO.accent,
 };
+
+const VIEWS: BodyView[] = ['start', 'current', 'goal'];
+const VIEW_LABEL = { start: 'avatar.shapeStart', current: 'avatar.shapeCurrent', goal: 'avatar.shapeGoal' } as const;
 
 function Stat({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: boolean }) {
   return (
@@ -32,7 +36,7 @@ function Stat({ label, value, sub, accent }: { label: string; value: string; sub
       <Text style={styles.statLabel} numberOfLines={1}>
         {label}
       </Text>
-      <Text style={[styles.statValue, accent && { color: C.neon }]} numberOfLines={1}>
+      <Text style={[styles.statValue, accent && { color: C.accent }]} numberOfLines={1}>
         {value}
       </Text>
       {sub ? (
@@ -44,7 +48,10 @@ function Stat({ label, value, sub, accent }: { label: string; value: string; sub
   );
 }
 
-/** Dark 3D body scan at the top of Today, with the user's real weight and streak data. */
+/**
+ * 3D body scan on Today with the user's real weight and streak data. "Aktuell" (default) shows a body
+ * between start and goal shape that follows the latest weight (src/domain/bodyScan.ts).
+ */
 export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
   const { t } = useTranslation();
   const locale = useLocale();
@@ -52,7 +59,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
   const [focused, setFocused] = useState(true);
   const [foreground, setForeground] = useState(AppState.currentState === 'active');
   const [resetSignal, setResetSignal] = useState(0);
-  const [shape, setShape] = useState<BodyShape>('start');
+  const [view, setView] = useState<BodyView>('current');
 
   useFocusEffect(
     useCallback(() => {
@@ -68,6 +75,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
   const units = data.profile?.units ?? 'metric';
   const body = data.profile?.avatarBody ?? 'neutral';
   const w = weightProgress(data);
+  const shape = fullnessFor(view, bodyScanFor(data));
   const fmt = (kg: number) => formatWeight(kg, units);
   const change =
     w.changeKg === null ? '—' : w.changeKg === 0 ? fmt(0) : `${w.changeKg < 0 ? '−' : '+'}${fmt(Math.abs(w.changeKg))}`;
@@ -101,14 +109,14 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
 
       {/* Start ↔ goal body: one tap, both states named. */}
       <View style={styles.segment} accessibilityRole="radiogroup" accessibilityLabel={t('avatar.shapeLabel')}>
-        {(['start', 'goal'] as const).map((s) => {
-          const selected = shape === s;
+        {VIEWS.map((s) => {
+          const selected = view === s;
           return (
             <Pressable
               key={s}
               onPress={() => {
                 if (selected) return;
-                setShape(s);
+                setView(s);
                 if (Platform.OS !== 'web') void Haptics.selectionAsync();
               }}
               accessibilityRole="radio"
@@ -116,7 +124,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
               aria-checked={selected}
               style={[styles.segmentItem, selected && styles.segmentOn]}>
               <Text style={[styles.segmentText, selected && styles.segmentTextOn]} numberOfLines={1}>
-                {t(s === 'start' ? 'avatar.shapeStart' : 'avatar.shapeGoal')}
+                {t(VIEW_LABEL[s])}
               </Text>
             </Pressable>
           );
@@ -127,7 +135,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
         <Suspense
           fallback={
             <View style={styles.center}>
-              <ActivityIndicator color={C.neon} />
+              <ActivityIndicator color={C.accent} />
             </View>
           }>
           <AvatarViewer body={body} shape={shape} active={focused && foreground} reducedMotion={reducedMotion} resetSignal={resetSignal} />
@@ -140,7 +148,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
           </View>
           <View style={[styles.floatCard, styles.floatRight]}>
             <Text style={styles.statLabel}>{t('avatar.current')}</Text>
-            <Text style={[styles.floatValue, { color: C.neon }]}>{w.currentKg === null ? '—' : fmt(w.currentKg)}</Text>
+            <Text style={[styles.floatValue, { color: C.accent }]}>{w.currentKg === null ? '—' : fmt(w.currentKg)}</Text>
             {w.currentDate ? <Text style={styles.statSub}>{formatDate(w.currentDate, locale, { day: 'numeric', month: 'short' })}</Text> : null}
           </View>
         </View>
@@ -158,7 +166,7 @@ export function BodyHero({ data, streak }: { data: AppData; streak: number }) {
         <View style={styles.stats}>
           <View style={[styles.stat, styles.goal]} accessible accessibilityLabel={goalA11y}>
             {w.goalKg !== null && w.progress !== null ? (
-              <ProgressRing progress={w.progress} size={52} stroke={5} color={C.neon} track={C.line}>
+              <ProgressRing progress={w.progress} size={52} stroke={5} color={C.accent} track={C.line}>
                 <Text style={styles.ringText}>{Math.round(w.progress * 100)}%</Text>
               </ProgressRing>
             ) : null}
@@ -189,21 +197,21 @@ const styles = StyleSheet.create({
   card: { backgroundColor: C.bg, borderRadius: 28, overflow: 'hidden', paddingBottom: 16 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 18, paddingTop: 16, paddingBottom: 4 },
   flex: { flex: 1 },
-  eyebrow: { color: C.neon, fontFamily: 'Inter_700Bold', fontSize: 11, letterSpacing: 1.6 },
+  eyebrow: { color: C.accent, fontFamily: 'Inter_700Bold', fontSize: 11, letterSpacing: 1.6 },
   title: { color: C.text, fontFamily: 'Inter_700Bold', fontSize: 20, lineHeight: 26, marginTop: 2 },
   iconBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line, alignItems: 'center', justifyContent: 'center' },
   segment: { flexDirection: 'row', marginHorizontal: 16, marginTop: 8, padding: 4, borderRadius: 999, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line },
   segmentItem: { flex: 1, minHeight: 36, borderRadius: 999, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
-  segmentOn: { backgroundColor: C.neon },
+  segmentOn: { backgroundColor: C.accent },
   segmentText: { color: C.muted, fontFamily: 'Inter_600SemiBold', fontSize: 14 },
   segmentTextOn: { color: C.bg, fontFamily: 'Inter_700Bold' },
   stage: { height: 400 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   overlay: { ...StyleSheet.absoluteFill, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: 14 },
-  floatCard: { backgroundColor: 'rgba(19,23,26,0.82)', borderColor: C.line, borderWidth: 1, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, minWidth: 96 },
+  floatCard: { backgroundColor: 'rgba(22,23,31,0.82)', borderColor: C.line, borderWidth: 1, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, minWidth: 96 },
   floatRight: { alignItems: 'flex-end' },
   floatValue: { color: C.text, fontFamily: 'Inter_700Bold', fontSize: 18, lineHeight: 23, fontVariant: ['tabular-nums'] },
-  hint: { position: 'absolute', bottom: 8, left: 16, right: 16, textAlign: 'center', color: '#6F7874', fontFamily: 'Inter_500Medium', fontSize: 11, lineHeight: 15, letterSpacing: 0.2 },
+  hint: { position: 'absolute', bottom: 8, left: 16, right: 16, textAlign: 'center', color: C.faint, fontFamily: 'Inter_500Medium', fontSize: 11, lineHeight: 15, letterSpacing: 0.2 },
   stats: { gap: 8, paddingHorizontal: 12, paddingTop: 4 },
   row: { flexDirection: 'row', gap: 8 },
   stat: { flex: 1, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 10, gap: 2, minHeight: 78, justifyContent: 'center' },
@@ -213,7 +221,7 @@ const styles = StyleSheet.create({
   statValue: { color: C.text, fontFamily: 'Inter_700Bold', fontSize: 18, lineHeight: 23, fontVariant: ['tabular-nums'] },
   statSub: { color: C.muted, fontFamily: 'Inter_400Regular', fontSize: 11 },
   ringText: { color: C.text, fontFamily: 'Inter_700Bold', fontSize: 11 },
-  addWeight: { marginHorizontal: 16, marginTop: 4, height: 48, borderRadius: 999, backgroundColor: C.neon, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  addWeight: { marginHorizontal: 16, marginTop: 4, height: 48, borderRadius: 999, backgroundColor: C.accent, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   addWeightText: { color: C.bg, fontFamily: 'Inter_700Bold', fontSize: 15 },
-  disclaimer: { color: '#7D8682', fontFamily: 'Inter_400Regular', fontSize: 11, lineHeight: 15, paddingHorizontal: 18, paddingTop: 10 },
+  disclaimer: { color: C.faint, fontFamily: 'Inter_400Regular', fontSize: 11, lineHeight: 15, paddingHorizontal: 18, paddingTop: 10 },
 });

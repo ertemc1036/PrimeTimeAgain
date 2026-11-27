@@ -43,13 +43,11 @@
     "plus": "PrimeMe+"
   },
   "tabs": {
-    "today": "Aujourd'hui",
-    "plan": "Plan",
-    "food": "Repas",
-    "workout": "Sport",
-    "journey": "Parcours",
+    "today": "Aujourd’hui",
     "prime": "Prime",
-    "profile": "Profil"
+    "profile": "Profil",
+    "gym": "Gym",
+    "kitchen": "Cuisine"
   },
   "meals": {
     "breakfast": "Petit-déjeuner",
@@ -242,6 +240,25 @@
     "prime": {
       "open": "Ouvrir Prime",
       "prompt": "Raconte-moi comment se passe ta journée – je t’aide à l’enregistrer."
+    },
+    "stats": {
+      "kcal": "Calories",
+      "water": "Eau",
+      "training": "Entraînement"
+    },
+    "kitchenCard": {
+      "open": "Encore prévu : {{meals}}",
+      "allLogged": "Tous les repas prévus sont notés",
+      "empty": "Rien de noté pour l’instant"
+    },
+    "gymCard": {
+      "trained": "Entraîné aujourd’hui",
+      "notYet": "Pas encore d’entraînement aujourd’hui",
+      "rest": "Jour de repos – la récupération compte"
+    },
+    "journey": {
+      "title": "Progrès et historique",
+      "body": "Poids, séries, étapes et photos"
     }
   },
   "calendar": {
@@ -603,7 +620,8 @@
     "mealHistory": "Historique des repas",
     "workoutHistory": "Historique des séances",
     "language": "Langue",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "progress": "Progrès et historique"
   },
   "account": {
     "title": "Compte",
@@ -982,7 +1000,7 @@
     "startToday": "commence aujourd'hui",
     "addWeight": "Ajoute ton poids",
     "gestureHint": "Glisse pour tourner · Pince pour zoomer · Touche deux fois pour réinitialiser",
-    "symbolic": "Avatar symbolique : la forme de départ et la forme visée sont des silhouettes d'exemple. Elles ne montrent ni ta silhouette réelle, ni ta masse grasse, ni ta masse musculaire, que le poids ne permet pas de déduire.",
+    "symbolic": "Avatar symbolique : « Actuel » se place entre les silhouettes d’exemple de départ et d’objectif selon ton dernier poids (plus de poids paraît plus rond). Il ne montre ni ta silhouette réelle, ni ta masse grasse, ni ta masse musculaire, que le poids ne permet pas de déduire.",
     "bodyTitle": "Corps de l'avatar",
     "bodySubtitle": "Choisis l'apparence de l'avatar 3D sur Aujourd'hui. C'est facultatif.",
     "body": {
@@ -1002,8 +1020,9 @@
     "details": "Détails",
     "shareDiagnostics": "Partager le diagnostic",
     "diagnostics": "Diagnostic 3D",
-    "shapeStart": "Forme de départ",
-    "shapeGoal": "Forme visée",
+    "shapeStart": "Départ",
+    "shapeCurrent": "Actuel",
+    "shapeGoal": "Objectif",
     "shapeLabel": "Silhouette affichée"
   },
   "test3d": {
@@ -1115,5 +1134,47 @@
     "addHint": "Ajoute {{ml}} ml",
     "removeLast": "Retirer {{ml}} ml",
     "goalNote": "Ton objectif est un repère personnel, pas un conseil médical."
+  },
+  "gym": {
+    "title": "Gym",
+    "subtitle": "Prévu, fait et ton historique.",
+    "today": "Aujourd’hui",
+    "trained": "Entraîné",
+    "notYet": "Pas encore entraîné",
+    "week": {
+      "title": "7 derniers jours",
+      "days_one": "{{count}} jour actif",
+      "days_many": "{{count}} jours actifs",
+      "days_other": "{{count}} jours actifs",
+      "sessions_one": "{{count}} séance",
+      "sessions_many": "{{count}} séances",
+      "sessions_other": "{{count}} séances",
+      "empty": "Aucun entraînement noté ces 7 derniers jours."
+    },
+    "tomorrow": {
+      "title": "Demain",
+      "none": "Aucun entraînement prévu",
+      "plan": "Prévoir l’entraînement"
+    }
+  },
+  "kitchen": {
+    "title": "Cuisine",
+    "subtitle": "Ce que tu manges aujourd’hui – et ce qui reste prévu.",
+    "overview": "Aujourd’hui",
+    "eaten_one": "{{count}} repas pris",
+    "eaten_many": "{{count}} repas pris",
+    "eaten_other": "{{count}} repas pris",
+    "open_one": "{{count}} encore prévu",
+    "open_many": "{{count}} encore prévus",
+    "open_other": "{{count}} encore prévus",
+    "tomorrow": {
+      "title": "Demain",
+      "meals_one": "{{count}} repas prévu",
+      "meals_many": "{{count}} repas prévus",
+      "meals_other": "{{count}} repas prévus",
+      "flexible": "Flexible, sans repas fixes",
+      "none": "Rien de prévu pour l’instant",
+      "plan": "Prévoir les repas"
+    }
   }
 }

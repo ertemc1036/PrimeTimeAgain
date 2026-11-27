@@ -12,5 +12,8 @@ export const BODY_MODELS: Record<AvatarBody, number> = {
   neutral: require('../../assets/avatars/body-neutral.glb'),
 };
 
-/** Which of the two body states is shown. */
-export type BodyShape = 'start' | 'goal';
+/** Which body is shown: the start or goal state, or a blend between them (0 = goal … 1 = start, see src/domain/bodyScan.ts). */
+export type BodyShape = 'start' | 'goal' | number;
+
+/** Blend value for a shape: 1 = start body, 0 = goal body. */
+export const shapeBlend = (shape: BodyShape): number => (shape === 'start' ? 1 : shape === 'goal' ? 0 : Math.min(1, Math.max(0, shape)));

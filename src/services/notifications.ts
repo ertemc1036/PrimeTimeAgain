@@ -69,14 +69,14 @@ export async function syncReminders(data: AppData, today: ISODate, copy: Reminde
 }
 
 /** Tab that answers a reminder (tapping a notification opens it). */
-export const ROUTE_FOR_KIND: Record<ReminderKind, '/today' | '/plan' | '/food' | '/workout'> = {
+export const ROUTE_FOR_KIND: Record<ReminderKind, '/today' | '/plan' | '/kitchen' | '/gym'> = {
   morning: '/today',
-  activity: '/workout',
-  meal: '/food',
+  activity: '/gym',
+  meal: '/kitchen',
   planning: '/plan',
   checkin: '/today',
   hourly: '/today',
-  window: '/food',
+  window: '/kitchen',
 };
 
 export function onReminderTapped(fn: (kind: ReminderKind) => void): () => void {

@@ -43,12 +43,10 @@
   },
   "tabs": {
     "today": "Today",
-    "plan": "Plan",
-    "food": "Food",
-    "workout": "Workout",
-    "journey": "Journey",
     "prime": "Prime",
-    "profile": "Profile"
+    "profile": "Profile",
+    "gym": "Gym",
+    "kitchen": "Kitchen"
   },
   "meals": {
     "breakfast": "Breakfast",
@@ -239,6 +237,25 @@
     "prime": {
       "open": "Open Prime",
       "prompt": "Tell me how your day is going – I’ll help you log it."
+    },
+    "stats": {
+      "kcal": "Calories",
+      "water": "Water",
+      "training": "Training"
+    },
+    "kitchenCard": {
+      "open": "Still planned: {{meals}}",
+      "allLogged": "All planned meals logged",
+      "empty": "Nothing logged yet"
+    },
+    "gymCard": {
+      "trained": "Trained today",
+      "notYet": "No training yet today",
+      "rest": "Rest day – recovery counts"
+    },
+    "journey": {
+      "title": "Progress & history",
+      "body": "Weight, streaks, milestones and photos"
     }
   },
   "calendar": {
@@ -599,7 +616,8 @@
     "mealHistory": "Meal history",
     "workoutHistory": "Workout history",
     "language": "Language",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "progress": "Progress & history"
   },
   "account": {
     "title": "Account",
@@ -973,7 +991,7 @@
     "startToday": "start today",
     "addWeight": "Add your weight",
     "gestureHint": "Drag to turn · Pinch to zoom · Double-tap to reset",
-    "symbolic": "Symbolic avatar: the start and goal shapes are example figures. They don't show your actual body shape, body fat or muscle mass, which can't be derived from weight.",
+    "symbolic": "Symbolic avatar: “Now” sits between the example start and goal figures according to your latest weight (heavier looks fuller). It doesn't show your actual body shape, body fat or muscle mass, which can't be derived from weight.",
     "bodyTitle": "Avatar body",
     "bodySubtitle": "Choose how the 3D avatar on Today looks. This is optional.",
     "body": {
@@ -993,8 +1011,9 @@
     "details": "Details",
     "shareDiagnostics": "Share diagnostics",
     "diagnostics": "3D diagnostics",
-    "shapeStart": "Start shape",
-    "shapeGoal": "Goal shape",
+    "shapeStart": "Start",
+    "shapeCurrent": "Now",
+    "shapeGoal": "Goal",
     "shapeLabel": "Body shape shown"
   },
   "test3d": {
@@ -1105,5 +1124,42 @@
     "addHint": "Adds {{ml}} ml",
     "removeLast": "Remove {{ml}} ml",
     "goalNote": "Your goal is a personal guide value, not medical advice."
+  },
+  "gym": {
+    "title": "Gym",
+    "subtitle": "Planned, done and your history.",
+    "today": "Today",
+    "trained": "Trained",
+    "notYet": "Not trained yet",
+    "week": {
+      "title": "Last 7 days",
+      "days_one": "{{count}} active day",
+      "days_other": "{{count}} active days",
+      "sessions_one": "{{count}} session",
+      "sessions_other": "{{count}} sessions",
+      "empty": "No training logged in the last 7 days yet."
+    },
+    "tomorrow": {
+      "title": "Tomorrow",
+      "none": "No training planned yet",
+      "plan": "Plan training"
+    }
+  },
+  "kitchen": {
+    "title": "Kitchen",
+    "subtitle": "What you eat today – and what is still planned.",
+    "overview": "Today",
+    "eaten_one": "{{count}} meal eaten",
+    "eaten_other": "{{count}} meals eaten",
+    "open_one": "{{count}} still planned",
+    "open_other": "{{count}} still planned",
+    "tomorrow": {
+      "title": "Tomorrow",
+      "meals_one": "{{count}} meal planned",
+      "meals_other": "{{count}} meals planned",
+      "flexible": "Flexible, no fixed meals",
+      "none": "Nothing planned yet",
+      "plan": "Plan meals"
+    }
   }
 }

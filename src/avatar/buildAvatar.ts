@@ -9,7 +9,7 @@ import { readClothParams, type ClothParams } from './cloth';
 import type { DiagLog } from './diagnostics';
 import { createHoloMaterial, type HoloUniforms } from './hologram';
 import { loadArrayBuffer } from './loadAssets';
-import { BODY_MODELS, type BodyShape } from './models';
+import { BODY_MODELS, shapeBlend, type BodyShape } from './models';
 
 /** Reference height for camera framing and scan rings (bodies keep their own heights). */
 export const AVATAR_HEIGHT = 1.78;
@@ -21,7 +21,7 @@ export interface LoadedAvatar {
   root: THREE.Group;
   /** Advance animation by dt seconds (t = running time). */
   update(dt: number, t: number, reducedMotion: boolean): void;
-  /** Show the start (heavier) or goal (fit) body; animated unless `instant`. */
+  /** Show the start (heavier) or goal (fit) body or a blend between them; animated unless `instant`. */
   setShape(shape: BodyShape, instant?: boolean): void;
   dispose(): void;
 }
@@ -129,7 +129,7 @@ export async function buildAvatar(body: AvatarBody, uniforms: HoloUniforms, log?
     normal.needsUpdate = true;
   };
 
-  let current = shape === 'start' ? 1 : 0;
+  let current = shapeBlend(shape);
   let from = current;
   let target = current;
   let progress = 1;
@@ -145,7 +145,7 @@ export async function buildAvatar(body: AvatarBody, uniforms: HoloUniforms, log?
   return {
     root,
     setShape(next, instant = false) {
-      const t = next === 'start' ? 1 : 0;
+      const t = shapeBlend(next);
       if (t === target && (instant ? current === t : true)) return;
       if (instant) {
         current = from = target = t;

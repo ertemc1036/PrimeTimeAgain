@@ -44,12 +44,10 @@
   },
   "tabs": {
     "today": "Hoy",
-    "plan": "Plan",
-    "food": "Comida",
-    "workout": "Ejercicio",
-    "journey": "Progreso",
     "prime": "Prime",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "gym": "Gym",
+    "kitchen": "Cocina"
   },
   "meals": {
     "breakfast": "Desayuno",
@@ -242,6 +240,25 @@
     "prime": {
       "open": "Abrir Prime",
       "prompt": "Cuéntame cómo va tu día: te ayudo a registrarlo."
+    },
+    "stats": {
+      "kcal": "Calorías",
+      "water": "Agua",
+      "training": "Entreno"
+    },
+    "kitchenCard": {
+      "open": "Aún planeado: {{meals}}",
+      "allLogged": "Todas las comidas planeadas registradas",
+      "empty": "Aún no hay registros"
+    },
+    "gymCard": {
+      "trained": "Hoy has entrenado",
+      "notYet": "Hoy aún sin entreno",
+      "rest": "Día de descanso: la recuperación cuenta"
+    },
+    "journey": {
+      "title": "Progreso e historial",
+      "body": "Peso, rachas, hitos y fotos"
     }
   },
   "calendar": {
@@ -603,7 +620,8 @@
     "mealHistory": "Historial de comidas",
     "workoutHistory": "Historial de entrenamientos",
     "language": "Idioma",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "progress": "Progreso e historial"
   },
   "account": {
     "title": "Cuenta",
@@ -982,7 +1000,7 @@
     "startToday": "empieza hoy",
     "addWeight": "Añade tu peso",
     "gestureHint": "Arrastra para girar · Pellizca para hacer zoom · Doble toque para restablecer",
-    "symbolic": "Avatar simbólico: la forma inicial y la forma objetivo son figuras de ejemplo. No muestran tu forma corporal real, tu grasa corporal ni tu masa muscular, que no se pueden deducir del peso.",
+    "symbolic": "Avatar simbólico: «Ahora» se sitúa entre las figuras de ejemplo de inicio y objetivo según tu último peso (más peso se ve más lleno). No muestra tu forma corporal real, tu grasa corporal ni tu masa muscular, que no se pueden deducir del peso.",
     "bodyTitle": "Cuerpo del avatar",
     "bodySubtitle": "Elige cómo se ve el avatar 3D en Hoy. Es opcional.",
     "body": {
@@ -1002,8 +1020,9 @@
     "details": "Detalles",
     "shareDiagnostics": "Compartir diagnóstico",
     "diagnostics": "Diagnóstico 3D",
-    "shapeStart": "Forma inicial",
-    "shapeGoal": "Forma objetivo",
+    "shapeStart": "Inicio",
+    "shapeCurrent": "Ahora",
+    "shapeGoal": "Objetivo",
     "shapeLabel": "Forma corporal mostrada"
   },
   "test3d": {
@@ -1115,5 +1134,47 @@
     "addHint": "Añade {{ml}} ml",
     "removeLast": "Quitar {{ml}} ml",
     "goalNote": "Tu objetivo es un valor orientativo personal, no un consejo médico."
+  },
+  "gym": {
+    "title": "Gym",
+    "subtitle": "Lo planeado, lo hecho y tu historial.",
+    "today": "Hoy",
+    "trained": "Entrenado",
+    "notYet": "Aún sin entrenar",
+    "week": {
+      "title": "Últimos 7 días",
+      "days_one": "{{count}} día activo",
+      "days_many": "{{count}} días activos",
+      "days_other": "{{count}} días activos",
+      "sessions_one": "{{count}} sesión",
+      "sessions_many": "{{count}} sesiones",
+      "sessions_other": "{{count}} sesiones",
+      "empty": "Aún no hay entrenos en los últimos 7 días."
+    },
+    "tomorrow": {
+      "title": "Mañana",
+      "none": "Aún no hay entreno planeado",
+      "plan": "Planear entreno"
+    }
+  },
+  "kitchen": {
+    "title": "Cocina",
+    "subtitle": "Lo que comes hoy y lo que aún está planeado.",
+    "overview": "Hoy",
+    "eaten_one": "{{count}} comida hecha",
+    "eaten_many": "{{count}} comidas hechas",
+    "eaten_other": "{{count}} comidas hechas",
+    "open_one": "{{count}} aún planeada",
+    "open_many": "{{count}} aún planeadas",
+    "open_other": "{{count}} aún planeadas",
+    "tomorrow": {
+      "title": "Mañana",
+      "meals_one": "{{count}} comida planeada",
+      "meals_many": "{{count}} comidas planeadas",
+      "meals_other": "{{count}} comidas planeadas",
+      "flexible": "Flexible, sin comidas fijas",
+      "none": "Aún no hay nada planeado",
+      "plan": "Planear comidas"
+    }
   }
 }

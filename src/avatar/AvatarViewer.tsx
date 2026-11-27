@@ -18,7 +18,7 @@ import { createStage, frameCamera, type Stage } from './stage';
 
 export interface AvatarViewerProps {
   body: AvatarBody;
-  /** Start (heavier) or goal (fit) body; changes animate smoothly. */
+  /** Start (heavier) or goal (fit) body, or a blend (0 = goal … 1 = start); changes animate smoothly. */
   shape?: BodyShape;
   /** Render only while visible (screen focused, app in foreground) to save battery. */
   active: boolean;
@@ -318,7 +318,7 @@ export function AvatarViewer({ body, shape = 'start', active, reducedMotion = fa
       )}
       {status === 'loading' ? (
         <View style={styles.loading} pointerEvents="none">
-          <ActivityIndicator color={HOLO.neon} />
+          <ActivityIndicator color={HOLO.accent} />
           <Text style={styles.loadingText}>{t('avatar.loading')}</Text>
         </View>
       ) : null}
@@ -341,6 +341,6 @@ const styles = StyleSheet.create({
   diag: { padding: 8 },
   fixed: { height: 440 },
   fallbackText: { color: '#C9D1CD', fontSize: 14, textAlign: 'center', fontFamily: 'Inter_500Medium' },
-  retry: { paddingHorizontal: 18, paddingVertical: 10, borderRadius: 999, borderWidth: 1, borderColor: HOLO.neon },
-  retryText: { color: HOLO.neon, fontSize: 14, fontFamily: 'Inter_700Bold' },
+  retry: { paddingHorizontal: 18, paddingVertical: 10, borderRadius: 999, borderWidth: 1, borderColor: HOLO.accent },
+  retryText: { color: HOLO.accent, fontSize: 14, fontFamily: 'Inter_700Bold' },
 });

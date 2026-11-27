@@ -43,7 +43,7 @@ export function OptionCard({
       accessibilityLabel={[title, subtitle].filter(Boolean).join(', ')}
       style={[layout === 'tile' ? styles.tile : styles.row, { backgroundColor: selected ? colors.black : colors.card }, disabled && styles.disabled]}>
       {icon ? (
-        <View style={[styles.icon, { backgroundColor: selected ? '#1F1F1F' : colors.white }]}>
+        <View style={[styles.icon, { backgroundColor: selected ? colors.darkGray : colors.white }]}>
           <Icon name={icon} size={22} color={fg} />
         </View>
       ) : null}

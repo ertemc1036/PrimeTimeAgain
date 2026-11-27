@@ -78,6 +78,8 @@ function RootNavigator({ ready }: { ready: boolean }) {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="food" />
           <Stack.Screen name="workout" />
+          <Stack.Screen name="plan" />
+          <Stack.Screen name="journey" />
           <Stack.Screen name="memories" />
           <Stack.Screen name="prime-log" />
           <Stack.Screen name="plan-meal" options={modal} />

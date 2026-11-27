@@ -2,14 +2,19 @@ import * as THREE from 'three';
 
 import { CLOTH_GLSL, FIELD_RANGE, type ClothParams } from './cloth';
 
-/** Colours of the Today avatar stage (dark section only; the rest of the app keeps its theme). */
+/**
+ * Colours of the body-scan stage: deep black, a graphite body and calm baby-blue light
+ * (PrimeMe palette, see src/theme). The stage is the only dark area of Today.
+ */
 export const HOLO = {
-  background: '#0A0C0D',
-  neon: '#C8FF2E',
-  green: '#4DFF9A',
-  body: '#1B201F',
-  cloth: '#08090A',
-  hair: '#121513',
+  background: '#0B0B0F',
+  /** Main light colour: rim light, scan band, rings (theme primary). */
+  accent: '#8EC5FF',
+  /** Softer second light colour (theme primaryLight). */
+  glow: '#D9EEFF',
+  body: '#1C1D26',
+  cloth: '#0B0B0F',
+  hair: '#15161D',
 } as const;
 
 /** Uniforms shared by every hologram material, updated once per frame by the stage. */
@@ -19,19 +24,19 @@ export interface HoloUniforms {
   uScan: { value: number };
   /** 0..1 strength of the scan band and lines (lower with reduced motion). */
   uScanStrength: { value: number };
-  uNeon: { value: THREE.Color };
+  uAccent: { value: THREE.Color };
 }
 
 export const createHoloUniforms = (): HoloUniforms => ({
   uTime: { value: 0 },
   uScan: { value: 1 },
   uScanStrength: { value: 1 },
-  uNeon: { value: new THREE.Color(HOLO.neon) },
+  uAccent: { value: new THREE.Color(HOLO.accent) },
 });
 
 /**
- * Body material: dark satin skin with holographic accents (neon Fresnel rim, a scan band that
- * follows the animated scan rings, fine scan lines), matte black sportswear with a thin neon hem,
+ * Body material: dark satin skin with light accents (baby-blue Fresnel rim, a scan band that
+ * follows the animated scan rings, fine scan lines), matte black sportswear with a thin accent hem,
  * and a sleek hair cap. Clothing and hair come from per-vertex masks plus analytic band edges
  * evaluated per pixel (see cloth.ts). Built on MeshStandardMaterial; only colour, roughness and
  * emissive are extended.
@@ -72,7 +77,7 @@ varying float vHairField;
 uniform float uTime;
 uniform float uScan;
 uniform float uScanStrength;
-uniform vec3 uNeon;
+uniform vec3 uAccent;
 uniform vec3 uClothColor;
 uniform vec3 uHairColor;
 ${CLOTH_GLSL}`,
@@ -106,8 +111,8 @@ ${CLOTH_GLSL}`,
           float lines = smoothstep(0.93, 1.0, 0.5 + 0.5 * sin(h * 240.0)) * 0.035;
           float flicker = 0.97 + 0.03 * sin(uTime * 5.0 + h * 4.0);
           float skin = 1.0 - 0.55 * d9Cloth;
-          totalEmissiveRadiance += uNeon * (fres * 0.55 * skin + (band * 0.9 + lines) * uScanStrength) * flicker;
-          totalEmissiveRadiance += uNeon * d9Trim * 0.95;
+          totalEmissiveRadiance += uAccent * (fres * 0.45 * skin + (band * 0.7 + lines * 0.8) * uScanStrength) * flicker;
+          totalEmissiveRadiance += uAccent * d9Trim * 0.8;
         }`,
       );
   };

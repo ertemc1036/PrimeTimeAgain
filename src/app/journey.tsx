@@ -39,7 +39,7 @@ export default function JourneyTab() {
   const earned = new Set(data.achievements.map((a) => a.id));
 
   return (
-    <Screen inTabs title={t('journey.title')} subtitle={t('journey.subtitle')}>
+    <Screen back="back" title={t('journey.title')} subtitle={t('journey.subtitle')}>
       <View style={styles.grid}>
         <StatTile value={String(stats.current)} label={t('journey.currentStreak')} />
         <StatTile value={String(stats.longest)} label={t('journey.longestStreak')} />
@@ -157,7 +157,7 @@ export default function JourneyTab() {
           <AppText variant="bodyStrong" color={colors.white}>
             {t('journey.maintenance')}
           </AppText>
-          <AppText variant="caption" color="#BDBDBD">
+          <AppText variant="caption" color={colors.onDarkMuted}>
             {t('journey.maintenanceOn')}
           </AppText>
         </Card>

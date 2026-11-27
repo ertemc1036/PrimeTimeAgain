@@ -10,7 +10,7 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { useAppState } from '@/state/AppStateProvider';
 import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
-import { spacing } from '@/theme';
+import { colors, fonts, spacing } from '@/theme';
 
 type Row = { label: string; icon: IconName; href?: Href; onPress?: () => void; value?: string };
 
@@ -35,6 +35,7 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
     {
       title: t('profile.health'),
       rows: [
+        { label: t('profile.progress'), icon: 'trending-down-outline', href: '/journey' },
         { label: t('health.title'), icon: 'heart-outline', href: '/settings/health' },
         { label: t('avatar.bodyTitle'), icon: 'body-outline', href: '/avatar-body', value: t(`avatar.body.${p?.avatarBody ?? 'neutral'}`) },
       ],
@@ -74,7 +75,12 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
 
   return (
     <Screen back={inTabs ? undefined : 'back'} inTabs={inTabs} title={t('profile.title')}>
-      <Card style={styles.header}>
+      <Card variant="accent" style={styles.header}>
+        <View style={styles.initial} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <AppText variant="heading" color={colors.white} style={styles.initialText}>
+            {(p?.name?.trim()[0] ?? '·').toUpperCase()}
+          </AppText>
+        </View>
         <View style={styles.flex}>
           <AppText variant="heading">{p?.name}</AppText>
           <AppText variant="caption" color="secondary">
@@ -88,7 +94,7 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
           <AppText variant="overline" color="secondary">
             {s.title}
           </AppText>
-          <Card variant="outline" padded={false}>
+          <Card variant="elevated" padded={false}>
             {s.rows.map((r, i) => (
               <ListRow key={r.label} label={r.label} icon={r.icon} value={r.value} onPress={r.onPress ?? (() => r.href && router.push(r.href))} divider={i < s.rows.length - 1} />
             ))}
@@ -103,7 +109,9 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center' },
+  header: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  initial: { width: 52, height: 52, borderRadius: 26, backgroundColor: colors.black, alignItems: 'center', justifyContent: 'center' },
+  initialText: { fontFamily: fonts.bold },
   flex: { flex: 1, gap: 2 },
   section: { gap: spacing.xs },
 });

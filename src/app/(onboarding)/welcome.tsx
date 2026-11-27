@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppText, Button, IconButton } from '@/components/ui';
-import { PrimeMascot } from '@/features/prime/PrimeMascot';
+import { PrimeBadge } from '@/features/prime/PrimeBadge';
 import { authAvailable } from '@/services/auth';
 import { colors, fonts, layout, spacing } from '@/theme';
 
@@ -26,7 +26,7 @@ export default function Welcome() {
         <IconButton icon="globe-outline" label={t('common.language')} onPress={() => router.push('/language')} variant="inverse" color={colors.white} />
       </View>
       <View style={styles.center}>
-        <PrimeMascot size={132} onDark />
+        <PrimeBadge size={88} ring={colors.primary} />
         <Text style={styles.wordmark} accessibilityRole="header" maxFontSizeMultiplier={1.2}>
           {t('brand.name')}
         </Text>
@@ -38,7 +38,7 @@ export default function Welcome() {
         </AppText>
       </View>
       <View style={styles.bottom}>
-        <AppText variant="label" color="#BDBDBD" align="center">
+        <AppText variant="label" color={colors.onDarkMuted} align="center">
           {t('onboarding.welcome.loop')}
         </AppText>
         <View style={styles.cta}>
@@ -51,7 +51,7 @@ export default function Welcome() {
             </AppText>
           </Pressable>
         ) : null}
-        <AppText variant="caption" color="#BDBDBD" align="center">
+        <AppText variant="caption" color={colors.onDarkMuted} align="center">
           {t('onboarding.welcome.adults')}
         </AppText>
       </View>

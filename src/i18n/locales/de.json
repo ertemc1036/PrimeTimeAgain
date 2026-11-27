@@ -43,12 +43,10 @@
   },
   "tabs": {
     "today": "Heute",
-    "plan": "Plan",
-    "food": "Essen",
-    "workout": "Training",
-    "journey": "Verlauf",
     "prime": "Prime",
-    "profile": "Profil"
+    "profile": "Profil",
+    "gym": "Gym",
+    "kitchen": "Küche"
   },
   "meals": {
     "breakfast": "Frühstück",
@@ -239,6 +237,25 @@
     "prime": {
       "open": "Prime öffnen",
       "prompt": "Erzähl mir, wie dein Tag läuft – ich helfe dir beim Eintragen."
+    },
+    "stats": {
+      "kcal": "Kalorien",
+      "water": "Wasser",
+      "training": "Training"
+    },
+    "kitchenCard": {
+      "open": "Noch geplant: {{meals}}",
+      "allLogged": "Alle geplanten Mahlzeiten eingetragen",
+      "empty": "Noch nichts eingetragen"
+    },
+    "gymCard": {
+      "trained": "Heute trainiert",
+      "notYet": "Heute noch kein Training",
+      "rest": "Ruhetag – Erholung zählt"
+    },
+    "journey": {
+      "title": "Fortschritt & Verlauf",
+      "body": "Gewicht, Serien, Meilensteine und Fotos"
     }
   },
   "calendar": {
@@ -599,7 +616,8 @@
     "mealHistory": "Mahlzeitenverlauf",
     "workoutHistory": "Trainingsverlauf",
     "language": "Sprache",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "progress": "Fortschritt & Verlauf"
   },
   "account": {
     "title": "Konto",
@@ -973,7 +991,7 @@
     "startToday": "starte heute",
     "addWeight": "Gewicht eintragen",
     "gestureHint": "Ziehen zum Drehen · Zwei Finger zum Zoomen · Doppeltippen zum Zurücksetzen",
-    "symbolic": "Symbolischer Avatar: Startform und Zielform sind Beispielfiguren. Sie zeigen nicht deine tatsächliche Körperform, deinen Körperfettanteil oder deine Muskelmasse – das lässt sich aus dem Gewicht nicht ableiten.",
+    "symbolic": "Symbolischer Avatar: „Aktuell“ liegt je nach deinem letzten Gewicht zwischen den Beispielfiguren für Start und Ziel (mehr Gewicht wirkt fülliger). Er zeigt nicht deine tatsächliche Körperform, deinen Körperfettanteil oder deine Muskelmasse – das lässt sich aus dem Gewicht nicht ableiten.",
     "bodyTitle": "Avatar-Körper",
     "bodySubtitle": "Wähle, wie der 3D-Avatar auf „Heute“ aussieht. Freiwillig.",
     "body": {
@@ -993,8 +1011,9 @@
     "details": "Details",
     "shareDiagnostics": "Diagnose teilen",
     "diagnostics": "3D-Diagnose",
-    "shapeStart": "Startform",
-    "shapeGoal": "Zielform",
+    "shapeStart": "Start",
+    "shapeCurrent": "Aktuell",
+    "shapeGoal": "Ziel",
     "shapeLabel": "Angezeigte Körperform"
   },
   "test3d": {
@@ -1105,5 +1124,42 @@
     "addHint": "Fügt {{ml}} ml hinzu",
     "removeLast": "{{ml}} ml entfernen",
     "goalNote": "Dein Ziel ist ein persönlicher Richtwert, keine medizinische Empfehlung."
+  },
+  "gym": {
+    "title": "Gym",
+    "subtitle": "Geplant, erledigt und dein Verlauf.",
+    "today": "Heute",
+    "trained": "Trainiert",
+    "notYet": "Noch nicht trainiert",
+    "week": {
+      "title": "Letzte 7 Tage",
+      "days_one": "{{count}} aktiver Tag",
+      "days_other": "{{count}} aktive Tage",
+      "sessions_one": "{{count}} Einheit",
+      "sessions_other": "{{count}} Einheiten",
+      "empty": "In den letzten 7 Tagen noch kein Training eingetragen."
+    },
+    "tomorrow": {
+      "title": "Morgen",
+      "none": "Noch kein Training geplant",
+      "plan": "Training planen"
+    }
+  },
+  "kitchen": {
+    "title": "Küche",
+    "subtitle": "Was du heute isst – und was noch geplant ist.",
+    "overview": "Heute",
+    "eaten_one": "{{count}} Mahlzeit gegessen",
+    "eaten_other": "{{count}} Mahlzeiten gegessen",
+    "open_one": "{{count}} noch geplant",
+    "open_other": "{{count}} noch geplant",
+    "tomorrow": {
+      "title": "Morgen",
+      "meals_one": "{{count}} Mahlzeit geplant",
+      "meals_other": "{{count}} Mahlzeiten geplant",
+      "flexible": "Flexibel, ohne feste Mahlzeiten",
+      "none": "Noch nichts geplant",
+      "plan": "Mahlzeiten planen"
+    }
   }
 }

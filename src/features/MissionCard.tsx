@@ -12,37 +12,35 @@ export function MissionCard({ icon, title, hint, done, onPress }: { icon: IconNa
       accessibilityLabel={[title, hint].filter(Boolean).join('. ')}
       accessibilityState={{ checked: done }}
       style={[styles.card, done ? styles.done : styles.pending]}>
-      <View style={[styles.icon, { backgroundColor: done ? '#1F1F1F' : colors.white }]}>
-        <Icon name={icon} size={22} color={done ? colors.white : colors.text} />
+      <View style={[styles.icon, { backgroundColor: done ? colors.primary : colors.white }]}>
+        <Icon name={icon} size={20} color={colors.black} />
       </View>
       <View style={styles.text}>
-        <AppText variant="bodyStrong" color={done ? colors.white : colors.text}>
-          {title}
-        </AppText>
+        <AppText variant="bodyStrong">{title}</AppText>
         {hint ? (
-          <AppText variant="caption" color={done ? '#BDBDBD' : 'secondary'} numberOfLines={3}>
+          <AppText variant="caption" color="secondary" numberOfLines={3}>
             {hint}
           </AppText>
         ) : null}
       </View>
-      {done ? <CheckCircleInverse /> : <Icon name="chevron-forward" size={20} color={colors.textSecondary} />}
+      {done ? <CheckBadge /> : <Icon name="chevron-forward" size={20} color={colors.textSecondary} />}
     </PressableScale>
   );
 }
 
-function CheckCircleInverse() {
+function CheckBadge() {
   return (
     <View style={styles.checkWrap}>
-      <Icon name="checkmark" size={18} color={colors.black} />
+      <Icon name="checkmark" size={16} color={colors.white} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.md, borderRadius: radii.lg, minHeight: 76 },
-  pending: { backgroundColor: colors.card },
-  done: { backgroundColor: colors.black },
-  icon: { width: 44, height: 44, borderRadius: radii.sm, alignItems: 'center', justifyContent: 'center' },
+  card: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.sm, paddingRight: spacing.md, borderRadius: radii.lg, minHeight: 68 },
+  pending: { backgroundColor: colors.backgroundAlt },
+  done: { backgroundColor: colors.primarySoft },
+  icon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   text: { flex: 1, gap: 2 },
-  checkWrap: { width: 28, height: 28, borderRadius: 14, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
+  checkWrap: { width: 26, height: 26, borderRadius: 13, backgroundColor: colors.black, alignItems: 'center', justifyContent: 'center' },
 });

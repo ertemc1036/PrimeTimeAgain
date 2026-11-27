@@ -168,5 +168,5 @@ const styles = StyleSheet.create({
   root: { height: 360, borderRadius: 16, overflow: 'hidden', backgroundColor: '#0A0C0D' },
   fill: { flex: 1 },
   badge: { position: 'absolute', top: 8, left: 8, backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
-  badgeText: { color: '#C8FF2E', fontSize: 12, fontFamily: 'Inter_600SemiBold', fontVariant: ['tabular-nums'] },
+  badgeText: { color: '#8EC5FF', fontSize: 12, fontFamily: 'Inter_600SemiBold', fontVariant: ['tabular-nums'] },
 });

@@ -74,7 +74,7 @@ function PlanEditor({ date, setDate }: { date: ISODate; setDate: (d: ISODate) =>
 
   return (
     <Screen
-      inTabs
+      back="back"
       title={isTomorrow ? t('plan.title') : t('plan.titleDate', { date: formatDate(date, locale, { weekday: 'long', day: 'numeric', month: 'short' }) })}
       subtitle={t('plan.subtitle')}
       footer={

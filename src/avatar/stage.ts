@@ -77,21 +77,21 @@ export function createStage(): Stage {
   const turntable = new THREE.Group();
   scene.add(turntable);
 
-  // Lights: cool key, neon rims from behind, low fill. Gives the dark body readable form.
-  scene.add(new THREE.HemisphereLight(0xcfe9dc, 0x050606, 0.55));
-  const key = new THREE.DirectionalLight(0xe8f4ee, 2.0);
+  // Lights: cool key, baby-blue rims from behind, low fill. Gives the dark body readable form.
+  scene.add(new THREE.HemisphereLight(0xd8e6ff, 0x050508, 0.55));
+  const key = new THREE.DirectionalLight(0xf0f5ff, 2.0);
   key.position.set(1.4, 2.6, 2.6);
-  const rimL = new THREE.DirectionalLight(HOLO.neon, 1.6);
+  const rimL = new THREE.DirectionalLight(HOLO.accent, 1.6);
   rimL.position.set(-2.4, 2.0, -2.2);
-  const rimR = new THREE.DirectionalLight(HOLO.green, 1.2);
+  const rimR = new THREE.DirectionalLight(HOLO.glow, 1.2);
   rimR.position.set(2.4, 1.4, -2.0);
-  const fill = new THREE.DirectionalLight(0x9fb7aa, 0.35);
+  const fill = new THREE.DirectionalLight(0xa9bcd8, 0.35);
   fill.position.set(-1.8, 0.8, 2.4);
   scene.add(key, rimL, rimR, fill);
 
   // Backdrop glow behind the body (faces the camera; the camera only orbits vertically a little).
   const glowTex = keep(radialTexture(128, (r) => Math.pow(1 - r, 2.4) * 0.55));
-  const backdrop = new THREE.Mesh(keep(new THREE.PlaneGeometry(4.2, 4.2)), keep(additive(HOLO.green, 0.28, glowTex)));
+  const backdrop = new THREE.Mesh(keep(new THREE.PlaneGeometry(4.2, 4.2)), keep(additive(HOLO.accent, 0.2, glowTex)));
   backdrop.position.set(0, AVATAR_HEIGHT * 0.55, -1.6);
   scene.add(backdrop);
 
@@ -99,13 +99,13 @@ export function createStage(): Stage {
   const floor = new THREE.Group();
   scene.add(floor);
   const poolTex = keep(radialTexture(128, (r) => Math.pow(1 - r, 1.6) * 0.9));
-  const pool = new THREE.Mesh(keep(new THREE.CircleGeometry(1.25, 48)), keep(additive(HOLO.neon, 0.22, poolTex)));
+  const pool = new THREE.Mesh(keep(new THREE.CircleGeometry(1.25, 48)), keep(additive(HOLO.accent, 0.22, poolTex)));
   const shadowTex = keep(radialTexture(64, (r) => Math.pow(1 - r, 2.2) * 0.9));
   const shadow = new THREE.Mesh(keep(new THREE.CircleGeometry(0.42, 32)), keep(new THREE.MeshBasicMaterial({ color: 0x000000, map: shadowTex, transparent: true, depthWrite: false })));
-  const solid = new THREE.Mesh(keep(new THREE.RingGeometry(0.62, 0.635, 96)), keep(additive(HOLO.neon, 0.9)));
-  const dashA = new THREE.Mesh(keep(dashedRing(0.78, 0.018, 48, 0.55)), keep(additive(HOLO.neon, 0.55)));
-  const dashB = new THREE.Mesh(keep(dashedRing(0.98, 0.01, 96, 0.3)), keep(additive(HOLO.green, 0.4)));
-  const outer = new THREE.Mesh(keep(new THREE.RingGeometry(1.16, 1.168, 128)), keep(additive(HOLO.green, 0.22)));
+  const solid = new THREE.Mesh(keep(new THREE.RingGeometry(0.62, 0.635, 96)), keep(additive(HOLO.accent, 0.9)));
+  const dashA = new THREE.Mesh(keep(dashedRing(0.78, 0.018, 48, 0.55)), keep(additive(HOLO.accent, 0.55)));
+  const dashB = new THREE.Mesh(keep(dashedRing(0.98, 0.01, 96, 0.3)), keep(additive(HOLO.glow, 0.4)));
+  const outer = new THREE.Mesh(keep(new THREE.RingGeometry(1.16, 1.168, 128)), keep(additive(HOLO.glow, 0.22)));
   [pool, shadow, solid, dashA, dashB, outer].forEach((m, i) => {
     m.rotation.x = -Math.PI / 2;
     m.position.y = 0.002 + i * 0.0005;
@@ -124,8 +124,8 @@ export function createStage(): Stage {
     scene.add(g);
     return { group: g, line: line.material as THREE.MeshBasicMaterial, halo: halo.material as THREE.MeshBasicMaterial, opacity };
   };
-  const scanA = makeScanRing(HOLO.neon, 0.95);
-  const scanB = makeScanRing(HOLO.green, 0.6);
+  const scanA = makeScanRing(HOLO.accent, 0.95);
+  const scanB = makeScanRing(HOLO.glow, 0.6);
 
   // Rising light particles around the body.
   const COUNT = 90;
@@ -144,7 +144,7 @@ export function createStage(): Stage {
   const dotTex = keep(radialTexture(32, (r) => Math.pow(1 - r, 2)));
   const particles = new THREE.Points(
     particleGeo,
-    keep(new THREE.PointsMaterial({ color: HOLO.neon, size: 0.03, map: dotTex, transparent: true, opacity: 0.7, depthWrite: false, blending: THREE.AdditiveBlending })),
+    keep(new THREE.PointsMaterial({ color: HOLO.accent, size: 0.03, map: dotTex, transparent: true, opacity: 0.7, depthWrite: false, blending: THREE.AdditiveBlending })),
   );
   scene.add(particles);
 
