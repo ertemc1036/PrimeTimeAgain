@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText, Button, Card, Screen, TextField, useToast } from '@/components/ui';
 import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
 import { linkApple } from '@/services/appleAuth';
-import { sendEmailCode, verifyEmailCode, type AuthErrorCode } from '@/services/auth';
+import { sendEmailCode, verifyEmailCode, type AuthErrorCode, validCode } from '@/services/auth';
 import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
 
@@ -40,7 +40,7 @@ export default function ConfirmEmail() {
   };
 
   const verify = async () => {
-    if (!/^\d{6}$/.test(code.trim())) return setError('invalid_code');
+    if (!validCode(code)) return setError('invalid_code');
     setBusy('verify');
     const r = await verifyEmailCode(email, code);
     if (!r.ok) {
@@ -95,7 +95,7 @@ export default function ConfirmEmail() {
           <AppText variant="body">{t('auth.linkNeedsEmail')}</AppText>
         </Card>
       ) : null}
-      {sent ? <TextField label={t('auth.code')} value={code} onChangeText={setCode} keyboardType="number-pad" maxLength={6} autoComplete="one-time-code" textContentType="oneTimeCode" autoFocus /> : null}
+      {sent ? <TextField label={t('auth.code')} value={code} onChangeText={setCode} keyboardType="number-pad" maxLength={8} autoComplete="one-time-code" textContentType="oneTimeCode" autoFocus /> : null}
       <AuthError code={error} />
     </Screen>
   );

@@ -820,30 +820,7 @@
     "licensesIntro": "PrimeMe AI utilise ces œuvres de tiers. Les corps 3D ont été convertis et ont reçu un style propre à l'app."
   },
   "pro": {
-    "title": "Débloque PrimeMe+",
-    "subtitle": "Un suivi plus malin. Moins d'efforts. Plus de soutien.",
-    "b1": {
-      "title": "Scanne tes repas avec l'IA",
-      "body": "Prends un repas en photo et vérifie les apports estimés."
-    },
-    "b2": {
-      "title": "Check-ins de séance assistés par IA",
-      "body": "Ajoute une photo de contexte à tes séances en salle, en extérieur ou à la maison."
-    },
-    "b3": {
-      "title": "Coaching IA personnalisé",
-      "body": "Planifie tes repas, ajuste tes routines et garde le cap."
-    },
-    "monthly": "Mensuel",
-    "yearly": "Annuel",
-    "perMonth": "{{price}} / mois",
-    "perYear": "{{price}} / an",
-    "save": "Meilleure offre",
-    "subscribe": "Continuer",
     "restore": "Restaurer les achats",
-    "unavailable": "Les abonnements ne sont pas encore disponibles dans cette version. Les prix affichés sont provisoires.",
-    "cancelInfo": "Les abonnements se renouvellent automatiquement. Résilie à tout moment dans les réglages App Store ou Google Play, au moins 24 heures avant le renouvellement.",
-    "noGuarantee": "Pro apporte du confort et du soutien. Il ne garantit ni perte de poids ni résultat particulier.",
     "free": "Tout ce dont tu as besoin pour planifier, noter et garder ta série reste gratuit.",
     "isPro": "Tu as PrimeMe+.",
     "storeUnavailable": "Les abonnements s'achètent dans l'app PrimeMe AI installée depuis l'App Store ou Google Play. Ils ne sont pas disponibles dans cet aperçu.",
@@ -857,29 +834,13 @@
     "manage": "Gérer l'abonnement",
     "grace": "Il y a un problème avec ton paiement. Pro reste actif pour le moment. Mets à jour ton moyen de paiement dans ton compte App Store ou Google Play.",
     "expired": "Ton abonnement Pro a pris fin. Tout ce que tu as noté est toujours là.",
-    "renews": "Actif jusqu'au {{date}}",
-    "sourceTest": "PrimeMe+ · Accès test",
     "sourceTestBody": "Ce compte est activé comme compte de test sur le serveur. Ce n'est pas un abonnement et rien n'est facturé.",
-    "sourceFounder": "PrimeMe+ · Place fondateur",
-    "sourceFounderSeat": "PrimeMe+ · Place fondateur n° {{seat}}",
     "sourceFounderBody": "Tu fais partie des premiers fondateurs de PrimeMe AI. Pro est gratuit pour toi – sans abonnement ni coordonnées de paiement – et le reste une fois toutes les places attribuées.",
-    "founders": {
-      "title": "Founders Edition",
-      "counter": "{{taken}} places Pro gratuites attribuées sur {{capacity}}.",
-      "full": "Les {{capacity}} places fondateur gratuites sont toutes attribuées.",
-      "body": "Les {{capacity}} premiers comptes vérifiés reçoivent PrimeMe+ gratuitement – sans abonnement ni coordonnées de paiement. Vérifié signifie : connecté avec Apple ou e-mail confirmé par un code.",
-      "create": "Créer un compte gratuit",
-      "check": "Vérifier ma place fondateur",
-      "signedInHint": "Confirme ton adresse e-mail avec un code (ou connecte-toi avec Apple) pour réserver ta place fondateur gratuite.",
-      "notEligible": "Aucune place fondateur n'a été attribuée à ce compte. Confirme d'abord ton adresse e-mail ou réessaie dans un instant.",
-      "confirmCta": "Confirmer l’e-mail et réserver ma place"
-    },
     "testMode": "Mode test Pro",
     "testModeHint": "Uniquement dans les versions de test. Ouvre toutes les zones Pro sans abonnement et masque les paywalls. Les fonctions IA ne sont activées que par le serveur.",
     "testServerOn": "Serveur : accès test actif pour ce compte – toutes les fonctions IA disponibles.",
     "testServerPro": "Serveur : PrimeMe+ actif.",
     "testServerOff": "Serveur : ce compte n’est pas un compte test. Les fonctions IA nécessitent son ajout à PRO_TESTERS (voir Compte → identifiant du compte).",
-    "sourceBeta": "PrimeMe+ Bêta",
     "sourceBetaBody": "Pendant la bêta, toutes les fonctions PrimeMe+ sont débloquées gratuitement. Rien ne te sera facturé.",
     "testServerBeta": "Serveur : bêta active – toutes les fonctions PrimeMe+ débloquées pour chaque compte."
   },
@@ -963,8 +924,6 @@
     "createSubtitle": "Tes plans, repas et séances sont sauvegardés et disponibles sur chaque appareil où tu te connectes.",
     "create": "Créer un compte",
     "haveAccount": "Déjà un compte ? Connecte-toi",
-    "verifyTitle": "Vérifie tes e-mails",
-    "verifyBody": "Nous avons envoyé un code à 6 chiffres à {{email}}. Saisis-le pour confirmer ton compte.",
     "code": "Code à 6 chiffres",
     "verify": "Confirmer",
     "resend": "Envoyer un nouveau code",
@@ -986,7 +945,7 @@
     "errors": {
       "not_configured": "Les comptes ne sont pas encore disponibles dans cette version.",
       "invalid_credentials": "E-mail ou mot de passe incorrect.",
-      "email_not_confirmed": "Confirme d'abord ton e-mail. Nous pouvons t'envoyer un nouveau code.",
+      "email_not_confirmed": "Ce compte n’est pas encore activé. Touche « Mot de passe oublié ? » et choisis un nouveau mot de passe – tu pourras ensuite te connecter directement.",
       "user_exists": "Un compte existe déjà avec cet e-mail. Essaie de te connecter.",
       "weak_password": "Choisis un mot de passe plus sûr (au moins 8 caractères).",
       "invalid_email": "Saisis une adresse e-mail valide.",
@@ -998,7 +957,7 @@
       "apple_unavailable": "Se connecter avec Apple n’est pas disponible sur cet appareil.",
       "apple_failed": "La connexion avec Apple n’a pas fonctionné. Réessaie.",
       "apple_linked_elsewhere": "Cet identifiant Apple appartient déjà à un autre compte PrimeMe AI. Connecte-toi à ce compte avec Apple.",
-      "apple_account_exists": "La connexion avec Apple n’a pas été possible. Tu as déjà un compte PrimeMe AI avec cet e-mail ? Connecte-toi alors avec l’e-mail, confirme-le dans Profil → Compte et associe Apple à cet endroit. Sinon, réessaie plus tard.",
+      "apple_account_exists": "La connexion avec Apple n’a pas été possible. As-tu déjà un compte PrimeMe avec cet e-mail ? Connecte-toi alors avec ton e-mail et ton mot de passe, puis associe Apple dans Profil → Compte.",
       "server_config": "L’app ne peut pas se connecter au serveur pour le moment (configuration de l’app). Installe la dernière version de PrimeMe AI."
     },
     "orEmail": "ou avec l’e-mail",
@@ -1015,9 +974,6 @@
     "linked": "associé",
     "linkApple": "Associer Apple",
     "appleLinked": "Apple est maintenant associé à ton compte.",
-    "emailVerified": "E-mail confirmé",
-    "emailNotVerified": "E-mail pas encore confirmé",
-    "confirmEmailCta": "Confirmer l’e-mail",
     "linkNeedsEmail": "Confirme d’abord ton adresse e-mail. Apple est associé juste après."
   },
   "sync": {
@@ -1491,6 +1447,100 @@
       "existing": "Bon retour !",
       "beta": "PrimeMe+ Bêta est actif",
       "cta": "Aller à mon tableau de bord"
+    },
+    "health": {
+      "title": "Est-ce que l’un de ces points te concerne ?",
+      "sub": "Pour que ton plan reste sûr. Plusieurs choix possibles.",
+      "pregnant": "Enceinte ou allaitante",
+      "eatingDisorder": "Trouble alimentaire – actuel ou passé",
+      "condition": "Une maladie qui influence l’alimentation ou le poids (p. ex. diabète, cœur, reins, thyroïde)",
+      "medication": "Des médicaments qui influencent l’appétit, le poids ou la glycémie",
+      "none": "Aucun de ces points",
+      "privacy": "Les détails restent sur ton appareil et dans ton compte. Prime saura seulement – et uniquement si tu l’autorises – qu’aucun déficit calorique ne doit être proposé.",
+      "risk": "Merci de ta confiance. PrimeMe ne planifie pour toi ni déficit calorique ni rythme de perte de poids. Parle d’abord de tes objectifs de poids avec ton médecin.",
+      "planNote": "D’après tes réponses, ton plan ne contient pas de déficit calorique. Les valeurs correspondent à tes besoins estimés. Parle de tes objectifs de poids avec un médecin ou un professionnel de la nutrition."
     }
+  },
+  "paywall": {
+    "title": "Become your Prime.",
+    "subtitle": "Ton coach fitness personnel. Toujours à tes côtés.",
+    "benefits": {
+      "coach": {
+        "title": "Coach IA personnel Prime",
+        "body": "Bien plus de conversations avec Prime par jour – avec des limites d’utilisation équitables."
+      },
+      "scan": {
+        "title": "Scanner de repas IA",
+        "body": "Photographie un repas, vérifie les valeurs nutritionnelles estimées et enregistre-le."
+      },
+      "photo": {
+        "title": "Analyse photo IA pour l’entraînement",
+        "body": "Ajoute tes séances avec une photo – Prime reconnaît ce que tu as fait."
+      },
+      "plans": {
+        "title": "Planification des repas et des séances",
+        "body": "Prime propose des repas et des séances adaptés à ton plan."
+      },
+      "memory": {
+        "title": "Prime Memory",
+        "body": "Prime retient ce qui compte pour toi – consultable et supprimable à tout moment."
+      }
+    },
+    "yearly": "Annuel",
+    "monthly": "Mensuel",
+    "perYear": "{{price}} par an",
+    "perMonth": "{{price}} par mois",
+    "perMonthEq": "soit {{price}} par mois",
+    "save": "{{percent}} % d’économie",
+    "saveDetail": "Avec l’abonnement annuel, tu économises {{amount}} par rapport à douze paiements mensuels.",
+    "terms": {
+      "yearly": "{{price}} par an. Renouvellement automatique chaque année, sauf résiliation.",
+      "monthly": "{{price}} par mois. Renouvellement automatique chaque mois, sauf résiliation."
+    },
+    "termsTrial": {
+      "yearly": "{{trial}}, puis {{price}} par an. Renouvellement automatique, sauf résiliation.",
+      "monthly": "{{trial}}, puis {{price}} par mois. Renouvellement automatique, sauf résiliation."
+    },
+    "cancel": "Le paiement est débité de ton compte Apple. Tu peux résilier à tout moment dans les réglages de ton compte Apple, au moins 24 heures avant la fin de la période en cours. PrimeMe+ reste actif jusqu’à la fin de la période payée.",
+    "fair": "Des limites d’utilisation équitables s’appliquent aux fonctions IA. Les valeurs nutritionnelles et les analyses sont des estimations, pas un avis médical.",
+    "continue": "Continuer",
+    "startTrial": "Essayer gratuitement",
+    "processing": "Traitement …",
+    "continueFree": "Continuer avec PrimeMe Free",
+    "notNow": "Pas maintenant",
+    "loading": "Chargement des prix depuis l’App Store …",
+    "restoring": "Restauration …",
+    "trial": {
+      "DAY_one": "{{count}} jour offert",
+      "DAY_many": "{{count}} jours offerts",
+      "DAY_other": "{{count}} jours offerts",
+      "WEEK_one": "{{count}} semaine offerte",
+      "WEEK_many": "{{count}} semaines offertes",
+      "WEEK_other": "{{count}} semaines offertes",
+      "MONTH_one": "{{count}} mois offert",
+      "MONTH_many": "{{count}} mois offerts",
+      "MONTH_other": "{{count}} mois offerts",
+      "YEAR_one": "{{count}} an offert",
+      "YEAR_many": "{{count}} ans offerts",
+      "YEAR_other": "{{count}} ans offerts"
+    }
+  },
+  "membership": {
+    "free": "PrimeMe Free",
+    "beta": "PrimeMe+ Beta",
+    "monthly": "PrimeMe+ Monthly",
+    "yearly": "PrimeMe+ Yearly",
+    "plus": "PrimeMe+",
+    "founder": "PrimeMe+ Founders",
+    "test": "PrimeMe+ accès test",
+    "status": "Abonnement",
+    "renews": "Se renouvelle le",
+    "ends": "Se termine le",
+    "validUntil": "Valable jusqu’au",
+    "trialEnds": "L’essai se termine le",
+    "seat": "Place de fondateur",
+    "storeBody": "Ton abonnement passe par Apple. Toutes les fonctions PrimeMe+ sont débloquées.",
+    "noSubscription": "Cette formule ne comporte aucun abonnement et rien n’est débité.",
+    "deleteNote": "Important : supprimer ton compte PrimeMe ne résilie pas un abonnement souscrit via Apple. Résilie-le d’abord dans « Gérer l’abonnement »."
   }
 }

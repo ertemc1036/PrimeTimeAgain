@@ -813,30 +813,7 @@
     "licensesIntro": "PrimeMe AI uses these third-party works. The 3D bodies were converted and given a custom look for the app."
   },
   "pro": {
-    "title": "Unlock PrimeMe+",
-    "subtitle": "Smarter tracking. Less effort. More support.",
-    "b1": {
-      "title": "Scan meals with AI",
-      "body": "Photograph a meal and review estimated nutrition."
-    },
-    "b2": {
-      "title": "AI-assisted workout check-ins",
-      "body": "Add photo context to your gym, outdoor or home workouts."
-    },
-    "b3": {
-      "title": "Personal AI coaching",
-      "body": "Plan meals, adjust routines and stay on track."
-    },
-    "monthly": "Monthly",
-    "yearly": "Yearly",
-    "perMonth": "{{price}} / month",
-    "perYear": "{{price}} / year",
-    "save": "Best value",
-    "subscribe": "Continue",
     "restore": "Restore Purchases",
-    "unavailable": "Subscriptions aren't available in this build yet. Prices shown are preliminary.",
-    "cancelInfo": "Subscriptions renew automatically. Cancel anytime in your App Store or Google Play settings at least 24 hours before renewal.",
-    "noGuarantee": "Pro adds convenience and support. It doesn't guarantee weight loss or any specific result.",
     "free": "Everything you need to plan, log and build your streak stays free.",
     "isPro": "You have PrimeMe+.",
     "storeUnavailable": "Subscriptions can be bought in the installed PrimeMe AI app from the App Store or Google Play. They aren't available in this preview.",
@@ -850,29 +827,13 @@
     "manage": "Manage subscription",
     "grace": "There's a problem with your payment. Pro stays active for now. Please update your payment method in your App Store or Google Play account.",
     "expired": "Your Pro subscription has ended. Everything you logged is still here.",
-    "renews": "Active until {{date}}",
-    "sourceTest": "PrimeMe+ · Test access",
     "sourceTestBody": "This account is unlocked as a test account on the server. It is not a subscription and nothing is charged.",
-    "sourceFounder": "PrimeMe+ · Founder seat",
-    "sourceFounderSeat": "PrimeMe+ · Founder seat #{{seat}}",
     "sourceFounderBody": "You are one of the first PrimeMe AI founders. Pro is free for you – no subscription, no payment details – and stays that way after all seats are taken.",
-    "founders": {
-      "title": "Founders Edition",
-      "counter": "{{taken}} of {{capacity}} free Pro seats taken.",
-      "full": "All {{capacity}} free founder seats are taken.",
-      "body": "The first {{capacity}} verified accounts get PrimeMe+ for free – no subscription, no payment details. Verified means: signed in with Apple or email confirmed with a code.",
-      "create": "Create free account",
-      "check": "Check founder seat",
-      "signedInHint": "Confirm your email address with a code (or sign in with Apple) to secure your free founder seat.",
-      "notEligible": "No founder seat was assigned to this account. Please confirm your email address first or try again in a moment.",
-      "confirmCta": "Confirm email and secure seat"
-    },
     "testMode": "Pro test mode",
     "testModeHint": "Test builds only. Opens every Pro area without a subscription and hides paywalls. AI features are unlocked by the server only.",
     "testServerOn": "Server: test access active for this account – all AI features available.",
     "testServerPro": "Server: PrimeMe+ active.",
     "testServerOff": "Server: this account is not a test account. AI features need it in PRO_TESTERS (see Account → account ID).",
-    "sourceBeta": "PrimeMe+ Beta",
     "sourceBetaBody": "During the beta, all PrimeMe+ features are unlocked for free. You won’t be charged.",
     "testServerBeta": "Server: beta active – all PrimeMe+ features unlocked for every account."
   },
@@ -956,8 +917,6 @@
     "createSubtitle": "Your plans, meals and workouts are backed up and available on every device you sign in to.",
     "create": "Create Account",
     "haveAccount": "Already have an account? Sign in",
-    "verifyTitle": "Check your email",
-    "verifyBody": "We sent a 6-digit code to {{email}}. Enter it to confirm your account.",
     "code": "6-digit code",
     "verify": "Confirm",
     "resend": "Send a new code",
@@ -979,7 +938,7 @@
     "errors": {
       "not_configured": "Accounts aren't available in this build yet.",
       "invalid_credentials": "Email or password is incorrect.",
-      "email_not_confirmed": "Please confirm your email first. We can send you a new code.",
+      "email_not_confirmed": "This account isn’t activated yet. Tap “Forgot password?” and set a new password – then you can sign in right away.",
       "user_exists": "An account with this email already exists. Try signing in.",
       "weak_password": "Please choose a stronger password (at least 8 characters).",
       "invalid_email": "Please enter a valid email address.",
@@ -991,7 +950,7 @@
       "apple_unavailable": "Sign in with Apple isn’t available on this device.",
       "apple_failed": "Signing in with Apple didn’t work. Please try again.",
       "apple_linked_elsewhere": "This Apple ID already belongs to another PrimeMe AI account. Sign in there with Apple.",
-      "apple_account_exists": "Signing in with Apple wasn’t possible. Do you already have a PrimeMe AI account with this email? Then sign in with email, confirm it under Profile → Account and link Apple there. Otherwise please try again later.",
+      "apple_account_exists": "Signing in with Apple wasn’t possible. Do you already have a PrimeMe account with this email? Then sign in with email and password and link Apple under Profile → Account.",
       "server_config": "The app can’t connect to the server right now (app configuration). Please install the latest version of PrimeMe AI."
     },
     "orEmail": "or with email",
@@ -1008,9 +967,6 @@
     "linked": "linked",
     "linkApple": "Link Apple",
     "appleLinked": "Apple is now linked to your account.",
-    "emailVerified": "Email confirmed",
-    "emailNotVerified": "Email not confirmed yet",
-    "confirmEmailCta": "Confirm email",
     "linkNeedsEmail": "Confirm your email address first. Apple is linked right after."
   },
   "sync": {
@@ -1475,6 +1431,96 @@
       "existing": "Welcome back!",
       "beta": "PrimeMe+ Beta is active",
       "cta": "Go to my dashboard"
+    },
+    "health": {
+      "title": "Does any of this apply to you?",
+      "sub": "So your plan stays safe. Select all that apply.",
+      "pregnant": "Pregnant or breastfeeding",
+      "eatingDisorder": "Eating disorder – now or in the past",
+      "condition": "A condition that affects diet or weight (e.g. diabetes, heart, kidneys, thyroid)",
+      "medication": "Medication that affects appetite, weight or blood sugar",
+      "none": "None of these",
+      "privacy": "The details stay on your device and in your account. Prime only learns – and only if you allow it – that no calorie deficit should be suggested.",
+      "risk": "Thanks for sharing. PrimeMe won’t plan a calorie deficit or a weight-loss pace for you. Please discuss weight goals with your doctor first.",
+      "planNote": "Based on your answers, your plan contains no calorie deficit. The values reflect your estimated needs. Please discuss weight goals with a doctor or a nutrition professional."
     }
+  },
+  "paywall": {
+    "title": "Become your Prime.",
+    "subtitle": "Your personal fitness coach. Always by your side.",
+    "benefits": {
+      "coach": {
+        "title": "Personal Prime AI coach",
+        "body": "Many more conversations with Prime per day – with fair usage limits."
+      },
+      "scan": {
+        "title": "AI food scanner",
+        "body": "Snap a meal, check the estimated nutrition and save it."
+      },
+      "photo": {
+        "title": "AI photo check-ins for training",
+        "body": "Add workouts with a photo – Prime recognises what you did."
+      },
+      "plans": {
+        "title": "Meal and training planning",
+        "body": "Prime suggests meals and workouts that fit your plan."
+      },
+      "memory": {
+        "title": "Prime Memory",
+        "body": "Prime remembers what matters to you – view and delete it any time."
+      }
+    },
+    "yearly": "Yearly",
+    "monthly": "Monthly",
+    "perYear": "{{price}} per year",
+    "perMonth": "{{price}} per month",
+    "perMonthEq": "equals {{price}} per month",
+    "save": "Save {{percent}}%",
+    "saveDetail": "With the yearly plan you save {{amount}} compared with twelve monthly payments.",
+    "terms": {
+      "yearly": "{{price}} per year. Renews automatically every year unless cancelled.",
+      "monthly": "{{price}} per month. Renews automatically every month unless cancelled."
+    },
+    "termsTrial": {
+      "yearly": "{{trial}}, then {{price}} per year. Renews automatically unless cancelled.",
+      "monthly": "{{trial}}, then {{price}} per month. Renews automatically unless cancelled."
+    },
+    "cancel": "Payment is charged to your Apple Account. Cancel any time in your Apple Account settings, at least 24 hours before the current period ends. PrimeMe+ stays active until the end of the paid period.",
+    "fair": "Fair usage limits apply to AI features. Nutrition values and analyses are estimates, not medical advice.",
+    "continue": "Continue",
+    "startTrial": "Start free trial",
+    "processing": "Processing …",
+    "continueFree": "Continue with PrimeMe Free",
+    "notNow": "Not now",
+    "loading": "Loading prices from the App Store …",
+    "restoring": "Restoring …",
+    "trial": {
+      "DAY_one": "{{count}} day free",
+      "DAY_other": "{{count}} days free",
+      "WEEK_one": "{{count}} week free",
+      "WEEK_other": "{{count}} weeks free",
+      "MONTH_one": "{{count}} month free",
+      "MONTH_other": "{{count}} months free",
+      "YEAR_one": "{{count}} year free",
+      "YEAR_other": "{{count}} years free"
+    }
+  },
+  "membership": {
+    "free": "PrimeMe Free",
+    "beta": "PrimeMe+ Beta",
+    "monthly": "PrimeMe+ Monthly",
+    "yearly": "PrimeMe+ Yearly",
+    "plus": "PrimeMe+",
+    "founder": "PrimeMe+ Founders",
+    "test": "PrimeMe+ test access",
+    "status": "Membership",
+    "renews": "Renews on",
+    "ends": "Ends on",
+    "validUntil": "Valid until",
+    "trialEnds": "Trial ends on",
+    "seat": "Founder seat",
+    "storeBody": "Your subscription runs through Apple. All PrimeMe+ features are unlocked.",
+    "noSubscription": "This membership has no subscription and nothing is charged.",
+    "deleteNote": "Important: deleting your PrimeMe account does not cancel a subscription bought through Apple. Cancel it first under “Manage subscription”."
   }
 }

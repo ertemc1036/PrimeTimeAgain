@@ -23,10 +23,7 @@ export default function SignIn() {
     setBusy(true);
     const r = await signIn(email, password);
     setBusy(false);
-    if (!r.ok) {
-      if (r.error === 'email_not_confirmed') return router.push({ pathname: '/auth/verify', params: { email } });
-      return setError(r.error);
-    }
+    if (!r.ok) return setError(r.error);
     toast(t('auth.signedIn'));
     closeAuth();
   };

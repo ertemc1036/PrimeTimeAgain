@@ -88,7 +88,7 @@ Grundlage ist dein Master-Briefing (20 Abschnitte). Diese Datei ist die laufende
 Außerdem:
 - Der Serienkalender ist in die Journey umgezogen.
 - Der Plan-Editor kann direkt einen bestimmten Tag öffnen (`/plan?date=`).
-- Der Platzhalterpreis der Paywall ist auf 5,99 € gesetzt; echte Preise kommen aus dem Store.
+- Die Paywall zeigt ausschließlich Store-Preise (RevenueCat → App Store). Referenzpreise Deutschland: 9,99 € pro Monat, 69,99 € pro Jahr (in App Store Connect hinterlegt, nicht im Code).
 
 ## Nächste Phasen (Reihenfolge)
 

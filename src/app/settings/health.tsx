@@ -84,6 +84,7 @@ export default function Health() {
                     workouts: p.workoutsPerWeek,
                     goal: goals.includes('weight') && goalKg ? 'lose' : p.primaryGoal === 'lose' ? 'maintain' : p.primaryGoal,
                     pace: p.pace,
+                    healthRisk: (p.healthFlags ?? []).length > 0,
                     year: new Date().getFullYear(),
                   }).targets ?? undefined,
               }

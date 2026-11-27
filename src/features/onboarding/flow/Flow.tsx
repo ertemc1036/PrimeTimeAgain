@@ -22,7 +22,7 @@ import { nowISO } from '@/utils/id';
 
 import { PhonePreview } from './PhonePreview';
 import { PaceSlider, WeightRuler, WheelPicker } from './pickers';
-import { NO_HEADER, useOnboardingFlow, type OnboardingDraft, type StepId } from './state';
+import { healthRisk, NO_HEADER, useOnboardingFlow, type OnboardingDraft, type StepId } from './state';
 import { clearDraft } from './storage';
 import { OnboardingScreen, OptionCard, OText, PrimaryButton, SoftCard, TextButton, UnitSwitch } from './ui';
 
@@ -36,10 +36,11 @@ export const planFor = (d: OnboardingDraft): Plan =>
     birthYear: d.birth?.year,
     heightCm: d.heightCm,
     weightKg: d.weightKg,
-    goalWeightKg: d.goal === 'lose' ? d.goalWeightKg : undefined,
+    goalWeightKg: d.goal === 'lose' && !healthRisk(d) ? d.goalWeightKg : undefined,
     workouts: d.workouts,
     goal: d.goal,
     pace: d.pace,
+    healthRisk: healthRisk(d),
     year: YEAR,
   });
 
@@ -88,6 +89,8 @@ function Step({ id }: { id: StepId }) {
       return <YesNoStep header={header} field="hasCoach" title="ob.coach.title" subtitle="ob.coach.sub" />;
     case 'goal':
       return <GoalStep header={header} />;
+    case 'health':
+      return <HealthStep header={header} />;
     case 'goalWeight':
       return <GoalWeightStep header={header} />;
     case 'goalMessage':
@@ -473,6 +476,31 @@ function GoalStep({ header }: { header: Header }) {
   );
 }
 
+// ---------- 11b Health check (weight loss only) ----------
+const HEALTH: { v: string; icon: IconName }[] = [
+  { v: 'pregnant', icon: 'heart-outline' },
+  { v: 'eatingDisorder', icon: 'restaurant-outline' },
+  { v: 'condition', icon: 'medkit-outline' },
+  { v: 'medication', icon: 'bandage-outline' },
+  { v: 'none', icon: 'checkmark-circle-outline' },
+];
+function HealthStep({ header }: { header: Header }) {
+  const { t } = useTranslation();
+  const { draft, update } = useOnboardingFlow();
+  const list = draft.healthFlags ?? [];
+  const toggle = (v: string) =>
+    update({ healthFlags: v === 'none' ? (list.includes('none') ? [] : ['none']) : list.includes(v) ? list.filter((x) => x !== v) : [...list.filter((x) => x !== 'none'), v] });
+  return (
+    <OnboardingScreen {...header} title={t('ob.health.title')} subtitle={t('ob.health.sub')} footer={<Next disabled={list.length === 0} />} scroll>
+      {HEALTH.map((x) => (
+        <OptionCard key={x.v} multi icon={x.icon} label={t(`ob.health.${x.v}` as 'ob.health.none')} selected={list.includes(x.v)} onPress={() => toggle(x.v)} />
+      ))}
+      {healthRisk(draft) ? <OText variant="body">{t('ob.health.risk')}</OText> : null}
+      <OText variant="caption">{t('ob.health.privacy')}</OText>
+    </OnboardingScreen>
+  );
+}
+
 // ---------- 12 Goal weight ----------
 function GoalWeightStep({ header }: { header: Header }) {
   const { t } = useTranslation();
@@ -806,7 +834,7 @@ function PlanStep({ header }: { header: Header }) {
     [t('ob.plan.goal'), t(`ob.goal.${draft.goal ?? 'fitter'}`)],
     [t('ob.plan.start'), w(draft.weightKg)],
   ];
-  if (draft.goal === 'lose' && draft.goalWeightKg) rows.push([t('ob.plan.target'), w(draft.goalWeightKg)]);
+  if (draft.goal === 'lose' && draft.goalWeightKg && !healthRisk(draft)) rows.push([t('ob.plan.target'), w(draft.goalWeightKg)]);
   if (plan.weeks) rows.push([t('ob.plan.orientation'), t('ob.plan.weeksRange', { min: plan.weeks.min, max: plan.weeks.max })]);
   return (
     <OnboardingScreen {...header} footer={<Next />} scroll>
@@ -818,7 +846,7 @@ function PlanStep({ header }: { header: Header }) {
           {t('ob.plan.title')}
         </OText>
       </View>
-      {draft.goal === 'lose' && plan.toLoseKg ? (
+      {draft.goal === 'lose' && plan.toLoseKg && !healthRisk(draft) ? (
         <SoftCard>
           <View aria-hidden>
             <Svg width="100%" height={110} viewBox="0 0 300 110">
@@ -844,6 +872,11 @@ function PlanStep({ header }: { header: Header }) {
         ))}
         <OText variant="caption">{t('ob.plan.estimate')}</OText>
       </SoftCard>
+      {plan.notes.includes('needs_professional') ? (
+        <SoftCard>
+          <OText variant="body">{t('ob.health.planNote')}</OText>
+        </SoftCard>
+      ) : null}
       <TextButton label={t('ob.plan.edit')} onPress={() => goTo('goal')} />
     </OnboardingScreen>
   );
@@ -979,7 +1012,7 @@ function AccountStep({ header }: { header: Header }) {
   const [error, setError] = useState<AuthErrorCode | null>(null);
   const available = authAvailable();
 
-  // Any way of signing in (email, Apple, code confirmation, existing account) continues the flow.
+  // Any way of signing in (email, Apple, existing account) continues the flow.
   useEffect(() => {
     if (auth.status === 'signedIn') next();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- advance once when signed in
@@ -993,7 +1026,7 @@ function AccountStep({ header }: { header: Header }) {
     const r = await signUp(email, password);
     setBusy(false);
     if (!r.ok) return setError(r.error);
-    if (r.value.needsCode) router.push({ pathname: '/auth/verify', params: { email } });
+    // Signed in at once (no confirmation email); the effect above moves on to the last screen.
   };
 
   if (!available) {
@@ -1081,7 +1114,7 @@ function DoneStep() {
       heightCm: draft.heightCm,
       goals: draft.goal === 'lose' ? ['weight'] : draft.goal === 'maintain' ? ['weight', 'habits'] : ['active'],
       startWeightKg: draft.weightKg,
-      goalWeightKg: draft.goal === 'lose' ? draft.goalWeightKg : undefined,
+      goalWeightKg: draft.goal === 'lose' && !healthRisk(draft) ? draft.goalWeightKg : undefined,
       activityPrefs: [],
       food: { preferred: [], restrictions, allergies: draft.dietNeeds.includes('nuts') ? [t('ob.dietNeeds.nuts')] : [], dislikes: [] },
       planningTime: '20:30',
@@ -1100,6 +1133,7 @@ function DoneStep() {
       triedOtherApps: draft.triedOtherApps,
       hasCoach: draft.hasCoach,
       referral: draft.referral,
+      healthFlags: draft.goal === 'lose' ? draft.healthFlags.filter((f) => f !== 'none') : undefined,
     };
     const r = await dispatch({
       type: 'completeOnboarding',
@@ -1111,7 +1145,10 @@ function DoneStep() {
       await dispatch({ type: 'upsertWeight', entry: { id: `w_${today}`, date: today, kg: draft.weightKg, createdAt: now, updatedAt: now } });
       if (draft.coachConsent) await dispatch({ type: 'setCoachConsent', value: true });
       await clearDraft();
-      router.replace('/today');
+      // Beta (mode A) or Pro already (founder, restored purchase): straight to Today. Otherwise
+      // (commercial mode) the PrimeMe+ offer once – "continue with PrimeMe Free" leads to Today.
+      if (userId && sync.entitlement?.tier !== 'pro') router.replace({ pathname: '/pro', params: { from: 'onboarding' } });
+      else router.replace('/today');
     }
     setSaving(false);
   };

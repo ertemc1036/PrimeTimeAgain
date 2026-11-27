@@ -1,0 +1,81 @@
+<div class="draft"><strong>Entwurf – rechtlich zu prüfen.</strong> Erstellt anhand der tatsächlich implementierten App und des Backends (Stand des Repositorys). Gelb markierte Stellen müssen ergänzt oder geprüft werden. Dieser Text ist keine Rechtsberatung und keine Bestätigung, dass die Verarbeitung der DSGVO entspricht.</div>
+<h1>Datenschutzerklärung</h1>
+<p class="muted">Stand: {{LAST_UPDATED}}</p>
+
+<h2>1. Verantwortlicher</h2>
+<p>{{OPERATOR_NAME}}, {{ADDRESS}}<br>E-Mail: <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a></p>
+<p><span class="todo">[prüfen: Ist ein Datenschutzbeauftragter erforderlich? Falls ja, Kontakt angeben.]</span></p>
+
+<h2>2. Überblick</h2>
+<p>PrimeMe AI ist eine App zum Festhalten von Ernährung, Wasser, Training und Ruhetagen mit einem KI-Coach („Prime“). Die App funktioniert offline-first: Deine Einträge werden zuerst auf deinem Gerät gespeichert und, sobald du ein Konto hast, mit unserem Server synchronisiert. Wir verwenden keine Werbung, kein Tracking und keine Analyse- oder Werbe-SDKs.</p>
+
+<h2>3. Welche Daten wir verarbeiten</h2>
+<table>
+  <tr><th>Kategorie</th><th>Beispiele</th><th>Zweck</th></tr>
+  <tr><td>Kontodaten</td><td>E-Mail-Adresse, Passwort (nur als sicherer Hash beim Hosting-Anbieter gespeichert), bei „Mit Apple anmelden“ eine Apple-Nutzerkennung und ggf. eine von Apple weitergeleitete E-Mail-Adresse</td><td>Konto, Anmeldung, Synchronisierung über Geräte, Passwort-Zurücksetzen</td></tr>
+  <tr><td>Profil- und Onboarding-Angaben</td><td>Name, Geburtsjahr (das genaue Datum wird nur auf dem Gerät für die Altersprüfung verwendet), Körperangabe für die Berechnung, Größe, Gewicht, Zielgewicht, Ziel, Trainingshäufigkeit, Tempo, Ernährungsform, besondere Anforderungen (z. B. halal, laktosefrei, glutenfrei), Allergien und Unverträglichkeiten, Herausforderungen, Motivation, Antworten des Gesundheitschecks</td><td>Persönlicher Plan (Kalorienrahmen, Makros, Wasser), Anzeige in der App, Sicherheitsgrenzen</td></tr>
+  <tr><td>Tagebuchdaten</td><td>Mahlzeiten und geschätzte Nährwerte, Wasser, Trainings, Ruhetage, Planungen, Gewichtseinträge, Serie</td><td>Kernfunktionen der App</td></tr>
+  <tr><td>Fotos</td><td>Fotos von Mahlzeiten, Trainings und Fortschritt, die du selbst aufnimmst oder auswählst</td><td>KI-Analyse auf deinen Wunsch; gespeicherte Fotos in privaten Speicherbereichen</td></tr>
+  <tr><td>KI-Gespräche und Prime Memory</td><td>Nachrichten an Prime und Antworten, Notizen, die Prime sich merken soll</td><td>KI-Coach, Verlauf auf deinen Geräten</td></tr>
+  <tr><td>Abo-Daten</td><td>Abo-Status, Produkt, Ablaufdatum (keine Zahlungsdaten – die verarbeitet Apple)</td><td>Freischaltung von PrimeMe+</td></tr>
+  <tr><td>Technische Daten</td><td>Zeitpunkte von KI-Anfragen (für Nutzungsgrenzen), Server-Protokolle des Hosting-Anbieters (z. B. IP-Adresse, Zeitpunkt)</td><td>Sicherheit, Missbrauchsschutz, Kostenkontrolle</td></tr>
+</table>
+<p>Fotos werden vor dem Speichern oder Senden auf dem Gerät neu kodiert und verkleinert; dabei werden Metadaten wie der Aufnahmeort (GPS) entfernt.</p>
+
+<h2>4. Gesundheitsdaten</h2>
+<p>Angaben wie Gewicht, Größe, Ernährung, Allergien und Unverträglichkeiten, Training sowie die Antworten des Gesundheitschecks (z. B. Schwangerschaft, Essstörung, Erkrankungen, Medikamente) können Gesundheitsdaten im Sinne von Art. 9 DSGVO sein. Wir verarbeiten sie nur, um dir die Funktionen der App bereitzustellen, auf Grundlage deiner ausdrücklichen Einwilligung (Art. 9 Abs. 2 lit. a DSGVO). Du kannst die Einwilligung jederzeit widerrufen, indem du die Angaben löschst oder dein Konto löschst.</p>
+<p><span class="todo">[rechtlich prüfen: wie und an welcher Stelle der App die ausdrückliche Einwilligung in die Verarbeitung von Gesundheitsdaten eingeholt und dokumentiert wird – derzeit gibt es in der App außer der Einwilligung zur KI-Datennutzung keine gesonderte ausdrückliche Einwilligung für Gesundheitsdaten; sie ist voraussichtlich erforderlich.]</span></p>
+<p>Das genaue Gewicht wird nie an die KI weitergegeben. Aus dem Gesundheitscheck erfährt Prime – nur mit deiner Einwilligung zur Datennutzung – lediglich, dass kein Kaloriendefizit vorgeschlagen werden soll, nicht den Grund.</p>
+
+<h2>5. Künstliche Intelligenz (OpenAI)</h2>
+<p>Für Prime, den KI-Essensscanner und die KI-Fotoanalyse sendet unser Server deine Nachricht bzw. dein Foto an die API von OpenAI (OpenAI, L.L.C. bzw. OpenAI Ireland Ltd. <span class="todo">[Vertragspartner prüfen]</span>). Die App selbst spricht nie direkt mit OpenAI; der API-Schlüssel liegt nur auf unserem Server.</p>
+<ul>
+  <li>Nur wenn du unter Profil → Datenschutz einwilligst, sendet die App zusätzlich eine kompakte Zusammenfassung deiner letzten Einträge (z. B. Ziele, Ernährungsform, Allergien, Mahlzeiten und Trainings der letzten Tage, Wasser, Serie) mit, damit Prime dich persönlich beraten kann. Ohne Einwilligung bekommt Prime nur deine Nachricht.</li>
+  <li>Gewicht, Fotos aus deinem Verlauf und Notizen werden nicht als Kontext gesendet.</li>
+  <li>Ergebnisse der KI sind Schätzungen. Nichts wird gespeichert, bevor du es bestätigst.</li>
+</ul>
+<p>OpenAI verarbeitet die Daten in den USA. <span class="todo">[prüfen: Auftragsverarbeitungsvertrag (DPA) mit OpenAI, Grundlage der Übermittlung (EU-US Data Privacy Framework oder Standardvertragsklauseln), Speicherdauer bei OpenAI und ob API-Daten zum Training verwendet werden (laut OpenAI-API-Bedingungen standardmäßig nicht – aktuellen Stand prüfen).]</span></p>
+
+<h2>6. Empfänger und Dienstleister</h2>
+<table>
+  <tr><th>Dienstleister</th><th>Aufgabe</th><th>Ort</th></tr>
+  <tr><td>Supabase Inc.</td><td>Hosting von Datenbank, Anmeldung, Dateispeicher und Server-Funktionen</td><td>Rechenzentrum in der EU (AWS-Region eu-north-1, Stockholm); Supabase Inc. hat ihren Sitz in den USA <span class="todo">[DPA und Übermittlungsgrundlage prüfen]</span></td></tr>
+  <tr><td>OpenAI</td><td>KI-Verarbeitung (siehe Abschnitt 5)</td><td>USA</td></tr>
+  <tr><td>RevenueCat, Inc.</td><td>Verwaltung und Prüfung von Abos; erhält deine Konto-ID (eine zufällige Kennung, keine E-Mail) und Kaufinformationen von Apple</td><td>USA <span class="todo">[DPA und Übermittlungsgrundlage prüfen]</span></td></tr>
+  <tr><td>Apple Inc. / Apple Distribution International</td><td>App Store, Zahlungsabwicklung für Abos, TestFlight, „Mit Apple anmelden“, Benachrichtigungen auf dem Gerät</td><td>Apple ist für Zahlungen und die eigenen Dienste selbst verantwortlich</td></tr>
+  <tr><td>E-Mail-Versand <span class="todo">[Anbieter eintragen, z. B. Resend]</span></td><td>Versand von Codes zum Zurücksetzen des Passworts</td><td><span class="todo">[Ort prüfen]</span></td></tr>
+</table>
+<p>Expo (650 Industries, Inc.) nutzen wir nur zum Erstellen der App; die App sendet zur Laufzeit keine Nutzungsdaten an Expo. Erinnerungen werden lokal auf deinem Gerät geplant. <span class="todo">[vor Veröffentlichung prüfen, ob sich daran etwas geändert hat]</span></p>
+
+<h2>7. Rechtsgrundlagen</h2>
+<ul>
+  <li>Vertrag und Nutzung der App (Art. 6 Abs. 1 lit. b DSGVO): Konto, Synchronisierung, Abo-Verwaltung.</li>
+  <li>Ausdrückliche Einwilligung (Art. 9 Abs. 2 lit. a, Art. 6 Abs. 1 lit. a DSGVO): Gesundheitsdaten; Übermittlung deines Kontexts an die KI.</li>
+  <li>Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Sicherheit, Missbrauchsschutz, Nutzungsgrenzen der KI.</li>
+  <li>Rechtliche Pflichten (Art. 6 Abs. 1 lit. c DSGVO): z. B. Aufbewahrungspflichten.</li>
+</ul>
+
+<h2>8. Speicherdauer und Löschung</h2>
+<ul>
+  <li>Deine Daten speichern wir, solange du dein Konto hast. Einzelne Einträge, Fotos und Prime-Memory-Notizen kannst du jederzeit in der App löschen.</li>
+  <li>Unter Profil → Konto → Konto löschen werden dein Konto, alle Cloud-Daten und gespeicherten Fotos sofort und dauerhaft gelöscht; auch die Daten auf dem Gerät werden entfernt.</li>
+  <li>Einträge zu KI-Anfragen für Nutzungsgrenzen werden nach 30 Tagen automatisch gelöscht.</li>
+  <li><span class="todo">[prüfen und ergänzen: Aufbewahrung in Backups des Hosting-Anbieters, Server-Protokolle, Speicherdauer bei OpenAI und RevenueCat.]</span></li>
+  <li>Die Antworten aus dem Onboarding liegen bis zur Kontoerstellung verschlüsselt nur auf deinem Gerät (iOS-Schlüsselbund) und werden danach dort gelöscht.</li>
+</ul>
+<p>Das Löschen deines Kontos kündigt kein über Apple abgeschlossenes Abo. Bitte kündige es vorher in den Einstellungen deines Apple-Accounts.</p>
+
+<h2>9. Kostenlose Beta, Abos und Testphase</h2>
+<p>Während der Beta schalten wir PrimeMe+ für alle registrierten Konten serverseitig frei; dafür werden keine Zahlungsdaten verarbeitet. Bei einem Abo verarbeitet Apple die Zahlung; wir und RevenueCat erhalten nur Informationen zum Abo-Status (z. B. aktiv, Testphase, Ablaufdatum), nicht deine Zahlungsdaten.</p>
+
+<h2>10. Deine Rechte</h2>
+<p>Du hast das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO) sowie das Recht, erteilte Einwilligungen jederzeit für die Zukunft zu widerrufen. Einen Export deiner Daten erhältst du direkt in der App (Profil → Datenschutz und Daten). Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren. <span class="todo">[zuständige Aufsichtsbehörde je nach Sitz des Betreibers ergänzen]</span></p>
+
+<h2>11. Sicherheit</h2>
+<p>Die Übertragung erfolgt verschlüsselt (HTTPS). Jeder Datensatz ist serverseitig deinem Konto zugeordnet und durch Zugriffsregeln (Row Level Security) geschützt; Fotos liegen in privaten Speicherbereichen. Anmeldedaten werden auf dem Gerät im sicheren Speicher abgelegt.</p>
+
+<h2>12. Mindestalter</h2>
+<p>PrimeMe AI richtet sich an Personen ab 18 Jahren.</p>
+
+<h2>13. Änderungen</h2>
+<p>Wir passen diese Erklärung an, wenn sich die App oder die Rechtslage ändert. Die aktuelle Fassung findest du immer auf dieser Seite.</p>

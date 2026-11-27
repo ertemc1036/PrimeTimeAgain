@@ -6,9 +6,8 @@ import { getSupabase } from './supabase/client';
 
 /**
  * Accounts through Supabase Auth: email/password and Sign in with Apple (services/appleAuth.ts).
- * Codes (6 digits) are used for email confirmation and password reset, so no deep links are needed
- * on the phone. Whether sign-up needs a confirmation code is a Supabase setting ("Confirm email");
- * the app handles both.
+ * Codes (6 digits) are used for the password reset (and the optional email proof), so no deep links are needed
+ * on the phone. Sign-up never needs a confirmation (see signUp).
  */
 export type AuthErrorCode =
   | 'not_configured'
@@ -42,6 +41,7 @@ export function mapError(e: unknown): AuthErrorCode {
   if (msg.includes('invalid api key') || msg.includes('no api key') || (err?.status === 401 && !code)) return 'server_config';
   if (code === 'invalid_credentials' || msg.includes('invalid login')) return 'invalid_credentials';
   if (code === 'email_not_confirmed') return 'email_not_confirmed';
+  if (code === 'signup_needs_confirmation') return 'server_config';
   if (code === 'user_already_exists' || code === 'email_exists' || msg.includes('already registered')) return 'user_exists';
   if (code === 'weak_password' || msg.includes('password should')) return 'weak_password';
   if (code === 'email_address_invalid' || code === 'validation_failed') return 'invalid_email';
@@ -77,16 +77,24 @@ export function onAuthChange(fn: (session: Session | null, event: string) => voi
 
 export const signIn = (email: string, password: string) => run(async (sb) => check(await sb.auth.signInWithPassword({ email: email.trim().toLowerCase(), password })).data.session);
 
-/** Returns `needsCode: true` when the project requires email confirmation (enter the emailed code next). */
+/**
+ * Create an account and sign in at once. Registration never asks for an email confirmation: the
+ * project runs with "Confirm email" off (mailer_autoconfirm, checked by scripts/check-auth-config.mjs),
+ * so Supabase returns a session right away and sends no email. If a session is missing anyway, the
+ * server is misconfigured – reported as `server_config` instead of sending the user to a code screen.
+ *
+ * An unconfirmed address proves nothing: it never unlocks a founder seat or the linking of another
+ * sign-in method (see supabase/migrations/*_identity_proofs.sql).
+ */
 export const signUp = (email: string, password: string) =>
   run(async (sb) => {
     const r = check(await sb.auth.signUp({ email: email.trim().toLowerCase(), password }));
-    return { needsCode: !r.data.session };
+    if (!r.data.session) throw Object.assign(new Error('signup returned no session'), { code: 'signup_needs_confirmation' });
+    return r.data.session;
   });
 
-export const confirmSignUp = (email: string, code: string) => run(async (sb) => check(await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: 'signup' })).data.session);
-
-export const resendSignUpCode = (email: string) => run(async (sb) => void check(await sb.auth.resend({ type: 'signup', email: email.trim().toLowerCase() })));
+/** Emailed one-time codes have 6 digits (Supabase mailer_otp_length); 8 is accepted for older settings. */
+export const validCode = (code: string) => /^\d{6,8}$/.test(code.trim());
 
 /**
  * Prove the signed-in account's email with an emailed 6-digit code (Supabase "Magic Link" email

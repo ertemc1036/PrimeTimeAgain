@@ -2,7 +2,7 @@
 import { assert, assertEquals } from 'jsr:@std/assert@1';
 
 import { buildMessages } from '../functions/coach/handler.ts';
-import { betaAllUsersPro, fromSubscriber, isProActive, isTester, type RcSubscriber } from '../functions/_shared/entitlement.ts';
+import { betaAllUsersPro, fromSubscriber, isProActive, isSubscriptionTester, isTester, sandboxAllowed, type RcSubscriber } from '../functions/_shared/entitlement.ts';
 import { sanitizeScan } from '../functions/food-scan/handler.ts';
 import { canonical, validateChange } from '../functions/_shared/records.ts';
 import { fromEvent } from '../functions/revenuecat-webhook/handler.ts';
@@ -97,4 +97,28 @@ Deno.test('beta: every account gets PrimeMe+ only while BETA_ALL_USERS_PRO=true 
   assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true', BETA_PRO_UNTIL: '2026-12-01' })), true, 'end date is inclusive');
   assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true', BETA_PRO_UNTIL: '2026-11-30' })), false, 'ends by itself');
   assertEquals(betaAllUsersPro(now, env({ BETA_ALL_USERS_PRO: 'true', BETA_PRO_UNTIL: 'soon' })), false, 'an invalid date fails closed');
+});
+
+Deno.test('subscription testers and sandbox purchases (modes B/C)', () => {
+  const tester = '11111111-1111-4111-8111-111111111111';
+  const other = '22222222-2222-4222-8222-222222222222';
+  const env = (vars: Record<string, string>) => (k: string) => vars[k];
+  assertEquals(isSubscriptionTester(tester, env({ SUBSCRIPTION_TESTERS: `${tester}, x` })), true);
+  assertEquals(isSubscriptionTester(other, env({ SUBSCRIPTION_TESTERS: tester })), false);
+  assertEquals(sandboxAllowed(other, env({})), false, 'sandbox purchases never unlock Pro by default');
+  assertEquals(sandboxAllowed(tester, env({ SUBSCRIPTION_TESTERS: tester })), true);
+  assertEquals(sandboxAllowed(other, env({ SANDBOX_PURCHASES: 'allow' })), true, 'e.g. during App Review');
+
+  const sandbox = {
+    entitlements: { pro: { product_identifier: 'minus30_pro_monthly', expires_date: days(1) } },
+    subscriptions: { minus30_pro_monthly: { store: 'app_store', is_sandbox: true } },
+  } as RcSubscriber;
+  assertEquals(fromSubscriber(sandbox, NOW).tier, 'free');
+  assertEquals(fromSubscriber(sandbox, NOW, { allowSandbox: true }).tier, 'pro');
+  // Cancelled (no renewal) stays Pro until the paid period ends.
+  const cancelled = {
+    entitlements: { pro: { product_identifier: 'minus30_pro_yearly', expires_date: days(20) } },
+    subscriptions: { minus30_pro_yearly: { store: 'app_store', unsubscribe_detected_at: days(-2) } },
+  } as RcSubscriber;
+  assertEquals(fromSubscriber(cancelled, NOW).tier, 'pro');
 });

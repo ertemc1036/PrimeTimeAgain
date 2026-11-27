@@ -813,30 +813,7 @@
     "licensesIntro": "PrimeMe AI verwendet diese Werke Dritter. Die 3D-Körper wurden für die App umgewandelt und mit einem eigenen Look versehen."
   },
   "pro": {
-    "title": "PrimeMe+ freischalten",
-    "subtitle": "Intelligenter tracken. Weniger Aufwand. Mehr Unterstützung.",
-    "b1": {
-      "title": "Mahlzeiten mit KI scannen",
-      "body": "Fotografiere eine Mahlzeit und prüfe die geschätzten Nährwerte."
-    },
-    "b2": {
-      "title": "KI-gestützte Trainings-Check-ins",
-      "body": "Ergänze Trainings im Studio, draußen oder zu Hause mit einem Foto."
-    },
-    "b3": {
-      "title": "Persönliches KI-Coaching",
-      "body": "Mahlzeiten planen, Routinen anpassen und dranbleiben."
-    },
-    "monthly": "Monatlich",
-    "yearly": "Jährlich",
-    "perMonth": "{{price}} / Monat",
-    "perYear": "{{price}} / Jahr",
-    "save": "Bestes Angebot",
-    "subscribe": "Weiter",
     "restore": "Käufe wiederherstellen",
-    "unavailable": "Abonnements sind in dieser Version noch nicht verfügbar. Die angezeigten Preise sind vorläufig.",
-    "cancelInfo": "Abonnements verlängern sich automatisch. Kündige jederzeit in den Einstellungen von App Store oder Google Play, spätestens 24 Stunden vor der Verlängerung.",
-    "noGuarantee": "Pro bietet mehr Komfort und Unterstützung. Es garantiert keinen Gewichtsverlust und kein bestimmtes Ergebnis.",
     "free": "Alles, was du zum Planen, Eintragen und für deine Serie brauchst, bleibt kostenlos.",
     "isPro": "Du hast PrimeMe+.",
     "storeUnavailable": "Abonnements kannst du in der installierten PrimeMe AI App aus dem App Store oder Google Play abschließen. In dieser Vorschau sind sie nicht verfügbar.",
@@ -850,29 +827,13 @@
     "manage": "Abo verwalten",
     "grace": "Es gibt ein Problem mit deiner Zahlung. Pro bleibt vorerst aktiv. Bitte aktualisiere deine Zahlungsmethode in deinem App Store- oder Google Play-Konto.",
     "expired": "Dein Pro-Abo ist beendet. Alles, was du eingetragen hast, ist noch da.",
-    "renews": "Aktiv bis {{date}}",
-    "sourceTest": "PrimeMe+ · Testzugang",
     "sourceTestBody": "Dieses Konto ist serverseitig als Testkonto freigeschaltet. Es ist kein Abo, und es wird nichts berechnet.",
-    "sourceFounder": "PrimeMe+ · Gründerplatz",
-    "sourceFounderSeat": "PrimeMe+ · Gründerplatz #{{seat}}",
     "sourceFounderBody": "Du gehörst zu den ersten PrimeMe-Gründern. Pro ist für dich kostenlos – ohne Abo und ohne Zahlungsdaten – und bleibt es auch, wenn alle Plätze vergeben sind.",
-    "founders": {
-      "title": "Founders Edition",
-      "counter": "{{taken}} von {{capacity}} kostenlosen Pro-Plätzen vergeben.",
-      "full": "Alle {{capacity}} kostenlosen Gründerplätze sind vergeben.",
-      "body": "Die ersten {{capacity}} bestätigten Konten erhalten PrimeMe+ kostenlos – ohne Abo und ohne Zahlungsdaten. Bestätigt heißt: mit Apple angemeldet oder E-Mail per Code bestätigt.",
-      "create": "Kostenloses Konto erstellen",
-      "check": "Gründerplatz prüfen",
-      "signedInHint": "Bestätige deine E-Mail-Adresse mit einem Code (oder melde dich mit Apple an), um deinen kostenlosen Gründerplatz zu sichern.",
-      "notEligible": "Für dieses Konto wurde kein Gründerplatz vergeben. Bitte bestätige zuerst deine E-Mail-Adresse oder versuche es gleich noch einmal.",
-      "confirmCta": "E-Mail bestätigen und Platz sichern"
-    },
     "testMode": "Pro-Testmodus",
     "testModeHint": "Nur in Test-Builds. Öffnet alle Pro-Bereiche ohne Abo und blendet Paywalls aus. KI-Funktionen gibt nur der Server frei.",
     "testServerOn": "Server: Testzugang für dieses Konto aktiv – alle KI-Funktionen verfügbar.",
     "testServerPro": "Server: PrimeMe+ aktiv.",
     "testServerOff": "Server: Dieses Konto ist kein Testkonto. KI-Funktionen brauchen den Eintrag in PRO_TESTERS (siehe Konto → Konto-ID).",
-    "sourceBeta": "PrimeMe+ Beta",
     "sourceBetaBody": "Während der Beta sind alle PrimeMe+-Funktionen für dich kostenlos freigeschaltet. Es wird nichts abgebucht.",
     "testServerBeta": "Server: Beta aktiv – alle PrimeMe+-Funktionen für jedes Konto freigeschaltet."
   },
@@ -956,8 +917,6 @@
     "createSubtitle": "Deine Pläne, Mahlzeiten und Trainings werden gesichert und sind auf jedem Gerät verfügbar, auf dem du dich anmeldest.",
     "create": "Konto erstellen",
     "haveAccount": "Schon ein Konto? Anmelden",
-    "verifyTitle": "Prüfe deine E-Mails",
-    "verifyBody": "Wir haben einen 6-stelligen Code an {{email}} gesendet. Gib ihn ein, um dein Konto zu bestätigen.",
     "code": "6-stelliger Code",
     "verify": "Bestätigen",
     "resend": "Neuen Code senden",
@@ -979,7 +938,7 @@
     "errors": {
       "not_configured": "Konten sind in dieser Version noch nicht verfügbar.",
       "invalid_credentials": "E-Mail oder Passwort ist falsch.",
-      "email_not_confirmed": "Bitte bestätige zuerst deine E-Mail-Adresse. Wir können dir einen neuen Code senden.",
+      "email_not_confirmed": "Dieses Konto ist noch nicht freigeschaltet. Tippe auf „Passwort vergessen?“ und setze ein neues Passwort – danach kannst du dich direkt anmelden.",
       "user_exists": "Mit dieser E-Mail gibt es bereits ein Konto. Versuche, dich anzumelden.",
       "weak_password": "Bitte wähle ein stärkeres Passwort (mindestens 8 Zeichen).",
       "invalid_email": "Bitte gib eine gültige E-Mail-Adresse ein.",
@@ -991,7 +950,7 @@
       "apple_unavailable": "Sign in with Apple ist auf diesem Gerät nicht verfügbar.",
       "apple_failed": "Die Anmeldung mit Apple hat nicht geklappt. Bitte versuche es erneut.",
       "apple_linked_elsewhere": "Diese Apple-ID gehört bereits zu einem anderen PrimeMe-Konto. Melde dich dort mit Apple an.",
-      "apple_account_exists": "Die Anmeldung mit Apple war nicht möglich. Hast du schon ein PrimeMe-Konto mit dieser E-Mail? Dann melde dich mit E-Mail an, bestätige sie unter Profil → Konto und verknüpfe dort Apple. Sonst versuche es später erneut.",
+      "apple_account_exists": "Die Anmeldung mit Apple war nicht möglich. Hast du schon ein PrimeMe-Konto mit dieser E-Mail? Dann melde dich mit E-Mail und Passwort an und verknüpfe Apple unter Profil → Konto.",
       "server_config": "Die App kann sich gerade nicht mit dem Server verbinden (App-Konfiguration). Bitte installiere die neueste Version von PrimeMe AI."
     },
     "orEmail": "oder mit E-Mail",
@@ -1008,9 +967,6 @@
     "linked": "verknüpft",
     "linkApple": "Mit Apple verknüpfen",
     "appleLinked": "Apple ist jetzt mit deinem Konto verknüpft.",
-    "emailVerified": "E-Mail bestätigt",
-    "emailNotVerified": "E-Mail noch nicht bestätigt",
-    "confirmEmailCta": "E-Mail bestätigen",
     "linkNeedsEmail": "Bestätige zuerst deine E-Mail-Adresse. Danach wird Apple verknüpft."
   },
   "sync": {
@@ -1475,6 +1431,96 @@
       "existing": "Willkommen zurück!",
       "beta": "PrimeMe+ Beta ist aktiv",
       "cta": "Zu meinem Dashboard"
+    },
+    "health": {
+      "title": "Trifft etwas davon auf dich zu?",
+      "sub": "Damit dein Plan sicher bleibt. Mehrfachauswahl möglich.",
+      "pregnant": "Schwanger oder stillend",
+      "eatingDisorder": "Essstörung – aktuell oder früher",
+      "condition": "Erkrankung, die Ernährung oder Gewicht betrifft (z. B. Diabetes, Herz, Nieren, Schilddrüse)",
+      "medication": "Medikamente, die Appetit, Gewicht oder Blutzucker beeinflussen",
+      "none": "Nichts davon",
+      "privacy": "Die Details bleiben auf deinem Gerät und in deinem Konto. Prime erfährt – nur wenn du es erlaubst – lediglich, dass kein Kaloriendefizit vorgeschlagen werden soll.",
+      "risk": "Danke für deine Offenheit. PrimeMe plant für dich kein Kaloriendefizit und kein Abnehmtempo. Sprich Gewichtsziele bitte zuerst mit deiner Ärztin oder deinem Arzt ab.",
+      "planNote": "Wegen deiner Angaben enthält dein Plan kein Kaloriendefizit. Die Werte entsprechen deinem geschätzten Bedarf. Bitte besprich Gewichtsziele mit einer Ärztin, einem Arzt oder einer Ernährungsfachkraft."
     }
+  },
+  "paywall": {
+    "title": "Become your Prime.",
+    "subtitle": "Dein persönlicher Fitnesscoach. Jederzeit an deiner Seite.",
+    "benefits": {
+      "coach": {
+        "title": "Persönlicher Prime KI-Coach",
+        "body": "Viel mehr Gespräche mit Prime pro Tag – mit fairen Nutzungsgrenzen."
+      },
+      "scan": {
+        "title": "KI-Essensscanner",
+        "body": "Mahlzeit fotografieren, geschätzte Nährwerte prüfen und speichern."
+      },
+      "photo": {
+        "title": "KI-Fotoanalyse fürs Training",
+        "body": "Trainings mit einem Foto ergänzen – Prime erkennt, was du gemacht hast."
+      },
+      "plans": {
+        "title": "Ernährungs- und Trainingsplanung",
+        "body": "Prime schlägt Mahlzeiten und Trainings passend zu deinem Plan vor."
+      },
+      "memory": {
+        "title": "Prime Memory",
+        "body": "Prime merkt sich, was dir wichtig ist – jederzeit einsehbar und löschbar."
+      }
+    },
+    "yearly": "Jährlich",
+    "monthly": "Monatlich",
+    "perYear": "{{price}} pro Jahr",
+    "perMonth": "{{price}} pro Monat",
+    "perMonthEq": "entspricht {{price}} pro Monat",
+    "save": "{{percent}} % sparen",
+    "saveDetail": "Mit dem Jahresabo sparst du {{amount}} gegenüber zwölf Monatszahlungen.",
+    "terms": {
+      "yearly": "{{price}} pro Jahr. Verlängert sich automatisch jedes Jahr, sofern du nicht kündigst.",
+      "monthly": "{{price}} pro Monat. Verlängert sich automatisch jeden Monat, sofern du nicht kündigst."
+    },
+    "termsTrial": {
+      "yearly": "{{trial}}, anschließend {{price}} pro Jahr. Automatische Verlängerung, sofern nicht gekündigt.",
+      "monthly": "{{trial}}, anschließend {{price}} pro Monat. Automatische Verlängerung, sofern nicht gekündigt."
+    },
+    "cancel": "Die Zahlung erfolgt über deinen Apple-Account. Kündigen kannst du jederzeit in den Einstellungen deines Apple-Accounts, spätestens 24 Stunden vor Ende des aktuellen Zeitraums. PrimeMe+ bleibt bis zum Ende des bezahlten Zeitraums aktiv.",
+    "fair": "Für KI-Funktionen gelten faire Nutzungsgrenzen. Nährwerte und Analysen sind Schätzungen und keine medizinische Beratung.",
+    "continue": "Weiter",
+    "startTrial": "Kostenlos testen",
+    "processing": "Wird verarbeitet …",
+    "continueFree": "Mit PrimeMe Free fortfahren",
+    "notNow": "Nicht jetzt",
+    "loading": "Preise werden aus dem App Store geladen …",
+    "restoring": "Wird wiederhergestellt …",
+    "trial": {
+      "DAY_one": "{{count}} Tag kostenlos",
+      "DAY_other": "{{count}} Tage kostenlos",
+      "WEEK_one": "{{count}} Woche kostenlos",
+      "WEEK_other": "{{count}} Wochen kostenlos",
+      "MONTH_one": "{{count}} Monat kostenlos",
+      "MONTH_other": "{{count}} Monate kostenlos",
+      "YEAR_one": "{{count}} Jahr kostenlos",
+      "YEAR_other": "{{count}} Jahre kostenlos"
+    }
+  },
+  "membership": {
+    "free": "PrimeMe Free",
+    "beta": "PrimeMe+ Beta",
+    "monthly": "PrimeMe+ Monthly",
+    "yearly": "PrimeMe+ Yearly",
+    "plus": "PrimeMe+",
+    "founder": "PrimeMe+ Founders",
+    "test": "PrimeMe+ Testzugang",
+    "status": "Mitgliedschaft",
+    "renews": "Verlängert sich am",
+    "ends": "Endet am",
+    "validUntil": "Gültig bis",
+    "trialEnds": "Testphase endet am",
+    "seat": "Gründerplatz",
+    "storeBody": "Dein Abo läuft über Apple. Alle PrimeMe+-Funktionen sind freigeschaltet.",
+    "noSubscription": "Für diese Mitgliedschaft besteht kein Abo und es wird nichts abgebucht.",
+    "deleteNote": "Wichtig: Wenn du dein PrimeMe-Konto löschst, wird ein über Apple abgeschlossenes Abo nicht automatisch gekündigt. Kündige es vorher unter „Abo verwalten“."
   }
 }

@@ -11,6 +11,7 @@ import { signInMethods } from '@/services/auth';
 import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
 import { useSync } from '@/state/SyncProvider';
+import { membershipKey, membershipOf } from '@/features/pro/membership';
 import { colors, spacing } from '@/theme';
 import { confirm, notify } from '@/utils/confirm';
 
@@ -152,7 +153,7 @@ export default function Account() {
       <Card style={styles.gap}>
         <AppText variant="bodyStrong">{t('common.pro')}</AppText>
         <AppText variant="caption" color="secondary">
-          {!pro.isPro ? t('profile.free') : pro.access === 'test' ? t('pro.sourceTest') : pro.access === 'beta' ? t('pro.sourceBeta') : pro.access === 'founder' ? (pro.founderSeat ? t('pro.sourceFounderSeat', { seat: pro.founderSeat }) : t('pro.sourceFounder')) : t('profile.proActive')}
+          {t(membershipKey(membershipOf(pro)))}
         </AppText>
       </Card>
       {methods ? (
@@ -162,12 +163,9 @@ export default function Account() {
             <View style={styles.method}>
               <AppText variant="body">{t('auth.methodEmail')}</AppText>
               <AppText variant="caption" color="secondary">
-                {pro.identityVerified === false ? t('auth.emailNotVerified') : pro.identityVerified ? t('auth.emailVerified') : ''}
+                {auth.user?.email ?? ''}
               </AppText>
             </View>
-          ) : null}
-          {methods.includes('email') && pro.identityVerified === false ? (
-            <Button label={t('auth.confirmEmailCta')} size="sm" variant="secondary" fullWidth={false} onPress={() => router.push('/auth/confirm-email')} />
           ) : null}
           {methods.includes('apple') ? (
             <View style={styles.method}>
@@ -195,6 +193,9 @@ export default function Account() {
       <Button label={t('account.delete')} variant="ghost" onPress={() => void remove()} loading={busy === 'delete'} />
       <AppText variant="caption" color="secondary">
         {t('account.deleteBody')}
+      </AppText>
+      <AppText variant="caption" color="secondary">
+        {t('membership.deleteNote')}
       </AppText>
     </Screen>
   );

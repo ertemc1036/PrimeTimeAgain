@@ -2,7 +2,7 @@
 
 Code: `src/features/onboarding/flow/`, eine Route: `src/app/(onboarding)/welcome.tsx`. Plan-Logik: `src/domain/plan.ts` (getestet).
 
-## Ablauf (29 Bildschirme; Referenz = Cal-AI-Screenshot-Nummer)
+## Ablauf (29 Bildschirme + Gesundheitscheck bei „Abnehmen“; Referenz = Cal-AI-Screenshot-Nummer)
 
 | # | Schritt | Ref. | Hinweis |
 | --- | --- | --- | --- |
@@ -18,6 +18,7 @@ Code: `src/features/onboarding/flow/`, eine Route: `src/app/(onboarding)/welcome
 | 10 | Gewicht | 09 | horizontale Skala 0,1 kg / 0,2 lbs, Einheitenwechsel ohne Wertverlust, alternativ Wert eingeben |
 | 11 | Trainer / Ernährungsberatung | 10 | Ja / Nein |
 | 12 | Ziel | 11 | Abnehmen, Gewicht halten, Fitter werden (Muskelaufbau erst, wenn unterstützt) |
+| 12a | Gesundheitscheck | – | nur bei „Abnehmen“: schwanger/stillend, Essstörung (aktuell/früher), relevante Erkrankung, Medikamente, nichts davon. Bei einer Angabe: kein Zielgewicht, kein Tempo, kein Defizit, Hinweis im Plan |
 | 13 | Zielgewicht | 12 | nur bei „Abnehmen“; muss unter dem aktuellen Gewicht liegen; unter BMI 18,5 nicht möglich; Hinweis bei > 30 % |
 | 14 | Zielbotschaft | 13 | tatsächliche Differenz, keine Garantie |
 | 15 | Tempo | 14 | Behutsam / Ausgewogen / Individuell; Sicherheitsgrenzen; Orientierung als Spanne |
@@ -32,9 +33,9 @@ Code: `src/features/onboarding/flow/`, eine Route: `src/app/(onboarding)/welcome
 | 24 | Plan | 22 | Ziel, Start-/Zielgewicht, Orientierung als Schätzung, „Angaben bearbeiten“ |
 | 25 | Tägliche Empfehlung | 22 | kcal + Makros + Wasser; ohne Körperangaben ehrlicher Hinweis statt Zahlen |
 | 26 | Alltag | 23–24 | Training, Ernährung, zwei Tagesaufgaben, Planen freiwillig; keine erfundenen Nutzerzahlen |
-| 27 | PrimeMe+ Beta | 25–27 | ersetzt die Abo-Seiten; nur sichtbar mit `EXPO_PUBLIC_BETA_ALL_USERS_PRO=1` |
-| 28 | Konto erstellen | – | E-Mail + Passwort, Sign in with Apple (iOS), „Anmelden“; Fehler in der App-Sprache; Antworten bleiben erhalten |
-| 29 | Willkommen | – | wartet auf die erste Synchronisierung, zeigt „PrimeMe+ Beta ist aktiv“, dann Dashboard |
+| 27 | PrimeMe+ Beta | 25–27 | ersetzt die Abo-Seiten; nur im Build-Profil `beta` (`EXPO_PUBLIC_BETA_ALL_USERS_PRO=1`) **und** solange der Server die Beta meldet |
+| 28 | Konto erstellen | – | E-Mail + Passwort, Sign in with Apple (iOS), „Anmelden“; **keine Bestätigungs-E-Mail**, sofort angemeldet; Fehler in der App-Sprache; Antworten bleiben erhalten |
+| 29 | Willkommen | – | wartet auf die erste Synchronisierung, zeigt „PrimeMe+ Beta ist aktiv“, dann Dashboard. Ohne Beta (Modus B/C): einmal das PrimeMe+-Angebot, „Mit PrimeMe Free fortfahren“ möglich |
 
 ## Plan-Berechnung (`computePlan`)
 
@@ -45,6 +46,7 @@ Code: `src/features/onboarding/flow/`, eine Route: `src/app/(onboarding)/welcome
   - höchstens 1 % des Körpergewichts pro Woche;
   - nie unter 1.200 kcal (weiblich) bzw. 1.500 kcal (männlich). Liegt der Bedarf selbst darunter, gibt es kein Defizit.
   - Bei einem ungesunden Zielgewicht wird gar kein Defizit eingeplant.
+  - Bei einer Angabe im Gesundheitscheck (Schwangerschaft/Stillzeit, Essstörung, Erkrankung, Medikamente) ebenfalls nicht; Prime erhält mit Einwilligung nur `noCalorieDeficit`, nicht den Grund.
 - **Makros:**
   - Protein 1,6 g pro kg eines gesunden Referenzgewichts (höchstens BMI 25);
   - Fett 30 % der Kalorien;

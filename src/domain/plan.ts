@@ -10,7 +10,9 @@ import type { NutritionTargets } from './types';
  *   • at most 25 % below the estimated energy need,
  *   • at most 1 % of body weight per week,
  *   • never below 1,200 kcal (female) / 1,500 kcal (male) – if the need itself is lower, no deficit,
- *   • no deficit at all when the goal weight is outside the healthy range (checkGoalWeight).
+ *   • no deficit at all when the goal weight is outside the healthy range (checkGoalWeight),
+ *   • no deficit at all with a health risk from the onboarding check (pregnancy, breastfeeding,
+ *     eating disorder, relevant condition or medication) – the numbers then show maintenance.
  * All values are orientation values, not medical advice, and must be reviewed by a nutrition
  * professional before commercial release (see docs/BETA_TESTFLIGHT.md).
  */
@@ -28,6 +30,11 @@ export interface PlanInput {
   workouts?: WorkoutsPerWeek;
   goal?: PrimaryGoal;
   pace?: Pace;
+  /**
+   * Pregnancy/breastfeeding, an eating disorder (now or before), a relevant condition or medication:
+   * no weight-loss deficit is planned at all; the plan asks to talk to a professional first.
+   */
+  healthRisk?: boolean;
   /** Current calendar year (passed in for testability). */
   year: number;
 }
@@ -45,7 +52,7 @@ export interface Plan {
   /** Daily water guide value (ml). */
   waterMl: number;
   /** Why something is missing or limited (shown honestly in the plan). */
-  notes: ('needs_body_data' | 'goal_unhealthy' | 'limited_by_safety' | 'large_change')[];
+  notes: ('needs_body_data' | 'goal_unhealthy' | 'limited_by_safety' | 'large_change' | 'needs_professional')[];
 }
 
 const ACTIVITY: Record<WorkoutsPerWeek, number> = { '0': 1.2, '1-2': 1.375, '3-5': 1.55, '6+': 1.725 };
@@ -67,7 +74,8 @@ export function computePlan(i: PlanInput): Plan {
     tdee = Math.round(bmr * ACTIVITY[i.workouts ?? '0']);
   } else notes.push('needs_body_data');
 
-  const losing = i.goal === 'lose' && !!w && !!i.goalWeightKg && i.goalWeightKg < w;
+  if (i.goal === 'lose' && i.healthRisk) notes.push('needs_professional');
+  const losing = i.goal === 'lose' && !i.healthRisk && !!w && !!i.goalWeightKg && i.goalWeightKg < w;
   let goalOk = true;
   if (losing) {
     const check = checkGoalWeight(i.goalWeightKg!, w, i.heightCm);
@@ -105,7 +113,7 @@ export function computePlan(i: PlanInput): Plan {
     targets = { kcal: total, protein, carbs, fat };
   }
 
-  const toLoseKg = i.goal === 'lose' && w && i.goalWeightKg ? Math.round((w - i.goalWeightKg) * 10) / 10 : null;
+  const toLoseKg = i.goal === 'lose' && !i.healthRisk && w && i.goalWeightKg ? Math.round((w - i.goalWeightKg) * 10) / 10 : null;
   const weeks = weeklyKg && toLoseKg && toLoseKg > 0 ? { min: Math.max(1, Math.round((toLoseKg / -weeklyKg) * 0.85)), max: Math.max(2, Math.round((toLoseKg / -weeklyKg) * 1.3)) } : null;
 
   return { tdee, targets, weeklyKg, weeks, toLoseKg, waterMl, notes };

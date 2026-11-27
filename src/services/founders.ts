@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { getSupabase } from '@/services/supabase/client';
 
 /** Founders Edition counter, straight from the server. Null when unknown (offline, not set up): never guessed. */
-const statusSchema = z.object({ capacity: z.number().int().min(0), taken: z.number().int().min(0), remaining: z.number().int().min(0) });
+// `beta`: the server's free PrimeMe+ beta (BETA_ALL_USERS_PRO) is running; missing on older servers.
+const statusSchema = z.object({ capacity: z.number().int().min(0), taken: z.number().int().min(0), remaining: z.number().int().min(0), beta: z.boolean().optional() });
 export type FounderStatus = z.infer<typeof statusSchema>;
 
 export async function fetchFounderStatus(): Promise<FounderStatus | null> {

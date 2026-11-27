@@ -13,6 +13,8 @@ import { useAppState } from '@/state/AppStateProvider';
 import { useAuth } from '@/state/AuthProvider';
 import { usePro } from '@/state/ProProvider';
 import { colors, fonts, spacing } from '@/theme';
+import { membershipKey, membershipOf } from '@/features/pro/membership';
+import { manageSubscriptions } from '@/services/subscriptions/revenuecat';
 
 type Row = { label: string; icon: IconName; href?: Href; onPress?: () => void; value?: string };
 
@@ -20,7 +22,9 @@ type Row = { label: string; icon: IconName; href?: Href; onPress?: () => void; v
 export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
   const { t } = useTranslation();
   const { data } = useAppState();
-  const { isPro, access } = usePro();
+  const pro = usePro();
+  const { isPro } = pro;
+  const membership = t(membershipKey(membershipOf(pro)));
   const p = data.profile;
   const n = data.notifications;
   const lang = useLanguage();
@@ -56,7 +60,8 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
     {
       title: t('brand.plus'),
       rows: [
-        { label: isPro ? t('profile.proActive') : t('profile.upgrade'), icon: 'star-outline', href: '/pro', value: access === 'test' ? t('pro.sourceTest') : access === 'beta' ? t('pro.sourceBeta') : access === 'founder' ? t('pro.sourceFounder') : undefined },
+        { label: isPro ? t('membership.status') : t('profile.upgrade'), icon: 'star-outline', href: '/pro', value: membership },
+        { label: t('pro.manage'), icon: 'card-outline', onPress: () => void manageSubscriptions() },
         { label: t('pro.restore'), icon: 'refresh-outline', href: { pathname: '/pro', params: { restore: '1' } } },
       ],
     },
@@ -97,7 +102,7 @@ export function ProfileHub({ inTabs }: { inTabs?: boolean }) {
         <View style={styles.flex}>
           <AppText variant="heading">{p?.name}</AppText>
           <AppText variant="caption" color="secondary">
-            {isPro ? t('profile.proActive') : t('profile.free')}
+            {membership}
           </AppText>
         </View>
         {isPro ? <ProBadge label={t('common.pro')} /> : null}

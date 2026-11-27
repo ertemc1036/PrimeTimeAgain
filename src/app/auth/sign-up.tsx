@@ -6,7 +6,6 @@ import { Button, Screen, TextField, useToast } from '@/components/ui';
 import { AppleSignIn } from '@/features/auth/AppleSignIn';
 import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
 import { authAvailable, PASSWORD_MIN, signUp, validEmail, type AuthErrorCode } from '@/services/auth';
-import { useFounderStatus } from '@/features/founders/useFounderStatus';
 
 export default function SignUp() {
   const closeAuth = useCloseAuth();
@@ -17,9 +16,6 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<AuthErrorCode | null>(authAvailable() ? null : 'not_configured');
-  // Loaded up front: after sign-up the next screen must be chosen at once (an "existing data on this
-  // device" prompt may open right after the sign-in and must not be closed by a late navigation).
-  const founders = useFounderStatus();
 
   const submit = async () => {
     if (!validEmail(email)) return setError('invalid_email');
@@ -28,11 +24,8 @@ export default function SignUp() {
     const r = await signUp(email, password);
     setBusy(false);
     if (!r.ok) return setError(r.error);
-    if (r.value.needsCode) return router.push({ pathname: '/auth/verify', params: { email } });
+    // Signed in at once – no confirmation email, no code screen.
     toast(t('auth.signedIn'));
-    // No confirmation required by the project: while founder seats are left, offer the (optional)
-    // email confirmation right away, because it secures a seat.
-    if (founders.status && founders.status.remaining > 0) return router.replace('/auth/confirm-email');
     closeAuth();
   };
 

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Screen, TextField, useToast } from '@/components/ui';
 import { AuthError, useCloseAuth } from '@/features/auth/AuthError';
-import { PASSWORD_MIN, requestPasswordReset, resetPassword, validEmail, type AuthErrorCode } from '@/services/auth';
+import { PASSWORD_MIN, requestPasswordReset, resetPassword, validEmail, type AuthErrorCode, validCode } from '@/services/auth';
 
 export default function Reset() {
   const closeAuth = useCloseAuth();
@@ -28,7 +28,7 @@ export default function Reset() {
     setSent(true);
   };
   const confirm = async () => {
-    if (!/^\d{6}$/.test(code.trim())) return setError('invalid_code');
+    if (!validCode(code)) return setError('invalid_code');
     if (password.length < PASSWORD_MIN) return setError('weak_password');
     setBusy(true);
     const r = await resetPassword(email, code, password);
@@ -57,7 +57,7 @@ export default function Reset() {
         <TextField label={t('auth.email')} value={email} onChangeText={setEmail} autoCapitalize="none" autoComplete="email" keyboardType="email-address" textContentType="emailAddress" />
       ) : (
         <>
-          <TextField label={t('auth.code')} value={code} onChangeText={setCode} keyboardType="number-pad" maxLength={6} autoComplete="one-time-code" textContentType="oneTimeCode" />
+          <TextField label={t('auth.code')} value={code} onChangeText={setCode} keyboardType="number-pad" maxLength={8} autoComplete="one-time-code" textContentType="oneTimeCode" />
           <TextField label={t('auth.newPassword')} hint={t('auth.passwordHint')} value={password} onChangeText={setPassword} secureTextEntry autoComplete="new-password" textContentType="newPassword" />
         </>
       )}

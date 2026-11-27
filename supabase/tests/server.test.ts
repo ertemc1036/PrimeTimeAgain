@@ -413,7 +413,7 @@ Deno.test({ name: 'Founders: verified accounts get a stored free seat; unverifie
 
     // Public counter (no sign-in): real numbers from the database.
     const counter = await fetch(`${BASE}/functions/v1/founders`).then((r) => r.json());
-    assertEquals(counter, { capacity: 1000, taken: 2, remaining: 998 });
+    assertEquals(counter, { capacity: 1000, taken: 2, remaining: 998, beta: false });
 
     // Deleting a founder account keeps the seat used; the seat number is never handed out twice.
     assertEquals((await callJson('delete-account', f.token)).status, 200);
@@ -438,7 +438,7 @@ Deno.test({ name: 'Founders: accounts 999, 1000 and 1001; founders keep Pro once
     assertEquals(await seatOf(u1001.id), null, 'account 1001 gets no founder seat');
     assertEquals((await callJson('entitlement', u1001.token)).body.tier, 'free');
     assertEquals((await callJson('food-scan', u1001.token, { image: JPEG })).status, 403, 'account 1001 sees the paywall');
-    assertEquals(await fetch(`${BASE}/functions/v1/founders`).then((r) => r.json()), { capacity: 1000, taken: 1000, remaining: 0 });
+    assertEquals(await fetch(`${BASE}/functions/v1/founders`).then((r) => r.json()), { capacity: 1000, taken: 1000, remaining: 0, beta: false });
     const later = await newUser('seat-later');
     assertEquals((await callJson('entitlement', later.token)).body.tier, 'free');
     const keep = await callJson('entitlement', u1000.token);

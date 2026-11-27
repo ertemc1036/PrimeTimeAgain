@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { PRO_TEST_MODE_ALLOWED } from '@/config/testMode';
 
 import { getSupabase } from '@/services/supabase/client';
-import { FREE, isPro as isProEntitlement, type Entitlement } from '@/services/subscriptions/entitlements';
+import { FREE, isPro as isProEntitlement, planOf, type Entitlement } from '@/services/subscriptions/entitlements';
 import { identify, onCustomerInfo } from '@/services/subscriptions/revenuecat';
 import type { ProSource, ServerEntitlement } from '@/sync/protocol';
 
@@ -19,6 +19,8 @@ interface ProValue {
   expiresAt: string | null;
   /** Where active Pro comes from (decided by the server; see ProSource). */
   access: ProSource | null;
+  /** Store subscription details (Paid Pro): plan, renewal and trial, when known. */
+  subscription: { plan: 'monthly' | 'yearly' | null; willRenew: boolean | null; trial: boolean } | null;
   /** Founder seat number for Founders Pro. */
   founderSeat: number | null;
   /** Server view: is the account's identity proven? null = not known yet (offline, signed out). */
@@ -98,6 +100,14 @@ export function ProProvider({ children }: { children: ReactNode }) {
       status: shown.status,
       expiresAt: shown.expiresAt ?? null,
       access: isProEntitlement(srv) ? (server?.source ?? 'store') : isProEntitlement(store) ? 'store' : null,
+      subscription:
+        (isProEntitlement(srv) && (server?.source ?? 'store') === 'store') || (!isProEntitlement(srv) && isProEntitlement(store))
+          ? {
+              plan: planOf(store.productId ?? srv.productId),
+              willRenew: isProEntitlement(store) && typeof store.willRenew === 'boolean' ? store.willRenew : null,
+              trial: isProEntitlement(store) && !!store.trial,
+            }
+          : null,
       founderSeat: isProEntitlement(srv) && server?.source === 'founder' ? (server.founderSeat ?? null) : null,
       identityVerified: typeof server?.identityVerified === 'boolean' ? server.identityVerified : null,
       testModeAllowed: PRO_TEST_MODE_ALLOWED,

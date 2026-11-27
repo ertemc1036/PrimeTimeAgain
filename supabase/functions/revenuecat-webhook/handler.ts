@@ -1,11 +1,22 @@
-import { fetchSubscriber, fromSubscriber, saveEntitlement, type EntitlementRow, PRO_ENTITLEMENT_ID } from '../_shared/entitlement.ts';
+import { fetchSubscriber, FREE, fromSubscriber, readEntitlement, sandboxAllowed, saveEntitlement, type EntitlementRow, PRO_ENTITLEMENT_ID } from '../_shared/entitlement.ts';
 import { error, json } from '../_shared/http.ts';
 
 /**
  * RevenueCat → entitlements. Configure the webhook with header `Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>`
- * and use the Supabase user id as RevenueCat app user id. When REVENUECAT_SECRET_KEY is set, every event
- * triggers a fetch of the authoritative subscriber state; otherwise the event itself is mapped.
+ * and use the Supabase user id as RevenueCat app user id. When REVENUECAT_SECRET_KEY is set (recommended,
+ * required for production), every event triggers a fetch of the authoritative subscriber state, so
+ * duplicate, late or out-of-order events all end in the same, current result. Without it the event
+ * itself is mapped, and events older than the stored row are ignored.
  */
+
+/** Constant-time comparison of the Authorization header. */
+function sameSecret(a: string, b: string): boolean {
+  const x = new TextEncoder().encode(a);
+  const y = new TextEncoder().encode(b);
+  let diff = x.length ^ y.length;
+  for (let i = 0; i < Math.max(x.length, y.length); i++) diff |= (x[i] ?? 0) ^ (y[i] ?? 0);
+  return diff === 0;
+}
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Fallback mapping when the REST API isn't configured (pure; unit-tested). */
@@ -39,7 +50,7 @@ export function fromEvent(event: Record<string, unknown>, now = new Date()): Ent
 
 export async function handler(req: Request): Promise<Response> {
   const secret = Deno.env.get('REVENUECAT_WEBHOOK_SECRET');
-  if (!secret || req.headers.get('Authorization') !== `Bearer ${secret}`) return error(401, 'unauthorized');
+  if (!secret || !sameSecret(req.headers.get('Authorization') ?? '', `Bearer ${secret}`)) return error(401, 'unauthorized');
   const body = await req.json().catch(() => null);
   const event = body?.event as Record<string, unknown> | undefined;
   if (!event?.type) return error(400, 'invalid_event');
@@ -56,12 +67,20 @@ export async function handler(req: Request): Promise<Response> {
     let row: EntitlementRow | null = null;
     try {
       const sub = await fetchSubscriber(userId);
-      row = sub ? fromSubscriber(sub) : null;
+      row = sub ? fromSubscriber(sub, new Date(), { allowSandbox: sandboxAllowed(userId) }) : null;
     } catch {
       return error(502, 'revenuecat_unreachable'); // RevenueCat retries the webhook later
     }
-    row ??= event.type === 'TRANSFER' ? null : fromEvent(event);
-    if (!row) continue;
+    if (!row) {
+      // Fallback without the REST key: map the event itself, but never let sandbox events unlock Pro
+      // for ordinary accounts, and skip events older than what is stored (late or repeated delivery).
+      if (event.type === 'TRANSFER') continue;
+      row = event.environment === 'SANDBOX' && !sandboxAllowed(userId) ? FREE : fromEvent(event);
+      if (!row) continue;
+      const stored = await readEntitlement(userId).catch(() => null);
+      const at = Number(event.event_timestamp_ms);
+      if (stored?.updated_at && Number.isFinite(at) && at < new Date(stored.updated_at).getTime()) continue;
+    }
     try {
       await saveEntitlement(userId, row);
       updated.push(userId);

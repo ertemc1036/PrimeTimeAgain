@@ -54,3 +54,5 @@ e2e/out/
 
 # Python
 __pycache__/
+website/public/
+website/operator.json

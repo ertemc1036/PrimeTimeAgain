@@ -1,0 +1,14 @@
+{
+  "OPERATOR_NAME": "Vor- und Nachname oder Firmenname",
+  "LEGAL_FORM": "z. B. Einzelunternehmen, UG (haftungsbeschränkt), GmbH",
+  "ADDRESS": "Straße Hausnummer, PLZ Ort, Land",
+  "REPRESENTED_BY": "nur bei Gesellschaften: vertretungsberechtigte Person(en)",
+  "CONTACT_EMAIL": "kontakt@deine-domain.de",
+  "SUPPORT_EMAIL": "support@deine-domain.de",
+  "PHONE": "optional",
+  "REGISTER": "optional: Registergericht und Registernummer",
+  "VAT_ID": "optional: USt-IdNr.",
+  "CONTENT_RESPONSIBLE": "Verantwortlich für den Inhalt (Name, Anschrift)",
+  "DOMAIN": "deine-domain.de",
+  "LAST_UPDATED": "TT.MM.JJJJ"
+}

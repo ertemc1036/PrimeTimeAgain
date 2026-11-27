@@ -27,6 +27,8 @@ interface RcEntitlement {
 }
 interface RcSubscription {
   store?: string;
+  /** Apple sandbox / TestFlight / Google test purchase (no money is charged). */
+  is_sandbox?: boolean;
   billing_issues_detected_at?: string | null;
   unsubscribe_detected_at?: string | null;
   expires_date?: string | null;
@@ -37,11 +39,17 @@ export interface RcSubscriber {
   subscriptions?: Record<string, RcSubscription>;
 }
 
-/** Map RevenueCat's subscriber object to our entitlement row (pure; unit-tested). */
-export function fromSubscriber(sub: RcSubscriber | undefined, now = new Date()): EntitlementRow {
+/**
+ * Map RevenueCat's subscriber object to our entitlement row (pure; unit-tested).
+ * Sandbox purchases (TestFlight, Xcode, App Review – nothing is charged) only count when
+ * `allowSandbox` is set; see sandboxAllowed(). A cancelled subscription stays Pro until it expires;
+ * a refund ends it because RevenueCat moves the expiry to the refund time.
+ */
+export function fromSubscriber(sub: RcSubscriber | undefined, now = new Date(), opts: { allowSandbox?: boolean } = {}): EntitlementRow {
   const ent = sub?.entitlements?.[PRO_ENTITLEMENT_ID];
   if (!ent) return FREE;
   const s = sub?.subscriptions?.[ent.product_identifier];
+  if (s?.is_sandbox && !opts.allowSandbox) return FREE;
   const expires = ent.expires_date ? new Date(ent.expires_date) : null; // null = lifetime
   const grace = ent.grace_period_expires_date ?? s?.grace_period_expires_date ?? null;
   const inGrace = !!grace && new Date(grace) > now;
@@ -92,7 +100,7 @@ async function storeEntitlement(userId: string, opts: { force?: boolean; maxAgeM
     try {
       const sub = await fetchSubscriber(userId);
       if (sub) {
-        const fresh = fromSubscriber(sub);
+        const fresh = fromSubscriber(sub, new Date(), { allowSandbox: sandboxAllowed(userId) });
         await saveEntitlement(userId, fresh);
         return fresh;
       }
@@ -110,12 +118,32 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
  * get Pro without a purchase. Server-side only — there is no code or switch in the app, nothing is
  * written to the database, and removing an id from the secret ends the access at the next request.
  */
-export function isTester(userId: string): boolean {
-  const ids = (Deno.env.get('PRO_TESTERS') ?? '')
+const idList = (raw: string | undefined) =>
+  (raw ?? '')
     .split(/[\s,;]+/)
     .map((s) => s.trim().toLowerCase())
     .filter((s) => UUID.test(s));
-  return ids.includes(userId.toLowerCase());
+
+export function isTester(userId: string, env: (k: string) => string | undefined = (k) => Deno.env.get(k)): boolean {
+  return idList(env('PRO_TESTERS')).includes(userId.toLowerCase());
+}
+
+/**
+ * Subscription test accounts (mode B): user ids in the SUBSCRIPTION_TESTERS secret get NO free Pro –
+ * no beta, no test access, no founder seat – so the real paywall, sandbox purchases, restore, renewal
+ * and expiry can be tested against RevenueCat while everyone else keeps the free beta.
+ */
+export function isSubscriptionTester(userId: string, env: (k: string) => string | undefined = (k) => Deno.env.get(k)): boolean {
+  return idList(env('SUBSCRIPTION_TESTERS')).includes(userId.toLowerCase());
+}
+
+/**
+ * Do sandbox purchases grant Pro to this account? Only for subscription testers, or for everyone when
+ * SANDBOX_PURCHASES=allow (e.g. while Apple reviews the subscriptions: App Review buys in the sandbox).
+ * Default: no – a TestFlight sandbox purchase never unlocks Pro for an ordinary account.
+ */
+export function sandboxAllowed(userId: string, env: (k: string) => string | undefined = (k) => Deno.env.get(k)): boolean {
+  return (env('SANDBOX_PURCHASES') ?? '').trim().toLowerCase() === 'allow' || isSubscriptionTester(userId, env);
 }
 
 /**
@@ -156,13 +184,13 @@ const FOUNDER = (seat: number): EntitlementRow => ({ tier: 'pro', status: 'activ
 
 /**
  * Current entitlement, decided on the server only. Order: Paid Pro (RevenueCat-verified store
- * subscription) → Test Pro (PRO_TESTERS secret) → Beta Pro (BETA_ALL_USERS_PRO secret, every account)
+ * subscription) → [subscription testers stop here] → Test Pro (PRO_TESTERS secret) → Beta Pro (BETA_ALL_USERS_PRO secret, every account)
  * → Founders Pro (stored founder seat). Duo Guest
  * (a friend seat of a paying subscriber) is planned and not granted anywhere yet.
  */
 export async function currentEntitlement(userId: string, opts: { force?: boolean; maxAgeMs?: number } = {}): Promise<EntitlementRow> {
   const paid = await storeEntitlement(userId, opts);
-  if (isProActive(paid)) return paid;
+  if (isProActive(paid) || isSubscriptionTester(userId)) return paid;
   if (isTester(userId)) return { tier: 'pro', status: 'active', product_id: null, store: 'test', expires_at: null };
   if (betaAllUsersPro()) return BETA;
   const seat = await founderSeat(userId);

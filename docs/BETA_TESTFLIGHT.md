@@ -1,133 +1,132 @@
-# PrimeMe AI – Beta-Backend und TestFlight
+# PrimeMe AI – Schritt für Schritt zu TestFlight (für Einsteiger)
 
-Stand: 27.11.2026. Supabase-Projekt `xbnzjpaqhdnlharchlis` ist die **Beta-Umgebung**.
+Stand: 27.11.2026.
+- **Ziel:** kostenlose TestFlight-Beta (Modus A).
+- **Was hier nicht passiert:** Nichts wird öffentlich im App Store veröffentlicht, und es werden keine echten Zahlungen aktiviert.
 
-## 1. Ursache des Registrierungsproblems
+**Feste Werte:**
+- Bundle ID **`com.minus30.app`** (nicht ändern);
+- App-Name **PrimeMe AI**;
+- Supabase-Projekt `xbnzjpaqhdnlharchlis` (Region EU, Stockholm).
 
-- **Was passiert ist:** Jede Anmeldung bzw. Registrierung aus der App (Expo auf dem iPhone) wurde vom Supabase-Gateway mit **`401 Invalid API key`** abgelehnt. Das gilt für `signup`, Login, Sign in with Apple und Token-Refresh.
-- **Beleg:** Die Edge-Logs zeigen genau diese Anfragen. Der Auth-Server selbst hat keine einzige erhalten.
-- **Ursache:** Der in der App verwendete anon key gehörte nicht (mehr) zu diesem Projekt; das Projekt hat einen neueren Schlüssel.
-- **Was es nicht war:** Registrierung (`disable_signup: false`) und E-Mail-Konto waren nie gesperrt. Es gab keine Allowlist und keine feste User-ID.
-- **Zusätzlicher App-Fehler:** Die Meldung „Invalid API key“ wurde als „Code ist falsch“ angezeigt, weil das Wort „invalid“ falsch zugeordnet wurde. Das hat die Ursache verschleiert.
+## Schritt 1 – Apple Developer Program
+1. Unter developer.apple.com/programs mit deiner Apple-ID anmelden (Zwei-Faktor-Authentifizierung nötig) → **Enroll**.
+2. **Einzelperson oder Organisation?**
+   - Als Einzelperson erscheint dein **Name** als Anbieter im App Store.
+   - Als Organisation (UG/GmbH) erscheint der Firmenname; dafür ist eine **D-U-N-S-Nummer** nötig (kostenlos, dauert einige Tage).
+3. Jahresgebühr bezahlen. Die Freischaltung dauert meist 1–2 Tage.
+4. Du bist automatisch **Account Holder** (alle Rechte). Weitere Personen lädst du später in App Store Connect unter *Users and Access* ein (Rolle *App Manager* reicht für Builds und TestFlight).
 
-**Behoben:**
-- `eas.json` enthält für alle Build-Profile die richtige URL und den gültigen anon key. Beide sind öffentliche Werte und keine Geheimnisse.
-- `npm run env:beta` schreibt dieselben Werte in deine lokale `.env.local` für Expo Go.
-- `npm run release-check` prüft jetzt, dass der Schlüssel zum Projekt passt.
-- Die App zeigt bei einem abgelehnten Schlüssel eine eigene, klare Meldung (`server_config`).
+## Schritt 2 – App in App Store Connect anlegen
+1. appstoreconnect.apple.com → **Apps → + → New App**.
+2. Ausfüllen:
+   - **Platform:** iOS.
+   - **Name:** PrimeMe AI. Ist er vergeben, z. B. „PrimeMe AI – Fitness Coach“.
+   - **Primary Language:** Deutsch.
+   - **Bundle ID:** `com.minus30.app`. Steht sie nicht in der Liste, legt EAS sie beim ersten Build an (Schritt 5), danach erneut versuchen.
+   - **SKU:** frei wählbar und intern, z. B. `primeme-ai-ios`.
+   - **User Access:** Full Access.
+3. **App Information:**
+   - Kategorie **Health & Fitness**, zweite Kategorie **Food & Drink**.
+   - **Age Rating:** Fragebogen wahrheitsgemäß beantworten. Die App ist laut Nutzungsbedingungen ab 18; bietet App Store Connect eine höhere Einstufung bzw. Altersgrenze an, 18+ wählen.
+4. **Business** → *Paid Apps Agreement*, Bank und Steuern. Erst nötig, wenn Abos verkauft werden; für die kostenlose Beta nicht. Details: [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md#4-einrichtung-deine-schritte).
 
-**Live getestet (27.11.2026)** gegen das echte Backend mit dem richtigen Schlüssel:
-- zwei neue Konten registriert, Session sofort erhalten;
-- ab- und wieder angemeldet (bestehendes Konto);
-- falsches Passwort und doppelte Registrierung abgewiesen;
-- Session-Refresh funktioniert;
-- Entitlement-Abfrage funktioniert;
-- Konto-Löschung funktioniert (beide Testkonten wieder gelöscht).
+## Schritt 3 – Abonnementprodukte (für später vorbereiten)
+- Vollständige Anleitung inklusive RevenueCat und Server-Benachrichtigungen: [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md).
+- **Kurzfassung:**
+  - Gruppe „PrimeMe+“ mit `minus30_pro_monthly` (9,99 €) und `minus30_pro_yearly` (69,99 €);
+  - RevenueCat-Entitlement `pro`;
+  - Offering `default` mit Monthly und Annual;
+  - Webhook auf die Supabase-Function.
+- **Für die Beta-TestFlight nicht nötig.**
 
-## 2. Beta: alle Nutzer bekommen PrimeMe+ (serverseitig)
+## Schritt 4 – Rechtliche Angaben und Datenschutz
+1. **Website veröffentlichen:** [website/README.md](../website/README.md).
+   - Zuerst Betreiberangaben in `website/operator.json` eintragen.
+   - Dann Datenschutz, Nutzungsbedingungen, Impressum, Gesundheit, Abo und Support **rechtlich prüfen lassen**.
+   - Danach `PUBLISH=1 python3 website/build.py` und hochladen.
+2. **URLs eintragen:**
+   - In `eas.json` (Profile `beta`, `subscription-test`, `production`): `EXPO_PUBLIC_PRIVACY_URL`, `EXPO_PUBLIC_TERMS_URL`, `EXPO_PUBLIC_SUPPORT_EMAIL`.
+   - In App Store Connect: *App Privacy → Privacy Policy URL* und *Support URL*.
+3. **App Privacy („Datenschutz-Etikett“):**
+   - **Tracking:** Nein.
+   - **Verknüpft mit der Identität, Zweck „App Functionality“:**
+     - Contact Info → *Email Address*, *Name*;
+     - Health & Fitness → *Health*, *Fitness*;
+     - User Content → *Photos or Videos*, *Other User Content* (Prime-Chat, Memory);
+     - Identifiers → *User ID*;
+     - Purchases → *Purchase History*.
+   - Keine Werbung, keine Analyse-SDKs, kein Crash-Reporting.
+   - **KI-Dienstleister:** Apple fragt nicht nach Dienstleistern, aber die Datenschutzerklärung nennt OpenAI. Die App fragt vor der Übermittlung von Kontextdaten an die KI nach Einwilligung (Profil → Datenschutz).
+4. **Account-Löschung:** in der App unter Profil → Konto → Konto löschen. Apple verlangt das, und es ist erfüllt.
+5. **Privacy Manifest:** in `app.json` (`ios.privacyManifests`) für UserDefaults vorhanden. Expo ergänzt beim Build die Manifeste der Bibliotheken.
+6. **Exportkonformität:** `ITSAppUsesNonExemptEncryption: false`, damit bereits beantwortet.
 
-- **Wo die Logik sitzt:** `supabase/functions/_shared/entitlement.ts` → `betaAllUsersPro()`.
-- **Steuerung über Edge-Function-Secrets:**
-  - `BETA_ALL_USERS_PRO=true` schaltet PrimeMe+ für **jedes angemeldete Konto** frei: Prime-Chat mit Plus-Limits, Essensscanner, Fotoanalyse, Memory, alle KI-Functions.
-  - `BETA_PRO_UNTIL=JJJJ-MM-TT` ist optional. Nach diesem Datum endet die Beta automatisch.
-- **Reihenfolge:** Ein echtes Abo hat Vorrang, dann `PRO_TESTERS`, dann die Beta, dann Founders-Plätze.
-- **Was die Beta nicht berührt:** RevenueCat, Produkt-IDs und Preise bleiben unverändert. Es gibt keine gefälschten Käufe und keinen Bypass in der App.
-- **Missbrauchsschutz bleibt:** Limits pro Nutzer (`quota.ts`) und das globale Tageslimit (`AI_GLOBAL_DAILY_LIMIT`, Standard 2000).
-- **Anzeige in der App:** „PrimeMe+ Beta“, keine Paywalls.
-- **Trennung von den Builds:** Die Beta hängt **nur** am Secret dieses Supabase-Projekts, nicht an einem App-Build. Ein TestFlight-Build (Profil `production`) bekommt sie also auch.
-  - Für die spätere öffentliche Version: Secret löschen oder `false` setzen, oder ein separates Produktionsprojekt ohne Secret verwenden.
-- **Test:** `supabase/tests/logic.test.ts` prüft an/aus, Enddatum und ungültige Werte.
-
-## 3. Status Supabase (live geprüft am 27.11.2026)
-
-| Bereich | Status |
-| --- | --- |
-| Migrationen | alle eingespielt (`founder_seats`, `identity_proofs`, `primeme_collections`, `harden_bump_server_seq`) |
-| Edge Functions | alle 10 deployt mit aktuellem Code: `sync`, `export`, `entitlement`, `food-scan`, `workout-photo`, `coach`, `delete-account`, `prime` mit JWT-Prüfung, `revenuecat-webhook` und `founders` ohne |
-| Secrets | `BETA_ALL_USERS_PRO=true` gesetzt; `OPENAI_API_KEY` vorhanden und funktioniert (echte KI-Antworten); `PRO_TESTERS` bleibt für Einzeltests |
-| RLS / Storage | RLS auf allen Tabellen; private Foto-Buckets |
-| KI-Limits | aktiv: Nutzung wird pro Konto gezählt (`ai_usage`) |
-| E-Mail-Bestätigung | aus: Registrierung ohne E-Mail. „Passwort vergessen“ braucht eigenen SMTP-Versand (Schritt C). |
-
-**Live-Test mit einem neuen Konto (danach gelöscht):**
-- Registrierung funktioniert, das Konto bekommt automatisch PrimeMe+ (`source: beta`).
-- Sync: Profil, Wasser und Memory lassen sich hochladen und wieder herunterladen; der Sync liefert PrimeMe+ an die App.
-- Prime-Chat mit echter KI:
-  - schlägt Wasser, Mahlzeit und Training als Aktionen vor;
-  - beantwortet Kochfragen;
-  - sagt jetzt „zum Bestätigen vorbereitet“ statt „erfasst“. Das war vorher fälschlich formuliert und ist korrigiert.
-- KI-Essensscanner: erkennt Hähnchen, Brokkoli, Quinoa, Süßkartoffel und Mandeln mit Schätzwerten.
-- Ebenfalls erfolgreich: Foto-Check-in, Datenexport, Founders-Zähler, Coach-Function.
-- Konto-Löschung: Danach ist keine Anmeldung mehr möglich. Es bleiben keine Testdaten zurück.
-
-## Schritt A – erledigt
-
-Functions sind deployt, die Secrets sind gesetzt. Wenn du später selbst neu deployen musst:
-
+## Schritt 5 – Expo und EAS verbinden
 ```bash
-npx supabase@2 login
-npx supabase@2 functions deploy sync export entitlement food-scan workout-photo coach delete-account prime --project-ref xbnzjpaqhdnlharchlis --use-api
-npx supabase@2 functions deploy revenuecat-webhook founders --no-verify-jwt --project-ref xbnzjpaqhdnlharchlis --use-api
+npx eas-cli@latest login          # Expo-Konto (kostenlos auf expo.dev anlegen)
+npx eas-cli@latest init           # verknüpft das Projekt, schreibt extra.eas.projectId in app.json → committen
+npm run release-check -- --profile beta
 ```
+- **Umgebungsvariablen:** Die öffentlichen Werte stehen in `eas.json` je Profil. Geheime Schlüssel (OpenAI, RevenueCat-Secret, Webhook-Secret) gehören **nur** in die Supabase-Secrets, nie in die App.
+- **Zertifikate und Provisioning Profiles:** EAS erstellt sie beim ersten Build automatisch. Beantworte die Fragen nach Apple-Login und „Generate a new Apple Distribution Certificate / Provisioning Profile?“ mit **Yes**.
+- **Version und Build-Nummer:**
+  - Version `1.0.0` steht in `app.json`.
+  - Die Build-Nummer zählt EAS automatisch hoch (`appVersionSource: remote`, `autoIncrement`).
 
-**Beta beenden:** `npx supabase@2 secrets unset BETA_ALL_USERS_PRO --project-ref xbnzjpaqhdnlharchlis`
-
-## Schritt B – Lokal in Expo Go testen
-
+## Schritt 6 – iOS-Build (Modus A, kostenlose Beta)
 ```bash
-npm run env:beta
-npx expo start --go --clear
+npx eas-cli@latest build --platform ios --profile beta
 ```
+- **Inhalt des Builds:**
+  - Supabase-URL und öffentlicher Schlüssel des Beta-Projekts;
+  - Beta-Screen im Onboarding;
+  - kein Pro-Testmodus.
+- **Geheime Schlüssel:** keine im Build. `npm run release-check` prüft das.
+- **Apple-Berechtigungen:** Sign in with Apple, Kamera und Fotos (mit Begründungstexten aus `app.json`), Benachrichtigungen.
+- **Backend:** Beta aktiv, live geprüft. Prüfen kannst du es mit `curl https://xbnzjpaqhdnlharchlis.supabase.co/functions/v1/founders`; die Antwort enthält `"beta":true`.
 
-## Schritt C – E-Mail-Versand für „Passwort vergessen“
-
-1. Supabase → **Authentication → Emails → SMTP Settings** → „Enable custom SMTP“.
-2. Daten eines Mail-Anbieters eintragen (z. B. Resend, Postmark, Brevo): Host, Port, Benutzer, Passwort, Absender (z. B. `no-reply@deine-domain`).
-
-Ohne eigenen SMTP-Versand kommen Codes nur bei Mitgliedern deines Supabase-Teams an. Registrierung und Anmeldung funktionieren auch ohne.
-
-Empfohlen: **Authentication → Providers → Email → „Prevent use of leaked passwords“** (Pro-Plan).
-
-## Schritt D – TestFlight-Build
-
-**Voraussetzungen:**
-- Apple Developer Program (bezahlt);
-- Expo-Konto;
-- in App Store Connect eine App mit Bundle ID **`com.minus30.app`** (unverändert).
-
+## Schritt 7 – TestFlight
 ```bash
-npx eas-cli@latest login
-npx eas-cli@latest init          # verknüpft das Projekt, schreibt extra.eas.projectId in app.json → committen
-npx eas-cli@latest build --platform ios --profile production
-npx eas-cli@latest submit --platform ios --latest
+npx eas-cli@latest submit --platform ios --latest --profile beta
 ```
+`submit` lädt nur nach App Store Connect hoch und **veröffentlicht nichts**. Nach 5–30 Minuten erscheint der Build unter **TestFlight**.
 
-- **Beim ersten Build** fragt EAS nach deinem Apple-Login und legt Zertifikat und Provisioning-Profil automatisch an. Diese Fragen mit „Yes“ beantworten.
-- **`submit`** lädt den Build nach App Store Connect hoch. Es veröffentlicht **nichts** im App Store.
-
-**In App Store Connect → deine App → TestFlight:**
 1. **Test Information:**
-   - Beta-App-Beschreibung, Feedback-E-Mail;
-   - Datenschutzrichtlinie: **URL erforderlich**, siehe Release-Blocker.
-2. **Beta App Review Information:** Kontaktdaten und ein **Review-Testkonto**.
-   - Lege es in der App selbst an, z. B. `review@deine-domain`.
-   - Es bekommt durch die Beta automatisch PrimeMe+.
-   - E-Mail und Passwort nur dort eintragen, nicht ins Repo.
-3. **Notiz an das Review-Team:**
-   - Fitness- und Wellness-App ab 18, keine medizinische Diagnose.
-   - KI-Schätzungen sind gekennzeichnet.
-   - Konto-Löschung unter Profil → Konto.
-4. **Testergruppen:**
-   - interne Tester sofort;
-   - externe Tester erst nach der Beta-Prüfung durch Apple (meist 1–2 Tage).
-5. **Exportkonformität:** ist durch `ITSAppUsesNonExemptEncryption: false` bereits beantwortet.
+   - Beta-Beschreibung und „What to Test“ (Texte in [APP_STORE_METADATA.md](APP_STORE_METADATA.md#testflight));
+   - Feedback-E-Mail = deine Support-Adresse;
+   - Datenschutz-URL.
+2. **Review-Testkonto:**
+   - Öffne die App, lege ein Konto an (z. B. `review@deine-domain`, starkes Passwort) und beende das Onboarding.
+   - Das Konto bekommt automatisch PrimeMe+ Beta.
+   - E-Mail und Passwort **nur** in App Store Connect unter *Beta App Review Information → Sign-in required* eintragen, niemals ins Repository.
+3. **Review Notes:** Text in [APP_STORE_METADATA.md](APP_STORE_METADATA.md#review-notes).
+4. **Tester:**
+   - **Interne Tester** (bis zu 100 Personen aus deinem Team): sofort nutzbar.
+   - **Externe Tester** (bis 10.000, per E-Mail oder öffentlichem Link): erst nach der Beta App Review durch Apple, meist 1–2 Tage.
 
-## Release-Blocker (Stand jetzt)
+## E-Mail für „Passwort vergessen“ (Resend + Supabase SMTP)
+Die Registrierung braucht **keine** E-Mail. Nur das Zurücksetzen des Passworts verschickt einen 6-stelligen Code. Ohne eigenen SMTP-Versand kommen E-Mails nur bei Mitgliedern deines Supabase-Teams an.
 
-1. **Datenschutzrichtlinie als öffentlich erreichbare URL** fehlt. Apple verlangt sie in App Store Connect. Die Texte in der App sind nur ein Entwurf und vorher rechtlich zu prüfen.
-2. **EAS-Projekt** nicht verknüpft (`eas init`).
-3. **Test auf einem echten iPhone mit dem neuen Build:** Registrierung, Anmeldung, KI-Funktionen. Von hier aus nicht möglich.
+1. **Resend einrichten:** resend.com → Konto → **Domains → Add Domain**, z. B. `mail.deine-domain.de`.
+2. **DNS-Einträge** bei deinem Domain-Anbieter setzen, genau wie Resend sie anzeigt (SPF/TXT, DKIM/TXT, MX für Bounces). Danach in Resend **Verify** und warten, bis alles grün ist.
+   - Empfohlen zusätzlich: DMARC-Eintrag `_dmarc` mit `v=DMARC1; p=none;`.
+3. **API-Key:** Resend → **API Keys → Create** (Berechtigung *Sending access*, nur diese Domain). Nicht in Chats oder ins Repository kopieren.
+4. **Supabase:** Dashboard → **Authentication → Emails → SMTP Settings** → *Enable custom SMTP*:
+   - Host `smtp.resend.com`, Port `465`;
+   - Benutzer `resend`, Passwort = der API-Key;
+   - Absender `no-reply@mail.deine-domain.de`, Name „PrimeMe AI“.
+5. **PrimeMe-Vorlagen hochladen** (mit Code statt Link, Schwarz/Weiß, DE + EN):
+   ```bash
+   SUPABASE_ACCESS_TOKEN=<dein persönlicher Supabase-Token> node scripts/supabase-auth-config.mjs --apply --templates
+   ```
+   Das Skript bestätigt danach, dass die E-Mail-Bestätigung aus bleibt (`mailer_autoconfirm=true`), Codes 6-stellig sind und das Passwort mindestens 8 Zeichen hat. Die SMTP-Einrichtung schaltet die Bestätigungspflicht **nicht** wieder ein.
+6. **Rate Limit:** Unter *Authentication → Rate Limits* „Emails sent“ auf z. B. 30 pro Stunde erhöhen (Standard 2, nur für den eingebauten Versand gedacht).
+7. **Test:** In der App unter Anmelden → „Passwort vergessen?“ die eigene Adresse eingeben, Code aus der E-Mail eingeben, neues Passwort setzen. Danach muss die Anmeldung mit dem neuen Passwort funktionieren.
+   - Deep Links sind nicht nötig, weil mit einem Code statt eines Links gearbeitet wird.
 
-**Nicht blockierend für TestFlight:**
-- RevenueCat-Schlüssel: Käufe sind in der Beta nicht nötig.
-- Nutzungsbedingungen und Support-E-Mail als URL bzw. Wert: empfohlen.
+## Release-Blocker vor TestFlight (Stand jetzt)
+Siehe [RELEASE_STATUS.md](RELEASE_STATUS.md). Kurz:
+1. Datenschutz-URL (Website mit geprüften Texten).
+2. `eas init`.
+3. Ein echter iPhone-Test mit dem Build ([IPHONE_TESTING.md](IPHONE_TESTING.md)).

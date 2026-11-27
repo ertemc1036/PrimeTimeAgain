@@ -83,6 +83,11 @@ export interface Profile {
   /** Where the user heard of the app (our own channel statistics; never shared with ad networks). */
   referral?: string;
   /**
+   * Health check from the onboarding (only asked for weight loss): pregnant, eatingDisorder, condition,
+   * medication. Any of them → no calorie deficit is planned (see domain/plan.ts).
+   */
+  healthFlags?: string[];
+  /**
    * Program the user follows. Only 'weightLoss' exists in version 1; the others are reserved for
    * Prime Muscle / Mind / Performance / Maintenance.
    */

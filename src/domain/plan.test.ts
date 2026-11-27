@@ -67,3 +67,16 @@ describe('personal plan', () => {
     expect(ageOn({ year: 2008, month: 11, day: 28 }, new Date(2026, 10, 27))).toBe(17);
   });
 });
+
+describe('health risk', () => {
+  it('plans no deficit and no timeline when a health risk was reported', () => {
+    const base = { sex: 'female' as const, birthYear: 1990, heightCm: 168, weightKg: 82, goalWeightKg: 70, workouts: '1-2' as const, goal: 'lose' as const, pace: 'balanced' as const, year: 2026 };
+    const risky = computePlan({ ...base, healthRisk: true });
+    expect(risky.notes).toContain('needs_professional');
+    expect(risky.weeklyKg).toBeNull();
+    expect(risky.weeks).toBeNull();
+    expect(risky.toLoseKg).toBeNull();
+    expect(risky.targets?.kcal).toBe(Math.round(risky.tdee! / 10) * 10);
+    expect(computePlan(base).targets!.kcal).toBeLessThan(risky.targets!.kcal);
+  });
+});

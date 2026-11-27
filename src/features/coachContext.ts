@@ -24,6 +24,9 @@ export function coachContext(data: AppData, today: ISODate): Record<string, unkn
     today,
     goals: p.goals,
     primaryGoal: p.primaryGoal,
+    // A health reason was reported in the onboarding check (details stay on the device): Prime must
+    // not suggest a calorie deficit or weight-loss targets.
+    noCalorieDeficit: (p.healthFlags ?? []).length > 0 || undefined,
     workoutsPerWeek: p.workoutsPerWeek,
     challenges: p.challenges,
     motivations: p.motivations,

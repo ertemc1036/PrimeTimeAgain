@@ -813,30 +813,7 @@
     "licensesIntro": "PrimeMe AI bu üçüncü taraf eserleri kullanır. 3D vücutlar uygulama için dönüştürüldü ve özel bir görünüm kazandı."
   },
   "pro": {
-    "title": "PrimeMe+'nun kilidini aç",
-    "subtitle": "Daha akıllı takip. Daha az çaba. Daha fazla destek.",
-    "b1": {
-      "title": "Öğünleri yapay zekâ ile tara",
-      "body": "Bir öğünün fotoğrafını çek ve tahmini besin değerlerini incele."
-    },
-    "b2": {
-      "title": "Yapay zekâ destekli antrenman girişleri",
-      "body": "Spor salonu, açık hava veya ev antrenmanlarına fotoğraflı bağlam ekle."
-    },
-    "b3": {
-      "title": "Kişisel yapay zekâ koçluğu",
-      "body": "Öğün planla, rutinlerini uyarla ve yolunda kal."
-    },
-    "monthly": "Aylık",
-    "yearly": "Yıllık",
-    "perMonth": "{{price}} / ay",
-    "perYear": "{{price}} / yıl",
-    "save": "En avantajlı",
-    "subscribe": "Devam",
     "restore": "Satın alımları geri yükle",
-    "unavailable": "Abonelikler bu sürümde henüz kullanılamıyor. Gösterilen fiyatlar ön fiyatlardır.",
-    "cancelInfo": "Abonelikler otomatik olarak yenilenir. Yenilemeden en az 24 saat önce App Store veya Google Play ayarlarından istediğin zaman iptal edebilirsin.",
-    "noGuarantee": "Pro kolaylık ve destek sağlar. Kilo kaybını veya belirli bir sonucu garanti etmez.",
     "free": "Planlama, kayıt ve serin için ihtiyacın olan her şey ücretsiz kalır.",
     "isPro": "PrimeMe+'ya sahipsin.",
     "storeUnavailable": "Abonelikler, App Store veya Google Play'den yüklenen PrimeMe AI uygulamasında satın alınabilir. Bu önizlemede kullanılamaz.",
@@ -850,29 +827,13 @@
     "manage": "Aboneliği yönet",
     "grace": "Ödemende bir sorun var. Pro şimdilik aktif kalıyor. Lütfen App Store veya Google Play hesabında ödeme yöntemini güncelle.",
     "expired": "Pro aboneliğin sona erdi. Kaydettiğin her şey hâlâ burada.",
-    "renews": "{{date}} tarihine kadar aktif",
-    "sourceTest": "PrimeMe+ · Test erişimi",
     "sourceTestBody": "Bu hesap sunucuda test hesabı olarak açıldı. Bir abonelik değildir ve ücret alınmaz.",
-    "sourceFounder": "PrimeMe+ · Kurucu yeri",
-    "sourceFounderSeat": "PrimeMe+ · Kurucu yeri #{{seat}}",
     "sourceFounderBody": "İlk PrimeMe AI kurucularından birisin. Pro senin için ücretsiz – abonelik ve ödeme bilgisi yok – ve tüm yerler dolduktan sonra da öyle kalır.",
-    "founders": {
-      "title": "Founders Edition",
-      "counter": "{{capacity}} ücretsiz Pro yerinden {{taken}} tanesi verildi.",
-      "full": "{{capacity}} ücretsiz kurucu yerinin tamamı verildi.",
-      "body": "Onaylanmış ilk {{capacity}} hesap PrimeMe+’yu ücretsiz alır – abonelik ve ödeme bilgisi olmadan. Onaylı demek: Apple ile giriş yapılmış ya da e-posta kodla onaylanmış.",
-      "create": "Ücretsiz hesap oluştur",
-      "check": "Kurucu yerini kontrol et",
-      "signedInHint": "Ücretsiz kurucu yerini almak için e-posta adresini bir kodla onayla (veya Apple ile giriş yap).",
-      "notEligible": "Bu hesaba kurucu yeri verilmedi. Lütfen önce e-posta adresini onayla veya birazdan tekrar dene.",
-      "confirmCta": "E-postayı onayla ve yerini al"
-    },
     "testMode": "Pro test modu",
     "testModeHint": "Yalnızca test sürümlerinde. Tüm Pro alanlarını abonelik olmadan açar ve ödeme ekranlarını gizler. Yapay zekâ özelliklerini yalnızca sunucu açar.",
     "testServerOn": "Sunucu: bu hesap için test erişimi etkin – tüm yapay zekâ özellikleri kullanılabilir.",
     "testServerPro": "Sunucu: PrimeMe+ etkin.",
     "testServerOff": "Sunucu: bu hesap test hesabı değil. Yapay zekâ özellikleri için PRO_TESTERS kaydı gerekir (Hesap → Hesap kimliği).",
-    "sourceBeta": "PrimeMe+ Beta",
     "sourceBetaBody": "Beta süresince tüm PrimeMe+ özellikleri ücretsiz açık. Hiçbir ücret alınmaz.",
     "testServerBeta": "Sunucu: beta etkin – tüm PrimeMe+ özellikleri her hesap için açık."
   },
@@ -956,8 +917,6 @@
     "createSubtitle": "Planların, öğünlerin ve antrenmanların yedeklenir ve giriş yaptığın her cihazda kullanılabilir.",
     "create": "Hesap oluştur",
     "haveAccount": "Zaten hesabın var mı? Giriş yap",
-    "verifyTitle": "E-postanı kontrol et",
-    "verifyBody": "{{email}} adresine 6 haneli bir kod gönderdik. Hesabını onaylamak için kodu gir.",
     "code": "6 haneli kod",
     "verify": "Onayla",
     "resend": "Yeni kod gönder",
@@ -979,7 +938,7 @@
     "errors": {
       "not_configured": "Hesaplar bu sürümde henüz kullanılamıyor.",
       "invalid_credentials": "E-posta veya şifre yanlış.",
-      "email_not_confirmed": "Lütfen önce e-postanı onayla. Sana yeni bir kod gönderebiliriz.",
+      "email_not_confirmed": "Bu hesap henüz etkinleştirilmedi. “Şifreni mi unuttun?” seçeneğine dokun ve yeni bir şifre belirle – ardından hemen giriş yapabilirsin.",
       "user_exists": "Bu e-postayla zaten bir hesap var. Giriş yapmayı dene.",
       "weak_password": "Lütfen daha güçlü bir şifre seç (en az 8 karakter).",
       "invalid_email": "Lütfen geçerli bir e-posta adresi gir.",
@@ -991,7 +950,7 @@
       "apple_unavailable": "Apple ile Giriş bu cihazda kullanılamıyor.",
       "apple_failed": "Apple ile giriş başarısız oldu. Lütfen tekrar dene.",
       "apple_linked_elsewhere": "Bu Apple kimliği zaten başka bir PrimeMe AI hesabına ait. Orada Apple ile giriş yap.",
-      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-postayla zaten bir PrimeMe AI hesabın var mı? O zaman e-postayla giriş yap, Profil → Hesap altında onayla ve Apple’ı orada bağla. Aksi halde daha sonra tekrar dene.",
+      "apple_account_exists": "Apple ile giriş yapılamadı. Bu e-posta ile zaten bir PrimeMe hesabın var mı? O zaman e-posta ve şifreyle giriş yap ve Apple’ı Profil → Hesap bölümünden bağla.",
       "server_config": "Uygulama şu anda sunucuya bağlanamıyor (uygulama yapılandırması). Lütfen PrimeMe AI’nin en yeni sürümünü yükle."
     },
     "orEmail": "veya e-postayla",
@@ -1008,9 +967,6 @@
     "linked": "bağlı",
     "linkApple": "Apple’ı bağla",
     "appleLinked": "Apple artık hesabına bağlı.",
-    "emailVerified": "E-posta onaylandı",
-    "emailNotVerified": "E-posta henüz onaylanmadı",
-    "confirmEmailCta": "E-postayı onayla",
     "linkNeedsEmail": "Önce e-posta adresini onayla. Ardından Apple bağlanır."
   },
   "sync": {
@@ -1475,6 +1431,96 @@
       "existing": "Tekrar hoş geldin!",
       "beta": "PrimeMe+ Beta etkin",
       "cta": "Panoma git"
+    },
+    "health": {
+      "title": "Bunlardan biri senin için geçerli mi?",
+      "sub": "Planının güvenli kalması için. Birden fazla seçim yapabilirsin.",
+      "pregnant": "Hamile veya emziriyor",
+      "eatingDisorder": "Yeme bozukluğu – şu anda veya geçmişte",
+      "condition": "Beslenmeyi veya kiloyu etkileyen bir hastalık (ör. diyabet, kalp, böbrek, tiroid)",
+      "medication": "İştahı, kiloyu veya kan şekerini etkileyen ilaçlar",
+      "none": "Hiçbiri",
+      "privacy": "Ayrıntılar cihazında ve hesabında kalır. Prime yalnızca – sen izin verirsen – kalori açığı önerilmemesi gerektiğini öğrenir.",
+      "risk": "Paylaştığın için teşekkürler. PrimeMe senin için kalori açığı veya kilo verme hızı planlamaz. Lütfen kilo hedeflerini önce doktorunla konuş.",
+      "planNote": "Cevapların nedeniyle planında kalori açığı yok. Değerler tahmini ihtiyacını gösterir. Lütfen kilo hedeflerini bir doktor veya beslenme uzmanıyla konuş."
     }
+  },
+  "paywall": {
+    "title": "Become your Prime.",
+    "subtitle": "Kişisel fitness koçun. Her zaman yanında.",
+    "benefits": {
+      "coach": {
+        "title": "Kişisel Prime yapay zekâ koçu",
+        "body": "Prime ile günde çok daha fazla sohbet – adil kullanım sınırlarıyla."
+      },
+      "scan": {
+        "title": "Yapay zekâ yemek tarayıcı",
+        "body": "Yemeğinin fotoğrafını çek, tahmini besin değerlerini kontrol et ve kaydet."
+      },
+      "photo": {
+        "title": "Antrenman için yapay zekâ fotoğraf analizi",
+        "body": "Antrenmanları bir fotoğrafla ekle – Prime ne yaptığını tanır."
+      },
+      "plans": {
+        "title": "Beslenme ve antrenman planlama",
+        "body": "Prime planına uygun öğünler ve antrenmanlar önerir."
+      },
+      "memory": {
+        "title": "Prime Memory",
+        "body": "Prime senin için önemli olanı hatırlar – istediğin zaman görüntüle ve sil."
+      }
+    },
+    "yearly": "Yıllık",
+    "monthly": "Aylık",
+    "perYear": "Yılda {{price}}",
+    "perMonth": "Ayda {{price}}",
+    "perMonthEq": "aylık {{price}} eder",
+    "save": "%{{percent}} tasarruf",
+    "saveDetail": "Yıllık abonelikle on iki aylık ödemeye göre {{amount}} tasarruf edersin.",
+    "terms": {
+      "yearly": "Yılda {{price}}. İptal edilmedikçe her yıl otomatik olarak yenilenir.",
+      "monthly": "Ayda {{price}}. İptal edilmedikçe her ay otomatik olarak yenilenir."
+    },
+    "termsTrial": {
+      "yearly": "{{trial}}, ardından yılda {{price}}. İptal edilmedikçe otomatik yenilenir.",
+      "monthly": "{{trial}}, ardından ayda {{price}}. İptal edilmedikçe otomatik yenilenir."
+    },
+    "cancel": "Ödeme Apple hesabın üzerinden alınır. Mevcut dönemin bitiminden en az 24 saat önce Apple hesabının ayarlarından istediğin zaman iptal edebilirsin. PrimeMe+ ödenen dönemin sonuna kadar aktif kalır.",
+    "fair": "Yapay zekâ özellikleri için adil kullanım sınırları geçerlidir. Besin değerleri ve analizler tahmindir, tıbbi tavsiye değildir.",
+    "continue": "Devam",
+    "startTrial": "Ücretsiz dene",
+    "processing": "İşleniyor …",
+    "continueFree": "PrimeMe Free ile devam et",
+    "notNow": "Şimdi değil",
+    "loading": "Fiyatlar App Store’dan yükleniyor …",
+    "restoring": "Geri yükleniyor …",
+    "trial": {
+      "DAY_one": "{{count}} gün ücretsiz",
+      "DAY_other": "{{count}} gün ücretsiz",
+      "WEEK_one": "{{count}} hafta ücretsiz",
+      "WEEK_other": "{{count}} hafta ücretsiz",
+      "MONTH_one": "{{count}} ay ücretsiz",
+      "MONTH_other": "{{count}} ay ücretsiz",
+      "YEAR_one": "{{count}} yıl ücretsiz",
+      "YEAR_other": "{{count}} yıl ücretsiz"
+    }
+  },
+  "membership": {
+    "free": "PrimeMe Free",
+    "beta": "PrimeMe+ Beta",
+    "monthly": "PrimeMe+ Monthly",
+    "yearly": "PrimeMe+ Yearly",
+    "plus": "PrimeMe+",
+    "founder": "PrimeMe+ Founders",
+    "test": "PrimeMe+ test erişimi",
+    "status": "Üyelik",
+    "renews": "Yenilenme tarihi",
+    "ends": "Bitiş tarihi",
+    "validUntil": "Geçerlilik",
+    "trialEnds": "Deneme süresinin bitişi",
+    "seat": "Kurucu yeri",
+    "storeBody": "Aboneliğin Apple üzerinden yürütülür. Tüm PrimeMe+ özellikleri açık.",
+    "noSubscription": "Bu üyelikte abonelik yoktur ve ücret alınmaz.",
+    "deleteNote": "Önemli: PrimeMe hesabını silmek, Apple üzerinden alınan bir aboneliği otomatik olarak iptal etmez. Önce “Aboneliği yönet” bölümünden iptal et."
   }
 }

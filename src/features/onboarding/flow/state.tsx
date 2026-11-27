@@ -3,6 +3,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { BodySex, Pace, PrimaryGoal, WorkoutsPerWeek } from '@/domain/plan';
 import type { Units } from '@/domain/types';
 
+import { fetchFounderStatus } from '@/services/founders';
+
 import { clearDraft, loadDraft, saveDraft } from './storage';
 
 /** All answers of the onboarding, kept in one place and stored encrypted until the account exists. */
@@ -19,6 +21,8 @@ export interface OnboardingDraft {
   weightKg: number;
   hasCoach?: boolean;
   goal?: PrimaryGoal;
+  /** Health check for weight loss ('none' or any of pregnant, eatingDisorder, condition, medication). */
+  healthFlags: string[];
   goalWeightKg?: number;
   pace: Pace;
   challenges: string[];
@@ -30,7 +34,8 @@ export interface OnboardingDraft {
 
 /**
  * The screens in order (references 01–27 of the brief; a name step is added because Prime and the
- * account need it, and the diet needs get their own compact step instead of one long list).
+ * account need it, and the diet needs get their own compact step instead of one long list). The
+ * health check appears only for weight loss (safety, see domain/plan.ts).
  */
 export const STEPS = [
   'welcome',
@@ -45,6 +50,7 @@ export const STEPS = [
   'weight',
   'coach',
   'goal',
+  'health',
   'goalWeight',
   'goalMessage',
   'pace',
@@ -68,14 +74,23 @@ export type StepId = (typeof STEPS)[number];
 /** Steps without the progress header (full-screen moments). */
 export const NO_HEADER: readonly StepId[] = ['welcome', 'loading', 'done'];
 
-/** The beta screen exists only while the server gives everyone PrimeMe+ (EXPO_PUBLIC_BETA_ALL_USERS_PRO=1, see eas.json). */
+/**
+ * Mode A (free beta) build: EXPO_PUBLIC_BETA_ALL_USERS_PRO=1 (eas.json profile "beta"). The beta screen
+ * is shown only in such a build AND while the server still runs the beta (BETA_ALL_USERS_PRO, read
+ * from the public founders endpoint) – so switching the beta off on the server needs no new build.
+ */
 export const BETA_SCREEN = process.env.EXPO_PUBLIC_BETA_ALL_USERS_PRO === '1';
 
-export function isVisible(id: StepId, d: OnboardingDraft): boolean {
-  if (id === 'goalWeight' || id === 'pace') return d.goal === 'lose';
-  if (id === 'beta') return BETA_SCREEN;
+export function isVisible(id: StepId, d: OnboardingDraft, betaScreen = BETA_SCREEN): boolean {
+  if (id === 'health') return d.goal === 'lose';
+  // With a health risk no weight-loss target or pace is planned.
+  if (id === 'goalWeight' || id === 'pace') return d.goal === 'lose' && !healthRisk(d);
+  if (id === 'beta') return betaScreen;
   return true;
 }
+
+/** Any health risk from the check (pregnancy, eating disorder, condition, medication). */
+export const healthRisk = (d: Pick<OnboardingDraft, 'healthFlags'>) => (d.healthFlags ?? []).some((f) => f !== 'none');
 
 export const initialDraft = (): OnboardingDraft => ({
   step: 'welcome',
@@ -84,6 +99,7 @@ export const initialDraft = (): OnboardingDraft => ({
   heightCm: 170,
   weightKg: 75,
   pace: 'balanced',
+  healthFlags: [],
   challenges: [],
   dietNeeds: [],
   motivations: [],
@@ -111,6 +127,12 @@ export function OnboardingStateProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);
   const loaded = useRef(false);
+  // null = not known yet (offline): the build flag decides.
+  const [serverBeta, setServerBeta] = useState<boolean | null>(null);
+  useEffect(() => {
+    if (BETA_SCREEN) void fetchFounderStatus().then((s) => s && typeof s.beta === 'boolean' && setServerBeta(s.beta));
+  }, []);
+  const betaScreen = BETA_SCREEN && serverBeta !== false;
 
   // Resume an interrupted onboarding (the loading screen restarts from the thanks screen).
   useEffect(() => {
@@ -124,17 +146,20 @@ export function OnboardingStateProvider({ children }: { children: ReactNode }) {
     if (loaded.current) void saveDraft(draft);
   }, [draft]);
 
-  const move = useCallback((dir: 1 | -1) => {
-    setDirection(dir);
-    setDraft((d) => {
-      let i = STEPS.indexOf(d.step) + dir;
-      while (i > 0 && i < STEPS.length - 1 && !isVisible(STEPS[i], d)) i += dir;
-      return { ...d, step: STEPS[Math.max(0, Math.min(STEPS.length - 1, i))] };
-    });
-  }, []);
+  const move = useCallback(
+    (dir: 1 | -1) => {
+      setDirection(dir);
+      setDraft((d) => {
+        let i = STEPS.indexOf(d.step) + dir;
+        while (i > 0 && i < STEPS.length - 1 && !isVisible(STEPS[i], d, betaScreen)) i += dir;
+        return { ...d, step: STEPS[Math.max(0, Math.min(STEPS.length - 1, i))] };
+      });
+    },
+    [betaScreen],
+  );
 
   const value = useMemo<Ctx>(() => {
-    const visible = STEPS.filter((s) => isVisible(s, draft) && !NO_HEADER.includes(s));
+    const visible = STEPS.filter((s) => isVisible(s, draft, betaScreen) && !NO_HEADER.includes(s));
     const pos = visible.indexOf(draft.step);
     return {
       draft,
@@ -154,7 +179,7 @@ export function OnboardingStateProvider({ children }: { children: ReactNode }) {
         setDraft(initialDraft());
       },
     };
-  }, [draft, ready, direction, move]);
+  }, [draft, ready, direction, move, betaScreen]);
 
   return <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>;
 }
